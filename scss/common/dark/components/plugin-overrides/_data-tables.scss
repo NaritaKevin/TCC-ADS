@@ -4,18 +4,18 @@
   padding-left: 0;
   padding-right: 0;
   label {
-    font-size: .8125rem;
+    font-size: 0.8125rem;
   }
   select {
     @extend .form-control;
-    padding: .4rem;
+    padding: 0.4rem;
     outline-offset: -2px;
   }
   .dataTables_length {
     select {
       min-width: 70px;
-      margin-left: .25rem;
-      margin-right: .25rem;
+      margin-left: 0.25rem;
+      margin-right: 0.25rem;
       width: -webkit-fill-available;
       border-radius: 4px;
     }
@@ -25,8 +25,8 @@
       padding: 0.1rem 1rem;
       vertical-align: top;
       i {
-        font-size: .875rem;
-        margin-right: .3rem;
+        font-size: 0.875rem;
+        margin-right: 0.3rem;
       }
     }
     thead {
@@ -41,8 +41,8 @@
         &:before,
         &:after {
           line-height: 2.5;
-          font-family: 'themify';
-          font-size: .65rem;
+          font-family: "themify";
+          font-size: 0.65rem;
         }
         &:before {
           content: "\e627";
@@ -60,7 +60,7 @@
   }
   .dataTables_info {
     font-size: $default-font-size;
-    @media(max-width: 576px) {
+    @media (max-width: 576px) {
       margin-bottom: 1rem;
     }
   }
@@ -90,14 +90,13 @@
       border-radius: 4px;
       background: $table-accent-bg;
       td {
-
-      &:first-child {
-        padding-left: 40px;
-      }
+        &:first-child {
+          padding-left: 40px;
+        }
       }
     }
     td {
-      &.select-checkbox{
+      &.select-checkbox {
         padding-left: 26px;
         &:after {
           top: 2rem;
@@ -119,7 +118,7 @@
           color: $color-light-blue;
         }
         p {
-          opacity: .6;
+          opacity: 0.6;
           margin-bottom: 0;
         }
         h6 {
@@ -157,19 +156,19 @@
       }
       &.details-control {
         &:before {
-          content: '\e64b';
+          content: "\e64b";
           font-family: "themify";
         }
       }
       &:first-child {
         padding-left: 10px;
-        background:$table-accent-bg;
+        background: $table-accent-bg;
       }
       &.details-control {
         cursor: pointer;
       }
       &.row-bg {
-        background:$card-bg;
+        background: $card-bg;
         border-radius: 10px;
       }
     }
@@ -177,7 +176,7 @@
       td {
         &.details-control {
           &:before {
-            content: '\e648';
+            content: "\e648";
           }
         }
       }
@@ -189,12 +188,12 @@
 }
 table {
   &.dataTable {
-  border-collapse: separate;
-  border-spacing: 0 2px;
+    border-collapse: separate;
+    border-spacing: 0 2px;
     tbody {
-      td{
+      td {
         &.select-checkbox {
-          &:before { 
+          &:before {
             top: 1.4rem;
             left: 20px;
             border: 1px solid $border-color;
