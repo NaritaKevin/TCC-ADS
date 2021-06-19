@@ -9,7 +9,7 @@ $(document).ready(function () {
         $("#cadastrarQuestao").hide();
         $('#tableQuestoes').DataTable({
             "columnDefs": [
-                { "orderable": false, "targets": 7 }
+                { "orderable": false, "targets": 9 }
             ],
             "language": {
                 "decimal": "",

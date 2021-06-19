@@ -238,36 +238,20 @@
                                                 <div class="card-body">
                                                     <h4 class="card-title">Questões</h4>
                                                     <p class="card-description">
-                                                        <button type="button" id="btn-nova-questao"
-                                                            class="btn btn-primary btn-icon-text">
-                                                            <i class="bi bi-plus-circle btn-icon-prepend"></i>
-                                                            Nova questão
+
+                                                        <button id="btn-modal-questao" type="button"
+                                                            class="btn btn-inverse-primary btn-fw btn-icon-text">
+                                                            <i class="bi bi-list-check "></i>
+                                                            Escolher
                                                         </button>
+                                                        <a href="../pages/questoes.html"> <button type="button"
+                                                                class="btn btn-primary btn-rounded btn-icon">
+                                                                <i class="bi bi-plus"></i>
+                                                            </button></a>
+
 
                                                     </p>
-                                                    <div id="cadastroQuestoes"
-                                                        class="col-md-6 grid-margin stretch-card">
-                                                        <div class="card">
-                                                            <div class="card-body">
-                                                                <h4 class="card-title">Cadastro de questões</h4>
-                                                                <p class="card-description">
-                                                                    Informe as questões
-                                                                </p>
-                                                                <form class="forms-sample">
-                                                                    <div class="form-group">
-                                                                        <label
-                                                                            for="exampleInputUsername1">Descrição</label>
-                                                                        <input type="text" class="form-control"
-                                                                            id="btn-adicionar-tipo"
-                                                                            placeholder="Ex: Trabalho, redação, etc...">
-                                                                    </div>
-                                                                    <button type="submit"
-                                                                        class="btn btn-primary mr-2">Adicionar</button>
 
-                                                                </form>
-                                                            </div>
-                                                        </div>
-                                                    </div>
                                                     <div id="tableQuestoesToggle" class="table-responsive">
                                                         <table class="tableQuestoes-hover table table-hover"
                                                             id="tableQuestoes">
@@ -479,6 +463,377 @@
                         </div>
                         <!--Tabela de atividades-->
 
+                    </div>
+                </div>
+                <!--Modal-->
+                <div class="modal fade" id="modalQuestao" tabindex="-1" aria-labelledby="modalQuestao"
+                    aria-hidden="true">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-body">
+                                <div id="escolherQuestoess" class="table-responsive">
+                                    <table class="table table-hover" id="tableEscolherQuestoes">
+                                        <thead>
+                                            <tr>
+                                                <th width="1%">Ordem</th>
+                                                <th width="10%">Enunciado</th>
+                                                <th width="5%">Palavras Chave</th>
+                                                <th width="5%">Subgrupo</th>
+                                                <th width="2%">Código BNCC</th>
+                                                <th width="2%">Nível</th>
+                                                <th width="2%">Ano</th>
+                                                <th width="2%">Status Tipo</th>
+                                                <th width="2%">Revisão</th>
+                                                <th width="2%">Ação</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td class="index">1</td>
+                                                <td>De que forma os animais participam do ciclo
+                                                    da
+                                                    água?</td>
+                                                <td>Animais Ciclos Agua</td>
+                                                <td>Ciência da Natureza</td>
+                                                <td>654633</td>
+                                                <td>Fácil</td>
+                                                <td>20/09/2021</td>
+                                                <td><label class="badge badge-success">Postado</label>
+                                                </td>
+                                                <td><label class="badge badge-success">Postado</label>
+                                                </td>
+                                                <td>
+                                                    <button id="btn" type="button"
+                                                        class="btn btn-inverse-primary btn-rounded btn-icon">
+                                                        <i class="bi bi-info-lg"></i>
+                                                    </button>
+
+                                                    <button type="button"
+                                                        class="btn btn-inverse-danger btn-rounded btn-icon">
+                                                        <i class="bi bi-trash"></i>
+                                                    </button>
+                                                </td>
+
+                                            </tr>
+                                            <tr>
+                                                <td class="index">2</td>
+                                                <td>A geada "cai" do céu? Por quê?</td>
+                                                <td>Cai Ciclos Agua</td>
+                                                <td>Ciência da Natureza</td>
+                                                <td>123454</td>
+                                                <td>Médio</td>
+                                                <td>20/09/2021</td>
+                                                <td><label class="badge badge-success">Postado</label>
+                                                </td>
+                                                <td><label class="badge badge-success">Postado</label>
+                                                </td>
+                                                <td>
+                                                    <button id="btn" type="button"
+                                                        class="btn btn-inverse-primary btn-rounded btn-icon">
+                                                        <i class="bi bi-info-lg"></i>
+                                                    </button>
+
+                                                    <button type="button"
+                                                        class="btn btn-inverse-danger btn-rounded btn-icon">
+                                                        <i class="bi bi-trash"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="index">3</td>
+                                                <td>Qual a importância do gás ozônio encontrado
+                                                    na
+                                                    estratosfera?</td>
+                                                <td>Gás camada</td>
+                                                <td>Ciência da Natureza</td>
+                                                <td>546532</td>
+                                                <td>Difícil</td>
+                                                <td>20/09/2021</td>
+                                                <td><label class="badge badge-success">Postado</label>
+                                                </td>
+                                                <td><label class="badge badge-success">Postado</label>
+                                                </td>
+                                                <td>
+                                                    <button id="btn" type="button"
+                                                        class="btn btn-inverse-primary btn-rounded btn-icon">
+                                                        <i class="bi bi-info-lg"></i>
+                                                    </button>
+
+                                                    <button type="button"
+                                                        class="btn btn-inverse-danger btn-rounded btn-icon">
+                                                        <i class="bi bi-trash"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="index">3</td>
+                                                <td>Qual a importância do gás ozônio encontrado
+                                                    na
+                                                    estratosfera?</td>
+                                                <td>Gás camada</td>
+                                                <td>Ciência da Natureza</td>
+                                                <td>546532</td>
+                                                <td>Difícil</td>
+                                                <td>20/09/2021</td>
+                                                <td><label class="badge badge-success">Postado</label>
+                                                </td>
+                                                <td><label class="badge badge-success">Postado</label>
+                                                </td>
+                                                <td>
+                                                    <button id="btn" type="button"
+                                                        class="btn btn-inverse-primary btn-rounded btn-icon">
+                                                        <i class="bi bi-info-lg"></i>
+                                                    </button>
+
+                                                    <button type="button"
+                                                        class="btn btn-inverse-danger btn-rounded btn-icon">
+                                                        <i class="bi bi-trash"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="index">3</td>
+                                                <td>Qual a importância do gás ozônio encontrado
+                                                    na
+                                                    estratosfera?</td>
+                                                <td>Gás camada</td>
+                                                <td>Ciência da Natureza</td>
+                                                <td>546532</td>
+                                                <td>Difícil</td>
+                                                <td>20/09/2021</td>
+                                                <td><label class="badge badge-success">Postado</label>
+                                                </td>
+                                                <td><label class="badge badge-success">Postado</label>
+                                                </td>
+                                                <td>
+                                                    <button id="btn" type="button"
+                                                        class="btn btn-inverse-primary btn-rounded btn-icon">
+                                                        <i class="bi bi-info-lg"></i>
+                                                    </button>
+
+                                                    <button type="button"
+                                                        class="btn btn-inverse-danger btn-rounded btn-icon">
+                                                        <i class="bi bi-trash"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="index">3</td>
+                                                <td>Qual a importância do gás ozônio encontrado
+                                                    na
+                                                    estratosfera?</td>
+                                                <td>Gás camada</td>
+                                                <td>Ciência da Natureza</td>
+                                                <td>546532</td>
+                                                <td>Difícil</td>
+                                                <td>20/09/2021</td>
+                                                <td><label class="badge badge-success">Postado</label>
+                                                </td>
+                                                <td><label class="badge badge-success">Postado</label>
+                                                </td>
+                                                <td>
+                                                    <button id="btn" type="button"
+                                                        class="btn btn-inverse-primary btn-rounded btn-icon">
+                                                        <i class="bi bi-info-lg"></i>
+                                                    </button>
+
+                                                    <button type="button"
+                                                        class="btn btn-inverse-danger btn-rounded btn-icon">
+                                                        <i class="bi bi-trash"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="index">3</td>
+                                                <td>Qual a importância do gás ozônio encontrado
+                                                    na
+                                                    estratosfera?</td>
+                                                <td>Gás camada</td>
+                                                <td>Ciência da Natureza</td>
+                                                <td>546532</td>
+                                                <td>Difícil</td>
+                                                <td>20/09/2021</td>
+                                                <td><label class="badge badge-success">Postado</label>
+                                                </td>
+                                                <td><label class="badge badge-success">Postado</label>
+                                                </td>
+                                                <td>
+                                                    <button id="btn" type="button"
+                                                        class="btn btn-inverse-primary btn-rounded btn-icon">
+                                                        <i class="bi bi-info-lg"></i>
+                                                    </button>
+
+                                                    <button type="button"
+                                                        class="btn btn-inverse-danger btn-rounded btn-icon">
+                                                        <i class="bi bi-trash"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="index">3</td>
+                                                <td>Qual a importância do gás ozônio encontrado
+                                                    na
+                                                    estratosfera?</td>
+                                                <td>Gás camada</td>
+                                                <td>Ciência da Natureza</td>
+                                                <td>546532</td>
+                                                <td>Difícil</td>
+                                                <td>20/09/2021</td>
+                                                <td><label class="badge badge-success">Postado</label>
+                                                </td>
+                                                <td><label class="badge badge-success">Postado</label>
+                                                </td>
+                                                <td>
+                                                    <button id="btn" type="button"
+                                                        class="btn btn-inverse-primary btn-rounded btn-icon">
+                                                        <i class="bi bi-info-lg"></i>
+                                                    </button>
+
+                                                    <button type="button"
+                                                        class="btn btn-inverse-danger btn-rounded btn-icon">
+                                                        <i class="bi bi-trash"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="index">3</td>
+                                                <td>Qual a importância do gás ozônio encontrado
+                                                    na
+                                                    estratosfera?</td>
+                                                <td>Gás camada</td>
+                                                <td>Ciência da Natureza</td>
+                                                <td>546532</td>
+                                                <td>Difícil</td>
+                                                <td>20/09/2021</td>
+                                                <td><label class="badge badge-success">Postado</label>
+                                                </td>
+                                                <td><label class="badge badge-success">Postado</label>
+                                                </td>
+                                                <td>
+                                                    <button id="btn" type="button"
+                                                        class="btn btn-inverse-primary btn-rounded btn-icon">
+                                                        <i class="bi bi-info-lg"></i>
+                                                    </button>
+
+                                                    <button type="button"
+                                                        class="btn btn-inverse-danger btn-rounded btn-icon">
+                                                        <i class="bi bi-trash"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="index">3</td>
+                                                <td>Qual a importância do gás ozônio encontrado
+                                                    na
+                                                    estratosfera?</td>
+                                                <td>Gás camada</td>
+                                                <td>Ciência da Natureza</td>
+                                                <td>546532</td>
+                                                <td>Difícil</td>
+                                                <td>20/09/2021</td>
+                                                <td><label class="badge badge-success">Postado</label>
+                                                </td>
+                                                <td><label class="badge badge-success">Postado</label>
+                                                </td>
+                                                <td>
+                                                    <button id="btn" type="button"
+                                                        class="btn btn-inverse-primary btn-rounded btn-icon">
+                                                        <i class="bi bi-info-lg"></i>
+                                                    </button>
+
+                                                    <button type="button"
+                                                        class="btn btn-inverse-danger btn-rounded btn-icon">
+                                                        <i class="bi bi-trash"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="index">3</td>
+                                                <td>Qual a importância do gás ozônio encontrado
+                                                    na
+                                                    estratosfera?</td>
+                                                <td>Gás camada</td>
+                                                <td>Ciência da Natureza</td>
+                                                <td>546532</td>
+                                                <td>Difícil</td>
+                                                <td>20/09/2021</td>
+                                                <td><label class="badge badge-success">Postado</label>
+                                                </td>
+                                                <td><label class="badge badge-success">Postado</label>
+                                                </td>
+                                                <td>
+                                                    <button id="btn" type="button"
+                                                        class="btn btn-inverse-primary btn-rounded btn-icon">
+                                                        <i class="bi bi-info-lg"></i>
+                                                    </button>
+
+                                                    <button type="button"
+                                                        class="btn btn-inverse-danger btn-rounded btn-icon">
+                                                        <i class="bi bi-trash"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="index">3</td>
+                                                <td>Qual a importância do gás ozônio encontrado
+                                                    na
+                                                    estratosfera?</td>
+                                                <td>Gás camada</td>
+                                                <td>Ciência da Natureza</td>
+                                                <td>546532</td>
+                                                <td>Difícil</td>
+                                                <td>20/09/2021</td>
+                                                <td><label class="badge badge-success">Postado</label>
+                                                </td>
+                                                <td><label class="badge badge-success">Postado</label>
+                                                </td>
+                                                <td>
+                                                    <button id="btn" type="button"
+                                                        class="btn btn-inverse-primary btn-rounded btn-icon">
+                                                        <i class="bi bi-info-lg"></i>
+                                                    </button>
+
+                                                    <button type="button"
+                                                        class="btn btn-inverse-danger btn-rounded btn-icon">
+                                                        <i class="bi bi-trash"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="index">3</td>
+                                                <td>Qual a importância do gás ozônio encontrado
+                                                    na
+                                                    estratosfera?</td>
+                                                <td>Gás camada</td>
+                                                <td>Ciência da Natureza</td>
+                                                <td>546532</td>
+                                                <td>Difícil</td>
+                                                <td>20/09/2021</td>
+                                                <td><label class="badge badge-success">Postado</label>
+                                                </td>
+                                                <td><label class="badge badge-success">Postado</label>
+                                                </td>
+                                                <td>
+                                                    <button id="btn" type="button"
+                                                        class="btn btn-inverse-primary btn-rounded btn-icon">
+                                                        <i class="bi bi-info-lg"></i>
+                                                    </button>
+
+                                                    <button type="button"
+                                                        class="btn btn-inverse-danger btn-rounded btn-icon">
+                                                        <i class="bi bi-trash"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button id="modalCancelar" type="button" class="btn btn-secondary">Cancelar</button>
+                                <button id="modalConfirmar" type="button" class="btn btn-primary">Confirmar</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <!-- content-wrapper ends -->
