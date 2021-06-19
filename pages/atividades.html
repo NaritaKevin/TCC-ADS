@@ -172,65 +172,133 @@
                                             Nova atividade
                                         </button>
                                     </p>
-                                    <div id="cadastrarAtividade" class="col-md-6 grid-margin stretch-card">
-                                        <div class="card">
-                                            <div class="card-body">
-                                                <h4 class="card-title">Cadastro de atividades</h4>
-                                                <p class="card-description">Informe os dados da atividade a ser
-                                                    cadastrada.</p>
-                                                <form class="forms-sample">
-                                                    <div class="form-group">
-                                                        <label for="exampleInputUsername1">Nome</label>
-                                                        <input type="text" class="form-control"
-                                                            id="exampleInputUsername1" placeholder="Nome">
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label for="exampleInputEmail1">Observações</label>
-                                                        <input type="email" class="form-control" id="exampleInputEmail1"
-                                                            placeholder="Observações">
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label for="exampleSelectGender">Tipo</label>
-                                                        <select class="form-control" onfocus='this.size=5;'
-                                                            onblur='this.size=1;' onchange='this.size=1; this.blur();'>
-                                                            <option selected>Tipo</option>
-                                                            <option value="1">Trabalho</option>
-                                                            <option value="2">Projeto</option>
-                                                            <option value="3">Redação</option>
-                                                            <option value="4">Fórum</option>
-                                                            <option value="4">Fórum</option>
+                                    <div id="cadastrarAtividade">
+                                        <div class="col-md-6 grid-margin stretch-card">
+                                            <div class="card">
+                                                <div class="card-body">
+                                                    <h4 class="card-title">Cadastro de atividades</h4>
+                                                    <p class="card-description">Informe os dados da atividade a ser
+                                                        cadastrada.</p>
+                                                    <form class="forms-sample">
+                                                        <div class="form-group">
+                                                            <label for="exampleInputUsername1">Nome</label>
+                                                            <input type="text" class="form-control"
+                                                                id="exampleInputUsername1" placeholder="Nome">
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="exampleInputEmail1">Observações</label>
+                                                            <input type="email" class="form-control"
+                                                                id="exampleInputEmail1" placeholder="Observações">
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="exampleSelectGender">Tipo</label>
+                                                            <select class="form-control" onfocus='this.size=5;'
+                                                                onblur='this.size=1;'
+                                                                onchange='this.size=1; this.blur();'>
+                                                                <option selected>Tipo</option>
+                                                                <option value="1">Trabalho</option>
+                                                                <option value="2">Projeto</option>
+                                                                <option value="3">Redação</option>
+                                                                <option value="4">Fórum</option>
+                                                                <option value="4">Fórum</option>
 
-                                                        </select>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <div class="row">
-                                                            <div class="col-md-6">
-                                                                <div class="form-group row">
-                                                                    <label class="col-md-6 col-form-label">Data
-                                                                        Inicial</label>
-                                                                    <div class="col-sm-9">
-                                                                        <input type="text" id="data-inicial"
-                                                                            class="form-control" />
+                                                            </select>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <div class="row">
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group row">
+                                                                        <label class="col-md-6 col-form-label">Data
+                                                                            Inicial</label>
+                                                                        <div class="col-sm-9">
+                                                                            <input type="text" id="data-inicial"
+                                                                                class="form-control" />
+                                                                        </div>
                                                                     </div>
                                                                 </div>
-                                                            </div>
-                                                            <div class="col-md-6">
-                                                                <div class="form-group row">
-                                                                    <label class="col-md-6 col-form-label">Data
-                                                                        Final</label>
-                                                                    <div class="col-sm-9">
-                                                                        <input type="text" id="data-final"
-                                                                            class="form-control" />
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group row">
+                                                                        <label class="col-md-6 col-form-label">Data
+                                                                            Final</label>
+                                                                        <div class="col-sm-9">
+                                                                            <input type="text" id="data-final"
+                                                                                class="form-control" />
+                                                                        </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                         </div>
+
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-12 grid-margin stretch-card">
+                                            <div class="card">
+                                                <div class="card-body">
+                                                    <h4 class="card-title">Questões</h4>
+                                                    <p class="card-description">
+                                                        <button type="button" id="btn-nova-questao"
+                                                            class="btn btn-primary btn-icon-text">
+                                                            <i class="bi bi-plus-circle btn-icon-prepend"></i>
+                                                            Nova questão
+                                                        </button>
+
+                                                    </p>
+                                                    <div id="cadastroQuestoes"
+                                                        class="col-md-6 grid-margin stretch-card">
+                                                        <div class="card">
+                                                            <div class="card-body">
+                                                                <h4 class="card-title">Cadastro de questões</h4>
+                                                                <p class="card-description">
+                                                                    Informe as questões
+                                                                </p>
+                                                                <form class="forms-sample">
+                                                                    <div class="form-group">
+                                                                        <label
+                                                                            for="exampleInputUsername1">Descrição</label>
+                                                                        <input type="text" class="form-control"
+                                                                            id="btn-adicionar-tipo"
+                                                                            placeholder="Ex: Trabalho, redação, etc...">
+                                                                    </div>
+                                                                    <button type="submit"
+                                                                        class="btn btn-primary mr-2">Adicionar</button>
+
+                                                                </form>
+                                                            </div>
+                                                        </div>
                                                     </div>
+                                                    <div id="tableQuestoesToggle" class="table-responsive">
+                                                        <table class="tableQuestoes-hover table table-hover"
+                                                            id="tableQuestoes">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th width="1%">Ordem</th>
+                                                                    <th width="22%">Enunciado</th>
+                                                                    <th width="5%">Palavras Chave</th>
+                                                                    <th width="5%">Subgrupo</th>
+                                                                    <th width="2%">Nível</th>
+                                                                    <th width="2%">Ano</th>
+                                                                    <th width="3%">Código BNCC</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td class="index">1</td>
+                                                                    <td>De que forma os animais participam do ciclo da
+                                                                        água?</td>
+                                                                    <td>Animais Ciclos Agua</td>
+                                                                    <td>Subgrupo teste</td>
+                                                                    <td>26/09/2021</td>
+                                                                    <td>Fácil</td>
+                                                                    <td>654633</td>
 
-                                                    <button type="submit" id="btn-add-atividades"
-                                                        class="btn btn-primary mr-2">Adicionar</button>
+                                                                </tr>
 
-                                                </form>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -239,26 +307,29 @@
                                             <thead>
                                                 <tr>
                                                     <th width="3%">Nº</th>
-                                                    <th width="22%">Descrição</th>
-                                                    <th width="22%">Observação</th>
+                                                    <th width="22%">Nome</th>
+                                                    <th width="22%">Disciplina</th>
                                                     <th width="2%">Data Início</th>
                                                     <th width="2%">Data Final</th>
                                                     <th width="3%">Tipo</th>
                                                     <th width="2%">Status</th>
-                                                    <th width="2%">Ação</th>
+                                                    <th width="5%">Ação</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 <tr>
-                                                    <td>1</td>
-                                                    <td>Tranalho para composição de nota</td>
-                                                    <td>Realizar todas as atividades correspondentes
-                                                    </td>
+                                                    <td class="index">1</td>
+                                                    <td>Trabalho para composição de nota</td>
+                                                    <td>Biologia</td>
                                                     <td>26/10/2021</td>
                                                     <td>30/10/2021</td>
                                                     <td>Trabalho</td>
                                                     <td><label class="badge badge-success">Postado</label></td>
                                                     <td>
+                                                        <button id="btn" type="button"
+                                                            class="btn btn-inverse-primary btn-rounded btn-icon">
+                                                            <i class="bi bi-info-lg"></i>
+                                                        </button>
                                                         <button type="button"
                                                             class="btn btn-inverse-success btn-rounded btn-icon">
                                                             <i class="bi bi-pencil"></i>
@@ -269,148 +340,20 @@
                                                         </button>
                                                     </td>
                                                 </tr>
+
                                                 <tr>
-                                                    <td>2</td>
-                                                    <td>Atividade final - P2</td>
-                                                    <td>Realizar todas as atividades correspondentes</td>
-                                                    <td>26/8/2021</td>
-                                                    <td>30/08/2021</td>
+                                                    <td class="index">1</td>
+                                                    <td>Trabalho para composição de nota</td>
+                                                    <td>Biologia</td>
+                                                    <td>26/10/2021</td>
+                                                    <td>30/10/2021</td>
                                                     <td>Trabalho</td>
                                                     <td><label class="badge badge-success">Postado</label></td>
                                                     <td>
-                                                        <button type="button"
-                                                            class="btn btn-inverse-success btn-rounded btn-icon">
-                                                            <i class="bi bi-pencil"></i>
+                                                        <button id="btn" type="button"
+                                                            class="btn btn-inverse-primary btn-rounded btn-icon">
+                                                            <i class="bi bi-info-lg"></i>
                                                         </button>
-                                                        <button type="button"
-                                                            class="btn btn-inverse-danger btn-rounded btn-icon">
-                                                            <i class="bi bi-trash"></i>
-                                                        </button>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>3</td>
-                                                    <td>Programação Linear - P2</td>
-                                                    <td>Realizar todas as atividades correspondentes</td>
-                                                    <td>26/8/2021</td>
-                                                    <td>30/08/2021</td>
-                                                    <td>Redação</td>
-                                                    <td><label class="badge badge-warning">Não postado</label></td>
-                                                    <td>
-                                                        <button type="button"
-                                                            class="btn btn-inverse-success btn-rounded btn-icon">
-                                                            <i class="bi bi-pencil"></i>
-                                                        </button>
-                                                        <button type="button"
-                                                            class="btn btn-inverse-danger btn-rounded btn-icon">
-                                                            <i class="bi bi-trash"></i>
-                                                        </button>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>4</td>
-                                                    <td>Engenharia de Software - Método </td>
-                                                    <td>Realizar todas as atividades correspondentes</td>
-                                                    <td>26/8/2021</td>
-                                                    <td>30/08/2021</td>
-                                                    <td>Projeto</td>
-                                                    <td><label class="badge badge-warning">Não postado</label></td>
-                                                    <td>
-                                                        <button type="button"
-                                                            class="btn btn-inverse-success btn-rounded btn-icon">
-                                                            <i class="bi bi-pencil"></i>
-                                                        </button>
-                                                        <button type="button"
-                                                            class="btn btn-inverse-danger btn-rounded btn-icon">
-                                                            <i class="bi bi-trash"></i>
-                                                        </button>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>5</td>
-                                                    <td>Atividade final - P2</td>
-                                                    <td>Realizar todas as atividades correspondentes</td>
-                                                    <td>26/8/2021</td>
-                                                    <td>30/08/2021</td>
-                                                    <td>Trabalho</td>
-                                                    <td><label class="badge badge-success">Postado</label></td>
-                                                    <td>
-                                                        <button type="button"
-                                                            class="btn btn-inverse-success btn-rounded btn-icon">
-                                                            <i class="bi bi-pencil"></i>
-                                                        </button>
-                                                        <button type="button"
-                                                            class="btn btn-inverse-danger btn-rounded btn-icon">
-                                                            <i class="bi bi-trash"></i>
-                                                        </button>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>6</td>
-                                                    <td>Atividade final - P2</td>
-                                                    <td>Realizar todas as atividades correspondentes</td>
-                                                    <td>26/8/2021</td>
-                                                    <td>30/08/2021</td>
-                                                    <td>Projeto</td>
-                                                    <td><label class="badge badge-warning">Não postado</label></td>
-                                                    <td>
-                                                        <button type="button"
-                                                            class="btn btn-inverse-success btn-rounded btn-icon">
-                                                            <i class="bi bi-pencil"></i>
-                                                        </button>
-                                                        <button type="button"
-                                                            class="btn btn-inverse-danger btn-rounded btn-icon">
-                                                            <i class="bi bi-trash"></i>
-                                                        </button>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>7</td>
-                                                    <td>Atividade final - P2</td>
-                                                    <td>Realizar todas as atividades correspondentes</td>
-                                                    <td>26/8/2021</td>
-                                                    <td>30/08/2021</td>
-                                                    <td>Redação</td>
-                                                    <td><label class="badge badge-warning">Não postado</label></td>
-                                                    <td>
-                                                        <button type="button"
-                                                            class="btn btn-inverse-success btn-rounded btn-icon">
-                                                            <i class="bi bi-pencil"></i>
-                                                        </button>
-                                                        <button type="button"
-                                                            class="btn btn-inverse-danger btn-rounded btn-icon">
-                                                            <i class="bi bi-trash"></i>
-                                                        </button>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>8</td>
-                                                    <td>Atividade final - P2</td>
-                                                    <td>Realizar todas as atividades correspondentes</td>
-                                                    <td>26/8/2021</td>
-                                                    <td>30/08/2021</td>
-                                                    <td>Trabalho</td>
-                                                    <td><label class="badge badge-warning">Não postado</label></td>
-                                                    <td>
-                                                        <button type="button"
-                                                            class="btn btn-inverse-success btn-rounded btn-icon">
-                                                            <i class="bi bi-pencil"></i>
-                                                        </button>
-                                                        <button type="button"
-                                                            class="btn btn-inverse-danger btn-rounded btn-icon">
-                                                            <i class="bi bi-trash"></i>
-                                                        </button>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>9</td>
-                                                    <td>Atividade final - P2</td>
-                                                    <td>Realizar todas as atividades correspondentes</td>
-                                                    <td>26/8/2021</td>
-                                                    <td>30/08/2021</td>
-                                                    <td>Projeto</td>
-                                                    <td><label class="badge badge-warning">Não postado</label></td>
-                                                    <td>
                                                         <button type="button"
                                                             class="btn btn-inverse-success btn-rounded btn-icon">
                                                             <i class="bi bi-pencil"></i>
@@ -569,9 +512,10 @@
     <script src="../js/off-canvas.js"></script>
     <script src="../js/hoverable-collapse.js"></script>
     <script src="../js/template.js"></script>
+    <script src="../vendors/jquery-ui/jquery-ui.min.js"></script>
     <script src="../js/jquery.datetimepicker.full.min.js"></script>
 
-    <script src="../js/index.js"></script>
+    <script src="../js/mainjs/atividades.js"></script>
 
     <!-- endinject -->
 </body>

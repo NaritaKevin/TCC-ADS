@@ -49011,5 +49011,10 @@ div.tagsinput span.tag a {
     display: none;
   }
 }
-
+.tableQuestoes-hover td:hover {
+  cursor: move;
+}
+.hiddenRow {
+  padding: 0 !important;
+}
 /*# sourceMappingURL=../maps/vertical-layout-light/style.css.map */
