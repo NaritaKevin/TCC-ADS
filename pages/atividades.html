@@ -17,6 +17,7 @@
     <link rel="stylesheet" href="../vendors/ti-icons/css/themify-icons.css">
     <link rel="stylesheet" type="text/css" href="../js/select.dataTables.min.css">
     <link rel="stylesheet" href="../js/jquery.datetimepicker.min.css">
+    <link rel="stylesheet" href="../js/dataTables.checkboxes.css">
 
     <!-- End plugin css for this page -->
     <!-- inject:css -->
@@ -141,7 +142,7 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="../pages/resultados.html">
-                            <i class="icon-bar-graph menu-icon"></i>
+                            <i class="bi bi-file-earmark-bar-graph menu-icon"></i>
                             <span class="menu-title">Resultados</span>
 
                         </a>
@@ -173,13 +174,13 @@
                                         </button>
                                     </p>
                                     <div id="cadastrarAtividade">
-                                        <div class="col-md-6 grid-margin stretch-card">
+                                        <div class="stretch-card">
                                             <div class="card">
                                                 <div class="card-body">
                                                     <h4 class="card-title">Cadastro de atividades</h4>
                                                     <p class="card-description">Informe os dados da atividade a ser
                                                         cadastrada.</p>
-                                                    <form class="forms-sample">
+                                                    <form>
                                                         <div class="form-group">
                                                             <label for="exampleInputUsername1">Nome</label>
                                                             <input type="text" class="form-control"
@@ -228,90 +229,140 @@
                                                                 </div>
                                                             </div>
                                                         </div>
+                                                        <div class="form-group">
+                                                            <div class="row">
+                                                                <div class="col-lg-12 grid-margin stretch-card">
+                                                                    <div class="card">
+                                                                        <div class="card-body">
+                                                                            <h4 class="card-title">Questões</h4>
+                                                                            <p class="card-description">
 
+                                                                                <button id="btn-modal-escolher"
+                                                                                    type="button"
+                                                                                    class="btn btn-inverse-primary btn-fw btn-icon-text">
+                                                                                    <i class="bi bi-list-check "></i>
+                                                                                    Escolher
+                                                                                </button>
+                                                                                <a href="../pages/questoes.html">
+                                                                                    <button type="button"
+                                                                                        class="btn btn-primary btn-rounded btn-icon">
+                                                                                        <i class="bi bi-plus"></i>
+                                                                                    </button></a>
+                                                                            </p>
+
+                                                                            <div id="tableQuestoesToggle"
+                                                                                class="table-responsive">
+                                                                                <table class=" table table-hover"
+                                                                                    id="tableQuestoesAtividade">
+                                                                                    <thead>
+                                                                                        <tr>
+                                                                                            <th width="1%">Ordem</th>
+                                                                                            <th width="22%">Enunciado
+                                                                                            </th>
+                                                                                            <th width="5%">Palavras
+                                                                                                Chave</th>
+                                                                                            <th width="5%">Subgrupo</th>
+                                                                                            <th width="3%">Código BNCC
+                                                                                            </th>
+                                                                                            <th width="2%">Nível</th>
+
+                                                                                        </tr>
+                                                                                    </thead>
+                                                                                    <tbody id="tbodyQuestoes">
+                                                                                        <tr>
+                                                                                            <td class="index">1</td>
+                                                                                            <td>De que forma os animais
+                                                                                                participam do ciclo da
+                                                                                                água?</td>
+                                                                                            <td>Animais Ciclos Agua</td>
+                                                                                            <td>Subgrupo teste</td>
+                                                                                            <td>654633</td>
+                                                                                            <td>Fácil</td>
+
+
+                                                                                        </tr>
+                                                                                        <tr>
+                                                                                            <td class="index">2</td>
+                                                                                            <td>22dsds?</td>
+                                                                                            <td>Animais Ciclos Agua</td>
+                                                                                            <td>Subgrupo teste</td>
+                                                                                            <td>654633</td>
+                                                                                            <td>Fácil</td>
+
+
+                                                                                        </tr>
+                                                                                        <tr>
+                                                                                            <td class="index">3</td>
+                                                                                            <td>33fdfdf</td>
+                                                                                            <td>Animais Ciclos Agua</td>
+                                                                                            <td>Subgrupo teste</td>
+                                                                                            <td>654633</td>
+
+                                                                                            <td>Fácil</td>
+
+                                                                                        </tr>
+                                                                                        <tr>
+                                                                                            <td class="index">4</td>
+                                                                                            <td>44adsads</td>
+                                                                                            <td>Animais Ciclos Agua</td>
+                                                                                            <td>Subgrupo teste</td>
+                                                                                            <td>654633</td>
+                                                                                            <td>Fácil</td>
+
+
+                                                                                        </tr>
+
+                                                                                    </tbody>
+                                                                                </table>
+
+                                                                            </div>
+
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <div class="row">
+                                                                <button id="cadastrarAtividade" type="submit"
+                                                                    class="btn btn-primary mr-2">Cadastrar</button>
+                                                                <button id="cancelarAtividade" type="button"
+                                                                    class="btn btn-secondary">Cancelar</button>
+                                                            </div>
+                                                        </div>
                                                     </form>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-lg-12 grid-margin stretch-card">
-                                            <div class="card">
-                                                <div class="card-body">
-                                                    <h4 class="card-title">Questões</h4>
-                                                    <p class="card-description">
 
-                                                        <button id="btn-modal-questao" type="button"
-                                                            class="btn btn-inverse-primary btn-fw btn-icon-text">
-                                                            <i class="bi bi-list-check "></i>
-                                                            Escolher
-                                                        </button>
-                                                        <a href="../pages/questoes.html"> <button type="button"
-                                                                class="btn btn-primary btn-rounded btn-icon">
-                                                                <i class="bi bi-plus"></i>
-                                                            </button></a>
-
-
-                                                    </p>
-
-                                                    <div id="tableQuestoesToggle" class="table-responsive">
-                                                        <table class="tableQuestoes-hover table table-hover"
-                                                            id="tableQuestoes">
-                                                            <thead>
-                                                                <tr>
-                                                                    <th width="1%">Ordem</th>
-                                                                    <th width="22%">Enunciado</th>
-                                                                    <th width="5%">Palavras Chave</th>
-                                                                    <th width="5%">Subgrupo</th>
-                                                                    <th width="2%">Nível</th>
-                                                                    <th width="2%">Ano</th>
-                                                                    <th width="3%">Código BNCC</th>
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody>
-                                                                <tr>
-                                                                    <td class="index">1</td>
-                                                                    <td>De que forma os animais participam do ciclo da
-                                                                        água?</td>
-                                                                    <td>Animais Ciclos Agua</td>
-                                                                    <td>Subgrupo teste</td>
-                                                                    <td>26/09/2021</td>
-                                                                    <td>Fácil</td>
-                                                                    <td>654633</td>
-
-                                                                </tr>
-
-                                                            </tbody>
-                                                        </table>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
                                     </div>
-                                    <div id="tableAtividadesToggle" class="table-responsive">
+                                    <div id="tableAtividadesToggle" class="expandable-table table-responsive">
                                         <table id="tableAtividade" class="table table-striped table-hover ">
                                             <thead>
                                                 <tr>
-                                                    <th width="3%">Nº</th>
-                                                    <th width="22%">Nome</th>
-                                                    <th width="22%">Disciplina</th>
-                                                    <th width="2%">Data Início</th>
-                                                    <th width="2%">Data Final</th>
-                                                    <th width="3%">Tipo</th>
-                                                    <th width="2%">Status</th>
-                                                    <th width="5%">Ação</th>
+                                                    <th>Nº</th>
+                                                    <th>Nome</th>
+                                                    <th>Observação</th>
+                                                    <th>Data Início</th>
+                                                    <th>Data Final</th>
+                                                    <th>Tipo</th>
+                                                    <th>Status</th>
+                                                    <th>Ação</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 <tr>
                                                     <td class="index">1</td>
                                                     <td>Trabalho para composição de nota</td>
-                                                    <td>Biologia</td>
+                                                    <td>Programação para Dispositivos Móveis</td>
                                                     <td>26/10/2021</td>
                                                     <td>30/10/2021</td>
                                                     <td>Trabalho</td>
                                                     <td><label class="badge badge-success">Postado</label></td>
                                                     <td>
-                                                        <button id="btn" type="button"
-                                                            class="btn btn-inverse-primary btn-rounded btn-icon">
+                                                        <button type="button"
+                                                            class="btn btn-inverse-primary btn-rounded btn-icon btn-info-questao ">
                                                             <i class="bi bi-info-lg"></i>
                                                         </button>
                                                         <button type="button"
@@ -335,7 +386,7 @@
                                                     <td><label class="badge badge-success">Postado</label></td>
                                                     <td>
                                                         <button id="btn" type="button"
-                                                            class="btn btn-inverse-primary btn-rounded btn-icon">
+                                                            class="btn btn-inverse-primary btn-rounded btn-icon btn-info-questao ">
                                                             <i class="bi bi-info-lg"></i>
                                                         </button>
                                                         <button type="button"
@@ -356,140 +407,73 @@
                             </div>
                         </div>
 
-                        <div class="col-lg-12 grid-margin stretch-card">
-                            <div class="card">
-                                <div class="card-body">
-                                    <h4 class="card-title">Tabela de tipos</h4>
 
-                                    <p class="card-description">
-                                        <button type="button" id="btn-novo-tipo" class="btn btn-primary btn-icon-text">
-                                            <i class="bi bi-plus-circle btn-icon-prepend"></i>
-                                            Novo tipo
-                                        </button>
-
-                                    </p>
-                                    <div id="cadastroTipo" class="col-md-6 grid-margin stretch-card">
-                                        <div class="card">
-                                            <div class="card-body">
-                                                <h4 class="card-title">Cadastro de Tipos</h4>
-                                                <p class="card-description">
-                                                    Informe os tipos de atividade que deseja cadastrar.
-                                                </p>
-                                                <form class="forms-sample">
-                                                    <div class="form-group">
-                                                        <label for="exampleInputUsername1">Descrição</label>
-                                                        <input type="text" class="form-control" id="btn-adicionar-tipo"
-                                                            placeholder="Ex: Trabalho, redação, etc...">
-                                                    </div>
-                                                    <button type="submit"
-                                                        class="btn btn-primary mr-2">Adicionar</button>
-
-                                                </form>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div id="tableTiposToggle" class="table-responsive">
-                                        <table id="tableTipos" class="table table-striped table-hover ">
-                                            <thead>
-                                                <tr>
-                                                    <th width="3%">Nº</th>
-                                                    <th width="50%">Descrição</th>
-                                                    <th width="3%">Ação</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td>1</td>
-                                                    <td>Trabalho</td>
-                                                    <td>
-                                                        <button type="button"
-                                                            class="btn btn-inverse-success btn-rounded btn-icon">
-                                                            <i class="bi bi-pencil"></i>
-                                                        </button>
-                                                        <button type="button"
-                                                            class="btn btn-inverse-danger btn-rounded btn-icon">
-                                                            <i class="bi bi-trash"></i>
-                                                        </button>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>2</td>
-                                                    <td>Projeto</td>
-                                                    <td>
-                                                        <button type="button"
-                                                            class="btn btn-inverse-success btn-rounded btn-icon">
-                                                            <i class="bi bi-pencil"></i>
-                                                        </button>
-                                                        <button type="button"
-                                                            class="btn btn-inverse-danger btn-rounded btn-icon">
-                                                            <i class="bi bi-trash"></i>
-                                                        </button>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>3</td>
-                                                    <td>Redação</td>
-                                                    <td>
-                                                        <button type="button"
-                                                            class="btn btn-inverse-success btn-rounded btn-icon">
-                                                            <i class="bi bi-pencil"></i>
-                                                        </button>
-                                                        <button type="button"
-                                                            class="btn btn-inverse-danger btn-rounded btn-icon">
-                                                            <i class="bi bi-trash"></i>
-                                                        </button>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>4</td>
-                                                    <td>Fórum</td>
-                                                    <td>
-                                                        <button type="button"
-                                                            class="btn btn-inverse-success btn-rounded btn-icon">
-                                                            <i class="bi bi-pencil"></i>
-                                                        </button>
-                                                        <button type="button"
-                                                            class="btn btn-inverse-danger btn-rounded btn-icon">
-                                                            <i class="bi bi-trash"></i>
-                                                        </button>
-                                                    </td>
-                                                </tr>
-
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!--Tabela de atividades-->
 
                     </div>
                 </div>
-                <!--Modal-->
+                <!--Modal Mais informação-->
+                <div class="modal fade" id="modalInfoAtividade" tabindex="-1" aria-labelledby="modalInfoQuestao"
+                    aria-hidden="true">
+                    <div class="modal-dialog ">
+                        <div class="modal-content">
+                            <div class="modal-body">
+                                <div class="stretch-card">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <p class="card-title">Informações Adicionais</p>
+                                            <div class="table-responsive">
+                                                <table class="table ">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Disciplina</th>
+                                                            <th>Temática</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td>Biologia</td>
+                                                            <td>Divisão celular</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button id="modalCancelar" type="button" class="btn btn-secondary">Cancelar</button>
+                                <button id="modalConfirmar" type="button" class="btn btn-primary">Confirmar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Modal Questão-->
                 <div class="modal fade" id="modalQuestao" tabindex="-1" aria-labelledby="modalQuestao"
                     aria-hidden="true">
                     <div class="modal-dialog modal-lg">
                         <div class="modal-content">
                             <div class="modal-body">
-                                <div id="escolherQuestoess" class="table-responsive">
-                                    <table class="table table-hover" id="tableEscolherQuestoes">
+                                <div id="escolherQuestoess" class="expandable-table table-responsive">
+                                    <table class="table table-hover display" id="tableEscolherQuestoes">
                                         <thead>
                                             <tr>
-                                                <th width="1%">Ordem</th>
-                                                <th width="10%">Enunciado</th>
-                                                <th width="5%">Palavras Chave</th>
-                                                <th width="5%">Subgrupo</th>
-                                                <th width="2%">Código BNCC</th>
-                                                <th width="2%">Nível</th>
-                                                <th width="2%">Ano</th>
-                                                <th width="2%">Status Tipo</th>
-                                                <th width="2%">Revisão</th>
-                                                <th width="2%">Ação</th>
+                                                <th></th>
+                                                <th>Enunciado</th>
+                                                <th>Palavras Chave</th>
+                                                <th>Subgrupo</th>
+                                                <th>Código BNCC</th>
+                                                <th>Nível</th>
+                                                <th>Ano</th>
+                                                <th>Status Tipo</th>
+                                                <th>Revisão</th>
+                                                <th></th>
+
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <tr>
-                                                <td class="index">1</td>
+                                                <td>1</td>
                                                 <td>De que forma os animais participam do ciclo
                                                     da
                                                     água?</td>
@@ -498,49 +482,29 @@
                                                 <td>654633</td>
                                                 <td>Fácil</td>
                                                 <td>20/09/2021</td>
-                                                <td><label class="badge badge-success">Postado</label>
-                                                </td>
-                                                <td><label class="badge badge-success">Postado</label>
-                                                </td>
+                                                <td><label class="badge badge-success">Postado</label></td>
+                                                <td><label class="badge badge-success">Postado</label></td>
                                                 <td>
-                                                    <button id="btn" type="button"
-                                                        class="btn btn-inverse-primary btn-rounded btn-icon">
-                                                        <i class="bi bi-info-lg"></i>
-                                                    </button>
 
-                                                    <button type="button"
-                                                        class="btn btn-inverse-danger btn-rounded btn-icon">
-                                                        <i class="bi bi-trash"></i>
-                                                    </button>
                                                 </td>
 
                                             </tr>
                                             <tr>
-                                                <td class="index">2</td>
+                                                <td>2</td>
                                                 <td>A geada "cai" do céu? Por quê?</td>
                                                 <td>Cai Ciclos Agua</td>
                                                 <td>Ciência da Natureza</td>
                                                 <td>123454</td>
                                                 <td>Médio</td>
                                                 <td>20/09/2021</td>
-                                                <td><label class="badge badge-success">Postado</label>
-                                                </td>
-                                                <td><label class="badge badge-success">Postado</label>
-                                                </td>
+                                                <td><label class="badge badge-success">Postado</label></td>
+                                                <td><label class="badge badge-success">Postado</label></td>
                                                 <td>
-                                                    <button id="btn" type="button"
-                                                        class="btn btn-inverse-primary btn-rounded btn-icon">
-                                                        <i class="bi bi-info-lg"></i>
-                                                    </button>
 
-                                                    <button type="button"
-                                                        class="btn btn-inverse-danger btn-rounded btn-icon">
-                                                        <i class="bi bi-trash"></i>
-                                                    </button>
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td class="index">3</td>
+                                                <td>3</td>
                                                 <td>Qual a importância do gás ozônio encontrado
                                                     na
                                                     estratosfera?</td>
@@ -549,282 +513,132 @@
                                                 <td>546532</td>
                                                 <td>Difícil</td>
                                                 <td>20/09/2021</td>
-                                                <td><label class="badge badge-success">Postado</label>
-                                                </td>
-                                                <td><label class="badge badge-success">Postado</label>
-                                                </td>
+                                                <td><label class="badge badge-success">Postado</label></td>
+                                                <td><label class="badge badge-success">Postado</label></td>
                                                 <td>
-                                                    <button id="btn" type="button"
-                                                        class="btn btn-inverse-primary btn-rounded btn-icon">
-                                                        <i class="bi bi-info-lg"></i>
-                                                    </button>
 
-                                                    <button type="button"
-                                                        class="btn btn-inverse-danger btn-rounded btn-icon">
-                                                        <i class="bi bi-trash"></i>
-                                                    </button>
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td class="index">3</td>
-                                                <td>Qual a importância do gás ozônio encontrado
-                                                    na
-                                                    estratosfera?</td>
-                                                <td>Gás camada</td>
+                                                <td>4</td>
+                                                <td>De que forma os animais participam do ciclo
+                                                    da
+                                                    água?</td>
+                                                <td>Animais Ciclos Agua</td>
                                                 <td>Ciência da Natureza</td>
-                                                <td>546532</td>
-                                                <td>Difícil</td>
+                                                <td>654633</td>
+                                                <td>Fácil</td>
                                                 <td>20/09/2021</td>
-                                                <td><label class="badge badge-success">Postado</label>
-                                                </td>
-                                                <td><label class="badge badge-success">Postado</label>
-                                                </td>
+                                                <td><label class="badge badge-success">Postado</label></td>
+                                                <td><label class="badge badge-success">Postado</label></td>
                                                 <td>
-                                                    <button id="btn" type="button"
-                                                        class="btn btn-inverse-primary btn-rounded btn-icon">
-                                                        <i class="bi bi-info-lg"></i>
-                                                    </button>
 
-                                                    <button type="button"
-                                                        class="btn btn-inverse-danger btn-rounded btn-icon">
-                                                        <i class="bi bi-trash"></i>
-                                                    </button>
                                                 </td>
+
                                             </tr>
                                             <tr>
-                                                <td class="index">3</td>
-                                                <td>Qual a importância do gás ozônio encontrado
-                                                    na
-                                                    estratosfera?</td>
-                                                <td>Gás camada</td>
+                                                <td>5</td>
+                                                <td>De que forma os animais participam do ciclo
+                                                    da
+                                                    água?</td>
+                                                <td>Animais Ciclos Agua</td>
                                                 <td>Ciência da Natureza</td>
-                                                <td>546532</td>
-                                                <td>Difícil</td>
+                                                <td>654633</td>
+                                                <td>Fácil</td>
                                                 <td>20/09/2021</td>
-                                                <td><label class="badge badge-success">Postado</label>
-                                                </td>
-                                                <td><label class="badge badge-success">Postado</label>
-                                                </td>
+                                                <td><label class="badge badge-success">Postado</label></td>
+                                                <td><label class="badge badge-success">Postado</label></td>
                                                 <td>
-                                                    <button id="btn" type="button"
-                                                        class="btn btn-inverse-primary btn-rounded btn-icon">
-                                                        <i class="bi bi-info-lg"></i>
-                                                    </button>
 
-                                                    <button type="button"
-                                                        class="btn btn-inverse-danger btn-rounded btn-icon">
-                                                        <i class="bi bi-trash"></i>
-                                                    </button>
                                                 </td>
+
                                             </tr>
                                             <tr>
-                                                <td class="index">3</td>
-                                                <td>Qual a importância do gás ozônio encontrado
-                                                    na
-                                                    estratosfera?</td>
-                                                <td>Gás camada</td>
+                                                <td>6</td>
+                                                <td>De que forma os animais participam do ciclo
+                                                    da
+                                                    água?</td>
+                                                <td>Animais Ciclos Agua</td>
                                                 <td>Ciência da Natureza</td>
-                                                <td>546532</td>
-                                                <td>Difícil</td>
+                                                <td>654633</td>
+                                                <td>Fácil</td>
                                                 <td>20/09/2021</td>
-                                                <td><label class="badge badge-success">Postado</label>
-                                                </td>
-                                                <td><label class="badge badge-success">Postado</label>
-                                                </td>
+                                                <td><label class="badge badge-success">Postado</label></td>
+                                                <td><label class="badge badge-success">Postado</label></td>
                                                 <td>
-                                                    <button id="btn" type="button"
-                                                        class="btn btn-inverse-primary btn-rounded btn-icon">
-                                                        <i class="bi bi-info-lg"></i>
-                                                    </button>
 
-                                                    <button type="button"
-                                                        class="btn btn-inverse-danger btn-rounded btn-icon">
-                                                        <i class="bi bi-trash"></i>
-                                                    </button>
                                                 </td>
+
                                             </tr>
                                             <tr>
-                                                <td class="index">3</td>
-                                                <td>Qual a importância do gás ozônio encontrado
-                                                    na
-                                                    estratosfera?</td>
-                                                <td>Gás camada</td>
+                                                <td>7</td>
+                                                <td>De que forma os animais participam do ciclo
+                                                    da
+                                                    água?</td>
+                                                <td>Animais Ciclos Agua</td>
                                                 <td>Ciência da Natureza</td>
-                                                <td>546532</td>
-                                                <td>Difícil</td>
+                                                <td>654633</td>
+                                                <td>Fácil</td>
                                                 <td>20/09/2021</td>
-                                                <td><label class="badge badge-success">Postado</label>
-                                                </td>
-                                                <td><label class="badge badge-success">Postado</label>
-                                                </td>
+                                                <td><label class="badge badge-success">Postado</label></td>
+                                                <td><label class="badge badge-success">Postado</label></td>
                                                 <td>
-                                                    <button id="btn" type="button"
-                                                        class="btn btn-inverse-primary btn-rounded btn-icon">
-                                                        <i class="bi bi-info-lg"></i>
-                                                    </button>
 
-                                                    <button type="button"
-                                                        class="btn btn-inverse-danger btn-rounded btn-icon">
-                                                        <i class="bi bi-trash"></i>
-                                                    </button>
                                                 </td>
+
                                             </tr>
                                             <tr>
-                                                <td class="index">3</td>
-                                                <td>Qual a importância do gás ozônio encontrado
-                                                    na
-                                                    estratosfera?</td>
-                                                <td>Gás camada</td>
+                                                <td>8</td>
+                                                <td>De que forma os animais participam do ciclo
+                                                    da
+                                                    água?</td>
+                                                <td>Animais Ciclos Agua</td>
                                                 <td>Ciência da Natureza</td>
-                                                <td>546532</td>
-                                                <td>Difícil</td>
+                                                <td>654633</td>
+                                                <td>Fácil</td>
                                                 <td>20/09/2021</td>
-                                                <td><label class="badge badge-success">Postado</label>
-                                                </td>
-                                                <td><label class="badge badge-success">Postado</label>
-                                                </td>
+                                                <td><label class="badge badge-success">Postado</label></td>
+                                                <td><label class="badge badge-success">Postado</label></td>
                                                 <td>
-                                                    <button id="btn" type="button"
-                                                        class="btn btn-inverse-primary btn-rounded btn-icon">
-                                                        <i class="bi bi-info-lg"></i>
-                                                    </button>
 
-                                                    <button type="button"
-                                                        class="btn btn-inverse-danger btn-rounded btn-icon">
-                                                        <i class="bi bi-trash"></i>
-                                                    </button>
                                                 </td>
+
                                             </tr>
                                             <tr>
-                                                <td class="index">3</td>
-                                                <td>Qual a importância do gás ozônio encontrado
-                                                    na
-                                                    estratosfera?</td>
-                                                <td>Gás camada</td>
+                                                <td>9</td>
+                                                <td>De que forma os animais participam do ciclo
+                                                    da
+                                                    água?</td>
+                                                <td>Animais Ciclos Agua</td>
                                                 <td>Ciência da Natureza</td>
-                                                <td>546532</td>
-                                                <td>Difícil</td>
+                                                <td>654633</td>
+                                                <td>Fácil</td>
                                                 <td>20/09/2021</td>
-                                                <td><label class="badge badge-success">Postado</label>
-                                                </td>
-                                                <td><label class="badge badge-success">Postado</label>
-                                                </td>
+                                                <td><label class="badge badge-success">Postado</label></td>
+                                                <td><label class="badge badge-success">Postado</label></td>
                                                 <td>
-                                                    <button id="btn" type="button"
-                                                        class="btn btn-inverse-primary btn-rounded btn-icon">
-                                                        <i class="bi bi-info-lg"></i>
-                                                    </button>
 
-                                                    <button type="button"
-                                                        class="btn btn-inverse-danger btn-rounded btn-icon">
-                                                        <i class="bi bi-trash"></i>
-                                                    </button>
                                                 </td>
+
                                             </tr>
                                             <tr>
-                                                <td class="index">3</td>
-                                                <td>Qual a importância do gás ozônio encontrado
-                                                    na
-                                                    estratosfera?</td>
-                                                <td>Gás camada</td>
+                                                <td>10</td>
+                                                <td>De que forma os animais participam do ciclo
+                                                    da
+                                                    água?</td>
+                                                <td>Animais Ciclos Agua</td>
                                                 <td>Ciência da Natureza</td>
-                                                <td>546532</td>
-                                                <td>Difícil</td>
+                                                <td>654633</td>
+                                                <td>Fácil</td>
                                                 <td>20/09/2021</td>
-                                                <td><label class="badge badge-success">Postado</label>
-                                                </td>
-                                                <td><label class="badge badge-success">Postado</label>
-                                                </td>
+                                                <td><label class="badge badge-success">Postado</label></td>
+                                                <td><label class="badge badge-success">Postado</label></td>
                                                 <td>
-                                                    <button id="btn" type="button"
-                                                        class="btn btn-inverse-primary btn-rounded btn-icon">
-                                                        <i class="bi bi-info-lg"></i>
-                                                    </button>
 
-                                                    <button type="button"
-                                                        class="btn btn-inverse-danger btn-rounded btn-icon">
-                                                        <i class="bi bi-trash"></i>
-                                                    </button>
                                                 </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="index">3</td>
-                                                <td>Qual a importância do gás ozônio encontrado
-                                                    na
-                                                    estratosfera?</td>
-                                                <td>Gás camada</td>
-                                                <td>Ciência da Natureza</td>
-                                                <td>546532</td>
-                                                <td>Difícil</td>
-                                                <td>20/09/2021</td>
-                                                <td><label class="badge badge-success">Postado</label>
-                                                </td>
-                                                <td><label class="badge badge-success">Postado</label>
-                                                </td>
-                                                <td>
-                                                    <button id="btn" type="button"
-                                                        class="btn btn-inverse-primary btn-rounded btn-icon">
-                                                        <i class="bi bi-info-lg"></i>
-                                                    </button>
 
-                                                    <button type="button"
-                                                        class="btn btn-inverse-danger btn-rounded btn-icon">
-                                                        <i class="bi bi-trash"></i>
-                                                    </button>
-                                                </td>
                                             </tr>
-                                            <tr>
-                                                <td class="index">3</td>
-                                                <td>Qual a importância do gás ozônio encontrado
-                                                    na
-                                                    estratosfera?</td>
-                                                <td>Gás camada</td>
-                                                <td>Ciência da Natureza</td>
-                                                <td>546532</td>
-                                                <td>Difícil</td>
-                                                <td>20/09/2021</td>
-                                                <td><label class="badge badge-success">Postado</label>
-                                                </td>
-                                                <td><label class="badge badge-success">Postado</label>
-                                                </td>
-                                                <td>
-                                                    <button id="btn" type="button"
-                                                        class="btn btn-inverse-primary btn-rounded btn-icon">
-                                                        <i class="bi bi-info-lg"></i>
-                                                    </button>
 
-                                                    <button type="button"
-                                                        class="btn btn-inverse-danger btn-rounded btn-icon">
-                                                        <i class="bi bi-trash"></i>
-                                                    </button>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="index">3</td>
-                                                <td>Qual a importância do gás ozônio encontrado
-                                                    na
-                                                    estratosfera?</td>
-                                                <td>Gás camada</td>
-                                                <td>Ciência da Natureza</td>
-                                                <td>546532</td>
-                                                <td>Difícil</td>
-                                                <td>20/09/2021</td>
-                                                <td><label class="badge badge-success">Postado</label>
-                                                </td>
-                                                <td><label class="badge badge-success">Postado</label>
-                                                </td>
-                                                <td>
-                                                    <button id="btn" type="button"
-                                                        class="btn btn-inverse-primary btn-rounded btn-icon">
-                                                        <i class="bi bi-info-lg"></i>
-                                                    </button>
-
-                                                    <button type="button"
-                                                        class="btn btn-inverse-danger btn-rounded btn-icon">
-                                                        <i class="bi bi-trash"></i>
-                                                    </button>
-                                                </td>
-                                            </tr>
                                         </tbody>
                                     </table>
                                 </div>
@@ -865,11 +679,11 @@
     <script src="../vendors/datatables.net-bs4/dataTables.bootstrap4.js"></script>
     <script src="../js/dataTables.select.min.js"></script>
     <script src="../js/off-canvas.js"></script>
-    <script src="../js/hoverable-collapse.js"></script>
+
     <script src="../js/template.js"></script>
     <script src="../vendors/jquery-ui/jquery-ui.min.js"></script>
     <script src="../js/jquery.datetimepicker.full.min.js"></script>
-
+    <script src="../js/dataTables.checkboxes.min.js"></script>
     <script src="../js/mainjs/atividades.js"></script>
 
     <!-- endinject -->

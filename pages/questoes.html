@@ -140,7 +140,7 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="../pages/resultados.html">
-                            <i class="icon-bar-graph menu-icon"></i>
+                            <i class="bi bi-file-earmark-bar-graph menu-icon"></i>
                             <span class="menu-title">Resultados</span>
 
                         </a>
@@ -161,166 +161,282 @@
                 <div class="content-wrapper">
                     <div class="row">
                         <div class="col-md-12 grid-margin">
-                            <div class="row">
-                                <div class="col-lg-12 grid-margin stretch-card">
-                                    <div class="card">
-                                        <div class="card-body">
-                                            <h4 class="card-title">Tabela de Questões</h4>
-                                            <p class="card-description">
-                                                <button type="button" id="btn-nova-questao"
-                                                    class="btn btn-primary btn-icon-text">
-                                                    <i class="bi bi-plus-circle btn-icon-prepend"></i>
-                                                    Nova questão
-                                                </button>
-                                            </p>
-                                            <div id="cadastrarQuestao" class="col-md-6 grid-margin stretch-card">
-                                                <div class="card">
-                                                    <div class="card-body">
-                                                        <h4 class="card-title">Cadastro de Questões</h4>
-                                                        <p class="card-description">
-                                                            Cadastre questões para usar nas atividades.
-                                                        </p>
-                                                        <form class="forms-sample">
-                                                            <div class="form-group">
-                                                                <label for="exampleInputUsername1">Enunciado</label>
-                                                                <input type="text" class="form-control"
-                                                                    id="btn-adicionar-tipo" placeholder="Enunciado">
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label for="exampleInputUsername1">Código BNCC</label>
-                                                                <input type="text" class="form-control"
-                                                                    id="btn-adicionar-tipo" placeholder="Código BNCC">
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label for="exampleInputUsername1">Palavras
-                                                                    chave</label>
-                                                                <input type="text" class="form-control"
-                                                                    id="btn-adicionar-tipo"
-                                                                    placeholder="Palavras chave">
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label for="exampleSelectGender">Nível</label>
-                                                                <select class="form-control">
-                                                                    <option disabled selected>Nível</option>
-                                                                    <option value="1">Fácil</option>
-                                                                    <option value="2">Médio</option>
-                                                                    <option value="3">Difícil</option>
-                                                                </select>
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label for="exampleSelectGender">Subgrupo</label>
-                                                                <select class="form-control">
-                                                                    <option disabled selected>Subgrupo</option>
-                                                                    <option value="1">Exemplo</option>
-                                                                    <option value="2">Exemplo</option>
-                                                                    <option value="3">Exemplo</option>
-                                                                </select>
-                                                            </div>
+                            <div class="col-lg-12 grid-margin stretch-card">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h4 class="card-title">Tabela de Questões</h4>
+                                        <p class="card-description">
+                                            <button type="button" id="btn-nova-questao"
+                                                class="btn btn-primary btn-icon-text">
+                                                <i class="bi bi-plus-circle btn-icon-prepend"></i>
+                                                Nova questão
+                                            </button>
+                                        </p>
+                                        <div id="cadastrarQuestao" class=" stretch-card">
+                                            <div class="card">
+                                                <div class="card-body">
+                                                    <h4 class="card-title">Questão</h4>
+                                                    <p class="card-description">
+                                                        Cadastre a questão para a atividade.
+                                                    </p>
+                                                    <form>
+                                                        <div class="form-group">
+                                                            <label for="disciplina">Disciplina</label>
+                                                            <select id="disciplina" class="form-control">
+                                                                <option disabled selected>Disciplina</option>
+                                                                <option value="1">Exemplo</option>
+                                                                <option value="2">Exemplo</option>
+                                                                <option value="3">Exemplo</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="tematica">Temática</label>
+                                                            <select id="tematica" class="form-control">
+                                                                <option disabled selected>Temática</option>
+                                                                <option value="1">Exemplo</option>
+                                                                <option value="2">Exemplo</option>
+                                                                <option value="3">Exemplo</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="subgrupo">Subgrupo</label>
+                                                            <select id="subgrupo" class="form-control">
+                                                                <option disabled selected>Subgrupo</option>
+                                                                <option value="1">Exemplo</option>
+                                                                <option value="2">Exemplo</option>
+                                                                <option value="3">Exemplo</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="codigobncc">Código BNCC</label>
+                                                            <input type="text" class="form-control" id="codigobncc"
+                                                                placeholder="Código BNCC">
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="nivelquestao">Nível</label>
+                                                            <select class="form-control" id="nivelquestao">
+                                                                <option disabled selected>Nível</option>
+                                                                <option value="1">Fácil</option>
+                                                                <option value="2">Médio</option>
+                                                                <option value="3">Difícil</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="exampleTextarea1">Enunciado</label>
+                                                            <textarea class="form-control" id="exampleTextarea1"
+                                                                rows="7"></textarea>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="exampleInputUsername1">Palavras
+                                                                chave</label>
+                                                            <input type="text" class="form-control" id="palavrasChave"
+                                                                placeholder="Palavras chave">
+                                                        </div>
 
-                                                            <button type="submit"
-                                                                class="btn btn-primary mr-2">Adicionar</button>
+                                                        <div class="form-group">
+                                                            <div class="input-group">
+                                                                <div class="input-group-prepend">
+                                                                    <button type="button"
+                                                                        class="btn btn-danger toggleAlternativa">Incorreta</button>
+                                                                </div>
+                                                                <div class="input-group-append">
+                                                                    <span class="input-group-text bg-primary ">A)</span>
+                                                                </div>
+                                                                <textarea class="form-control" id="alternativaA"
+                                                                    rows="3"></textarea>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <div class="input-group">
+                                                                <div class="input-group-prepend">
+                                                                    <button type="button"
+                                                                        class="btn btn-danger toggleAlternativa">Incorreta</button>
+                                                                </div>
+                                                                <div class="input-group-append">
+                                                                    <span class="input-group-text bg-primary ">B)</span>
+                                                                </div>
+                                                                <textarea class="form-control" id="alternativaB"
+                                                                    rows="3"></textarea>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <div class="input-group">
+                                                                <div class="input-group-prepend">
+                                                                    <button type="button"
+                                                                        class="btn btn-danger toggleAlternativa">Incorreta</button>
+                                                                </div>
+                                                                <div class="input-group-append">
+                                                                    <span class="input-group-text bg-primary ">C)</span>
+                                                                </div>
+                                                                <textarea class="form-control" id="alternativaC"
+                                                                    rows="3"></textarea>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <div class="input-group">
+                                                                <div class="input-group-prepend">
+                                                                    <button type="button"
+                                                                        class="btn btn-danger toggleAlternativa">Incorreta</button>
+                                                                </div>
+                                                                <div class="input-group-append">
+                                                                    <span class="input-group-text bg-primary ">D)</span>
+                                                                </div>
+                                                                <textarea class="form-control" id="alternativaD"
+                                                                    rows="3"></textarea>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <div class="input-group">
+                                                                <div class="input-group-prepend">
+                                                                    <button type="button"
+                                                                        class="btn btn-danger toggleAlternativa">Incorreta</button>
+                                                                </div>
+                                                                <div class="input-group-append">
+                                                                    <span class="input-group-text bg-primary ">E)</span>
+                                                                </div>
+                                                                <textarea class="form-control" id="alternativaE"
+                                                                    rows="3"></textarea>
+                                                            </div>
+                                                        </div>
 
-                                                        </form>
-                                                    </div>
+
+                                                        <button id="cadastrarQuestao" type="submit"
+                                                            class="btn btn-primary mr-2">Cadastrar</button>
+                                                        <button id="cancelarQuestao" type="button"
+                                                            class="btn btn-secondary">Cancelar</button>
+                                                    </form>
                                                 </div>
                                             </div>
-                                            <div id="tableQuestoesToggle" class="expandable-table table-responsive">
-                                                <table class="table table-hover" id="tableQuestoes">
+                                        </div>
+                                        <div id="tableQuestoesToggle" class="expandable-table table-responsive">
+                                            <table class="table table-hover" id="tableQuestoes">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Ordem</th>
+                                                        <th>Enunciado</th>
+                                                        <th>Palavras Chave</th>
+                                                        <th ">Subgrupo</th>
+                                                        <th >Código BNCC</th>
+                                                        <th>Nível</th>
+                                                        <th >Ano</th>
+                                                        <th>Status Tipo</th>
+                                                        <th >Revisão</th>
+                                                        <th >Ação</th>
+
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td>1</td>
+                                                        <td>De que forma os animais participam do ciclo
+                                                            da
+                                                            água?</td>
+                                                        <td>Animais Ciclos Agua</td>
+                                                        <td>Ciência da Natureza</td>
+                                                        <td>654633</td>
+                                                        <td>Fácil</td>
+                                                        <td>Terceiro ano</td>
+                                                        <td><label class=" badge badge-success">Postado</label></td>
+                                                        <td><label class="badge badge-success">Postado</label></td>
+                                                        <td>
+                                                            <button type="button"
+                                                                class="btn btn-inverse-primary btn-rounded btn-icon btn-info-questao">
+                                                                <i class="bi bi-info-lg"></i>
+                                                            </button>
+                                                            <button type="button"
+                                                                class="btn btn-inverse-success btn-rounded btn-icon btn-edit-questao">
+                                                                <i class="bi bi-pencil"></i>
+                                                            </button>
+                                                            <button type="button"
+                                                                class="btn btn-inverse-danger btn-rounded btn-icon btn-del-questao">
+                                                                <i class="bi bi-trash"></i>
+                                                            </button>
+                                                        </td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td>2</td>
+                                                        <td>A geada "cai" do céu? Por quê?</td>
+                                                        <td>Cai Ciclos Agua</td>
+                                                        <td>Ciência da Natureza</td>
+                                                        <td>123454</td>
+                                                        <td>Médio</td>
+                                                        <td>Primeiro ano</td>
+                                                        <td><label class="badge badge-success">Postado</label></td>
+                                                        <td><label class="badge badge-success">Postado</label></td>
+                                                        <td>
+                                                            <button type="button"
+                                                                class="btn btn-inverse-primary btn-rounded btn-icon btn-info-questao">
+                                                                <i class="bi bi-info-lg"></i>
+                                                            </button>
+                                                            <button type="button"
+                                                                class="btn btn-inverse-success btn-rounded btn-icon btn-edit-questao">
+                                                                <i class="bi bi-pencil"></i>
+                                                            </button>
+                                                            <button type="button"
+                                                                class="btn btn-inverse-danger btn-rounded btn-icon btn-del-questao">
+                                                                <i class="bi bi-trash"></i>
+                                                            </button>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>3</td>
+                                                        <td>Qual a importância do gás ozônio encontrado
+                                                            na
+                                                            estratosfera?</td>
+                                                        <td>Gás camada</td>
+                                                        <td>Ciência da Natureza</td>
+                                                        <td>546532</td>
+                                                        <td>Difícil</td>
+                                                        <td>Primeiro ano</td>
+                                                        <td><label class="badge badge-success">Postado</label></td>
+                                                        <td><label class="badge badge-success">Postado</label></td>
+                                                        <td>
+                                                            <button type="button"
+                                                                class="btn btn-inverse-primary btn-rounded btn-icon btn-info-questao">
+                                                                <i class="bi bi-info-lg"></i>
+                                                            </button>
+                                                            <button type="button"
+                                                                class="btn btn-inverse-success btn-rounded btn-icon btn-edit-questao">
+                                                                <i class="bi bi-pencil"></i>
+                                                            </button>
+                                                            <button type="button"
+                                                                class="btn btn-inverse-danger btn-rounded btn-icon btn-del-questao">
+                                                                <i class="bi bi-trash"></i>
+                                                            </button>
+                                                        </td>
+                                                    </tr>
+                                                    </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal fade" id="modalInfoQuestao" tabindex="-1" aria-labelledby="modalInfoQuestao"
+                    aria-hidden="true">
+                    <div class="modal-dialog ">
+                        <div class="modal-content">
+                            <div class="modal-body">
+                                <div class="stretch-card">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <p class="card-title">Informações Adicionais</p>
+                                            <div class="table-responsive">
+                                                <table class="table ">
                                                     <thead>
                                                         <tr>
-                                                            <th width="1%">Ordem</th>
-                                                            <th width="10%">Enunciado</th>
-                                                            <th width="5%">Palavras Chave</th>
-                                                            <th width="5%">Subgrupo</th>
-                                                            <th width="2%">Código BNCC</th>
-                                                            <th width="2%">Nível</th>
-                                                            <th width="2%">Ano</th>
-                                                            <th width="2%">Status Tipo</th>
-                                                            <th width="2%">Revisão</th>
-                                                            <th width="2%">Ação</th>
-
+                                                            <th>Disciplina</th>
+                                                            <th>Temática</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
                                                         <tr>
-                                                            <td class="index">1</td>
-                                                            <td>De que forma os animais participam do ciclo
-                                                                da
-                                                                água?</td>
-                                                            <td>Animais Ciclos Agua</td>
-                                                            <td>Ciência da Natureza</td>
-                                                            <td>654633</td>
-                                                            <td>Fácil</td>
-                                                            <td>20/09/2021</td>
-                                                            <td><label class="badge badge-success">Postado</label></td>
-                                                            <td><label class="badge badge-success">Postado</label></td>
-                                                            <td>
-                                                                <button id="btn" type="button"
-                                                                    class="btn btn-inverse-primary btn-rounded btn-icon">
-                                                                    <i class="bi bi-info-lg"></i>
-                                                                </button>
-                                                                <button type="button"
-                                                                    class="btn btn-inverse-success btn-rounded btn-icon">
-                                                                    <i class="bi bi-pencil"></i>
-                                                                </button>
-                                                                <button type="button"
-                                                                    class="btn btn-inverse-danger btn-rounded btn-icon">
-                                                                    <i class="bi bi-trash"></i>
-                                                                </button>
-                                                            </td>
-
-                                                        </tr>
-                                                        <tr>
-                                                            <td class="index">2</td>
-                                                            <td>A geada "cai" do céu? Por quê?</td>
-                                                            <td>Cai Ciclos Agua</td>
-                                                            <td>Ciência da Natureza</td>
-                                                            <td>123454</td>
-                                                            <td>Médio</td>
-                                                            <td>20/09/2021</td>
-                                                            <td><label class="badge badge-success">Postado</label></td>
-                                                            <td><label class="badge badge-success">Postado</label></td>
-                                                            <td>
-                                                                <button id="btn" type="button"
-                                                                    class="btn btn-inverse-primary btn-rounded btn-icon">
-                                                                    <i class="bi bi-info-lg"></i>
-                                                                </button>
-                                                                <button type="button"
-                                                                    class="btn btn-inverse-success btn-rounded btn-icon">
-                                                                    <i class="bi bi-pencil"></i>
-                                                                </button>
-                                                                <button type="button"
-                                                                    class="btn btn-inverse-danger btn-rounded btn-icon">
-                                                                    <i class="bi bi-trash"></i>
-                                                                </button>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td class="index">3</td>
-                                                            <td>Qual a importância do gás ozônio encontrado
-                                                                na
-                                                                estratosfera?</td>
-                                                            <td>Gás camada</td>
-                                                            <td>Ciência da Natureza</td>
-                                                            <td>546532</td>
-                                                            <td>Difícil</td>
-                                                            <td>20/09/2021</td>
-                                                            <td><label class="badge badge-success">Postado</label></td>
-                                                            <td><label class="badge badge-success">Postado</label></td>
-                                                            <td>
-                                                                <button id="btn" type="button"
-                                                                    class="btn btn-inverse-primary btn-rounded btn-icon">
-                                                                    <i class="bi bi-info-lg"></i>
-                                                                </button>
-                                                                <button type="button"
-                                                                    class="btn btn-inverse-success btn-rounded btn-icon">
-                                                                    <i class="bi bi-pencil"></i>
-                                                                </button>
-                                                                <button type="button"
-                                                                    class="btn btn-inverse-danger btn-rounded btn-icon">
-                                                                    <i class="bi bi-trash"></i>
-                                                                </button>
-                                                            </td>
+                                                            <td>Biologia</td>
+                                                            <td>Divisão celular</td>
                                                         </tr>
                                                     </tbody>
                                                 </table>
@@ -328,11 +444,15 @@
                                         </div>
                                     </div>
                                 </div>
-
+                            </div>
+                            <div class="modal-footer">
+                                <button id="modalCancelar" type="button" class="btn btn-secondary">Cancelar</button>
+                                <button id="modalConfirmar" type="button" class="btn btn-primary">Confirmar</button>
                             </div>
                         </div>
                     </div>
                 </div>
+
 
                 <footer class="footer">
                     <div class="d-sm-flex justify-content-center justify-content-sm-between">
@@ -343,8 +463,6 @@
                                 class="ti-heart text-danger ml-1"></i></span>
                     </div>
                 </footer>
-
-
             </div>
 
         </div>

@@ -49011,10 +49011,16 @@ div.tagsinput span.tag a {
     display: none;
   }
 }
-.tableQuestoes-hover td:hover {
+#tableQuestoesAtividade td:hover {
   cursor: move;
 }
 .hiddenRow {
   padding: 0 !important;
 }
+/*
+.dataTables_wrapper {
+  display: inline-table;
+}
+ajustar tabela conforme tamanho das colunas
+*/
 /*# sourceMappingURL=../maps/vertical-layout-light/style.css.map */

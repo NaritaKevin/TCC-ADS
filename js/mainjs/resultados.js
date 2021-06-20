@@ -4,9 +4,10 @@ $(document).ready(function () {
 
     function init() {
         $("#cadastrarQuestao").hide();
-        tableQuestoes = $('#tableQuestoes').DataTable({
+        $("#verResultados").hide();
+        tableQuestoes = $('#tableResultados').DataTable({
             "columnDefs": [
-                { "orderable": false, "targets": 9 }
+                { "orderable": false, "targets": 1 }
             ],
             "language": {
                 url: "../partials/dataTablept-br.json"
@@ -25,10 +26,10 @@ $(document).ready(function () {
 
         if ($('#cadastrarQuestao').css('display') == 'none') {
             $("#btn-nova-questao").text('Cancelar').prepend(cancelarIcon).removeClass("btn-primary").addClass("btn-secondary");
-            $("#tableQuestoesToggle").toggle("slow");
+            $("#tableResultadosToggle").toggle("slow");
         } else {
             $("#btn-nova-questao").text('Adicionar questão').prepend(adicionarIcon).removeClass("btn-secondary").addClass("btn-primary");
-            $("#tableQuestoesToggle").toggle("slow");
+            $("#tableResultadosToggle").toggle("slow");
         }
         $("#cadastrarQuestao").toggle("slow");
     }
@@ -41,21 +42,17 @@ $(document).ready(function () {
         $('#modalInfoQuestao').modal('hide')
     })
     //!
-    //! Esconder/mostrar cadastrar questao
-    $("#btn-nova-questao").click(function () {
-        toggleNovaQuestao();
+
+    $(".btn-info-atividade").on("click", function () {
+        $("#tabelaResultados").toggle("slow");
+        $("#verResultados").toggle("slow");
     })
-    $("#cancelarQuestao").click(function () {
-        toggleNovaQuestao();
+    $("#btn-voltar-resultados").click(function () {
+        $("#tabelaResultados").toggle("slow");
+        $("#verResultados").toggle("slow");
     })
-    //!
-    //! Opção das alternativas
-    $(".toggleAlternativa").click(function () {
-        $(this).text() == "Incorreta" ? $(this).text("Correta").removeClass("btn-danger").addClass("btn-success") :
-            $(this).text("Incorreta").removeClass("btn-success").addClass("btn-danger");
-    })
-    //!
-    $('#tableQuestoes').on('mouseenter', 'tbody tr', function () {
+
+    $('#tableResultados').on('mouseenter', 'tbody tr', function () {
         var rowData = tableQuestoes.row(this).data();
 
     });

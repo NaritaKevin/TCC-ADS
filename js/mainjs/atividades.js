@@ -10,184 +10,124 @@ $(document).ready(function () {
         $("#data-inicial,#data-final").datetimepicker({
             timepicker: false, mask: true, format: 'd/m/Y',
         })
-        $('#tableAtividade').DataTable({
-            "columnDefs": [
-                { "orderable": false, "targets": 7 }
-            ],
-            "language": {
-                "decimal": "",
-                "emptyTable": "Não há dados na tabela",
-                "info": "Mostrando _START_ de _END_. Total: _TOTAL_ entradas",
-                "infoEmpty": "Mostrando 0 para 0 de 0 entradas.",
-                "infoFiltered": "(filtrado  _MAX_ entradas totais)",
-                "infoPostFix": "",
-                "thousands": ",",
-                "lengthMenu": "Mostrar _MENU_ entradas por página",
-                "loadingRecords": "Carregando...",
-                "processing": "Processando...",
-                "search": "Procurar:",
-                "zeroRecords": "Nenhum registro correspondente encontrado",
-                "paginate": {
-                    "first": "Primeiro",
-                    "last": "Último",
-                    "next": "Próximo",
-                    "previous": "Anterior"
-                },
 
-            },
-            "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]]
-        });
-        $('#tableTipos').DataTable({
-            "columnDefs": [
-                { "orderable": false, "targets": 2 }
-            ],
-            "language": {
-                "decimal": "",
-                "emptyTable": "Não há dados na tabela",
-                "info": "Mostrando _START_ de _END_. Total: _TOTAL_ entradas",
-                "infoEmpty": "Mostrando 0 para 0 de 0 entradas.",
-                "infoFiltered": "(filtrado  _MAX_ entradas totais)",
-                "infoPostFix": "",
-                "thousands": ",",
-                "lengthMenu": "Mostrar _MENU_ entradas por página",
-                "loadingRecords": "Carregando...",
-                "processing": "Processando...",
-                "search": "Procurar:",
-                "zeroRecords": "Nenhum registro correspondente encontrado",
-                "paginate": {
-                    "first": "Primeiro",
-                    "last": "Último",
-                    "next": "Próximo",
-                    "previous": "Anterior"
-                },
-
-            },
-            "lengthMenu": [[5, 10, 25, -1], [5, 10, 25, "All"]]
-        });
-        $('#tableQuestoes').DataTable({
-            "ordering": false,
-            "bFilter": false,
-            "language": {
-                "decimal": "",
-                "emptyTable": "Não há dados na tabela",
-                "info": "Mostrando _START_ de _END_. Total: _TOTAL_ entradas",
-                "infoEmpty": "Mostrando 0 para 0 de 0 entradas.",
-                "infoFiltered": "(filtrado  _MAX_ entradas totais)",
-                "infoPostFix": "",
-                "thousands": ",",
-                "lengthMenu": "Mostrar _MENU_ entradas por página",
-                "loadingRecords": "Carregando...",
-                "processing": "Processando...",
-                "search": "Procurar:",
-                "zeroRecords": "Nenhum registro correspondente encontrado",
-                "paginate": {
-                    "first": "Primeiro",
-                    "last": "Último",
-                    "next": "Próximo",
-                    "previous": "Anterior"
-                },
-            },
-            "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
-
-        });
-
-        $("#escolherQuestoes").hide();
-        $('#tableEscolherQuestoes').DataTable({
-            select: {
-                style: 'multi'
-            },
-            "columnDefs": [
-                { "orderable": false, "targets": 8 }
-            ],
-            "language": {
-                "decimal": "",
-                "emptyTable": "Não há dados na tabela",
-                "info": "Mostrando _START_ de _END_. Total: _TOTAL_ entradas",
-                "infoEmpty": "Mostrando 0 para 0 de 0 entradas.",
-                "infoFiltered": "(filtrado  _MAX_ entradas totais)",
-                "infoPostFix": "",
-                "thousands": ",",
-                "lengthMenu": "Mostrar _MENU_ entradas por página",
-                "loadingRecords": "Carregando...",
-                "processing": "Processando...",
-                "search": "Procurar:",
-                "zeroRecords": "Nenhum registro correspondente encontrado",
-                "paginate": {
-                    "first": "Primeiro",
-                    "last": "Último",
-                    "next": "Próximo",
-                    "previous": "Anterior"
-                },
-            },
-            "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
-
-        });
 
         jqueryuiinit();
         $.datetimepicker.setLocale('pt-BR');
 
     }
 
+    //? Data tables
+    $('#tableAtividade').DataTable({
+        "columnDefs": [
+            { "orderable": false, "targets": 7 }
+        ],
+        "language": {
+            url: "../partials/dataTablept-br.json"
+        },
+        "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]]
+    });
+    /*
+    $('#tableTipos').DataTable({
+        "columnDefs": [
+            { "orderable": false, "targets": 2 }
+        ],
+        "language": {
+            url: "../partials/dataTablept-br.json"
+        },
+        "lengthMenu": [[5, 10, 25, -1], [5, 10, 25, "All"]]
+    });
+    */
+    $('#tableQuestoes').DataTable({
+        "ordering": false,
+        "bFilter": false,
+        "columnDefs": [{
+            "searchable": false,
+            "orderable": false,
+            "targets": 0
+        }],
+        "language": {
+            url: "../partials/dataTablept-br.json"
+        },
+        "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
 
-    $("#btn-novo-tipo").click(function () {
-        let adicionarIcon = `<i class="bi bi-plus-circle btn-icon-prepend"></i>`;
-        let cancelarIcon = `<i class="bi bi-x-circle btn-icon-prepend"></i>`;
-
-        if ($('#cadastroTipo').css('display') == 'none') {
-            $("#btn-novo-tipo").text('Cancelar').prepend(cancelarIcon);
-            $("#tableTiposToggle").toggle("slow");
-        } else {
-            $("#btn-novo-tipo").text('Novo tipo').prepend(adicionarIcon);
-            $("#tableTiposToggle").toggle("slow");
-        }
-        $("#cadastroTipo").toggle("slow");
     });
 
-    $("#btn-nova-atividade").click(function () {
+    $("#escolherQuestoes").hide();
+    $('#tableEscolherQuestoes').DataTable({
+        "select": {
+            "style": 'multi'
+        },
+        "columnDefs": [
+            {
+                "orderable": false,
+                "targets": [9]
+            },
+            {
+                'targets': 0,
+                'checkboxes': {
+                    'selectRow': true
+                }
+
+            }
+        ],
+        "language": {
+            url: "../partials/dataTablept-br.json"
+        },
+        "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+
+    });
+    //?
+
+    /*
+        $("#btn-novo-tipo").click(function () {
+    
+            if ($('#cadastroTipo').css('display') == 'none') {
+                $("#btn-novo-tipo").text('Cancelar').prepend(cancelarIcon);
+                $("#tableTiposToggle").toggle("slow");
+            } else {
+                $("#btn-novo-tipo").text('Novo tipo').prepend(adicionarIcon);
+                $("#tableTiposToggle").toggle("slow");
+            }
+            $("#cadastroTipo").toggle("slow");
+        });
+    */
+    function toggleNovaAtividade() {
         let adicionarIcon = `<i class="bi bi-plus-circle btn-icon-prepend"></i>`;
         let cancelarIcon = `<i class="bi bi-x-circle btn-icon-prepend"></i>`;
-
         if ($('#cadastrarAtividade').css('display') == 'none') {
-            $("#btn-nova-atividade").text('Cancelar').prepend(cancelarIcon);
+            $("#btn-nova-atividade").text('Cancelar').prepend(cancelarIcon).removeClass("btn-primary").addClass("btn-secondary");
             $("#tableAtividadesToggle").toggle("slow");
         } else {
-            $("#btn-nova-atividade").text('Nova atividade').prepend(adicionarIcon);
+            $("#btn-nova-atividade").text('Nova atividade').prepend(adicionarIcon).removeClass("btn-secondary").addClass("btn-primary");
             $("#tableAtividadesToggle").toggle("slow");
         }
         $("#cadastrarAtividade").toggle("slow");
+    }
 
+    //! Esconder/mostrar cadastrar atividade
+    $("#btn-nova-atividade").click(function () {
+        toggleNovaAtividade()
     });
-    $("#btn-nova-questao").click(function () {
-        let adicionarIcon = `<i class="bi bi-plus-circle btn-icon-prepend"></i>`;
-        let cancelarIcon = `<i class="bi bi-x-circle btn-icon-prepend"></i>`;
-
-        if ($('#cadastroQuestoes').css('display') == 'none') {
-            $("#btn-nova-questao").text('Cancelar').prepend(cancelarIcon);
-            $("#tableQuestoesToggle").toggle("slow");
-        } else {
-            $("#btn-nova-questao").text('Nova questão').prepend(adicionarIcon);
-            $("#tableQuestoesToggle").toggle("slow");
-        }
-        $("#cadastroQuestoes").toggle("slow");
-
-    });
-
-
-
-    $("#btn-modal-questao").on("click", function () {
+    $("#cancelarAtividade").click(function () {
+        toggleNovaAtividade()
+    })
+    //!
+    //!  Modal esconder/mostrar
+    $("#btn-modal-escolher").on("click", function () {
         $('#modalQuestao').modal('show')
-
-
-
     });
-
-
     $("#modalCancelar").click(function () {
         $('#modalQuestao').modal('hide')
-
     });
-
-
+    //! Modal informação
+    $(".btn-info-questao").on("click", function () {
+        $('#modalInfoAtividade').modal('show')
+    });
+    $("#modalCancelar").click(function () {
+        $('#modalInfoAtividade').modal('hide')
+    })
+    //!
     function jqueryuiinit() {
 
         var fixHelperModified = function (e, tr) {
@@ -207,12 +147,12 @@ $(document).ready(function () {
                 });
             };
 
-        $("#tableQuestoes tbody").sortable({
+        $("#tableQuestoes #tbodyQuestoes").sortable({
             helper: fixHelperModified,
             stop: updateIndex
         }).disableSelection();
 
-        $("tbody").sortable({
+        $("#tbodyQuestoes").sortable({
             distance: 5,
             delay: 100,
             opacity: 0.6,
@@ -222,8 +162,6 @@ $(document).ready(function () {
 
     }
 
-    $('.collapse').on('show.bs.collapse', function () {
-        $('.collapse.in').collapse('hide');
-    });
+
 
 });
