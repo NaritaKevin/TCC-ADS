@@ -3,10 +3,10 @@ $(document).ready(function () {
     init();
 
     function init() {
-        $("#cadastroTipo").hide();
+
         $("#cadastrarAtividade").hide();
         $("#cadastroQuestoes").hide();
-
+        $("#escolherQuestoes").hide();
         $("#data-inicial,#data-final").datetimepicker({
             timepicker: false, mask: true, format: 'd/m/Y',
         })
@@ -17,7 +17,7 @@ $(document).ready(function () {
 
     }
 
-    //? Data tables
+    //? Tabela de atividades
     $('#tableAtividade').DataTable({
         "columnDefs": [
             { "orderable": false, "targets": 7 }
@@ -27,24 +27,14 @@ $(document).ready(function () {
         },
         "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]]
     });
-    /*
-    $('#tableTipos').DataTable({
-        "columnDefs": [
-            { "orderable": false, "targets": 2 }
-        ],
-        "language": {
-            url: "../partials/dataTablept-br.json"
-        },
-        "lengthMenu": [[5, 10, 25, -1], [5, 10, 25, "All"]]
-    });
-    */
-    $('#tableQuestoes').DataTable({
+
+    $('#tableQuestoesAtividade').DataTable({
         "ordering": false,
-        "bFilter": false,
+        "Filter": false,
         "columnDefs": [{
             "searchable": false,
             "orderable": false,
-            "targets": 0
+            "targets": [1, 2, 3, 4, 5]
         }],
         "language": {
             url: "../partials/dataTablept-br.json"
@@ -53,7 +43,7 @@ $(document).ready(function () {
 
     });
 
-    $("#escolherQuestoes").hide();
+    //? Tabela de escolher questões
     $('#tableEscolherQuestoes').DataTable({
         "select": {
             "style": 'multi'
@@ -79,19 +69,6 @@ $(document).ready(function () {
     });
     //?
 
-    /*
-        $("#btn-novo-tipo").click(function () {
-    
-            if ($('#cadastroTipo').css('display') == 'none') {
-                $("#btn-novo-tipo").text('Cancelar').prepend(cancelarIcon);
-                $("#tableTiposToggle").toggle("slow");
-            } else {
-                $("#btn-novo-tipo").text('Novo tipo').prepend(adicionarIcon);
-                $("#tableTiposToggle").toggle("slow");
-            }
-            $("#cadastroTipo").toggle("slow");
-        });
-    */
     function toggleNovaAtividade() {
         let adicionarIcon = `<i class="bi bi-plus-circle btn-icon-prepend"></i>`;
         let cancelarIcon = `<i class="bi bi-x-circle btn-icon-prepend"></i>`;
@@ -117,7 +94,7 @@ $(document).ready(function () {
     $("#btn-modal-escolher").on("click", function () {
         $('#modalQuestao').modal('show')
     });
-    $("#modalCancelar").click(function () {
+    $("#btn-modalCancelarQuestao").click(function () {
         $('#modalQuestao').modal('hide')
     });
     //! Modal informação
@@ -147,12 +124,12 @@ $(document).ready(function () {
                 });
             };
 
-        $("#tableQuestoes #tbodyQuestoes").sortable({
+        $("#tableQuestoesAtividade #tbodyQuestoesAtividade").sortable({
             helper: fixHelperModified,
             stop: updateIndex
         }).disableSelection();
 
-        $("#tbodyQuestoes").sortable({
+        $("#tbodyQuestoesAtividade").sortable({
             distance: 5,
             delay: 100,
             opacity: 0.6,
