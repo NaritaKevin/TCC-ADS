@@ -34,15 +34,15 @@ $(document).ready(function () {
         $("#cadastrarQuestao").toggle("slow");
     }
 
-    //!  Modal info e cancelar
-    $(".btn-info-questao").on("click", function () {
-        $('#modalInfoQuestao').modal('show')
+    //!  Botão Modal info atividade e cancelar
+    $(".btn-info-aluno").on("click", function () {
+        $('#modalAluno').modal('show')
     });
     $("#modalCancelar").click(function () {
-        $('#modalInfoQuestao').modal('hide')
+        $('#modalAluno').modal('hide')
     })
     //!
-
+    //! Botão Mostrar resultados dos alunos
     $(".btn-info-atividade").on("click", function () {
         $("#tabelaResultados").toggle("slow");
         $("#verResultados").toggle("slow");
@@ -51,7 +51,7 @@ $(document).ready(function () {
         $("#tabelaResultados").toggle("slow");
         $("#verResultados").toggle("slow");
     })
-
+    //! 
     $('#tableResultados').on('mouseenter', 'tbody tr', function () {
         var rowData = tableQuestoes.row(this).data();
 
