@@ -29,9 +29,9 @@
         <!-- partial:../../partials/_navbar.html -->
         <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
             <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
-                <a id="" class="navbar-brand brand-logo mr-5" href="index.html"><img src="../images/logo-full.svg"
+                <a id="" class="navbar-brand brand-logo mr-5" href="../index.html"><img src="../images/logo-full.svg"
                         class="mr-4 filter-purple" alt="logo" /></a>
-                <a class="navbar-brand brand-logo-mini" href="index.html"><img src="../images/logo-mini.svg"
+                <a class="navbar-brand brand-logo-mini" href="../index.html"><img src="../images/logo-mini.svg"
                         alt="logo" /></a>
             </div>
             <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
@@ -227,72 +227,28 @@
                                                             <input type="text" class="form-control" id="palavrasChave"
                                                                 placeholder="Palavras chave">
                                                         </div>
+                                                        <div class="form-group">
+                                                            <p class="card-title">
+                                                                Alternativas.
+                                                            </p>
+                                                            <p class="card-description">
+                                                                Cadastre as alternativas da questão.
+                                                            </p>
+                                                            <button id="adicionarQuestao" type="button"
+                                                                class="btn btn-inverse-primary btn-rounded btn-icon">
+                                                                <i class="bi bi-plus-lg"></i>
+                                                            </button>
+                                                            <button id="deletarQuestao" type="button"
+                                                                class="btn btn-inverse-danger btn-rounded btn-icon">
+                                                                <i class="bi-trash"></i>
+                                                            </button>
+                                                        </div>
 
-                                                        <div class="form-group">
-                                                            <div class="input-group">
-                                                                <div class="input-group-prepend">
-                                                                    <button type="button"
-                                                                        class="btn btn-danger toggleAlternativa">Incorreta</button>
-                                                                </div>
-                                                                <div class="input-group-append">
-                                                                    <span class="input-group-text bg-primary ">A)</span>
-                                                                </div>
-                                                                <textarea class="form-control" id="alternativaA"
-                                                                    rows="3"></textarea>
-                                                            </div>
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <div class="input-group">
-                                                                <div class="input-group-prepend">
-                                                                    <button type="button"
-                                                                        class="btn btn-danger toggleAlternativa">Incorreta</button>
-                                                                </div>
-                                                                <div class="input-group-append">
-                                                                    <span class="input-group-text bg-primary ">B)</span>
-                                                                </div>
-                                                                <textarea class="form-control" id="alternativaB"
-                                                                    rows="3"></textarea>
-                                                            </div>
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <div class="input-group">
-                                                                <div class="input-group-prepend">
-                                                                    <button type="button"
-                                                                        class="btn btn-danger toggleAlternativa">Incorreta</button>
-                                                                </div>
-                                                                <div class="input-group-append">
-                                                                    <span class="input-group-text bg-primary ">C)</span>
-                                                                </div>
-                                                                <textarea class="form-control" id="alternativaC"
-                                                                    rows="3"></textarea>
-                                                            </div>
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <div class="input-group">
-                                                                <div class="input-group-prepend">
-                                                                    <button type="button"
-                                                                        class="btn btn-danger toggleAlternativa">Incorreta</button>
-                                                                </div>
-                                                                <div class="input-group-append">
-                                                                    <span class="input-group-text bg-primary ">D)</span>
-                                                                </div>
-                                                                <textarea class="form-control" id="alternativaD"
-                                                                    rows="3"></textarea>
-                                                            </div>
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <div class="input-group">
-                                                                <div class="input-group-prepend">
-                                                                    <button type="button"
-                                                                        class="btn btn-danger toggleAlternativa">Incorreta</button>
-                                                                </div>
-                                                                <div class="input-group-append">
-                                                                    <span class="input-group-text bg-primary ">E)</span>
-                                                                </div>
-                                                                <textarea class="form-control" id="alternativaE"
-                                                                    rows="3"></textarea>
-                                                            </div>
-                                                        </div>
+                                                        <ul id="alternativas" class="list-group">
+
+
+
+                                                        </ul>
 
 
                                                         <button id="cadastrarQuestao" type="submit"
@@ -310,13 +266,13 @@
                                                         <th>Ordem</th>
                                                         <th>Enunciado</th>
                                                         <th>Palavras Chave</th>
-                                                        <th ">Subgrupo</th>
-                                                        <th >Código BNCC</th>
+                                                        <th>Subgrupo</th>
+                                                        <th>Código BNCC</th>
                                                         <th>Nível</th>
-                                                        <th >Ano</th>
+                                                        <th>Ano</th>
                                                         <th>Status Tipo</th>
-                                                        <th >Revisão</th>
-                                                        <th >Ação</th>
+                                                        <th>Revisão</th>
+                                                        <th>Ação</th>
 
                                                     </tr>
                                                 </thead>
@@ -329,9 +285,9 @@
                                                         <td>Animais Ciclos Agua</td>
                                                         <td>Ciência da Natureza</td>
                                                         <td>654633</td>
-                                                        <td>Fácil</td>
+                                                        <td><label class=" badge badge-success">Fácil</label></td>
                                                         <td>Terceiro ano</td>
-                                                        <td><label class=" badge badge-success">Postado</label></td>
+                                                        <td>Pública</td>
                                                         <td><label class="badge badge-success">Postado</label></td>
                                                         <td>
                                                             <button type="button"
@@ -355,9 +311,9 @@
                                                         <td>Cai Ciclos Agua</td>
                                                         <td>Ciência da Natureza</td>
                                                         <td>123454</td>
-                                                        <td>Médio</td>
+                                                        <td><label class="badge badge-warning">Médio</label></td>
                                                         <td>Primeiro ano</td>
-                                                        <td><label class="badge badge-success">Postado</label></td>
+                                                        <td>Privada_Professor</td>
                                                         <td><label class="badge badge-success">Postado</label></td>
                                                         <td>
                                                             <button type="button"
@@ -382,9 +338,9 @@
                                                         <td>Gás camada</td>
                                                         <td>Ciência da Natureza</td>
                                                         <td>546532</td>
-                                                        <td>Difícil</td>
+                                                        <td><label class="badge badge-danger">Difícil</label></td>
                                                         <td>Primeiro ano</td>
-                                                        <td><label class="badge badge-success">Postado</label></td>
+                                                        <td>Publica</td>
                                                         <td><label class="badge badge-success">Postado</label></td>
                                                         <td>
                                                             <button type="button"
@@ -401,7 +357,7 @@
                                                             </button>
                                                         </td>
                                                     </tr>
-                                                    </tbody>
+                                                </tbody>
                                             </table>
                                         </div>
                                     </div>
@@ -474,7 +430,7 @@
         <script src="../js/off-canvas.js"></script>
         <script src="../js/hoverable-collapse.js"></script>
         <script src="../js/template.js"></script>
-        <script src="../js/jquery.datetimepicker.full.min.js"></script>
+
 
         <!-- endinject -->
         <!-- Custom js for this page-->
