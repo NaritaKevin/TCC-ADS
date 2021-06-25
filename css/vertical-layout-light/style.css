@@ -49038,6 +49038,14 @@ div.tagsinput span.tag a {
   padding: 0px !important;
   border: 0px !important;
 }
+table.datatable thead th.no-sort {
+  background: none;
+  pointer-events: none;
+}
+.form-group .labelCadastroAtuacao {
+ 
+  display: block;
+}
 /*
 .dataTables_wrapper {
   display: inline-table;

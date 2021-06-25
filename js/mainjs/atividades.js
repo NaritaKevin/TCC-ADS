@@ -58,7 +58,6 @@ $(document).ready(function () {
                 'checkboxes': {
                     'selectRow': true
                 }
-
             }
         ],
         "language": {
