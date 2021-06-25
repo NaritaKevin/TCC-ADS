@@ -1,1 +1,1 @@
-# TCC Fatec Lins - Análise e desenvolvimento de sistemas.
+# TCC Fatec Lins - ADS
