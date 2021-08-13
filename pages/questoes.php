@@ -1,3 +1,14 @@
+<?php
+require('../backend/config.php');
+ 
+$sql = "SELECT q.queID, q.queDescricao, q.quePalavrasChave, q.queCodigoBncc, q.queNivel, q.queAnoID, q.queStsTipo,q.queStsRevisao,s.subDescricao  FROM questoes q JOIN subgrupos s ON q.queID = s.subID";
+$result = $conn->query($sql);
+$arr_users = [];
+if ($result->num_rows > 0) {
+    $arr_users = $result->fetch_all(MYSQLI_ASSOC);
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -275,7 +286,7 @@
                                             </div>
                                         </div>
                                         <div id="tableQuestoesToggle" class="expandable-table table-responsive">
-                                            <table class="table table-hover table-striped" id="tableQuestoes">
+                                        <table class="table table-hover table-striped" id="tableQuestoes">
                                                 <thead>
                                                     <tr>
                                                         <th>Ordem</th>
@@ -288,90 +299,55 @@
                                                         <th>Status Tipo</th>
                                                         <th>Revisão</th>
                                                         <th>Ação</th>
+                                                       
 
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <tr>
-                                                        <td>1</td>
-                                                        <td>De que forma os animais participam do ciclo
-                                                            da
-                                                            água?</td>
-                                                        <td>Animais Ciclos Agua</td>
-                                                        <td>Ciência da Natureza</td>
-                                                        <td>654633</td>
-                                                        <td><label class=" badge badge-success">Fácil</label></td>
-                                                        <td>Terceiro ano</td>
-                                                        <td>Pública</td>
-                                                        <td><label class="badge badge-success">Postado</label></td>
-                                                        <td>
-                                                            <button type="button"
-                                                                class="btn btn-inverse-primary btn-rounded btn-icon btn-info-questao">
-                                                                <i class="bi bi-info-lg"></i>
-                                                            </button>
-                                                            <button type="button"
-                                                                class="btn btn-inverse-success btn-rounded btn-icon btn-edit-questao">
-                                                                <i class="bi bi-pencil"></i>
-                                                            </button>
-                                                            <button type="button"
-                                                                class="btn btn-inverse-danger btn-rounded btn-icon btn-del-questao">
-                                                                <i class="bi bi-trash"></i>
-                                                            </button>
-                                                        </td>
+                                                    <?php if(!empty($arr_users)) { $nivel; $revisao; ?>
+                                                        <?php foreach($arr_users as $user) { 
+                                                             if($user['queNivel'] == "Fácil"){
+                                                                 $nivel = "badge-success";
+                                                                }else if($user['queNivel'] == "Difícil"){
+                                                                 $nivel = "badge-danger";
+                                                                }else if($user['queNivel'] == "Médio"){
+                                                                    $nivel = "badge-warning";
+                                                                }
 
-                                                    </tr>
-                                                    <tr>
-                                                        <td>2</td>
-                                                        <td>A geada "cai" do céu? Por quê?</td>
-                                                        <td>Cai Ciclos Agua</td>
-                                                        <td>Ciência da Natureza</td>
-                                                        <td>123454</td>
-                                                        <td><label class="badge badge-warning">Médio</label></td>
-                                                        <td>Primeiro ano</td>
-                                                        <td>Privada_Professor</td>
-                                                        <td><label class="badge badge-success">Postado</label></td>
-                                                        <td>
-                                                            <button type="button"
-                                                                class="btn btn-inverse-primary btn-rounded btn-icon btn-info-questao">
-                                                                <i class="bi bi-info-lg"></i>
-                                                            </button>
-                                                            <button type="button"
-                                                                class="btn btn-inverse-success btn-rounded btn-icon btn-edit-questao">
-                                                                <i class="bi bi-pencil"></i>
-                                                            </button>
-                                                            <button type="button"
-                                                                class="btn btn-inverse-danger btn-rounded btn-icon btn-del-questao">
-                                                                <i class="bi bi-trash"></i>
-                                                            </button>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>3</td>
-                                                        <td>Qual a importância do gás ozônio encontrado
-                                                            na
-                                                            estratosfera?</td>
-                                                        <td>Gás camada</td>
-                                                        <td>Ciência da Natureza</td>
-                                                        <td>546532</td>
-                                                        <td><label class="badge badge-danger">Difícil</label></td>
-                                                        <td>Primeiro ano</td>
-                                                        <td>Publica</td>
-                                                        <td><label class="badge badge-success">Postado</label></td>
-                                                        <td>
-                                                            <button type="button"
-                                                                class="btn btn-inverse-primary btn-rounded btn-icon btn-info-questao">
-                                                                <i class="bi bi-info-lg"></i>
-                                                            </button>
-                                                            <button type="button"
-                                                                class="btn btn-inverse-success btn-rounded btn-icon btn-edit-questao">
-                                                                <i class="bi bi-pencil"></i>
-                                                            </button>
-                                                            <button type="button"
-                                                                class="btn btn-inverse-danger btn-rounded btn-icon btn-del-questao">
-                                                                <i class="bi bi-trash"></i>
-                                                            </button>
-                                                        </td>
-                                                    </tr>
+                                                                if($user['queStsRevisao'] == "Revisada"){
+                                                                    $revisao = "badge-success";
+                                                                   }else{
+                                                                    $revisao = "badge-danger";
+                                                                   }
+                                                            ?>
+                                                            
+                                                            <tr>
+                                                                <td><?php echo $user['queID']; ?></td>
+                                                                <td><?php echo $user['queDescricao']; ?></td>
+                                                                <td><?php echo $user['quePalavrasChave']; ?></td>
+                                                                <td><?php echo $user['subDescricao']; ?></td>
+                                                                <td><?php echo $user['queCodigoBncc']; ?></td>                                                                               
+                                                                <td><label  class="badge <?php echo $revisao; ?>  "><?php echo $user['queNivel']; ?></label></td>
+                                                                <td><?php echo $user['queAnoID']; ?></td>
+                                                                <td><?php echo $user['queStsTipo']; ?></td>
+                                                                <td><label  class="badge <?php echo $revisao; ?>  "><?php echo $user['queStsRevisao']; ?></label></td>
+                                                                <td>
+                                                                    <button type="button"
+                                                                        class="btn btn-inverse-primary btn-rounded btn-icon btn-info-questao">
+                                                                        <i class="bi bi-info-lg"></i>
+                                                                    </button>
+                                                                    <button type="button"
+                                                                        class="btn btn-inverse-success btn-rounded btn-icon btn-edit-questao">
+                                                                        <i class="bi bi-pencil"></i>
+                                                                    </button>
+                                                                    <button type="button"
+                                                                        class="btn btn-inverse-danger btn-rounded btn-icon btn-del-questao">
+                                                                        <i class="bi bi-trash"></i>
+                                                                    </button>
+                                                                </td>
+                                                            </tr>
+                                                        <?php } ?>
+                                                    <?php } ?>
                                                 </tbody>
                                             </table>
                                         </div>

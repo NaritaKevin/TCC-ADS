@@ -3,165 +3,165 @@ $(document).ready(function () {
     init();
 
     function init() {
-        $("#cadastroTipo").hide();
-        $("#cadastrarAtividade").hide();
-        $("#cadastroQuestoes").hide();
+        $("#cadastrarQuestao").hide();
+        $('#tableQuestoes').DataTable({
+            "columnDefs": [
+                { "orderable": false, "targets": 8 }
+            ],
+            "language": {
+                url: "../partials/dataTablept-br.json"
+            },
+            "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
 
-        $("#data-inicial,#data-final").datetimepicker({
-            timepicker: false, mask: true, format: 'd/m/Y',
-        })
+
+        });
+        $("#deletarQuestao").prop("disabled", true)
 
 
-        jqueryuiinit();
-        $.datetimepicker.setLocale('pt-BR');
 
     }
 
-    //? Data tables
-    $('#tableAtividade').DataTable({
-        "columnDefs": [
-            { "orderable": false, "targets": 7 }
-        ],
-        "language": {
-            url: "../partials/dataTablept-br.json"
-        },
-        "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]]
-    });
-    /*
-    $('#tableTipos').DataTable({
-        "columnDefs": [
-            { "orderable": false, "targets": 2 }
-        ],
-        "language": {
-            url: "../partials/dataTablept-br.json"
-        },
-        "lengthMenu": [[5, 10, 25, -1], [5, 10, 25, "All"]]
-    });
-    */
-    $('#tableQuestoes').DataTable({
-        "ordering": false,
-        "bFilter": false,
-        "columnDefs": [{
-            "searchable": false,
-            "orderable": false,
-            "targets": 0
-        }],
-        "language": {
-            url: "../partials/dataTablept-br.json"
-        },
-        "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
-
-    });
-
-    $("#escolherQuestoes").hide();
-    $('#tableEscolherQuestoes').DataTable({
-        "select": {
-            "style": 'multi'
-        },
-        "columnDefs": [
-            {
-                "orderable": false,
-                "targets": [9]
-            },
-            {
-                'targets': 0,
-                'checkboxes': {
-                    'selectRow': true
-                }
-
-            }
-        ],
-        "language": {
-            url: "../partials/dataTablept-br.json"
-        },
-        "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
-
-    });
-    //?
-
-    /*
-        $("#btn-novo-tipo").click(function () {
-    
-            if ($('#cadastroTipo').css('display') == 'none') {
-                $("#btn-novo-tipo").text('Cancelar').prepend(cancelarIcon);
-                $("#tableTiposToggle").toggle("slow");
-            } else {
-                $("#btn-novo-tipo").text('Novo tipo').prepend(adicionarIcon);
-                $("#tableTiposToggle").toggle("slow");
-            }
-            $("#cadastroTipo").toggle("slow");
-        });
-    */
-    function toggleNovaAtividade() {
+    function toggleNovaQuestao() {
         let adicionarIcon = `<i class="bi bi-plus-circle btn-icon-prepend"></i>`;
         let cancelarIcon = `<i class="bi bi-x-circle btn-icon-prepend"></i>`;
-        if ($('#cadastrarAtividade').css('display') == 'none') {
-            $("#btn-nova-atividade").text('Cancelar').prepend(cancelarIcon).removeClass("btn-primary").addClass("btn-secondary");
-            $("#tableAtividadesToggle").toggle("slow");
+
+        if ($('#cadastrarQuestao').css('display') == 'none') {
+            $("#btn-nova-questao").text('Cancelar').prepend(cancelarIcon).removeClass("btn-primary").addClass("btn-secondary");
+            $("#tableQuestoesToggle").toggle("slow");
         } else {
-            $("#btn-nova-atividade").text('Nova atividade').prepend(adicionarIcon).removeClass("btn-secondary").addClass("btn-primary");
-            $("#tableAtividadesToggle").toggle("slow");
+            $("#btn-nova-questao").text('Adicionar questão').prepend(adicionarIcon).removeClass("btn-secondary").addClass("btn-primary");
+            $("#tableQuestoesToggle").toggle("slow");
         }
-        $("#cadastrarAtividade").toggle("slow");
+        $("#cadastrarQuestao").toggle("slow");
     }
 
-    //! Esconder/mostrar cadastrar atividade
-    $("#btn-nova-atividade").click(function () {
-        toggleNovaAtividade()
-    });
-    $("#cancelarAtividade").click(function () {
-        toggleNovaAtividade()
-    })
-    //!
-    //!  Modal esconder/mostrar
-    $("#btn-modal-escolher").on("click", function () {
-        $('#modalQuestao').modal('show')
-    });
-    $("#modalCancelar").click(function () {
-        $('#modalQuestao').modal('hide')
-    });
-    //! Modal informação
+    //!  Modal info e cancelar
     $(".btn-info-questao").on("click", function () {
-        $('#modalInfoAtividade').modal('show')
+        $('#modalInfoQuestao').modal('show')
     });
     $("#modalCancelar").click(function () {
-        $('#modalInfoAtividade').modal('hide')
+        $('#modalInfoQuestao').modal('hide')
     })
     //!
-    function jqueryuiinit() {
+    //! Esconder/mostrar cadastrar questao
+    $("#btn-nova-questao").click(function () {
+        toggleNovaQuestao();
+    })
+    $("#cancelarQuestao").click(function () {
+        toggleNovaQuestao();
+    })
+    //!
+    //! Opção das alternativas
+    $("#cadastrarQuestao").on("click", ".toggleAlternativa", function () {
+        $(this).text() == "Incorreta" ? $(this).text("Correta").removeClass("btn-danger").addClass("btn-success") :
+            $(this).text("Incorreta").removeClass("btn-success").addClass("btn-danger");
 
-        var fixHelperModified = function (e, tr) {
-            var $originals = tr.children();
-            var $helper = tr.clone();
-            $helper.children().each(function (index) {
-                $(this).width($originals.eq(index).width())
-            });
-            return $helper;
-        },
-            updateIndex = function (e, ui) {
-                $('td.index', ui.item.parent()).each(function (i) {
-                    $(this).html(i + 1);
-                });
-                $('input[type=text]', ui.item.parent()).each(function (i) {
-                    $(this).val(i + 1);
-                });
-            };
+    });
+    //!
 
-        $("#tableQuestoes #tbodyQuestoes").sortable({
-            helper: fixHelperModified,
-            stop: updateIndex
-        }).disableSelection();
 
-        $("#tbodyQuestoes").sortable({
-            distance: 5,
-            delay: 100,
-            opacity: 0.6,
-            cursor: 'move',
-            update: function () { }
+
+
+    i = 0;
+    $(".form-group").on('click', "#adicionarQuestao", function () {
+        letra = ["A)", "B)", "C)", "D)", "E)", "F)", "G)", "H)", "I)", "J)"];
+        //A=0,B=1,C=2,D=3,E=4,F=5,G=6,H=7,I=8,J=9
+        i < 0 ? $("#deletarQuestao").prop("disabled", true) : $("#deletarQuestao").prop("disabled", false);
+        escolherSwitch(letra, i)
+        i++;
+
+    });
+
+    $(".form-group").on('click', "#deletarQuestao", function () {
+        $('#alternativas').each(function () {
+            let index = $(this).find(".list-group-item").last().attr("id")
+            i = parseInt(index);
+            $(this).find(".list-group-item").last().remove();
         });
+        i == 0 ? $("#deletarQuestao").prop("disabled", true) : $("#deletarQuestao").prop("disabled", false);
+    });
 
+    function escolherSwitch(letra, i) {
+        switch (i) {
+            case 0: {
+                carregarAlternativa(letra[0], i)
+            }
+                break;
+            case 1: {
+                carregarAlternativa(letra[1], i)
+            }
+                break;
+            case 2: {
+                carregarAlternativa(letra[2], i);
+            }
+                break;
+            case 3: {
+                carregarAlternativa(letra[3], i);
+            }
+                break;
+            case 4: {
+                carregarAlternativa(letra[4], i);
+            }
+                break;
+            case 5: {
+                carregarAlternativa(letra[5], i);
+            }
+                break;
+            case 6: {
+                carregarAlternativa(letra[6], i);
+            }
+                break;
+            case 7: {
+                carregarAlternativa(letra[7], i);
+            }
+                break;
+            case 8: {
+                carregarAlternativa(letra[8], i);
+            }
+                break;
+            case 9: {
+                carregarAlternativa(letra[9], i);
+            }
+                break;
+        }
+
+        function carregarAlternativa(data, i) {
+
+            let letra = data;
+            let letraid = data;
+
+            letraid = letraid.replace(')', '')
+
+            let carregar = `    <li  id="${i}" class="list-group-item">
+                                <div class="form-group">
+                                <div class="input-group">               
+                                    <div id="botao-alternativa" class="input-group-prepend">
+                                        <button type="button" class="btn btn-danger toggleAlternativa">Incorreta</button>
+                                    </div>
+                                    <div class="input-group-append">
+                                        <span class="input-group-text bg-primary ">${letra}</span>
+                                    </div>
+                                    <textarea class="form-control" id="alternativa${letraid}" rows="3"></textarea>
+                                </div>
+                            </div>
+                        </li>`
+
+            $("#alternativas").append(carregar);
+        }
     }
+
+
 
 
 
 });
+
+
+
+
+
+
+
+
+
+

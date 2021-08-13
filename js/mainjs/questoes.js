@@ -4,7 +4,7 @@ $(document).ready(function () {
 
     function init() {
         $("#cadastrarQuestao").hide();
-        tableQuestoes = $('#tableQuestoes').DataTable({
+        $('#tableQuestoes').DataTable({
             "columnDefs": [
                 { "orderable": false, "targets": 9 }
             ],
@@ -12,6 +12,7 @@ $(document).ready(function () {
                 url: "../partials/dataTablept-br.json"
             },
             "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+
 
         });
         $("#deletarQuestao").prop("disabled", true)
@@ -57,10 +58,9 @@ $(document).ready(function () {
 
     });
     //!
-    $('#tableQuestoes').on('mouseenter', 'tbody tr', function () {
-        var rowData = tableQuestoes.row(this).data();
 
-    });
+
+
 
     i = 0;
     $(".form-group").on('click', "#adicionarQuestao", function () {
@@ -155,6 +155,7 @@ $(document).ready(function () {
 
 
 });
+
 
 
 
