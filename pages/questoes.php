@@ -1,11 +1,16 @@
 <?php
-require('../backend/config.php');
+$conn = new mysqli("localhost", "root", "", "pedagogy");
+ 
+if ($conn->connect_errno) {
+    die("Conexão falhou: " . $conn->connect_error);
+    
+}
  
 $sql = "SELECT q.queID, q.queDescricao, q.quePalavrasChave, q.queCodigoBncc, q.queNivel, q.queAnoID, q.queStsTipo,q.queStsRevisao,s.subDescricao  FROM questoes q JOIN subgrupos s ON q.queID = s.subID";
 $result = $conn->query($sql);
-$arr_users = [];
+$arr_questoes = [];
 if ($result->num_rows > 0) {
-    $arr_users = $result->fetch_all(MYSQLI_ASSOC);
+    $arr_questoes = $result->fetch_all(MYSQLI_ASSOC);
 }
 ?>
 
@@ -140,7 +145,7 @@ if ($result->num_rows > 0) {
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="../pages/atividades.html">
+                        <a class="nav-link" href="../pages/atividades.php">
                             <i class="bi bi-file-earmark-text menu-icon"></i>
                             <span class="menu-title">Atividades</span>
                         </a>
@@ -154,16 +159,16 @@ if ($result->num_rows > 0) {
                         </a>
                         <div class="collapse" id="gerencQuestoes">
                             <ul class="nav flex-column sub-menu">
-                                <li class="nav-item"> <a class="nav-link" href="../pages/questoes.html">Gerenciar
+                                <li class="nav-item"> <a class="nav-link" href="../pages/questoes.php">Gerenciar
                                         Questões</a></li>
-                                <li class="nav-item"> <a class="nav-link" href="../pages/atuacao.html">Area de
+                                <li class="nav-item"> <a class="nav-link" href="../pages/atuacao.php">Area de
                                         atuação</a></li>
                             </ul>
                         </div>
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link" href="../pages/resultados.html">
+                        <a class="nav-link" href="../pages/resultados.php">
                             <i class="bi bi-file-earmark-bar-graph menu-icon"></i>
                             <span class="menu-title">Resultados</span>
 
@@ -304,17 +309,17 @@ if ($result->num_rows > 0) {
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <?php if(!empty($arr_users)) { $nivel; $revisao; ?>
-                                                        <?php foreach($arr_users as $user) { 
-                                                             if($user['queNivel'] == "Fácil"){
+                                                    <?php if(!empty($arr_questoes)) { $nivel; $revisao; ?>
+                                                        <?php foreach($arr_questoes as $questao) { 
+                                                             if($questao['queNivel'] == "Fácil"){
                                                                  $nivel = "badge-success";
-                                                                }else if($user['queNivel'] == "Difícil"){
+                                                                }else if($questao['queNivel'] == "Difícil"){
                                                                  $nivel = "badge-danger";
-                                                                }else if($user['queNivel'] == "Médio"){
+                                                                }else if($questao['queNivel'] == "Médio"){
                                                                     $nivel = "badge-warning";
                                                                 }
 
-                                                                if($user['queStsRevisao'] == "Revisada"){
+                                                                if($questao['queStsRevisao'] == "Revisada"){
                                                                     $revisao = "badge-success";
                                                                    }else{
                                                                     $revisao = "badge-danger";
@@ -322,15 +327,15 @@ if ($result->num_rows > 0) {
                                                             ?>
                                                             
                                                             <tr>
-                                                                <td><?php echo $user['queID']; ?></td>
-                                                                <td><?php echo $user['queDescricao']; ?></td>
-                                                                <td><?php echo $user['quePalavrasChave']; ?></td>
-                                                                <td><?php echo $user['subDescricao']; ?></td>
-                                                                <td><?php echo $user['queCodigoBncc']; ?></td>                                                                               
-                                                                <td><label  class="badge <?php echo $revisao; ?>  "><?php echo $user['queNivel']; ?></label></td>
-                                                                <td><?php echo $user['queAnoID']; ?></td>
-                                                                <td><?php echo $user['queStsTipo']; ?></td>
-                                                                <td><label  class="badge <?php echo $revisao; ?>  "><?php echo $user['queStsRevisao']; ?></label></td>
+                                                                <td><?php echo $questao['queID']; ?></td>
+                                                                <td><?php echo $questao['queDescricao']; ?></td>
+                                                                <td><?php echo $questao['quePalavrasChave']; ?></td>
+                                                                <td><?php echo $questao['subDescricao']; ?></td>
+                                                                <td><?php echo $questao['queCodigoBncc']; ?></td>                                                                               
+                                                                <td><label  class="badge <?php echo $revisao; ?>  "><?php echo $questao['queNivel']; ?></label></td>
+                                                                <td><?php echo $questao['queAnoID']; ?></td>
+                                                                <td><?php echo $questao['queStsTipo']; ?></td>
+                                                                <td><label  class="badge <?php echo $revisao; ?>  "><?php echo $questao['queStsRevisao']; ?></label></td>
                                                                 <td>
                                                                     <button type="button"
                                                                         class="btn btn-inverse-primary btn-rounded btn-icon btn-info-questao">

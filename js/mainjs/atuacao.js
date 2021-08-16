@@ -3,37 +3,33 @@ $(document).ready(function () {
     init();
 
     function init() {
+
         $("#cadastrarDisciplina").hide();
         $("#cadastrarSubgrupo").hide();
         $("#cadastrarTematica").hide();
-        $('#tableDisciplinas').DataTable({
+        $('#tableDisciplinas , #tableSubgrupo , #tableTematica').DataTable({
             "language": {
                 url: "../partials/dataTablept-br.json"
             },
-            "lengthMenu": [[5, 15, 25, -1], [5, 15, 25, "All"]],
+            "lengthMenu": [[5, 15, 25, -1], [5, 15, 25, "Todos"]],
         });
-        $('#tableSubgrupo').DataTable({
-            "language": {
-                url: "../partials/dataTablept-br.json"
-            },
-            "lengthMenu": [[5, 15, 25, -1], [5, 15, 25, "All"]],
-        });
-        $('#tableDisciplinasQuestoes').DataTable({
-            columnDefs: [{
-                orderable: false,
-                className: 'select-checkbox',
-                targets: 0
-            }],
-            select: {
-                style: 'single',
-            },
-            order: [[1, 'asc']],
-            "language": {
-                url: "../partials/dataTablept-br.json"
-            },
-            "lengthMenu": [[5, 15, 25, -1], [5, 15, 25, "All"]],
 
-        });
+        /*  $('#tableDisciplinasQuestoes').DataTable({
+             columnDefs: [{
+                 orderable: false,
+                 className: 'select-checkbox',
+                 targets: 0
+             }],
+             select: {
+                 style: 'single',
+             },
+             order: [[1, 'asc']],
+             "language": {
+                 url: "../partials/dataTablept-br.json"
+             },
+             "lengthMenu": [[5, 15, 25, -1], [5, 15, 25, "All"]],
+ 
+         }); */
     }
 
 
@@ -57,6 +53,14 @@ $(document).ready(function () {
     $("#btn-cancelarDisciplina").click(function () {
         toggleNovaDisciplina();
     })
+
+    $("#btn-cadastrarDisciplina").click(function () {
+
+    })
+
+
+
+
     //!
 
 
