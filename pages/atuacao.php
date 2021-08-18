@@ -215,6 +215,11 @@ if ($resultSub->num_rows > 0) {
                                     <h4 class="card-title">Tabela de disciplinas</h4>
                                    
                                     <p class="card-description">
+                                    <button type="button" id="btn-cancelar-disciplina"
+                                            class="btn btn-secondary btn-icon-text">
+                                            <i class="bi bi-x-circle btn-icon-prepend"></i>
+                                            Cancelar
+                                        </button>
                                         <button type="button" id="btn-nova-disciplina"
                                             class="btn btn-primary btn-icon-text">
                                             <i class="bi bi-plus-circle btn-icon-prepend"></i>
@@ -224,12 +229,12 @@ if ($resultSub->num_rows > 0) {
                                     <div id="cadastrarDisciplina" class=" stretch-card">
                                         <div class="card">
                                             <div class="card-body">
-                                                <h4 class="card-title">Disciplina</h4>
+                                                <h4 class="card-title">Cadastrar Disciplina</h4>
                                                 <p class="card-description">
                                                     Cadastre uma disciplina para as questões.
                                                 </p>
                                                 <form method="post" action="../backend/cadDisciplina.php" >
-                                                    <div class="form-group">
+                                                    <div class="form-group">                                                 
                                                         <label for="disciplina">Disciplina</label>
                                                         <input type="text" name="disciplina" class="form-control" id="disciplina"
                                                             placeholder="Matemática">
@@ -238,6 +243,31 @@ if ($resultSub->num_rows > 0) {
                                                         class="btn btn-primary mr-2">
                                                         <i class="bi bi-check2-circle btn-icon-prepend"></i>
                                                         Cadastrar</button>
+                                                        
+                                                   <!--  <button id="btn-cancelarDisciplina" type="button"
+                                                        class="btn btn-secondary">Cancelar</button> -->
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="alterarDisciplina" class=" stretch-card">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <h4 class="card-title">Alterar Disciplina</h4>
+                                                <p class="card-description">
+                                                     Altere a disciplina selecionada.
+                                                </p>
+                                                <form method="post" action="../backend/altDisciplina.php" >
+                                                    <div class="form-group">
+                                                    <input type="hidden" name="idDisciplina" id="idDisciplina">
+                                                        <label for="disciplina">Disciplina</label>
+                                                        <input type="text" name="disDescricao" class="form-control" id="disDescricao"
+                                                            placeholder="Matemática">
+                                                    </div>
+                                                    <button id="btn-alterarDisciplina" type="submit"
+                                                        class="btn btn-primary mr-2">
+                                                        <i class="bi bi-check2-circle btn-icon-prepend"></i>
+                                                        Alterar</button>
                                                         
                                                    <!--  <button id="btn-cancelarDisciplina" type="button"
                                                         class="btn btn-secondary">Cancelar</button> -->
@@ -264,11 +294,11 @@ if ($resultSub->num_rows > 0) {
                                                                 <td><?php echo $disciplina['disDescricao']; ?></td> 
                                                                 <td>                                                               
                                                                     <button type="button"
-                                                                        class="btn btn-inverse-success btn-rounded btn-icon btn-edit-questao">
+                                                                        class="btn btn-inverse-success btn-rounded btn-icon btn-edit-disciplina">
                                                                         <i class="bi bi-pencil"></i>
                                                                     </button>
                                                                     <button type="button"
-                                                                        class="btn btn-inverse-danger btn-rounded btn-icon btn-del-questao">
+                                                                        class="btn btn-inverse-danger btn-rounded btn-icon btn-del-disciplina">
                                                                         <i class="bi bi-trash"></i>
                                                                     </button>
                                                                 </td>                                                      
@@ -288,6 +318,11 @@ if ($resultSub->num_rows > 0) {
                                 <div class="card-body">
                                     <h4 class="card-title">Tabela de tematicas</h4>
                                     <p class="card-description">
+                                    <button type="button" id="btn-cancelar-tematica"
+                                            class="btn btn-secondary btn-icon-text">
+                                            <i class="bi bi-x-circle btn-icon-prepend"></i>
+                                            Cancelar
+                                        </button>
                                         <button type="button" id="btn-novo-tematica"
                                             class="btn btn-primary btn-icon-text">
                                             <i class="bi bi-plus-circle btn-icon-prepend"></i>
@@ -297,7 +332,7 @@ if ($resultSub->num_rows > 0) {
                                     <div id="cadastrarTematica" class=" stretch-card">
                                         <div class="card">
                                             <div class="card-body">
-                                                <h4 class="card-title">Cadastro Temática</h4>
+                                                <h4 class="card-title">Cadastrar Temática</h4>
                                                 <p class="card-description">
                                                     Cadastre uma temática para os subgrupos.
                                                 </p>
@@ -331,6 +366,44 @@ if ($resultSub->num_rows > 0) {
                                             </div>
                                         </div>
                                     </div>
+                                    <div id="alterarTematica" class=" stretch-card">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <h4 class="card-title">Alterar Temática</h4>
+                                                <p class="card-description">
+                                                    Altere a temática selecionada.
+                                                </p>
+                                                <form method="post" action="../backend/altTematica.php">
+                                                    <div class="form-group" >
+                                                    <input type="hidden" name="idTematica" id="idTematica">
+                                                        <label class="labelCadastroAtuacao">Disciplina</label>
+                                                        <select class="selectpicker show-tick" name="disciplinaopcalt"data-width="fit"
+                                                            data-live-search="true">
+                                                            <option disabled selected>Disciplina</option>
+                                                            <?php if(!empty($arr_disciplina)) { ?>
+                                                                <?php foreach($arr_disciplina as $disciplina) { 
+                                                                    ?>        
+                                                                    <option value="<?php echo $disciplina['disID']; ?>"><?php echo $disciplina['disDescricao']; ?></option>                                                                                                                                                                                                                                                                    
+                                                                <?php } ?>
+                                                            <?php } ?>                                                                                                                   
+                                                        </select>                                                      
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label for="alterarTematica">Temática</label>
+                                                        <input type="text" class="form-control" name="temDescricao" id="temDescricao"
+                                                            placeholder="Operações Matemáticas">
+                                                    </div>
+                                                    <button id="btn-alterarTematica" type="submit"
+                                                        class="btn btn-primary mr-2"> 
+                                                        <i class="bi bi-check2-circle btn-icon-prepend"></i>
+                                                        Alterar</button>
+                                                   <!--  <button id="btn-cancelarTematica" type="button"
+                                                        class="btn btn-secondary">Cancelar</button> -->
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
 
                                     <div id="tableTematicaToggle" class="expandable-table table-responsive">
                                         <table class="table table-hover table-striped" id="tableTematica">
@@ -351,11 +424,11 @@ if ($resultSub->num_rows > 0) {
                                                                 <td><?php echo $tematica['disDescricao']; ?></td> 
                                                                 <td>                                                                 
                                                                     <button type="button"
-                                                                        class="btn btn-inverse-success btn-rounded btn-icon btn-edit-questao">
+                                                                        class="btn btn-inverse-success btn-rounded btn-icon btn-edit-tematica">
                                                                         <i class="bi bi-pencil"></i>
                                                                     </button>
                                                                     <button type="button"
-                                                                        class="btn btn-inverse-danger btn-rounded btn-icon btn-del-questao">
+                                                                        class="btn btn-inverse-danger btn-rounded btn-icon btn-del-tematica">
                                                                         <i class="bi bi-trash"></i>
                                                                     </button>
                                                                 </td>                                                      
@@ -436,11 +509,11 @@ if ($resultSub->num_rows > 0) {
                                                                 <td><?php echo $subgrupo['disDescricao']; ?></td>  
                                                                 <td>                                                                
                                                                     <button type="button"
-                                                                        class="btn btn-inverse-success btn-rounded btn-icon btn-edit-questao">
+                                                                        class="btn btn-inverse-success btn-rounded btn-icon btn-edit-subgrupo">
                                                                         <i class="bi bi-pencil"></i>
                                                                     </button>
-                                                                    <button type="button"
-                                                                        class="btn btn-inverse-danger btn-rounded btn-icon btn-del-questao">
+                                                                    <button id="btn-delete-disciplina" type="button"
+                                                                        class="btn btn-inverse-danger btn-rounded btn-icon btn-del-subgrupo">
                                                                         <i class="bi bi-trash"></i>
                                                                     </button>
                                                                 </td>                                   
@@ -458,8 +531,64 @@ if ($resultSub->num_rows > 0) {
                 </div>
                
 
-                <!-- Then put toasts within -->
-              
+                <div class="modal fade" id="modalDelete" tabindex="-1" aria-labelledby="modalDelete"
+                    aria-hidden="true">
+                    <div class="modal-dialog ">
+                        <div class="modal-content">
+                        <form method="post" action="../backend/delDisciplina.php" >
+                            <div class="modal-header">
+                            <h4 class="modal-title ml-auto">Deseja excluir a disciplina selecionada?</h4>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                 <span aria-hidden="true">&times;</span>
+                                </button>
+                               
+                                    <div class="form-group">
+                                    <input type="hidden" name="idDisciplinaDel" id="idDisciplinaDel">                                                     
+                                    </div>                                                                                              
+                                  
+                             </div>
+                           
+                            <div class="modal-footer">
+                            <button id="modalCancelar" type="button" class="btn btn-secondary  mr-auto">Cancelar</button>
+                            <button id="modalConfirmar" type="submit"
+                                             class="btn btn-primary">
+                                            <i class="bi bi-x-circle btn-icon-prepend "></i>
+                                                Excluir</button>                       
+                            </div>
+                            </form>   
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal fade" id="modalDelete2" tabindex="-1" aria-labelledby="modalDelete2"
+                    aria-hidden="true">
+                    <div class="modal-dialog ">
+                        <div class="modal-content">
+                        <form method="post" action="../backend/delTematica.php" >
+                            <div class="modal-header">
+                            <h4 class="modal-title ml-auto">Deseja excluir a tematica selecionada?</h4>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                 <span aria-hidden="true">&times;</span>
+                                </button>
+                               
+                                    <div class="form-group">
+                                    <input type="hidden" name="idTematicaDel" id="idTematicaDel">                                                     
+                                    </div>                                                                                              
+                                  
+                             </div>
+                           
+                            <div class="modal-footer">
+                            <button id="modalCancelar2" type="button" class="btn btn-secondary  mr-auto">Cancelar</button>
+                            <button id="modalConfirmar2" type="submit"
+                                             class="btn btn-primary">
+                                            <i class="bi bi-x-circle btn-icon-prepend "></i>
+                                                Excluir</button>                       
+                            </div>
+                            </form>   
+                        </div>
+                    </div>
+                </div>
+
 
                 <footer class="footer">
                     <div class="d-sm-flex justify-content-center justify-content-sm-between">
