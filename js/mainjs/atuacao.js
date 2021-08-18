@@ -3,7 +3,10 @@ $(document).ready(function () {
     init();
 
     function init() {
-
+        $("#btn-cancelar-disciplina").hide();
+        $("#btn-cancelar-tematica").hide();
+        $("#alterarDisciplina").hide();
+        $("#alterarTematica").hide();
         $("#cadastrarDisciplina").hide();
         $("#cadastrarSubgrupo").hide();
         $("#cadastrarTematica").hide();
@@ -54,11 +57,46 @@ $(document).ready(function () {
         toggleNovaDisciplina();
     })
 
-    $("#btn-cadastrarDisciplina").click(function () {
+    function toggleAlterarDisciplina() {
 
-    })
+        if ($('#alterarDisciplina').css('display') == 'none') {
+            $("#btn-cancelar-disciplina").show();
+            $("#btn-nova-disciplina").hide();
+            $("#tableDisciplinaToggle").toggle("slow");
+        }
+        $("#alterarDisciplina").toggle("slow");
+    }
 
+    $("#btn-cancelar-disciplina").click(function () {
+        $("#btn-cancelar-disciplina").hide();
+        $("#btn-nova-disciplina").show();
+        $('#alterarDisciplina').toggle("slow");
+        $("#tableDisciplinaToggle").toggle("slow");
+    });
+    $(".btn-edit-disciplina").click(function () {
+        toggleAlterarDisciplina();
 
+        var data = $(this).closest('tr').children("td").map(function () {
+            return $(this).text();
+        }).get();
+
+        $("#idDisciplina").val(data[0]);
+        $("#disDescricao").val(data[1]);
+
+    });
+
+    $(".btn-del-disciplina").on("click", function () {
+        $('#modalDelete').modal('show')
+        var data = $(this).closest('tr').children("td").map(function () {
+            return $(this).text();
+        }).get();
+
+        $("#idDisciplinaDel").val(data[0]);
+
+    });
+    $("#modalCancelar").click(function () {
+        $('#modalDelete').modal('hide')
+    });
 
 
     //!
@@ -107,7 +145,55 @@ $(document).ready(function () {
     $("#btn-cancelarTematica").click(function () {
         toggleNovaTematica();
     })
+
+    function toggleAlterarTematica() {
+
+        if ($('#alterarTematica').css('display') == 'none') {
+            $("#btn-cancelar-tematica").show();
+            $("#btn-novo-tematica").hide();
+            $("#tableTematicaToggle").toggle("slow");
+        }
+        $("#alterarTematica").toggle("slow");
+    }
+
+    $("#btn-cancelar-tematica").click(function () {
+        $("#btn-cancelar-tematica").hide();
+        $("#btn-novo-tematica").show();
+        $('#alterarTematica').toggle("slow");
+        $("#tableTematicaToggle").toggle("slow");
+    });
+    $(".btn-edit-tematica").click(function () {
+        toggleAlterarTematica();
+
+        var data = $(this).closest('tr').children("td").map(function () {
+            return $(this).text();
+        }).get();
+        console.log(data)
+        $("#idTematica").val(data[0]);
+        $("#temDescricao").val(data[1]);
+
+
+    });
+
+    $(".btn-del-tematica").on("click", function () {
+        $('#modalDelete2').modal('show')
+        var data = $(this).closest('tr').children("td").map(function () {
+            return $(this).text();
+        }).get();
+
+        $("#idTematicaDel").val(data[0]);
+
+    });
+    $("#modalCancelar2").click(function () {
+        $('#modalDelete2').modal('hide')
+    });
+
     //!
+
+
+
+
+
 
 });
 
