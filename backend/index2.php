@@ -1,5 +1,10 @@
 <?php
-require_once('config.php');
+$conn = new mysqli("localhost", "root", "", "pedagogy");
+ 
+if ($conn->connect_errno) {
+    die("Conexão falhou: " . $conn->connect_error);
+    
+}
  
 $sql = "SELECT q.queID, q.queDescricao, q.quePalavrasChave, q.queCodigoBncc, q.queNivel, q.queAnoID, q.queStsTipo,q.queStsRevisao,s.subDescricao  FROM questoes q JOIN subgrupos s ON q.queID = s.subID";
 $result = $conn->query($sql);
