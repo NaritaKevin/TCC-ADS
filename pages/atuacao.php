@@ -57,6 +57,12 @@ if ($resultSub->num_rows > 0) {
     <link rel="stylesheet" href="../css/vertical-layout-light/style.css">
     <!-- endinject -->
     <link rel="shortcut icon" href="../images/logo-mini.svg" />
+
+<style>
+    .dropdown-item.active, .dropdown-item:active{
+        background-color: #6664bd ;
+    }
+</style>
 </head>
 
 <body>
@@ -245,6 +251,7 @@ if ($resultSub->num_rows > 0) {
                                                 <tr>
                                                     <th>ID</th>
                                                     <th>Disciplina</th>
+                                                    <th>Ações</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -254,7 +261,17 @@ if ($resultSub->num_rows > 0) {
                                                             
                                                             <tr>
                                                                 <td><?php echo $disciplina['disID']; ?></td>
-                                                                <td><?php echo $disciplina['disDescricao']; ?></td>                                                       
+                                                                <td><?php echo $disciplina['disDescricao']; ?></td> 
+                                                                <td>                                                               
+                                                                    <button type="button"
+                                                                        class="btn btn-inverse-success btn-rounded btn-icon btn-edit-questao">
+                                                                        <i class="bi bi-pencil"></i>
+                                                                    </button>
+                                                                    <button type="button"
+                                                                        class="btn btn-inverse-danger btn-rounded btn-icon btn-del-questao">
+                                                                        <i class="bi bi-trash"></i>
+                                                                    </button>
+                                                                </td>                                                      
                                                             </tr>
                                                         <?php } ?>
                                                     <?php } ?>
@@ -296,7 +313,7 @@ if ($resultSub->num_rows > 0) {
                                                                     <option value="<?php echo $disciplina['disID']; ?>"><?php echo $disciplina['disDescricao']; ?></option>                                                                                                                                                                                                                                                                    
                                                                 <?php } ?>
                                                             <?php } ?>                                                                                                                   
-                                                        </select>
+                                                        </select>                                                      
                                                     </div>
 
                                                     <div class="form-group">
@@ -322,7 +339,7 @@ if ($resultSub->num_rows > 0) {
                                                     <th>ID</th>
                                                     <th>Temática</th>
                                                     <th>Disciplina</th>
-
+                                                    <th>Ações</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -331,7 +348,17 @@ if ($resultSub->num_rows > 0) {
                                                             <tr>
                                                                 <td><?php echo $tematica['temID']; ?></td>
                                                                 <td><?php echo $tematica['temDescricao']; ?></td>
-                                                                <td><?php echo $tematica['disDescricao']; ?></td>                                                       
+                                                                <td><?php echo $tematica['disDescricao']; ?></td> 
+                                                                <td>                                                                 
+                                                                    <button type="button"
+                                                                        class="btn btn-inverse-success btn-rounded btn-icon btn-edit-questao">
+                                                                        <i class="bi bi-pencil"></i>
+                                                                    </button>
+                                                                    <button type="button"
+                                                                        class="btn btn-inverse-danger btn-rounded btn-icon btn-del-questao">
+                                                                        <i class="bi bi-trash"></i>
+                                                                    </button>
+                                                                </td>                                                      
                                                             </tr>
                                                         <?php } ?>
                                                     <?php } ?>
@@ -369,6 +396,7 @@ if ($resultSub->num_rows > 0) {
                                                             <option>Geometria</option>
                                                             <option>Anatomia</option>
                                                         </select>
+                                                        <div class="badge badge-outline-secondary  text-secondary">Outlined</div>
                                                     </div>
                                                     <div class="form-group">
                                                         <label for="subgrupo">Subgrupo</label>
@@ -394,7 +422,7 @@ if ($resultSub->num_rows > 0) {
                                                     <th>Subgrupo</th>
                                                     <th>Temática</th>
                                                     <th>Discplina</th>
-                                                    
+                                                    <th>Ações</th>
 
                                                 </tr>
                                             </thead>
@@ -405,7 +433,17 @@ if ($resultSub->num_rows > 0) {
                                                                 <td><?php echo $subgrupo['subID']; ?></td>
                                                                 <td><?php echo $subgrupo['subDescricao']; ?></td>
                                                                 <td><?php echo $subgrupo['temDescricao']; ?></td>
-                                                                <td><?php echo $subgrupo['disDescricao']; ?></td>                                                         
+                                                                <td><?php echo $subgrupo['disDescricao']; ?></td>  
+                                                                <td>                                                                
+                                                                    <button type="button"
+                                                                        class="btn btn-inverse-success btn-rounded btn-icon btn-edit-questao">
+                                                                        <i class="bi bi-pencil"></i>
+                                                                    </button>
+                                                                    <button type="button"
+                                                                        class="btn btn-inverse-danger btn-rounded btn-icon btn-del-questao">
+                                                                        <i class="bi bi-trash"></i>
+                                                                    </button>
+                                                                </td>                                   
                                                             </tr>
                                                         <?php } ?>
                                                     <?php } ?>
