@@ -5,7 +5,7 @@ $(document).ready(function () {
     function init() {
         $("#btn-cancelar-disciplina").hide();
         $("#btn-cancelar-tematica").hide();
-        $("#alterarDisciplina").hide();
+
         $("#alterarTematica").hide();
         $("#cadastrarDisciplina").hide();
         $("#cadastrarSubgrupo").hide();
@@ -44,6 +44,7 @@ $(document).ready(function () {
         if ($('#cadastrarDisciplina').css('display') == 'none') {
             $("#btn-nova-disciplina").text('Cancelar').prepend(cancelarIcon).removeClass("btn-primary").addClass("btn-secondary");
             $("#tableDisciplinaToggle").toggle("slow");
+
         } else {
             $("#btn-nova-disciplina").text('Adicionar disciplina').prepend(adicionarIcon).removeClass("btn-secondary").addClass("btn-primary");
             $("#tableDisciplinaToggle").toggle("slow");
@@ -52,37 +53,25 @@ $(document).ready(function () {
     }
     $("#btn-nova-disciplina").click(function () {
         toggleNovaDisciplina();
+        window.history.pushState(null, null, window.location.pathname);
+        $("#opDisciplina").val("");
+        $("#disciplina").val("");
     })
-    $("#btn-cancelarDisciplina").click(function () {
-        toggleNovaDisciplina();
-    })
+    /*   $("#btn-cancelarDisciplina").click(function () {
+          toggleNovaDisciplina();
+      }) */
 
-    function toggleAlterarDisciplina() {
 
-        if ($('#alterarDisciplina').css('display') == 'none') {
-            $("#btn-cancelar-disciplina").show();
-            $("#btn-nova-disciplina").hide();
-            $("#tableDisciplinaToggle").toggle("slow");
-        }
-        $("#alterarDisciplina").toggle("slow");
-    }
-
-    $("#btn-cancelar-disciplina").click(function () {
-        $("#btn-cancelar-disciplina").hide();
-        $("#btn-nova-disciplina").show();
-        $('#alterarDisciplina').toggle("slow");
-        $("#tableDisciplinaToggle").toggle("slow");
-    });
     $(".btn-edit-disciplina").click(function () {
-        toggleAlterarDisciplina();
-
+        toggleNovaDisciplina()
         var data = $(this).closest('tr').children("td").map(function () {
             return $(this).text();
         }).get();
+        var hiddenInput = $(this).closest('tr').find('input[type="hidden"]').val();
 
-        $("#idDisciplina").val(data[0]);
-        $("#disDescricao").val(data[1]);
-
+        $("#disciplina").val(data[1]);
+        $("#opDisciplina").val("update");
+        $("#disID").val(hiddenInput);
     });
 
     $(".btn-del-disciplina").on("click", function () {
@@ -94,8 +83,10 @@ $(document).ready(function () {
         $("#idDisciplinaDel").val(data[0]);
 
     });
+    //? Modal cancelar
     $("#modalCancelar").click(function () {
         $('#modalDelete').modal('hide')
+        window.history.pushState(null, null, window.location.pathname);
     });
 
 
