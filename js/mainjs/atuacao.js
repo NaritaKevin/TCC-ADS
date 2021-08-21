@@ -5,7 +5,6 @@ $(document).ready(function () {
     function init() {
         $("#btn-cancelar-disciplina").hide();
         $("#btn-cancelar-tematica").hide();
-
         $("#alterarTematica").hide();
         $("#cadastrarDisciplina").hide();
         $("#cadastrarSubgrupo").hide();
@@ -17,26 +16,12 @@ $(document).ready(function () {
             "lengthMenu": [[5, 15, 25, -1], [5, 15, 25, "Todos"]],
         });
 
-        /*  $('#tableDisciplinasQuestoes').DataTable({
-             columnDefs: [{
-                 orderable: false,
-                 className: 'select-checkbox',
-                 targets: 0
-             }],
-             select: {
-                 style: 'single',
-             },
-             order: [[1, 'asc']],
-             "language": {
-                 url: "../partials/dataTablept-br.json"
-             },
-             "lengthMenu": [[5, 15, 25, -1], [5, 15, 25, "All"]],
- 
-         }); */
+
     }
 
 
-    //! Esconder/mostrar cadastrar disciplina
+    //! Area de js para disciplina
+    //Esconder e mostrar o formulario de cadastro/alteração de tematica
     function toggleNovaDisciplina() {
         let adicionarIcon = `<i class="bi bi-plus-circle btn-icon-prepend"></i>`;
         let cancelarIcon = `<i class="bi bi-x-circle btn-icon-prepend"></i>`;
@@ -80,24 +65,11 @@ $(document).ready(function () {
     });
 
 
+    //! FIM DISCIPLINA
 
 
-
-
-
-
-
-    //? Modal cancelar
-    $("#modalCancelar").click(function () {
-        $('#modalDelete').modal('hide')
-        window.history.pushState(null, null, window.location.pathname);
-    });
-
-
-    //!
-
-
-    //! Esconder/mostrar cadastrar subgrupo
+    //! Area de js para subgrupo
+    //Esconder e mostrar o formulario de cadastro/alteração de tematica
     function toggleNovoSubgrupo() {
         let adicionarIcon = `<i class="bi bi-plus-circle btn-icon-prepend"></i>`;
         let cancelarIcon = `<i class="bi bi-x-circle btn-icon-prepend"></i>`;
@@ -134,6 +106,8 @@ $(document).ready(function () {
         $("#subgrupo").val(data[1]);
         $("#opSubgrupo").val("update");
         $("#subID").val(hiddenInput);
+
+
     });
 
     //Botao da tabela que deleta subgrupo
@@ -141,17 +115,17 @@ $(document).ready(function () {
         $('#modalDelete').modal('show')
 
     });
+
     //Botao cadastrar subgrupo do formulario
     $("#btn-cadastrarSubgrupo").on("click", function () {
         window.history.pushState(null, null, window.location.pathname);
     })
 
+    //! FIM SUBGRUPO
 
 
-    //!
-
-
-    //! Esconder/mostrar cadastrar tematica
+    //! Area de js para tematica
+    //Esconder e mostrar o formulario de cadastro/alteração de tematica
     function toggleNovaTematica() {
         let adicionarIcon = `<i class="bi bi-plus-circle btn-icon-prepend"></i>`;
         let cancelarIcon = `<i class="bi bi-x-circle btn-icon-prepend"></i>`;
@@ -165,57 +139,56 @@ $(document).ready(function () {
         }
         $("#cadastrarTematica").toggle("slow");
     }
+    //Botao para abrir/fechar formulario de cadastro do tematica
     $("#btn-novo-tematica").click(function () {
         toggleNovaTematica();
+        window.history.pushState(null, null, window.location.pathname);
+        $("#opTematica").val("");
+        $("#tematica").val("");
     })
-    $("#btn-cancelarTematica").click(function () {
-        toggleNovaTematica();
-    })
+    /* 
+        $("#btn-cancelarTematica").click(function () {
+            toggleNovaTematica();
+        })
+     */
 
-    function toggleAlterarTematica() {
-
-        if ($('#alterarTematica').css('display') == 'none') {
-            $("#btn-cancelar-tematica").show();
-            $("#btn-novo-tematica").hide();
-            $("#tableTematicaToggle").toggle("slow");
-        }
-        $("#alterarTematica").toggle("slow");
-    }
-
-    $("#btn-cancelar-tematica").click(function () {
-        $("#btn-cancelar-tematica").hide();
-        $("#btn-novo-tematica").show();
-        $('#alterarTematica').toggle("slow");
-        $("#tableTematicaToggle").toggle("slow");
-    });
+    //Botao da tabela de editar tematica
     $(".btn-edit-tematica").click(function () {
-        toggleAlterarTematica();
-
+        toggleNovaTematica();
         var data = $(this).closest('tr').children("td").map(function () {
             return $(this).text();
         }).get();
-        console.log(data)
-        $("#idTematica").val(data[0]);
-        $("#temDescricao").val(data[1]);
+
+        var hiddenInput = $(this).closest('tr').find('input[type="hidden"]').val();
+
+
+        $("#tematica").val(data[1]);
+        $("#opTematica").val("update");
+        $("#temID").val(hiddenInput);
 
 
     });
 
+    //Botao da tabela que deleta tematica
     $(".btn-del-tematica").on("click", function () {
-        $('#modalDelete2').modal('show')
-        var data = $(this).closest('tr').children("td").map(function () {
-            return $(this).text();
-        }).get();
-
-        $("#idTematicaDel").val(data[0]);
+        $('#modalDelete').modal('show')
 
     });
-    $("#modalCancelar2").click(function () {
-        $('#modalDelete2').modal('hide')
+
+    //Botao cadastrar tematica do formulario
+    $("#btn-cadastrarTematica").on("click", function () {
+        window.history.pushState(null, null, window.location.pathname);
+    })
+
+
+    //! FIM TEMATICA
+
+
+    //? Modal cancelar
+    $("#modalCancelar").click(function () {
+        $('#modalDelete').modal('hide')
+        window.history.pushState(null, null, window.location.pathname);
     });
-
-    //!
-
 
 
 
