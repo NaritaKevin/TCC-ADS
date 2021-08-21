@@ -1,6 +1,11 @@
 <?php
+session_start();
 require_once '../backend/disciplina.php';
+
+require_once '../backend/subgrupo.php';
 $p = new Disciplina("pedagogy","localhost","root","");
+
+$s = new Subgrupo("pedagogy","localhost","root","");
 ?>
 
 <!DOCTYPE html>
@@ -38,9 +43,9 @@ $p = new Disciplina("pedagogy","localhost","root","");
 
 <body>
 <?php
-    $idDelete;
+   
 
-if (isset($_POST["disciplina"])) // clicou no botao cadastrar ou editar
+if (isset($_POST["disciplina"])) // clicou no botao cadastrar ou editar DISCIPLINA
 {    
     $opDisciplina = addslashes($_POST["opDisciplina"]);
     $disIdUpdate = addslashes($_POST["disID"]);
@@ -75,12 +80,58 @@ if (isset($_POST["disciplina"])) // clicou no botao cadastrar ou editar
         }
     }
 }
-if(isset($_POST["disIDdelete"])){
-    $disIdDelete = addslashes($_POST["disIDdelete"]);
+if (isset($_POST["subgrupo"])) // clicou no botao cadastrar ou editar SUBGRUPO
+{    $tematicaSubgrupo = 1;
+    $opSubgrupo = addslashes($_POST["opSubgrupo"]);
+    $subIdUpdate = addslashes($_POST["subID"]);
+    $subDescricao = addslashes($_POST['subgrupo']);
+    // editar
+    if($opSubgrupo == "update" && !empty($_POST["subgrupo"]) ){
+       
+        if (!empty($subDescricao)) 
+        {   // EDITAR
+            $s->atualizarDadosSubgrupo($subIdUpdate,$subDescricao);
+                     
+        }
+        else
+        {
+            echo "Preencha todos os campos";
+        }
+    }else{ // cadastrar
+        
+        if (!empty($subDescricao)) 
+        {   // CADASTRAR
+            if(!$s->cadastrarSubgrupo($subDescricao,$tematicaSubgrupo))
+            {
+                echo "Subgrupo ja cadastrado";
+            }
+           
+        }
+        else
+        {
+            echo "Preencha todos os campos";
+        }
+    }
+}
 
-    if(!empty($_POST["disIDdelete"])){
-        $p->excluirDisciplina($disIdDelete);
-        header("location: ../pages/atuacao.php");
+if(isset($_POST["idDeleteSelecionado"])){// Checagem para excluir
+
+    $idDelete = addslashes($_POST["idDeleteSelecionado"]);
+    $table = addslashes($_POST["tabelaSelecionada"]);
+
+   
+
+    if(!empty($_POST["idDeleteSelecionado"]) && $table == "disciplina"){
+
+        $p->excluirDisciplina($idDelete);
+        
+    }else if(!empty($_POST["idDeleteSelecionado"]) && $table == "subgrupo"){
+
+        $s->excluirSubgrupo($idDelete);
+        
+    }else if(!empty($_POST["idDeleteSelecionado"]) && $table == "tematica"){
+
+        
     }
 }
 
@@ -279,6 +330,7 @@ if(isset($_POST["disIDdelete"])){
                                             </thead>
                                             <tbody>
                                             <?php
+                                               
                                                 $dados = $p->buscarDados();
                                                 if(count($dados) > 0)// SE TEM PESSOAS CADASTRADAS NO BANCO         
                                                 {
@@ -300,7 +352,7 @@ if(isset($_POST["disIDdelete"])){
                                                             class="btn btn-inverse-success btn-rounded btn-icon btn-edit-disciplina">
                                                             <i class="bi bi-pencil"></i>
                                                         </button>
-                                                        <button onclick="pickid(<?php echo $dados[$i]['disID'];?>)" type="button"
+                                                        <button onclick="pegarValoresDeletar(<?php echo $dados[$i]['disID'];?>,'disciplina')" type="button"
                                                              class="btn btn-inverse-danger btn-rounded btn-icon btn-del-disciplina">
                                                             <i class="bi bi-trash"></i>
                                                          </button>
@@ -468,28 +520,33 @@ if(isset($_POST["disIDdelete"])){
                                                 <p class="card-description">
                                                     Cadastre um subgrupo para as disciplinas.
                                                 </p>
-                                                <form method="post" action="../backend/cadastro.php">
+                                                <form method="post" >
                                                     <div class="form-group">
                                                         <label class="labelCadastroAtuacao">Temática</label>
-                                                        <select class="selectpicker show-tick" data-width="fit"
+                                                        <select class="selectpicker show-tick" name="tematicaopc" data-width="fit"
                                                             data-live-search="true">
                                                             <option disabled selected>Temática</option>
-                                                            <option>Geometria</option>
-                                                            <option>Anatomia</option>
+                                                            <?php if(!empty($dados)) { ?>
+                                                                <?php foreach($dados as $disciplina) { 
+                                                                    ?>        
+                                                                    <option value="<?php echo $disciplina['disID']; ?>"><?php echo $disciplina['disDescricao']; ?></option>                                                                                                                                                                                                                                                                    
+                                                                <?php } ?>
+                                                            <?php } ?>
                                                         </select>
                                                         <div class="badge badge-outline-secondary  text-secondary">Outlined</div>
                                                     </div>
                                                     <div class="form-group">
                                                         <label for="subgrupo">Subgrupo</label>
-                                                        <input type="text" class="form-control" id="subgrupo"
+                                                        <input type="hidden" name="opSubgrupo" id="opSubgrupo">
+                                                        <input type="hidden" name="subID" id="subID">
+                                                        <input type="text" class="form-control" name="subgrupo" id="subgrupo"
                                                             placeholder="Geometria">
                                                     </div>
                                                     <button id="btn-cadastrarSubgrupo" type="submit"
                                                         class="btn btn-primary mr-2"> 
                                                         <i class="bi bi-check2-circle btn-icon-prepend"></i>
                                                         Cadastrar</button>
-                                                    <button id="btn-cancelarSubgrupo" type="button"
-                                                        class="btn btn-secondary">Cancelar</button>
+                                                    
                                                 </form>
                                             </div>
                                         </div>
@@ -499,34 +556,39 @@ if(isset($_POST["disIDdelete"])){
                                         <table class="table table-hover table-striped" id="tableSubgrupo">
                                             <thead>
                                                 <tr>
-                                                    <th>ID</th>
+                                                    <th width="10%">Nº</th>
                                                     <th>Subgrupo</th>
                                                     <th>Temática</th>
                                                     <th>Discplina</th>
-                                                    <th>Ações</th>
+                                                    <th width="10%">Ações</th>
 
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                            <?php if(!empty($arr_subgrupo)) { ?>
-                                                        <?php foreach($arr_subgrupo as $subgrupo) {?>                                                          
+                                            <?php 
+                                            
+                                             $dadosSub = $s->buscarDadosSub();
+                                             $count = 0;
+                                                    if(!empty($dadosSub)) { ?>
+                                                        <?php foreach($dadosSub as $subgrupo) {  ?>   
+                                                           
                                                             <tr>
-                                                                <td><?php echo $subgrupo['subID']; ?></td>
+                                                                <td><?php echo $count; ?><input type='hidden' value ='<?php echo $subgrupo['subID'];?>'</td>
                                                                 <td><?php echo $subgrupo['subDescricao']; ?></td>
                                                                 <td><?php echo $subgrupo['temDescricao']; ?></td>
                                                                 <td><?php echo $subgrupo['disDescricao']; ?></td>  
                                                                 <td>                                                                
-                                                                    <button type="button"
-                                                                        class="btn btn-inverse-success btn-rounded btn-icon btn-edit-subgrupo">
-                                                                        <i class="bi bi-pencil"></i>
-                                                                    </button>
-                                                                    <button id="btn-delete-disciplina" type="button"
-                                                                        class="btn btn-inverse-danger btn-rounded btn-icon btn-del-subgrupo">
-                                                                        <i class="bi bi-trash"></i>
-                                                                    </button>
+                                                                <button onclick="addUrl(<?php echo $subgrupo['subID'];?>);" type="button"
+                                                                    class="btn btn-inverse-success btn-rounded btn-icon btn-edit-subgrupo">
+                                                                    <i class="bi bi-pencil"></i>
+                                                                </button>
+                                                                <button onclick="pegarValoresDeletar(<?php echo $subgrupo['subID'];?>,'subgrupo')" type="button"
+                                                                    class="btn btn-inverse-danger btn-rounded btn-icon btn-del-subgrupo">
+                                                                    <i class="bi bi-trash"></i>
+                                                                </button>
                                                                 </td>                                   
                                                             </tr>
-                                                        <?php } ?>
+                                                        <?php $count++;} ?>
                                                     <?php } ?>
                                             </tbody>
                                         </table>
@@ -545,11 +607,12 @@ if(isset($_POST["disIDdelete"])){
                         <div class="modal-content">    
                             <form method="post">                
                             <div class="modal-header">
-                            <h4 class="modal-title ml-auto">Deseja excluir a disciplina selecionada?</h4>
+                            <h4 class="modal-title ml-auto">Deseja excluir o item selecionada?</h4>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                  <span aria-hidden="true">&times;</span>
                                 </button>    
-                                <input type="hidden" name="disIDdelete" id="disIDdelete">                    
+                                <input type="hidden" name="idDeleteSelecionado" id="idDeleteSelecionado">     
+                                <input type="hidden" name="tabelaSelecionada" id="tabelaSelecionada">               
                              </div>
                            
                             <div class="modal-footer">
@@ -557,7 +620,6 @@ if(isset($_POST["disIDdelete"])){
                             <button id="modalConfirmar"  type="submit"
                                              class="btn btn-primary">
                                             <i class="bi bi-x-circle btn-icon-prepend "></i>
-                                   
                                             Excluir</button>                       
                             </div>  
                             </form>                       
@@ -601,43 +663,29 @@ if(isset($_POST["disIDdelete"])){
         <!-- End custom js for this page-->
        
         <script type="text/javascript">
-        let idDelete
+     
         function addUrl(id){
 
             const search = '?id_up='+id;
             const urlAtual = window.location.href;
             history.pushState(null, '', urlAtual + search);
         }
-        function pickid(id){
-            idDelete = id;
-            $("#disIDdelete").val(id);
+        function pegarValoresDeletar(id,table){
+            $("#idDeleteSelecionado").val(id);
+            $("#tabelaSelecionada").val(table);
         }
 
-        function deleteModal(){
-            const search = '?id='+idDelete;
-        const urlAtual = window.location.href;
-        history.pushState(null, '', urlAtual + search);
-        }
+     
            
         </script>
 
 
 
         <?php 
-
-
-        if (isset($_GET['id']))  //se id existe entran o if
-        {
-        $id_disciplina = addslashes($_GET['id']);
-        //die($id_pessoa);
-        $p->excluirDisciplina($id_disciplina);
-        header("location: ../pages/atividades.php");
-        }
-
-
         if(isset($_SESSION['msg'])){
             echo $_SESSION['msg'];
             unset($_SESSION['msg']);
+            session_destroy();
         }
         ?>
 
