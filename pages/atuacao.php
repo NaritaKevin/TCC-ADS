@@ -1,10 +1,10 @@
 <?php
-session_start();
-require_once '../backend/disciplina.php';
 
+require_once '../backend/disciplina.php';
+require_once '../backend/tematica.php';
 require_once '../backend/subgrupo.php';
 $p = new Disciplina("pedagogy","localhost","root","");
-
+$t = new Tematica("pedagogy","localhost","root","");
 $s = new Subgrupo("pedagogy","localhost","root","");
 ?>
 
@@ -81,7 +81,7 @@ if (isset($_POST["disciplina"])) // clicou no botao cadastrar ou editar DISCIPLI
     }
 }
 if (isset($_POST["subgrupo"])) // clicou no botao cadastrar ou editar SUBGRUPO
-{    $tematicaSubgrupo = 1;
+{   $tematicaSubgrupo = addslashes($_POST["tematicaopc"]);
     $opSubgrupo = addslashes($_POST["opSubgrupo"]);
     $subIdUpdate = addslashes($_POST["subID"]);
     $subDescricao = addslashes($_POST['subgrupo']);
@@ -90,7 +90,7 @@ if (isset($_POST["subgrupo"])) // clicou no botao cadastrar ou editar SUBGRUPO
        
         if (!empty($subDescricao)) 
         {   // EDITAR
-            $s->atualizarDadosSubgrupo($subIdUpdate,$subDescricao);
+            $s->atualizarDadosSubgrupo($subIdUpdate,$subDescricao,$tematicaSubgrupo);
                      
         }
         else
@@ -113,13 +113,46 @@ if (isset($_POST["subgrupo"])) // clicou no botao cadastrar ou editar SUBGRUPO
         }
     }
 }
+if (isset($_POST["tematica"])) // clicou no botao cadastrar ou editar TEMATICA
+{    
+    $temDisciplinaID = addslashes($_POST["disciplinaopc"]);
+    $opTematica = addslashes($_POST["opTematica"]);
+    $temIdUpdate = addslashes($_POST["temID"]);
+    $temDescricao = addslashes($_POST['tematica']);
+    
+    // editar
+    if($opTematica == "update" && !empty($_POST["tematica"]) ){
+       
+        if (!empty($temDescricao)) 
+        {   // EDITAR
+           
+            $t->atualizarDadosTematica($temIdUpdate,$temDescricao,$temDisciplinaID);                    
+        }
+        else
+        {
+            echo "Preencha todos os campos";
+        }
+    }else{ // cadastrar
+        
+        if (!empty($temDescricao)) 
+        {   // CADASTRAR
+            if(!$t->cadastrarTematica($temDescricao,$temDisciplinaID))
+            {
+                echo "Tematica ja cadastrado";
+            }
+           
+        }
+        else
+        {
+            echo "Preencha todos os campos";
+        }
+    }
+}
 
 if(isset($_POST["idDeleteSelecionado"])){// Checagem para excluir
 
     $idDelete = addslashes($_POST["idDeleteSelecionado"]);
     $table = addslashes($_POST["tabelaSelecionada"]);
-
-   
 
     if(!empty($_POST["idDeleteSelecionado"]) && $table == "disciplina"){
 
@@ -130,8 +163,8 @@ if(isset($_POST["idDeleteSelecionado"])){// Checagem para excluir
         $s->excluirSubgrupo($idDelete);
         
     }else if(!empty($_POST["idDeleteSelecionado"]) && $table == "tematica"){
-
-        
+       
+        $t->excluirTematica($idDelete);
     }
 }
 
@@ -377,12 +410,7 @@ if(isset($_POST["idDeleteSelecionado"])){// Checagem para excluir
                             <div class="card">
                                 <div class="card-body">
                                     <h4 class="card-title">Tabela de tematicas</h4>
-                                    <p class="card-description">
-                                    <button type="button" id="btn-cancelar-tematica"
-                                            class="btn btn-secondary btn-icon-text">
-                                            <i class="bi bi-x-circle btn-icon-prepend"></i>
-                                            Cancelar
-                                        </button>
+                                    <p class="card-description">                                  
                                         <button type="button" id="btn-novo-tematica"
                                             class="btn btn-primary btn-icon-text">
                                             <i class="bi bi-plus-circle btn-icon-prepend"></i>
@@ -396,12 +424,13 @@ if(isset($_POST["idDeleteSelecionado"])){// Checagem para excluir
                                                 <p class="card-description">
                                                     Cadastre uma temática para os subgrupos.
                                                 </p>
-                                                <form method="post" action="../backend/cadTematica.php">
+                                                <form method="post" >
                                                     <div class="form-group" >
                                                         <label class="labelCadastroAtuacao">Disciplina</label>
                                                         <select class="selectpicker show-tick" name="disciplinaopc"data-width="fit"
                                                             data-live-search="true">
-                                                            <option disabled selected>Disciplina</option>
+                                                            <?php  $arr_disciplina = $p->buscarDados() ?>
+                                    
                                                             <?php if(!empty($arr_disciplina)) { ?>
                                                                 <?php foreach($arr_disciplina as $disciplina) { 
                                                                     ?>        
@@ -410,11 +439,11 @@ if(isset($_POST["idDeleteSelecionado"])){// Checagem para excluir
                                                             <?php } ?>                                                                                                                   
                                                         </select>                                                      
                                                     </div>
-
                                                     <div class="form-group">
-                                                        <label for="cadastroTematica">Temática</label>
-                                                        <input type="text" class="form-control" name="tematica" id="cadastroTematica"
-                                                            placeholder="Operações Matemáticas">
+                                                    <label for="cadastroTematica">Temática</label>
+                                                    <input type="text" class="form-control" name="tematica" id="tematica" placeholder="Operações Matemáticas">
+                                                        <input type="hidden" name="opTematica" id="opTematica">
+                                                        <input type="hidden" name="temID" id="temID">
                                                     </div>
                                                     <button id="btn-cadastrarTematica" type="submit"
                                                         class="btn btn-primary mr-2"> 
@@ -426,76 +455,47 @@ if(isset($_POST["idDeleteSelecionado"])){// Checagem para excluir
                                             </div>
                                         </div>
                                     </div>
-                                    <div id="alterarTematica" class=" stretch-card">
-                                        <div class="card">
-                                            <div class="card-body">
-                                                <h4 class="card-title">Alterar Temática</h4>
-                                                <p class="card-description">
-                                                    Altere a temática selecionada.
-                                                </p>
-                                                <form method="post" action="../backend/altTematica.php">
-                                                    <div class="form-group" >
-                                                    <input type="hidden" name="idTematica" id="idTematica">
-                                                        <label class="labelCadastroAtuacao">Disciplina</label>
-                                                        <select class="selectpicker show-tick" name="disciplinaopcalt"data-width="fit"
-                                                            data-live-search="true">
-                                                            <option disabled selected>Disciplina</option>
-                                                            <?php if(!empty($arr_disciplina)) { ?>
-                                                                <?php foreach($arr_disciplina as $disciplina) { 
-                                                                    ?>        
-                                                                    <option value="<?php echo $disciplina['disID']; ?>"><?php echo $disciplina['disDescricao']; ?></option>                                                                                                                                                                                                                                                                    
-                                                                <?php } ?>
-                                                            <?php } ?>                                                                                                                   
-                                                        </select>                                                      
-                                                    </div>
-
-                                                    <div class="form-group">
-                                                        <label for="alterarTematica">Temática</label>
-                                                        <input type="text" class="form-control" name="temDescricao" id="temDescricao"
-                                                            placeholder="Operações Matemáticas">
-                                                    </div>
-                                                    <button id="btn-alterarTematica" type="submit"
-                                                        class="btn btn-primary mr-2"> 
-                                                        <i class="bi bi-check2-circle btn-icon-prepend"></i>
-                                                        Alterar</button>
-                                                   <!--  <button id="btn-cancelarTematica" type="button"
-                                                        class="btn btn-secondary">Cancelar</button> -->
-                                                </form>
-                                            </div>
-                                        </div>
-                                    </div>
-
                                     <div id="tableTematicaToggle" class="expandable-table table-responsive">
                                         <table class="table table-hover table-striped" id="tableTematica">
                                             <thead>
                                                 <tr>
-                                                    <th>ID</th>
+                                                    <th>N</th>
                                                     <th>Temática</th>
                                                     <th>Disciplina</th>
                                                     <th>Ações</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
+                                             <?php $arr_tematica = $t->BuscarTematica();
+                                             $count = 0;
+
+                                             ?>                       
                                             <?php if(!empty($arr_tematica)) { ?>
                                                         <?php foreach($arr_tematica as $tematica) {?>                                                          
                                                             <tr>
-                                                                <td><?php echo $tematica['temID']; ?></td>
+                                                            <td> 
+                                                                <?php echo $count ?>
+                                                                <input type='hidden' value ='<?php echo $tematica['temID'];?>'>
+                                                            </td>
                                                                 <td><?php echo $tematica['temDescricao']; ?></td>
-                                                                <td><?php echo $tematica['disDescricao']; ?></td> 
-                                                                <td>                                                                 
-                                                                    <button type="button"
+                                                                <td><?php echo $tematica['disDescricao']; ?></td>  
+                                                                <td>                                                                
+                                                                    <button onclick="addUrl(<?php echo $tematica['temID'];?>);"
+                                                                    type="button" 
                                                                         class="btn btn-inverse-success btn-rounded btn-icon btn-edit-tematica">
                                                                         <i class="bi bi-pencil"></i>
                                                                     </button>
-                                                                    <button type="button"
+                                                                    <button onclick="pegarValoresDeletar(<?php echo $tematica['temID'];?>,'tematica')" 
+                                                                    id="btn-delete-disciplina" type="button"
                                                                         class="btn btn-inverse-danger btn-rounded btn-icon btn-del-tematica">
                                                                         <i class="bi bi-trash"></i>
                                                                     </button>
-                                                                </td>                                                      
+                                                                </td>                                   
                                                             </tr>
-                                                        <?php } ?>
+                                                        <?php 
+                                                        $count++;
+                                                        } ?>
                                                     <?php } ?>
-                                            </tbody>
                                         </table>
                                     </div>
                                 </div>
@@ -526,10 +526,10 @@ if(isset($_POST["idDeleteSelecionado"])){// Checagem para excluir
                                                         <select class="selectpicker show-tick" name="tematicaopc" data-width="fit"
                                                             data-live-search="true">
                                                             <option disabled selected>Temática</option>
-                                                            <?php if(!empty($dados)) { ?>
-                                                                <?php foreach($dados as $disciplina) { 
+                                                            <?php if(!empty($arr_tematica)) { ?>
+                                                                <?php foreach($arr_tematica as $tematicaop) { 
                                                                     ?>        
-                                                                    <option value="<?php echo $disciplina['disID']; ?>"><?php echo $disciplina['disDescricao']; ?></option>                                                                                                                                                                                                                                                                    
+                                                                    <option value="<?php echo $tematicaop['temID']; ?>"><?php echo $tematicaop['temDescricao']; ?></option>                                                                                                                                                                                                                                                                    
                                                                 <?php } ?>
                                                             <?php } ?>
                                                         </select>
@@ -665,7 +665,6 @@ if(isset($_POST["idDeleteSelecionado"])){// Checagem para excluir
         <script type="text/javascript">
      
         function addUrl(id){
-
             const search = '?id_up='+id;
             const urlAtual = window.location.href;
             history.pushState(null, '', urlAtual + search);
@@ -685,7 +684,7 @@ if(isset($_POST["idDeleteSelecionado"])){// Checagem para excluir
         if(isset($_SESSION['msg'])){
             echo $_SESSION['msg'];
             unset($_SESSION['msg']);
-            session_destroy();
+            
         }
         ?>
 
