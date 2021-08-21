@@ -1,5 +1,5 @@
 <?php
-session_start();
+
 class Subgrupo{
     private $pdo;
     //CONEXAO COM O BANCO DE DADOS
@@ -78,11 +78,12 @@ class Subgrupo{
 
         return $res;
     }
-    public function atualizarDadosSubgrupo($id,$descricao){
+    public function atualizarDadosSubgrupo($id,$descricao,$idTematica){
        
-        $cmd = $this->pdo->prepare("UPDATE subgrupos SET subDescricao = :subDescricao WHERE subID = :subID ");
+        $cmd = $this->pdo->prepare("UPDATE subgrupos SET subDescricao = :subDescricao, subTematicaID = :subTematicaID WHERE subID = :subID ");
         $cmd->bindValue(":subID",$id);
         $cmd->bindValue(":subDescricao",$descricao);
+        $cmd->bindValue(":subTematicaID",$idTematica);
 
         if($cmd->execute()){
             $_SESSION['msg'] = ' <script type="text/javascript">
