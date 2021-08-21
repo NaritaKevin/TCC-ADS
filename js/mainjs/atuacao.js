@@ -51,6 +51,7 @@ $(document).ready(function () {
         }
         $("#cadastrarDisciplina").toggle("slow");
     }
+    //Botao para abrir/fechar formulario de cadastro da  disciplina
     $("#btn-nova-disciplina").click(function () {
         toggleNovaDisciplina();
         window.history.pushState(null, null, window.location.pathname);
@@ -61,7 +62,7 @@ $(document).ready(function () {
           toggleNovaDisciplina();
       }) */
 
-
+    //Botao editar da tabela de disciplina
     $(".btn-edit-disciplina").click(function () {
         toggleNovaDisciplina()
         var data = $(this).closest('tr').children("td").map(function () {
@@ -73,16 +74,19 @@ $(document).ready(function () {
         $("#opDisciplina").val("update");
         $("#disID").val(hiddenInput);
     });
-
+    //botao excluir da tabela de disciplina
     $(".btn-del-disciplina").on("click", function () {
         $('#modalDelete').modal('show')
-        var data = $(this).closest('tr').children("td").map(function () {
-            return $(this).text();
-        }).get();
-
-        $("#idDisciplinaDel").val(data[0]);
-
     });
+
+
+
+
+
+
+
+
+
     //? Modal cancelar
     $("#modalCancelar").click(function () {
         $('#modalDelete').modal('hide')
@@ -107,12 +111,43 @@ $(document).ready(function () {
         }
         $("#cadastrarSubgrupo").toggle("slow");
     }
+    //Botao para abrir/fechar formulario de cadastro do subgrupo
     $("#btn-novo-subgrupo").click(function () {
         toggleNovoSubgrupo();
+        window.history.pushState(null, null, window.location.pathname);
+        $("#opSubgrupo").val("");
+        $("#subgrupo").val("");
     })
-    $("#btn-cancelarSubgrupo").click(function () {
-        toggleNovoSubgrupo();
+    /*  $("#btn-cancelarSubgrupo").click(function () {
+         toggleNovoSubgrupo();
+     }) */
+
+    //Botao da tabela de editar subgrupo
+    $(".btn-edit-subgrupo").click(function () {
+        toggleNovoSubgrupo()
+        var data = $(this).closest('tr').children("td").map(function () {
+            return $(this).text();
+        }).get();
+
+        var hiddenInput = $(this).closest('tr').find('input[type="hidden"]').val();
+
+        $("#subgrupo").val(data[1]);
+        $("#opSubgrupo").val("update");
+        $("#subID").val(hiddenInput);
+    });
+
+    //Botao da tabela que deleta subgrupo
+    $(".btn-del-subgrupo").on("click", function () {
+        $('#modalDelete').modal('show')
+
+    });
+    //Botao cadastrar subgrupo do formulario
+    $("#btn-cadastrarSubgrupo").on("click", function () {
+        window.history.pushState(null, null, window.location.pathname);
     })
+
+
+
     //!
 
 
