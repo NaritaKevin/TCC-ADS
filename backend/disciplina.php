@@ -1,5 +1,7 @@
 <?php
+   
 class Disciplina{
+
     private $pdo;
     //CONEXAO COM O BANCO DE DADOS
     public function __construct($dbname, $host, $user, $senha)
@@ -70,5 +72,10 @@ class Disciplina{
         $cmd->bindValue(":disID",$id);
         $cmd->execute();
     }
+
+
 }
+
+
+
 ?>

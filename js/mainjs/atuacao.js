@@ -1,15 +1,78 @@
 $(document).ready(function () {
-
+    let buscaInicialDisciplina = true;
+    let buscaInicialTematica = true;
+    let buscaInicialSubgrupo = true;
     init();
 
     function init() {
+
         $("#btn-cancelar-disciplina").hide();
         $("#btn-cancelar-tematica").hide();
         $("#alterarTematica").hide();
         $("#cadastrarDisciplina").hide();
         $("#cadastrarSubgrupo").hide();
         $("#cadastrarTematica").hide();
-        $('#tableDisciplinas , #tableSubgrupo , #tableTematica').DataTable({
+        tableDisciplina = $('#tableDisciplinas').DataTable({
+            ajax: {
+                "url": "../backend/processar.php",
+                "method": 'POST',
+                "data": { buscaInicialDisciplina: buscaInicialDisciplina },
+                "dataSrc": ""
+            },
+            language: {
+                url: "../partials/dataTablept-br.json"
+            },
+            lengthMenu: [[5, 15, 25, -1], [5, 15, 25, "Todos"]],
+            columns: [
+                { data: 'disID' },
+                { data: 'disDescricao' },
+                {
+                    data: null, render: function (data, type, row) {
+
+                        return `<button  type="button"
+                                class="btn  btn-inverse-success btn-rounded btn-icon btn-edit-disciplina">
+                                <i class="bi bi-pencil"></i>
+                            </button>
+                            <button type="button"
+                                class="btn btn-inverse-danger btn-rounded btn-icon btn-del-disciplina">
+                                <i class="bi bi-trash"></i>
+                            </button>`;
+                    }
+                },
+            ]
+        });
+
+        tableTematica = $('#tableTematica').DataTable({
+            ajax: {
+                "url": "../backend/processar.php",
+                "method": 'POST',
+                "data": { buscaInicialTematica: buscaInicialTematica },
+                "dataSrc": ""
+            },
+            language: {
+                url: "../partials/dataTablept-br.json"
+            },
+            lengthMenu: [[5, 15, 25, -1], [5, 15, 25, "Todos"]],
+            columns: [
+                { data: 'temID' },
+                { data: 'temDescricao' },
+                { data: 'disDescricao' },
+                {
+                    data: null, render: function (data, type, row) {
+
+                        return `<button  type="button"
+                                class="btn  btn-inverse-success btn-rounded btn-icon btn-edit-tematica">
+                                <i class="bi bi-pencil"></i>
+                            </button>
+                            <button type="button"
+                                class="btn btn-inverse-danger btn-rounded btn-icon btn-del-tematica">
+                                <i class="bi bi-trash"></i>
+                            </button>`;
+                    }
+                },
+            ]
+        });
+        $('#tableSubgrupo').DataTable({
             "language": {
                 url: "../partials/dataTablept-br.json"
             },
@@ -20,8 +83,64 @@ $(document).ready(function () {
     }
 
 
-    //! Area de js para disciplina
-    //Esconder e mostrar o formulario de cadastro/alteração de tematica
+    //! Area de js para DISCIPLINA
+
+    //? Botao do formulario de cadastrar/alterar DISCIPLINA
+    $('#formDisciplina').submit(function (e) {
+        e.preventDefault();//evita de dar reload na pagina
+        var opDisciplina = $('#opDisciplina').val();
+        var disciplina = $('#disciplina').val();
+        var disID = $("#disID").val();
+
+        $.ajax({
+            url: '../backend/processar.php',
+            method: 'POST',
+            data: {
+                disciplina: disciplina,
+                disID: disID,
+                opDisciplina: opDisciplina
+            },
+            dataType: 'json',
+            success: function (data) {
+                if (data.type == 'erro') {
+                    Swal.fire({
+                        position: "center",
+                        icon: "error",
+                        title: data.text,
+                        showConfirmButton: false,
+                        timer: 2000
+                    })
+
+                } else if (data.type == 'sucesso') {
+                    Swal.fire({
+                        position: "center",
+                        icon: "success",
+                        title: data.text,
+                        showConfirmButton: false,
+                        timer: 2000
+                    })
+
+                    $("#btn-nova-disciplina").click();//Simula um click manual no botao de cadastrar
+                } else if (data.type == 'validacao') {
+                    Swal.fire({
+                        position: "center",
+                        icon: "warning",
+                        title: data.text,
+                        showConfirmButton: false,
+                        timer: 2000
+                    })
+                    //!fazer validação dos campos inserindo no html depois
+                }
+            }
+        }).done(function (data) {
+
+            tableDisciplina.ajax.reload(null, false);
+            tableTematica.ajax.reload(null, false);
+        });
+        return false;
+    });
+
+    //? Esconder e mostra o formulario de cadastro/alteração de disciplina
     function toggleNovaDisciplina() {
         let adicionarIcon = `<i class="bi bi-plus-circle btn-icon-prepend"></i>`;
         let cancelarIcon = `<i class="bi bi-x-circle btn-icon-prepend"></i>`;
@@ -36,40 +155,44 @@ $(document).ready(function () {
         }
         $("#cadastrarDisciplina").toggle("slow");
     }
-    //Botao para abrir/fechar formulario de cadastro da  disciplina
-    $("#btn-nova-disciplina").click(function () {
-        toggleNovaDisciplina();
-        window.history.pushState(null, null, window.location.pathname);
-        $("#opDisciplina").val("");
-        $("#disciplina").val("");
-    })
-    /*   $("#btn-cancelarDisciplina").click(function () {
-          toggleNovaDisciplina();
-      }) */
 
-    //Botao editar da tabela de disciplina
-    $(".btn-edit-disciplina").click(function () {
-        toggleNovaDisciplina()
-        var data = $(this).closest('tr').children("td").map(function () {
+    //? Botao cadastrar disciplina
+    $("#btn-nova-disciplina").click(function () {
+        toggleNovaDisciplina();//Mostra ou esconde tabela
+        $('#opDisciplina,#disciplina,#disID').val("");//Limpa os campos
+    })
+
+
+    //? Botao editar da tabela de disciplina
+    $("#tbodyDisciplina").on("click", ".btn-edit-disciplina", function () {
+        toggleNovaDisciplina()//Mostra ou esconde tabela
+        let dados = $(this).closest('tr').children("td").map(function () {
             return $(this).text();
         }).get();
-        var hiddenInput = $(this).closest('tr').find('input[type="hidden"]').val();
+        $("#disID").val(dados[0]);//Insere ID no formulario para alterar
+        $("#disciplina").val(dados[1]);//Insere disciplina selecionada
+        $("#opDisciplina").val("update");//Informa update para atualizar no backend
 
-        $("#disciplina").val(data[1]);
-        $("#opDisciplina").val("update");
-        $("#disID").val(hiddenInput);
+
+    })
+
+    //? Botao excluir da tabela de disciplina
+    $("#tbodyDisciplina").on("click", ".btn-del-disciplina", function () {
+        let dados = $(this).closest('tr').children("td").map(function () {
+            return $(this).text();
+        }).get();
+
+        $("#idDeleteSelecionado").val(dados[0]);//Insere o ID no modal de excluir
+        $("#tabelaSelecionada").val("disciplina");//Insere a tabela no modal de excluir
+        $('#modalDelete').modal('show')//Mostra modal
+
     });
-    //botao excluir da tabela de disciplina
-    $(".btn-del-disciplina").on("click", function () {
-        $('#modalDelete').modal('show')
-    });
-
-
     //! FIM DISCIPLINA
 
 
-    //! Area de js para subgrupo
-    //Esconder e mostrar o formulario de cadastro/alteração de tematica
+
+    //! Area de js para SUBGRUPO
+    //?Esconder e mostrar o formulario de cadastro/alteração de subgrupo
     function toggleNovoSubgrupo() {
         let adicionarIcon = `<i class="bi bi-plus-circle btn-icon-prepend"></i>`;
         let cancelarIcon = `<i class="bi bi-x-circle btn-icon-prepend"></i>`;
@@ -83,10 +206,9 @@ $(document).ready(function () {
         }
         $("#cadastrarSubgrupo").toggle("slow");
     }
-    //Botao para abrir/fechar formulario de cadastro do subgrupo
+    //? Botao cadastrar subgrupo
     $("#btn-novo-subgrupo").click(function () {
         toggleNovoSubgrupo();
-        window.history.pushState(null, null, window.location.pathname);
         $("#opSubgrupo").val("");
         $("#subgrupo").val("");
     })
@@ -94,37 +216,92 @@ $(document).ready(function () {
          toggleNovoSubgrupo();
      }) */
 
-    //Botao da tabela de editar subgrupo
+    //?Botao da tabela de editar subgrupo
     $(".btn-edit-subgrupo").click(function () {
         toggleNovoSubgrupo()
-        var data = $(this).closest('tr').children("td").map(function () {
+        let dados = $(this).closest('tr').children("td").map(function () {
             return $(this).text();
         }).get();
 
-        var hiddenInput = $(this).closest('tr').find('input[type="hidden"]').val();
-
-        $("#subgrupo").val(data[1]);
+        $("#subID").val(dados[0]);
+        $("#subgrupo").val(dados[1]);
         $("#opSubgrupo").val("update");
-        $("#subID").val(hiddenInput);
-
 
     });
 
-    //Botao da tabela que deleta subgrupo
+    //?Botao da tabela que deleta subgrupo
     $(".btn-del-subgrupo").on("click", function () {
+        let dados = $(this).closest('tr').children("td").map(function () {
+            return $(this).text();
+        }).get();
+
+        $("#idDeleteSelecionado").val(dados[0])
+        $("#tabelaSelecionada").val("subgrupo");
         $('#modalDelete').modal('show')
 
     });
 
-    //Botao cadastrar subgrupo do formulario
-    $("#btn-cadastrarSubgrupo").on("click", function () {
-        window.history.pushState(null, null, window.location.pathname);
-    })
+
+
 
     //! FIM SUBGRUPO
 
 
     //! Area de js para tematica
+    //? Botao do formulario de cadastrar/alterar TEMATICA
+    $('#formTematica').submit(function (e) {
+        e.preventDefault();//evita de dar reload na pagina
+        var opDisciplina = $('#opDisciplina').val();
+        var disciplina = $('#disciplina').val();
+        var disID = $("#disID").val();
+
+        $.ajax({
+            url: '../backend/processar.php',
+            method: 'POST',
+            data: {
+                disciplina: disciplina,
+                disID: disID,
+                opDisciplina: opDisciplina
+            },
+            dataType: 'json',
+            success: function (data) {
+                if (data.type == 'erro') {
+                    Swal.fire({
+                        position: "center",
+                        icon: "error",
+                        title: data.text,
+                        showConfirmButton: false,
+                        timer: 2000
+                    })
+
+                } else if (data.type == 'sucesso') {
+                    Swal.fire({
+                        position: "center",
+                        icon: "success",
+                        title: data.text,
+                        showConfirmButton: false,
+                        timer: 2000
+                    })
+
+                    $("#btn-nova-disciplina").click();//Simula um click manual no botao de cadastrar
+                } else if (data.type == 'validacao') {
+                    Swal.fire({
+                        position: "center",
+                        icon: "warning",
+                        title: data.text,
+                        showConfirmButton: false,
+                        timer: 2000
+                    })
+                    //!fazer validação dos campos inserindo no html depois
+                }
+            }
+        }).done(function (data) {
+
+            tableDisciplina.ajax.reload(null, false);
+            tableTematica.ajax.reload(null, false);
+        });
+        return false;
+    });
     //Esconder e mostrar o formulario de cadastro/alteração de tematica
     function toggleNovaTematica() {
         let adicionarIcon = `<i class="bi bi-plus-circle btn-icon-prepend"></i>`;
@@ -142,7 +319,7 @@ $(document).ready(function () {
     //Botao para abrir/fechar formulario de cadastro do tematica
     $("#btn-novo-tematica").click(function () {
         toggleNovaTematica();
-        window.history.pushState(null, null, window.location.pathname);
+
         $("#opTematica").val("");
         $("#tematica").val("");
     })
@@ -155,30 +332,30 @@ $(document).ready(function () {
     //Botao da tabela de editar tematica
     $(".btn-edit-tematica").click(function () {
         toggleNovaTematica();
-        var data = $(this).closest('tr').children("td").map(function () {
+        let dados = $(this).closest('tr').children("td").map(function () {
             return $(this).text();
         }).get();
 
-        var hiddenInput = $(this).closest('tr').find('input[type="hidden"]').val();
-
-
-        $("#tematica").val(data[1]);
+        $("#temID").val(dados[0]);
+        $("#tematica").val(dados[1]);
         $("#opTematica").val("update");
-        $("#temID").val(hiddenInput);
-
-
     });
 
     //Botao da tabela que deleta tematica
     $(".btn-del-tematica").on("click", function () {
+        let dados = $(this).closest('tr').children("td").map(function () {
+            return $(this).text();
+        }).get();
+
+        $("#idDeleteSelecionado").val(dados[0])
+        $("#tabelaSelecionada").val("tematica");
         $('#modalDelete').modal('show')
 
     });
 
-    //Botao cadastrar tematica do formulario
-    $("#btn-cadastrarTematica").on("click", function () {
-        window.history.pushState(null, null, window.location.pathname);
-    })
+
+    // window.history.pushState(null, null, window.location.pathname);
+
 
 
     //! FIM TEMATICA
@@ -187,7 +364,8 @@ $(document).ready(function () {
     //? Modal cancelar
     $("#modalCancelar").click(function () {
         $('#modalDelete').modal('hide')
-        window.history.pushState(null, null, window.location.pathname);
+        $("#idDeleteSelecionado.#tabelaSelecionad").val("")
+
     });
 
 

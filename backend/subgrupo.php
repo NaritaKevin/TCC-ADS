@@ -42,28 +42,7 @@ class Subgrupo{
             VALUES (:subDescricao,:subTematicaID)");
             $cmd->bindValue(":subDescricao",$descricao);
             $cmd->bindValue(":subTematicaID",$tematica);
-            if($cmd->execute()){
-                $_SESSION['msg'] = ' <script type="text/javascript">
-                                        Swal.fire({
-                                        position: "center",
-                                        icon: "success",
-                                        title: "Cadastrado com sucesso!",
-                                        showConfirmButton: false,
-                                        timer: 2000
-                                        })
-                                    </script>';
-                
-            }else{
-                $_SESSION['msg'] = ' <script type="text/javascript">
-                                        Swal.fire({
-                                        position: "center",
-                                        icon: "error",
-                                        title: "Ocorreu um erro ao cadastrar!",
-                                        showConfirmButton: false,
-                                        timer: 2000
-                                        })
-                                    </script>';             
-            }
+            $cmd->execute();
             return true;
         }
 
@@ -84,29 +63,7 @@ class Subgrupo{
         $cmd->bindValue(":subID",$id);
         $cmd->bindValue(":subDescricao",$descricao);
         $cmd->bindValue(":subTematicaID",$idTematica);
-
-        if($cmd->execute()){
-            $_SESSION['msg'] = ' <script type="text/javascript">
-                                    Swal.fire({
-                                    position: "center",
-                                    icon: "success",
-                                    title: "Atualizado com sucesso!",
-                                    showConfirmButton: false,
-                                    timer: 2000
-                                    })
-                                </script>';
-            
-        }else{
-            $_SESSION['msg'] = ' <script type="text/javascript">
-                                    Swal.fire({
-                                    position: "center",
-                                    icon: "error",
-                                    title: "Ocorreu um erro ao cadastrar!",
-                                    showConfirmButton: false,
-                                    timer: 2000
-                                    })
-                                </script>';             
-        }
+        $cmd->execute();
 
     }
 
@@ -114,29 +71,7 @@ class Subgrupo{
     {
         $cmd = $this->pdo->prepare(" DELETE FROM subgrupos WHERE subID = :subID ");
         $cmd->bindValue(":subID",$id);
-      
-        if($cmd->execute()){
-            $_SESSION['msg'] = ' <script type="text/javascript">
-                                    Swal.fire({
-                                    position: "center",
-                                    icon: "success",
-                                    title: "Excluido com sucesso!",
-                                    showConfirmButton: false,
-                                    timer: 2000
-                                    })
-                                </script>';
-            
-        }else{
-            $_SESSION['msg'] = ' <script type="text/javascript">
-                                    Swal.fire({
-                                    position: "center",
-                                    icon: "error",
-                                    title: "Ocorreu um erro ao cadastrar!",
-                                    showConfirmButton: false,
-                                    timer: 2000
-                                    })
-                                </script>';             
-        }
+        $cmd->execute();
     }
 }
 ?>

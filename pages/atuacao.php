@@ -45,41 +45,6 @@ $s = new Subgrupo("pedagogy","localhost","root","");
 <?php
    
 
-if (isset($_POST["disciplina"])) // clicou no botao cadastrar ou editar DISCIPLINA
-{    
-    $opDisciplina = addslashes($_POST["opDisciplina"]);
-    $disIdUpdate = addslashes($_POST["disID"]);
-    $disDescricao = addslashes($_POST['disciplina']);
-    // editar
-    if($opDisciplina == "update" && !empty($_POST["disciplina"]) ){
-       
-
-        if (!empty($disDescricao)) 
-        {   // EDITAR
-            $p->atualizarDadosDisciplina($disIdUpdate,$disDescricao);
-           
-            
-        }
-        else
-        {
-            echo "Preencha todos os campos";
-        }
-    }else{ // cadastrar
-        
-        if (!empty($disDescricao)) 
-        {   // CADASTRAR
-            if(!$p->cadastrarDisciplina($disDescricao))
-            {
-                echo "Disciplina ja cadastrado";
-            }
-           
-        }
-        else
-        {
-            echo "Preencha todos os campos";
-        }
-    }
-}
 if (isset($_POST["subgrupo"])) // clicou no botao cadastrar ou editar SUBGRUPO
 {   $tematicaSubgrupo = addslashes($_POST["tematicaopc"]);
     $opSubgrupo = addslashes($_POST["opSubgrupo"]);
@@ -331,7 +296,7 @@ if(isset($_POST["idDeleteSelecionado"])){// Checagem para excluir
                                                 <p class="card-description">
                                                     Cadastre uma disciplina para as questões.
                                                 </p>
-                                                <form method="post" >
+                                                <form id="formDisciplina" >
                                                     <div class="form-group">                                                 
                                                         <label for="disciplina">Disciplina</label>
                                                         <input type="hidden" name="opDisciplina" id="opDisciplina">
@@ -356,48 +321,14 @@ if(isset($_POST["idDeleteSelecionado"])){// Checagem para excluir
                                         <table class="table table-hover table-striped" id="tableDisciplinas">
                                             <thead>
                                                 <tr>
-                                                    <th width="10%">Nº</th>
+                                                    <th width="7%">ID</th>
                                                     <th>Disciplina</th>
                                                     <th width="10%">Ações</th>
                                                 </tr>
                                             </thead>
-                                            <tbody>
-                                            <?php
+                                            <tbody id="tbodyDisciplina">
                                                
-                                                $dados = $p->buscarDados();
-                                                if(count($dados) > 0)// SE TEM PESSOAS CADASTRADAS NO BANCO         
-                                                {
-                                                    for ($i=0; $i <count($dados) ; $i++) 
-                                                    {
-                                                    echo "<tr>";
-                                                        foreach ($dados[$i] as $key => $value) 
-                                                        {
-                                                            
-                                                            if ($key != "disID" )
-                                                            {   echo "<td>" .$i. "<input type='hidden' value ='".$dados[$i]['disID']."' ></td>";    
-                                                                echo "<td>" .$value. "</td>";    
-                                                                
-                                                            }
-                                                        }
-                                                    ?>
-                                                        <td>
-                                                        <button onclick="addUrl(<?php echo $dados[$i]['disID'];?>);" type="button"
-                                                            class="btn btn-inverse-success btn-rounded btn-icon btn-edit-disciplina">
-                                                            <i class="bi bi-pencil"></i>
-                                                        </button>
-                                                        <button onclick="pegarValoresDeletar(<?php echo $dados[$i]['disID'];?>,'disciplina')" type="button"
-                                                             class="btn btn-inverse-danger btn-rounded btn-icon btn-del-disciplina">
-                                                            <i class="bi bi-trash"></i>
-                                                         </button>
-                                                        </td>
-                                                    <?php
-                                                    echo "</tr>";
-                                                    }
-                                                }else
-                                                {
-                                                    echo " ainda não há pessoas cadastradas";
-                                                }
-                                            ?>
+
                                             </tbody>
                                         </table>
                                     </div>
@@ -424,7 +355,7 @@ if(isset($_POST["idDeleteSelecionado"])){// Checagem para excluir
                                                 <p class="card-description">
                                                     Cadastre uma temática para os subgrupos.
                                                 </p>
-                                                <form method="post" >
+                                                <form id="formTematica" >
                                                     <div class="form-group" >
                                                         <label class="labelCadastroAtuacao">Disciplina</label>
                                                         <select class="selectpicker show-tick" name="disciplinaopc"data-width="fit"
@@ -459,43 +390,16 @@ if(isset($_POST["idDeleteSelecionado"])){// Checagem para excluir
                                         <table class="table table-hover table-striped" id="tableTematica">
                                             <thead>
                                                 <tr>
-                                                    <th>N</th>
+                                                    <th width="7%">ID</th>
                                                     <th>Temática</th>
                                                     <th>Disciplina</th>
-                                                    <th>Ações</th>
+                                                    <th width="10%">Ações</th>
                                                 </tr>
                                             </thead>
-                                            <tbody>
-                                             <?php $arr_tematica = $t->BuscarTematica();
-                                             $count = 0;
+                                            <tbody id="tbodyTematica">
 
-                                             ?>                       
-                                            <?php if(!empty($arr_tematica)) { ?>
-                                                        <?php foreach($arr_tematica as $tematica) {?>                                                          
-                                                            <tr>
-                                                            <td> 
-                                                                <?php echo $count ?>
-                                                                <input type='hidden' value ='<?php echo $tematica['temID'];?>'>
-                                                            </td>
-                                                                <td><?php echo $tematica['temDescricao']; ?></td>
-                                                                <td><?php echo $tematica['disDescricao']; ?></td>  
-                                                                <td>                                                                
-                                                                    <button onclick="addUrl(<?php echo $tematica['temID'];?>);"
-                                                                    type="button" 
-                                                                        class="btn btn-inverse-success btn-rounded btn-icon btn-edit-tematica">
-                                                                        <i class="bi bi-pencil"></i>
-                                                                    </button>
-                                                                    <button onclick="pegarValoresDeletar(<?php echo $tematica['temID'];?>,'tematica')" 
-                                                                    id="btn-delete-disciplina" type="button"
-                                                                        class="btn btn-inverse-danger btn-rounded btn-icon btn-del-tematica">
-                                                                        <i class="bi bi-trash"></i>
-                                                                    </button>
-                                                                </td>                                   
-                                                            </tr>
-                                                        <?php 
-                                                        $count++;
-                                                        } ?>
-                                                    <?php } ?>
+                                            </tbody>
+                                           
                                         </table>
                                     </div>
                                 </div>
@@ -661,32 +565,8 @@ if(isset($_POST["idDeleteSelecionado"])){// Checagem para excluir
         <!-- Custom js for this page-->
         <script src="../js/mainjs/atuacao.js"></script>
         <!-- End custom js for this page-->
-       
-        <script type="text/javascript">
-     
-        function addUrl(id){
-            const search = '?id_up='+id;
-            const urlAtual = window.location.href;
-            history.pushState(null, '', urlAtual + search);
-        }
-        function pegarValoresDeletar(id,table){
-            $("#idDeleteSelecionado").val(id);
-            $("#tabelaSelecionada").val(table);
-        }
+      
 
-     
-           
-        </script>
-
-
-
-        <?php 
-        if(isset($_SESSION['msg'])){
-            echo $_SESSION['msg'];
-            unset($_SESSION['msg']);
-            
-        }
-        ?>
 
 
 </body>

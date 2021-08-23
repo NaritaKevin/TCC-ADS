@@ -64,7 +64,7 @@
 
          public function BuscarTematica()
          {
-            $sql = "SELECT * FROM tematicas t JOIN disciplinas d ON t.temDisciplinaID = d.disID ";
+            $sql = "SELECT temID,temDescricao,disDescricao FROM tematicas t JOIN disciplinas d ON t.temDisciplinaID = d.disID ";
             //$sql = "SELECT temDescricao, temID, temDisciplinaID FROM tematicas";
             $pdo = $this->pdo->query($sql);
             $res = $pdo->fetchAll(PDO::FETCH_ASSOC);
