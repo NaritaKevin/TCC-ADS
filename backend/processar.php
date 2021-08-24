@@ -30,7 +30,7 @@
                 die($output);      
          }else{
             $output = json_encode(array('type' => 'validacao', 'text' => 'Preencha todos os campos'));
-           
+            die($output);
          }
      }else if(!empty($disDescricao)){ // cadastrar
          if (!empty($disDescricao)){ 
@@ -48,7 +48,40 @@
          die($output);
      }
  }
-
+ if (isset($_POST["tematica"])) // clicou no botao cadastrar ou editar TEMATICA
+ {    
+     $temDisciplinaID = addslashes($_POST["disciplinaopc"]);
+     $opTematica = addslashes($_POST["opTematica"]);
+     $temIdUpdate = addslashes($_POST["temID"]);
+     $temDescricao = addslashes($_POST['tematica']);
+     
+     // editar
+     if($opTematica == "update" && !empty($temDescricao) ){
+        
+         if (!empty($temDescricao) && !empty($opTematica)) 
+         {   // EDITAR
+             $t->atualizarDadosTematica($temIdUpdate,$temDescricao,$temDisciplinaID);     
+             $output = json_encode(array('type' => 'sucesso', 'text' => 'Alterado com sucesso!'));
+             die($output);                     
+         }
+         else{
+            $output = json_encode(array('type' => 'validacao', 'text' => 'Preencha todos os campos'));
+            die($output);
+         }
+     }else if(!empty($temDescricao)){ // cadastrar
+       
+            if($t->cadastrarTematica($temDescricao,$temDisciplinaID)){
+               $output = json_encode(array('type' => 'sucesso', 'text' => 'Cadastrado com sucesso!'));
+               die($output);      
+            }else{
+               $output = json_encode(array('type' => 'erro', 'text' => 'Tematica já cadastrada!'));
+               die($output);  
+            }          
+    }else{
+        $output = json_encode(array('type' => 'validacao', 'text' => 'Preencha todos os campos'));
+        die($output);
+    }
+ }
 
 //chamada para carregar a tabela
  if(isset($_POST['buscaInicialDisciplina'])){
@@ -75,7 +108,7 @@ if(isset($_POST['buscaInicialSubgrupo'])){
    $buscaInicialSubgrupo = addslashes($_POST['buscaInicialSubgrupo']);
 
    if($buscaInicialSubgrupo == true){   
-       $dadosSubgrupo = $t->BuscarTematica();
+       $dadosSubgrupo = $s->buscarDadosSub();
        if (!empty($dadosSubgrupo)) {
            print json_encode($dadosSubgrupo,JSON_UNESCAPED_UNICODE);
        }

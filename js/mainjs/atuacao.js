@@ -251,17 +251,20 @@ $(document).ready(function () {
     //? Botao do formulario de cadastrar/alterar TEMATICA
     $('#formTematica').submit(function (e) {
         e.preventDefault();//evita de dar reload na pagina
-        var opDisciplina = $('#opDisciplina').val();
-        var disciplina = $('#disciplina').val();
-        var disID = $("#disID").val();
+
+        var disciplinaopc = $('#disciplinaopc option:selected').val();
+        var opTematica = $('#opTematica').val();
+        var tematica = $('#tematica').val();
+        var temID = $("#temID").val();
 
         $.ajax({
             url: '../backend/processar.php',
             method: 'POST',
             data: {
-                disciplina: disciplina,
-                disID: disID,
-                opDisciplina: opDisciplina
+                tematica: tematica,
+                temID: temID,
+                opTematica: opTematica,
+                disciplinaopc: disciplinaopc
             },
             dataType: 'json',
             success: function (data) {
@@ -283,7 +286,7 @@ $(document).ready(function () {
                         timer: 2000
                     })
 
-                    $("#btn-nova-disciplina").click();//Simula um click manual no botao de cadastrar
+                    $("#btn-novo-tematica").click();//Simula um click manual no botao de cadastrar
                 } else if (data.type == 'validacao') {
                     Swal.fire({
                         position: "center",
@@ -292,7 +295,7 @@ $(document).ready(function () {
                         showConfirmButton: false,
                         timer: 2000
                     })
-                    //!fazer validação dos campos inserindo no html depois
+
                 }
             }
         }).done(function (data) {
@@ -316,43 +319,35 @@ $(document).ready(function () {
         }
         $("#cadastrarTematica").toggle("slow");
     }
-    //Botao para abrir/fechar formulario de cadastro do tematica
+    //?Botao para abrir/fechar formulario de cadastro do tematica
     $("#btn-novo-tematica").click(function () {
         toggleNovaTematica();
+        $('#opTematica,#tematica,#temID').val("");//Limpa os campos
 
-        $("#opTematica").val("");
-        $("#tematica").val("");
     })
-    /* 
-        $("#btn-cancelarTematica").click(function () {
-            toggleNovaTematica();
-        })
-     */
 
-    //Botao da tabela de editar tematica
-    $(".btn-edit-tematica").click(function () {
-        toggleNovaTematica();
+    //? Botao editar da tabela de tematica
+    $("#tbodyTematica").on("click", ".btn-edit-tematica", function () {
+        toggleNovaTematica()//Mostra ou esconde tabela
+        let dados = $(this).closest('tr').children("td").map(function () {
+            return $(this).text();
+        }).get();
+        $("#temID").val(dados[0]);//Insere ID no formulario para alterar
+        $("#tematica").val(dados[1]);//Insere disciplina selecionada
+        $("#opTematica").val("update");//Informa update para atualizar no backend
+    })
+
+    //? Botao excluir da tabela de tematica
+    $("#tbodyTematica").on("click", ".btn-del-tematica", function () {
         let dados = $(this).closest('tr').children("td").map(function () {
             return $(this).text();
         }).get();
 
-        $("#temID").val(dados[0]);
-        $("#tematica").val(dados[1]);
-        $("#opTematica").val("update");
-    });
-
-    //Botao da tabela que deleta tematica
-    $(".btn-del-tematica").on("click", function () {
-        let dados = $(this).closest('tr').children("td").map(function () {
-            return $(this).text();
-        }).get();
-
-        $("#idDeleteSelecionado").val(dados[0])
-        $("#tabelaSelecionada").val("tematica");
-        $('#modalDelete').modal('show')
+        $("#idDeleteSelecionado").val(dados[0]);//Insere o ID no modal de excluir
+        $("#tabelaSelecionada").val("tematica");//Insere a tabela no modal de excluir
+        $('#modalDelete').modal('show')//Mostra modal
 
     });
-
 
     // window.history.pushState(null, null, window.location.pathname);
 

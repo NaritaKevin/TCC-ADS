@@ -78,41 +78,7 @@ if (isset($_POST["subgrupo"])) // clicou no botao cadastrar ou editar SUBGRUPO
         }
     }
 }
-if (isset($_POST["tematica"])) // clicou no botao cadastrar ou editar TEMATICA
-{    
-    $temDisciplinaID = addslashes($_POST["disciplinaopc"]);
-    $opTematica = addslashes($_POST["opTematica"]);
-    $temIdUpdate = addslashes($_POST["temID"]);
-    $temDescricao = addslashes($_POST['tematica']);
-    
-    // editar
-    if($opTematica == "update" && !empty($_POST["tematica"]) ){
-       
-        if (!empty($temDescricao)) 
-        {   // EDITAR
-           
-            $t->atualizarDadosTematica($temIdUpdate,$temDescricao,$temDisciplinaID);                    
-        }
-        else
-        {
-            echo "Preencha todos os campos";
-        }
-    }else{ // cadastrar
-        
-        if (!empty($temDescricao)) 
-        {   // CADASTRAR
-            if(!$t->cadastrarTematica($temDescricao,$temDisciplinaID))
-            {
-                echo "Tematica ja cadastrado";
-            }
-           
-        }
-        else
-        {
-            echo "Preencha todos os campos";
-        }
-    }
-}
+
 
 if(isset($_POST["idDeleteSelecionado"])){// Checagem para excluir
 
@@ -358,7 +324,7 @@ if(isset($_POST["idDeleteSelecionado"])){// Checagem para excluir
                                                 <form id="formTematica" >
                                                     <div class="form-group" >
                                                         <label class="labelCadastroAtuacao">Disciplina</label>
-                                                        <select class="selectpicker show-tick" name="disciplinaopc"data-width="fit"
+                                                        <select class="selectpicker show-tick" name="disciplinaopc" id="disciplinaopc" data-width="fit"
                                                             data-live-search="true">
                                                             <?php  $arr_disciplina = $p->buscarDados() ?>
                                     

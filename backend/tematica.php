@@ -35,28 +35,7 @@
                  $cmd = $this->pdo->prepare("INSERT INTO tematicas (temDescricao,temDisciplinaID) VALUES (:temDescricao,:temDisciplinaID)");
                  $cmd->bindValue(":temDescricao",$descricao);
                  $cmd->bindValue(":temDisciplinaID",$disciplina);
-                 if($cmd->execute()){
-                     $_SESSION['msg'] = ' <script type="text/javascript">
-                                             Swal.fire({
-                                             position: "center",
-                                             icon: "success",
-                                             title: "Cadastrado com sucesso!",
-                                             showConfirmButton: false,
-                                             timer: 2000
-                                             })
-                                         </script>';
-                     
-                 }else{
-                     $_SESSION['msg'] = ' <script type="text/javascript">
-                                             Swal.fire({
-                                             position: "center",
-                                             icon: "error",
-                                             title: "Ocorreu um erro ao cadastrar!",
-                                             showConfirmButton: false,
-                                             timer: 2000
-                                             })
-                                         </script>';             
-                 }
+                 $cmd->execute();
                  return true;
              }
      
@@ -65,7 +44,6 @@
          public function BuscarTematica()
          {
             $sql = "SELECT temID,temDescricao,disDescricao FROM tematicas t JOIN disciplinas d ON t.temDisciplinaID = d.disID ";
-            //$sql = "SELECT temDescricao, temID, temDisciplinaID FROM tematicas";
             $pdo = $this->pdo->query($sql);
             $res = $pdo->fetchAll(PDO::FETCH_ASSOC);
             return $res;
