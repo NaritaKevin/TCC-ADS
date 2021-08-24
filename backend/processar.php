@@ -86,7 +86,7 @@
  if (isset($_POST["subgrupo"])) // clicou no botao cadastrar ou editar SUBGRUPO
  {    
      $subTematicaID = addslashes($_POST["tematicaopc"]);
-     $opSubgrupo = addslashes($_POST["opTematica"]);
+     $opSubgrupo = addslashes($_POST["opSubgrupo"]);
      $subIdUpdate = addslashes($_POST["subID"]);
      $subDescricao = addslashes($_POST['subgrupo']);
      

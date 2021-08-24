@@ -304,7 +304,7 @@ $(document).ready(function () {
      }) */
 
     //?Botao da tabela de editar subgrupo
-    $("#tbodySubrgrupo").on("click", ".btn-edit-subgrupo", function (){
+    $("#tbodySubgrupo").on("click", ".btn-edit-subgrupo", function (){
         toggleNovoSubgrupo()
         let dados = $(this).closest('tr').children("td").map(function () {
             return $(this).text();
@@ -317,7 +317,7 @@ $(document).ready(function () {
     });
 
     //?Botao da tabela que deleta subgrupo
-    $(".btn-del-subgrupo").on("click", function () {
+    $("#tbodySubgrupo").on("click", ".btn-del-subgrupo", function () {
         let dados = $(this).closest('tr').children("td").map(function () {
             return $(this).text();
         }).get();

@@ -43,41 +43,7 @@ $s = new Subgrupo("pedagogy","localhost","root","");
 
 <body>
 <?php
-   
 
-if (isset($_POST["subgrupo"])) // clicou no botao cadastrar ou editar SUBGRUPO
-{   $tematicaSubgrupo = addslashes($_POST["tematicaopc"]);
-    $opSubgrupo = addslashes($_POST["opSubgrupo"]);
-    $subIdUpdate = addslashes($_POST["subID"]);
-    $subDescricao = addslashes($_POST['subgrupo']);
-    // editar
-    if($opSubgrupo == "update" && !empty($_POST["subgrupo"]) ){
-       
-        if (!empty($subDescricao)) 
-        {   // EDITAR
-            $s->atualizarDadosSubgrupo($subIdUpdate,$subDescricao,$tematicaSubgrupo);
-                     
-        }
-        else
-        {
-            echo "Preencha todos os campos";
-        }
-    }else{ // cadastrar
-        
-        if (!empty($subDescricao)) 
-        {   // CADASTRAR
-            if(!$s->cadastrarSubgrupo($subDescricao,$tematicaSubgrupo))
-            {
-                echo "Subgrupo ja cadastrado";
-            }
-           
-        }
-        else
-        {
-            echo "Preencha todos os campos";
-        }
-    }
-}
 
 
 if(isset($_POST["idDeleteSelecionado"])){// Checagem para excluir
@@ -395,7 +361,6 @@ if(isset($_POST["idDeleteSelecionado"])){// Checagem para excluir
                                                         <label class="labelCadastroAtuacao">Temática</label>
                                                         <select  id="tematicaopc" class="selectpicker show-tick" name="tematicaopc" data-width="fit"
                                                             data-live-search="true">
-                                                            <option disabled selected>Temática</option>
                                                             <?php  $arr_tematica = $t->BuscarTematica() ?>
                                                             <?php if(!empty($arr_tematica)) { ?>
                                                                 <?php foreach($arr_tematica as $tematicaop) { 
@@ -435,7 +400,7 @@ if(isset($_POST["idDeleteSelecionado"])){// Checagem para excluir
 
                                                 </tr>
                                             </thead>
-                                            <tbody id="tbodySubrgrupo">
+                                            <tbody id="tbodySubgrupo">
                                             
                                             </tbody>
                                         </table>
