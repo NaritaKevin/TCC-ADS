@@ -72,7 +72,7 @@ $(document).ready(function () {
                 },
             ]
         });
-        
+
         tableSubgrupo = $('#tableSubgrupo').DataTable({
             ajax: {
                 "url": "../backend/processar.php",
@@ -198,8 +198,6 @@ $(document).ready(function () {
         $("#disID").val(dados[0]);//Insere ID no formulario para alterar
         $("#disciplina").val(dados[1]);//Insere disciplina selecionada
         $("#opDisciplina").val("update");//Informa update para atualizar no backend
-
-
     })
 
     //? Botao excluir da tabela de disciplina
@@ -226,9 +224,7 @@ $(document).ready(function () {
         var opSubgrupo = $('#opSubgrupo').val(); // se é update 
         var subgrupo = $('#subgrupo').val(); // subrgupo selecionado para alterar
         var subID = $("#subID").val();
-        console.log(subID);
-        console.log(subgrupo);
-        console.log(tematicaopc);
+
         $.ajax({
             url: '../backend/processar.php',
             method: 'POST',
@@ -299,12 +295,9 @@ $(document).ready(function () {
         $("#opSubgrupo").val("");
         $("#subgrupo").val("");
     })
-    /*  $("#btn-cancelarSubgrupo").click(function () {
-         toggleNovoSubgrupo();
-     }) */
 
     //?Botao da tabela de editar subgrupo
-    $("#tbodySubgrupo").on("click", ".btn-edit-subgrupo", function (){
+    $("#tbodySubgrupo").on("click", ".btn-edit-subgrupo", function () {
         toggleNovoSubgrupo()
         let dados = $(this).closest('tr').children("td").map(function () {
             return $(this).text();
@@ -313,6 +306,10 @@ $(document).ready(function () {
         $("#subID").val(dados[0]);
         $("#subgrupo").val(dados[1]);
         $("#opSubgrupo").val("update");
+
+        $("#tematicaopc option:contains(" + dados[2] + ")").attr("selected", true);//Pré seleciona opção no dropdown
+        $(".filter-option-inner-inner").text(dados[2]);//Escreve a disciplina selecionada no botão do dropdown
+
 
     });
 
@@ -421,10 +418,14 @@ $(document).ready(function () {
             return $(this).text();
 
         }).get();
-        console.log(dados);
+
         $("#temID").val(dados[0]);//Insere ID no formulario para alterar
         $("#tematica").val(dados[1]);//Insere disciplina selecionada
         $("#opTematica").val("update");//Informa update para atualizar no backend
+
+        $("#disciplinaopc option:contains(" + dados[2] + ")").attr("selected", true);//Pré seleciona opção no dropdown
+        $(".filter-option-inner-inner").text(dados[2]);//Escreve a disciplina selecionada no botão do dropdown
+
     })
 
     //? Botao excluir da tabela de tematica
