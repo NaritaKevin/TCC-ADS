@@ -72,13 +72,38 @@ $(document).ready(function () {
                 },
             ]
         });
-        $('#tableSubgrupo').DataTable({
-            "language": {
+        
+        tableSubgrupo = $('#tableSubgrupo').DataTable({
+            ajax: {
+                "url": "../backend/processar.php",
+                "method": 'POST',
+                "data": { buscaInicialSubgrupo: buscaInicialSubgrupo },
+                "dataSrc": ""
+            },
+            language: {
                 url: "../partials/dataTablept-br.json"
             },
-            "lengthMenu": [[5, 15, 25, -1], [5, 15, 25, "Todos"]],
-        });
+            lengthMenu: [[5, 15, 25, -1], [5, 15, 25, "Todos"]],
+            columns: [
+                { data: 'subID' },
+                { data: 'subDescricao' },
+                { data: 'temDescricao' },
+                { data: 'disDescricao' },
+                {
+                    data: null, render: function (data, type, row) {
 
+                        return `<button  type="button"
+                                class="btn  btn-inverse-success btn-rounded btn-icon btn-edit-subgrupo">
+                                <i class="bi bi-pencil"></i>
+                            </button>
+                            <button type="button"
+                                class="btn btn-inverse-danger btn-rounded btn-icon btn-del-subgrupo">
+                                <i class="bi bi-trash"></i>
+                            </button>`;
+                    }
+                },
+            ]
+        });
 
     }
 
@@ -136,6 +161,7 @@ $(document).ready(function () {
 
             tableDisciplina.ajax.reload(null, false);
             tableTematica.ajax.reload(null, false);
+            tableSubgrupo.ajax.reload(null, false);
         });
         return false;
     });
@@ -192,6 +218,67 @@ $(document).ready(function () {
 
 
     //! Area de js para SUBGRUPO
+
+
+    $('#formSubrgrupo').submit(function (e) {
+        e.preventDefault();//evita de dar reload na pagina
+        var tematicaopc = $('#tematicaopc option:selected').val();
+        var opSubgrupo = $('#opSubgrupo').val(); // se é update 
+        var subgrupo = $('#subgrupo').val(); // subrgupo selecionado para alterar
+        var subID = $("#subID").val();
+        console.log(subID);
+        console.log(subgrupo);
+        console.log(tematicaopc);
+        $.ajax({
+            url: '../backend/processar.php',
+            method: 'POST',
+            data: {
+                subgrupo: subgrupo,
+                subID: subID,
+                opSubgrupo: opSubgrupo,
+                tematicaopc: tematicaopc
+            },
+            dataType: 'json',
+            success: function (data) {
+                if (data.type == 'erro') {
+                    Swal.fire({
+                        position: "center",
+                        icon: "error",
+                        title: data.text,
+                        showConfirmButton: false,
+                        timer: 2000
+                    })
+
+                } else if (data.type == 'sucesso') {
+                    Swal.fire({
+                        position: "center",
+                        icon: "success",
+                        title: data.text,
+                        showConfirmButton: false,
+                        timer: 2000
+                    })
+
+                    $("#btn-novo-subgrupo").click();//Simula um click manual no botao de cadastrar
+                } else if (data.type == 'validacao') {
+                    Swal.fire({
+                        position: "center",
+                        icon: "warning",
+                        title: data.text,
+                        showConfirmButton: false,
+                        timer: 2000
+                    })
+                    //!fazer validação dos campos inserindo no html depois
+                }
+            }
+        }).done(function (data) {
+
+            tableDisciplina.ajax.reload(null, false);
+            tableTematica.ajax.reload(null, false);
+            tableSubgrupo.ajax.reload(null, false);
+        });
+        return false;
+    });
+
     //?Esconder e mostrar o formulario de cadastro/alteração de subgrupo
     function toggleNovoSubgrupo() {
         let adicionarIcon = `<i class="bi bi-plus-circle btn-icon-prepend"></i>`;
@@ -217,7 +304,7 @@ $(document).ready(function () {
      }) */
 
     //?Botao da tabela de editar subgrupo
-    $(".btn-edit-subgrupo").click(function () {
+    $("#tbodySubrgrupo").on("click", ".btn-edit-subgrupo", function (){
         toggleNovoSubgrupo()
         let dados = $(this).closest('tr').children("td").map(function () {
             return $(this).text();
@@ -302,6 +389,7 @@ $(document).ready(function () {
 
             tableDisciplina.ajax.reload(null, false);
             tableTematica.ajax.reload(null, false);
+            tableSubgrupo.ajax.reload(null, false);
         });
         return false;
     });
@@ -331,7 +419,9 @@ $(document).ready(function () {
         toggleNovaTematica()//Mostra ou esconde tabela
         let dados = $(this).closest('tr').children("td").map(function () {
             return $(this).text();
+
         }).get();
+        console.log(dados);
         $("#temID").val(dados[0]);//Insere ID no formulario para alterar
         $("#tematica").val(dados[1]);//Insere disciplina selecionada
         $("#opTematica").val("update");//Informa update para atualizar no backend

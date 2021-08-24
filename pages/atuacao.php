@@ -390,12 +390,13 @@ if(isset($_POST["idDeleteSelecionado"])){// Checagem para excluir
                                                 <p class="card-description">
                                                     Cadastre um subgrupo para as disciplinas.
                                                 </p>
-                                                <form method="post" >
+                                                <form id="formSubrgrupo" >
                                                     <div class="form-group">
                                                         <label class="labelCadastroAtuacao">Temática</label>
-                                                        <select class="selectpicker show-tick" name="tematicaopc" data-width="fit"
+                                                        <select  id="tematicaopc" class="selectpicker show-tick" name="tematicaopc" data-width="fit"
                                                             data-live-search="true">
                                                             <option disabled selected>Temática</option>
+                                                            <?php  $arr_tematica = $t->BuscarTematica() ?>
                                                             <?php if(!empty($arr_tematica)) { ?>
                                                                 <?php foreach($arr_tematica as $tematicaop) { 
                                                                     ?>        
@@ -434,32 +435,8 @@ if(isset($_POST["idDeleteSelecionado"])){// Checagem para excluir
 
                                                 </tr>
                                             </thead>
-                                            <tbody>
-                                            <?php 
+                                            <tbody id="tbodySubrgrupo">
                                             
-                                             $dadosSub = $s->buscarDadosSub();
-                                             $count = 0;
-                                                    if(!empty($dadosSub)) { ?>
-                                                        <?php foreach($dadosSub as $subgrupo) {  ?>   
-                                                           
-                                                            <tr>
-                                                                <td><?php echo $count; ?><input type='hidden' value ='<?php echo $subgrupo['subID'];?>'</td>
-                                                                <td><?php echo $subgrupo['subDescricao']; ?></td>
-                                                                <td><?php echo $subgrupo['temDescricao']; ?></td>
-                                                                <td><?php echo $subgrupo['disDescricao']; ?></td>  
-                                                                <td>                                                                
-                                                                <button onclick="addUrl(<?php echo $subgrupo['subID'];?>);" type="button"
-                                                                    class="btn btn-inverse-success btn-rounded btn-icon btn-edit-subgrupo">
-                                                                    <i class="bi bi-pencil"></i>
-                                                                </button>
-                                                                <button onclick="pegarValoresDeletar(<?php echo $subgrupo['subID'];?>,'subgrupo')" type="button"
-                                                                    class="btn btn-inverse-danger btn-rounded btn-icon btn-del-subgrupo">
-                                                                    <i class="bi bi-trash"></i>
-                                                                </button>
-                                                                </td>                                   
-                                                            </tr>
-                                                        <?php $count++;} ?>
-                                                    <?php } ?>
                                             </tbody>
                                         </table>
                                     </div>

@@ -83,6 +83,41 @@
     }
  }
 
+ if (isset($_POST["subgrupo"])) // clicou no botao cadastrar ou editar SUBGRUPO
+ {    
+     $subTematicaID = addslashes($_POST["tematicaopc"]);
+     $opSubgrupo = addslashes($_POST["opTematica"]);
+     $subIdUpdate = addslashes($_POST["subID"]);
+     $subDescricao = addslashes($_POST['subgrupo']);
+     
+     // editar
+     if($opSubgrupo == "update" && !empty($subDescricao) ){
+        
+         if (!empty($subDescricao) && !empty($opSubgrupo)) 
+         {   // EDITAR
+             $s->atualizarDadosSubgrupo($subIdUpdate,$subDescricao,$subTematicaID);     
+             $output = json_encode(array('type' => 'sucesso', 'text' => 'Alterado com sucesso!'));
+             die($output);                     
+         }
+         else{
+            $output = json_encode(array('type' => 'validacao', 'text' => 'Preencha todos os campos'));
+            die($output);
+         }
+     }else if(!empty($subDescricao)){ // cadastrar
+       
+            if($s->cadastrarSubgrupo($subDescricao,$subTematicaID)){
+               $output = json_encode(array('type' => 'sucesso', 'text' => 'Cadastrado com sucesso!'));
+               die($output);      
+            }else{
+               $output = json_encode(array('type' => 'erro', 'text' => 'Subgrupo já cadastrado!'));
+               die($output);  
+            }          
+    }else{
+        $output = json_encode(array('type' => 'validacao', 'text' => 'Preencha todos os campos'));
+        die($output);
+    }
+ }
+
 //chamada para carregar a tabela
  if(isset($_POST['buscaInicialDisciplina'])){
     $buscaInicialDisciplina = addslashes($_POST['buscaInicialDisciplina']);
