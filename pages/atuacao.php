@@ -42,30 +42,7 @@ $s = new Subgrupo("pedagogy","localhost","root","");
 </head>
 
 <body>
-<?php
 
-
-
-if(isset($_POST["idDeleteSelecionado"])){// Checagem para excluir
-
-    $idDelete = addslashes($_POST["idDeleteSelecionado"]);
-    $table = addslashes($_POST["tabelaSelecionada"]);
-
-    if(!empty($_POST["idDeleteSelecionado"]) && $table == "disciplina"){
-
-        $p->excluirDisciplina($idDelete);
-        
-    }else if(!empty($_POST["idDeleteSelecionado"]) && $table == "subgrupo"){
-
-        $s->excluirSubgrupo($idDelete);
-        
-    }else if(!empty($_POST["idDeleteSelecionado"]) && $table == "tematica"){
-       
-        $t->excluirTematica($idDelete);
-    }
-}
-
-?>
     <div class="container-scroller">
         <!-- partial:../../partials/_navbar.html -->
         <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
@@ -250,7 +227,7 @@ if(isset($_POST["idDeleteSelecionado"])){// Checagem para excluir
                                     </div>
                                    
                                     <div id="tableDisciplinaToggle" class="expandable-table table-responsive">
-                                        <table class="table table-hover table-striped" id="tableDisciplinas">
+                                        <table class="table table-hover table-striped" style="width: 100%" id="tableDisciplinas">
                                             <thead>
                                                 <tr>
                                                     <th width="7%">ID</th>
@@ -319,7 +296,7 @@ if(isset($_POST["idDeleteSelecionado"])){// Checagem para excluir
                                         </div>
                                     </div>
                                     <div id="tableTematicaToggle" class="expandable-table table-responsive">
-                                        <table class="table table-hover table-striped" id="tableTematica">
+                                        <table class="table table-hover table-striped" style="width: 100%" id="tableTematica">
                                             <thead>
                                                 <tr>
                                                     <th width="7%">ID</th>
@@ -389,7 +366,7 @@ if(isset($_POST["idDeleteSelecionado"])){// Checagem para excluir
                                     </div>
 
                                     <div id="tableSubgrupoToggle" class="expandable-table table-responsive">
-                                        <table class="table table-hover table-striped" id="tableSubgrupo">
+                                        <table class="table table-hover table-striped" style="width: 100%" id="tableSubgrupo">
                                             <thead>
                                                 <tr>
                                                     <th width="10%">Nº</th>
@@ -417,10 +394,10 @@ if(isset($_POST["idDeleteSelecionado"])){// Checagem para excluir
                     aria-hidden="true">
                     <div class="modal-dialog ">
                         <div class="modal-content">    
-                            <form method="post">                
+                            <form id="formDelete" >                
                             <div class="modal-header">
                             <h4 class="modal-title ml-auto">Deseja excluir o item selecionada?</h4>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <button type="button" id="buttonXmodal" class="close" data-dismiss="modal" aria-label="Close">
                                  <span aria-hidden="true">&times;</span>
                                 </button>    
                                 <input type="hidden" name="idDeleteSelecionado" id="idDeleteSelecionado">     
