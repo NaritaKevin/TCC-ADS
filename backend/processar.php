@@ -13,14 +13,11 @@
 
  if (isset($_POST["disciplina"])) // clicou no botao cadastrar ou editar DISCIPLINA
  {    
-    
-      $aa = "teste";
+
      $opDisciplina = addslashes($_POST["opDisciplina"]);
      $disIdUpdate = addslashes($_POST["disID"]);
      $disDescricao = addslashes($_POST['disciplina']);
      
-
-    
      if($opDisciplina == "update" && !empty($disDescricao) ){// editar
 
          if (!empty($disDescricao) && !empty($opDisciplina)){  // se os campos nao estiverem vazios entra no if   
@@ -29,7 +26,7 @@
                 $output = json_encode(array('type' => 'sucesso', 'text' => 'Alterado com sucesso!'));
                 die($output);      
          }else{
-            $output = json_encode(array('type' => 'validacao', 'text' => 'Preencha todos os campos'));
+            $output = json_encode(array('type' => 'validacao', 'text' => 'Preencha todos os campos!'));
             die($output);
          }
      }else if(!empty($disDescricao)){ // cadastrar
@@ -44,10 +41,11 @@
              }          
         }
      }else{
-         $output = json_encode(array('type' => 'validacao', 'text' => 'Preencha todos os campos'));
+         $output = json_encode(array('type' => 'validacao', 'text' => 'Preencha todos os campos!'));
          die($output);
      }
  }
+
  if (isset($_POST["tematica"])) // clicou no botao cadastrar ou editar TEMATICA
  {    
      $temDisciplinaID = addslashes($_POST["disciplinaopc"]);
@@ -65,7 +63,7 @@
              die($output);                     
          }
          else{
-            $output = json_encode(array('type' => 'validacao', 'text' => 'Preencha todos os campos'));
+            $output = json_encode(array('type' => 'validacao', 'text' => 'Preencha todos os campos!'));
             die($output);
          }
      }else if(!empty($temDescricao)){ // cadastrar
@@ -78,7 +76,7 @@
                die($output);  
             }          
     }else{
-        $output = json_encode(array('type' => 'validacao', 'text' => 'Preencha todos os campos'));
+        $output = json_encode(array('type' => 'validacao', 'text' => 'Preencha todos os campos!'));
         die($output);
     }
  }
@@ -100,7 +98,7 @@
              die($output);                     
          }
          else{
-            $output = json_encode(array('type' => 'validacao', 'text' => 'Preencha todos os campos'));
+            $output = json_encode(array('type' => 'validacao', 'text' => 'Preencha todos os campos!'));
             die($output);
          }
      }else if(!empty($subDescricao)){ // cadastrar
@@ -113,7 +111,7 @@
                die($output);  
             }          
     }else{
-        $output = json_encode(array('type' => 'validacao', 'text' => 'Preencha todos os campos'));
+        $output = json_encode(array('type' => 'validacao', 'text' => 'Preencha todos os campos!'));
         die($output);
     }
  }
@@ -150,7 +148,25 @@ if(isset($_POST['buscaInicialSubgrupo'])){
    }
 }
 
+//Deletar da tabela
+if(isset($_POST['idDeleteSelecionado'])){
+    $idDeleteSelecionado = addslashes($_POST['idDeleteSelecionado']);
+    $tabelaSelecionada = addslashes($_POST['tabelaSelecionada']);
 
+    if($tabelaSelecionada == "disciplina" && !empty($idDeleteSelecionado)){
+       $p->excluirDisciplina($idDeleteSelecionado);
+       $output = json_encode(array('type' => 'excluido', 'text' => 'Excluído com sucesso!'));
+       die($output);
+    }else if($tabelaSelecionada == "tematica" && !empty($idDeleteSelecionado)){
+        $t->excluirTematica($idDeleteSelecionado);
+        $output = json_encode(array('type' => 'excluido', 'text' => 'Excluído com sucesso!'));
+        die($output);
+     }else if($tabelaSelecionada == "subgrupo" && !empty($idDeleteSelecionado)){
+         $s->excluirSubgrupo($idDeleteSelecionado);
+         $output = json_encode(array('type' => 'excluido', 'text' => 'Excluído com sucesso!'));
+         die($output);
+     }
+}
 
 
 
