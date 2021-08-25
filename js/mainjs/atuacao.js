@@ -13,6 +13,7 @@ $(document).ready(function () {
         $("#cadastrarSubgrupo").hide();
         $("#cadastrarTematica").hide();
         tableDisciplina = $('#tableDisciplinas').DataTable({
+            responsive: true,
             ajax: {
                 "url": "../backend/processar.php",
                 "method": 'POST',
@@ -43,6 +44,7 @@ $(document).ready(function () {
         });
 
         tableTematica = $('#tableTematica').DataTable({
+
             ajax: {
                 "url": "../backend/processar.php",
                 "method": 'POST',
@@ -202,13 +204,15 @@ $(document).ready(function () {
 
     //? Botao excluir da tabela de disciplina
     $("#tbodyDisciplina").on("click", ".btn-del-disciplina", function () {
-        let dados = $(this).closest('tr').children("td").map(function () {
+        let dadosDisciplina = $(this).closest('tr').children("td").map(function () {
             return $(this).text();
         }).get();
 
-        $("#idDeleteSelecionado").val(dados[0]);//Insere o ID no modal de excluir
+        $("#idDeleteSelecionado").val(dadosDisciplina[0]);//Insere o ID no modal de excluir
         $("#tabelaSelecionada").val("disciplina");//Insere a tabela no modal de excluir
         $('#modalDelete').modal('show')//Mostra modal
+
+        $(this).closest('tr').addClass("selecionado");
 
     });
     //! FIM DISCIPLINA
@@ -315,13 +319,16 @@ $(document).ready(function () {
 
     //?Botao da tabela que deleta subgrupo
     $("#tbodySubgrupo").on("click", ".btn-del-subgrupo", function () {
-        let dados = $(this).closest('tr').children("td").map(function () {
+        limparSelecionado();
+        let dadosSubgrupo = $(this).closest('tr').children("td").map(function () {
             return $(this).text();
         }).get();
 
-        $("#idDeleteSelecionado").val(dados[0])
+        $("#idDeleteSelecionado").val(dadosSubgrupo[0])
         $("#tabelaSelecionada").val("subgrupo");
         $('#modalDelete').modal('show')
+
+        $(this).closest('tr').addClass("selecionado");
 
     });
 
@@ -416,7 +423,6 @@ $(document).ready(function () {
         toggleNovaTematica()//Mostra ou esconde tabela
         let dados = $(this).closest('tr').children("td").map(function () {
             return $(this).text();
-
         }).get();
 
         $("#temID").val(dados[0]);//Insere ID no formulario para alterar
@@ -430,14 +436,19 @@ $(document).ready(function () {
 
     //? Botao excluir da tabela de tematica
     $("#tbodyTematica").on("click", ".btn-del-tematica", function () {
-        let dados = $(this).closest('tr').children("td").map(function () {
+        limparSelecionado();
+        let dadosTematica = $(this).closest('tr').children("td").map(function () {
             return $(this).text();
         }).get();
 
-        $("#idDeleteSelecionado").val(dados[0]);//Insere o ID no modal de excluir
+        $("#idDeleteSelecionado").val(dadosTematica[0]);//Insere o ID no modal de excluir
         $("#tabelaSelecionada").val("tematica");//Insere a tabela no modal de excluir
         $('#modalDelete').modal('show')//Mostra modal
 
+        $(this).closest('tr').addClass("selecionado");
+
+
+        // tableTematica.row($(this).parents('tr')).remove().draw();
     });
 
     // window.history.pushState(null, null, window.location.pathname);
@@ -450,11 +461,110 @@ $(document).ready(function () {
     //? Modal cancelar
     $("#modalCancelar").click(function () {
         $('#modalDelete').modal('hide')
-        $("#idDeleteSelecionado.#tabelaSelecionad").val("")
-
+        $("#idDeleteSelecionado,#tabelaSelecionad").val("")
+        //limparSelecionado();
     });
 
 
+    //? Modal excluir
+    $('#formDelete').submit(function (e) {
+        e.preventDefault();//evita de dar reload na pagina
+
+        var idDeleteSelecionado = $('#idDeleteSelecionado').val();
+        var tabelaSelecionada = $('#tabelaSelecionada').val();
+
+        $.ajax({
+            url: '../backend/processar.php',
+            method: 'POST',
+            data: {
+                idDeleteSelecionado: idDeleteSelecionado,
+                tabelaSelecionada: tabelaSelecionada
+            },
+            dataType: 'json',
+            success: function (data) {
+                if (data.type == 'excluido') {
+                    Swal.fire({
+                        position: "center",
+                        icon: "success",
+                        title: data.text,
+                        showConfirmButton: false,
+                        timer: 2000
+                    })
+                    $("#modalCancelar").click();//Simula um click manual no botao de cadastrar
+                    $('#tableDisciplinas tr').each(function () {
+                        tableTematica.row(".selected").remove()
+                    });
+                    $('#tableTematica tr').each(function () {
+                        tableTematica.row(".selected").remove()
+                    });
+                    $('#tableSubgrupo tr').each(function () {
+                        tableTematica.row(".selected").remove()
+                    });
+
+                }
+            }
+        }).done(function (data) {
+            atualizarTabelas();
+        });
+        return false;
+    });
+
+
+    function limparSelecionado() {
+        $('#tableDisciplinas tr').each(function () {
+            if ($(this).hasClass("selecionado")) {
+                $(this).removeClass("selecionado");
+            }
+        });
+        $('#tableTematica tr').each(function () {
+            if ($(this).hasClass("selecionado")) {
+                $(this).removeClass("selecionado");
+            }
+        });
+        $('#tableSubgrupo tr').each(function () {
+            if ($(this).hasClass("selecionado")) {
+                $(this).removeClass("selecionado");
+            }
+        });
+    }
+
+
+    function atualizarTabelas() {
+        // Get paging information
+        var infoTem = tableTematica.page.info();
+        // Number of deleted rows
+        var numDeletedTem = 1;
+        // Calculate number of pages after deleting rows
+        var numPagesAfterTem = Math.ceil((infoTem.recordsDisplay - numDeletedTem) / infoTem.length);
+        // If number of pages after deleting rows is less than total number of pages
+        // and the last page is displayed
+        if (numPagesAfterTem < infoTem.pages && infoTem.page === (infoTem.pages - 1)) {
+            // Go to previous page using zero-based index
+            tableTematica.page(numPagesAfterTem - 1);
+        }
+        // Reload table
+        tableTematica.ajax.reload(null, false);
+
+
+        var infoDis = tableDisciplina.page.info();
+        var numDeletedDis = 1;
+        var numPagesAfterDis = Math.ceil((infoDis.recordsDisplay - numDeletedDis) / infoDis.length);
+        if (numPagesAfterDis < infoDis.pages && infoDis.page === (infoDis.pages - 1)) {
+
+            tableDisciplina.page(numPagesAfterDis - 1);
+        }
+        tableDisciplina.ajax.reload(null, false);
+
+        var infoSub = tableSubgrupo.page.info();
+        var numDeletedSub = 1;
+        var numPagesAfterSub = Math.ceil((infoSub.recordsDisplay - numDeletedSub) / infoSub.length);
+        if (numPagesAfterSub < infoSub.pages && infoSub.page === (infoSub.pages - 1)) {
+
+            tableSubgrupo.page(numPagesAfterSub - 1);
+        }
+
+        tableSubgrupo.ajax.reload(null, false);
+    }
 
 
 
