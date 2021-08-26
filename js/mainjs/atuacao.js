@@ -13,9 +13,12 @@ $(document).ready(function () {
         $("#cadastrarSubgrupo").hide();
         $("#cadastrarTematica").hide();
         tableDisciplina = $('#tableDisciplinas').DataTable({
+            "columnDefs": [
+                { "orderable": false, "targets": 2 }
+            ],
             responsive: true,
             ajax: {
-                "url": "../backend/processar.php",
+                "url": "../backend/atuacaoBack.php",
                 "method": 'POST',
                 "data": { buscaInicialDisciplina: buscaInicialDisciplina },
                 "dataSrc": ""
@@ -46,7 +49,7 @@ $(document).ready(function () {
         tableTematica = $('#tableTematica').DataTable({
 
             ajax: {
-                "url": "../backend/processar.php",
+                "url": "../backend/atuacaoBack.php",
                 "method": 'POST',
                 "data": { buscaInicialTematica: buscaInicialTematica },
                 "dataSrc": ""
@@ -77,7 +80,7 @@ $(document).ready(function () {
 
         tableSubgrupo = $('#tableSubgrupo').DataTable({
             ajax: {
-                "url": "../backend/processar.php",
+                "url": "../backend/atuacaoBack.php",
                 "method": 'POST',
                 "data": { buscaInicialSubgrupo: buscaInicialSubgrupo },
                 "dataSrc": ""
@@ -120,7 +123,7 @@ $(document).ready(function () {
         var disID = $("#disID").val();
 
         $.ajax({
-            url: '../backend/processar.php',
+            url: '../backend/atuacaoBack.php',
             method: 'POST',
             data: {
                 disciplina: disciplina,
@@ -230,7 +233,7 @@ $(document).ready(function () {
         var subID = $("#subID").val();
 
         $.ajax({
-            url: '../backend/processar.php',
+            url: '../backend/atuacaoBack.php',
             method: 'POST',
             data: {
                 subgrupo: subgrupo,
@@ -349,7 +352,7 @@ $(document).ready(function () {
         var temID = $("#temID").val();
 
         $.ajax({
-            url: '../backend/processar.php',
+            url: '../backend/atuacaoBack.php',
             method: 'POST',
             data: {
                 tematica: tematica,
@@ -474,7 +477,7 @@ $(document).ready(function () {
         var tabelaSelecionada = $('#tabelaSelecionada').val();
 
         $.ajax({
-            url: '../backend/processar.php',
+            url: '../backend/atuacaoBack.php',
             method: 'POST',
             data: {
                 idDeleteSelecionado: idDeleteSelecionado,
@@ -530,19 +533,19 @@ $(document).ready(function () {
 
 
     function atualizarTabelas() {
-        // Get paging information
+        //* Get paging information
         var infoTem = tableTematica.page.info();
-        // Number of deleted rows
+        //* Number of deleted rows
         var numDeletedTem = 1;
-        // Calculate number of pages after deleting rows
+        //* Calculate number of pages after deleting rows
         var numPagesAfterTem = Math.ceil((infoTem.recordsDisplay - numDeletedTem) / infoTem.length);
-        // If number of pages after deleting rows is less than total number of pages
-        // and the last page is displayed
+        //* If number of pages after deleting rows is less than total number of pages
+        //* and the last page is displayed
         if (numPagesAfterTem < infoTem.pages && infoTem.page === (infoTem.pages - 1)) {
-            // Go to previous page using zero-based index
+            //* Go to previous page using zero-based index
             tableTematica.page(numPagesAfterTem - 1);
         }
-        // Reload table
+        //* Reload table
         tableTematica.ajax.reload(null, false);
 
 

@@ -1,6 +1,5 @@
 <?php
 
-
    require_once '../backend/disciplina.php';
    require_once '../backend/tematica.php';
    require_once '../backend/subgrupo.php';
@@ -167,61 +166,6 @@ if(isset($_POST['idDeleteSelecionado'])){
          die($output);
      }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 ?>

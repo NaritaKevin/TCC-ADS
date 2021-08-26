@@ -120,46 +120,7 @@
         <div class="container-fluid page-body-wrapper">
 
             <!-- partial:../../partials/_sidebar.html -->
-            <nav class="sidebar sidebar-offcanvas" id="sidebar">
-                <ul class="nav">
-                    <li class="nav-item">
-                        <a class="nav-link" href="/index.html">
-                            <i class="icon-grid menu-icon"></i>
-                            <span class="menu-title">Dashboard</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="../pages/atividades.php">
-                            <i class="bi bi-file-earmark-text menu-icon"></i>
-                            <span class="menu-title">Atividades</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" data-toggle="collapse" href="#gerencQuestoes" aria-expanded="false"
-                            aria-controls="gerencQuestoes">
-                            <i class="bi bi-question-lg menu-icon"></i>
-                            <span class="menu-title">Questões</span>
-                            <i class="menu-arrow"></i>
-                        </a>
-                        <div class="collapse" id="gerencQuestoes">
-                            <ul class="nav flex-column sub-menu">
-                                <li class="nav-item"> <a class="nav-link" href="../pages/questoes.php">Gerenciar
-                                        Questões</a></li>
-                                <li class="nav-item"> <a class="nav-link" href="../pages/atuacao.php">Area de
-                                        atuação</a></li>
-                            </ul>
-                        </div>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="../pages/resultados.php">
-                            <i class="bi bi-file-earmark-bar-graph menu-icon"></i>
-                            <span class="menu-title">Resultados</span>
-
-                        </a>
-                    </li>
-
-                </ul>
-            </nav>
+            <?php require_once '../partials/menu.php';?>
             <!-- Corpo da página-->
             <div class="main-panel">
                 <div class="content-wrapper">
@@ -678,16 +639,9 @@
                 </div>
                 <!-- content-wrapper ends -->
                 <!-- partial:../../partials/_footer.html -->
-                <footer class="footer">
-                    <div class="d-sm-flex justify-content-center justify-content-sm-between">
-                        <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Copyright © 2021.
-                            Premium <a href="https://www.bootstrapdash.com/" target="_blank">Bootstrap admin
-                                template</a> from BootstrapDash. All rights reserved.</span>
-                        <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">Criado com muito<i
-                                class="ti-heart text-danger ml-1"></i></span>
-                    </div>
-                </footer>
-                <!-- partial -->
+               
+                <?php require_once '../partials/footer.php';?>
+                
             </div>
             <!-- main-panel ends -->
         </div>
