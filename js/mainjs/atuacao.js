@@ -220,6 +220,7 @@ $(document).ready(function () {
         $("#tabelaSelecionada").val("disciplina");//Insere a tabela no modal de excluir
         $('#modalDelete').modal('show')//Mostra modal
 
+        $(this).closest('tr').addClass("selecionado"); // nesta linha esta adicionando a classe "selecionado" na tag <tr></tr> mais proxima do botão clicado.
 
     });
     //! FIM DISCIPLINA
@@ -335,6 +336,7 @@ $(document).ready(function () {
         $("#tabelaSelecionada").val("subgrupo");
         $('#modalDelete').modal('show')
 
+        $(this).closest('tr').addClass("selecionado");
 
     });
 
@@ -451,6 +453,7 @@ $(document).ready(function () {
         $("#tabelaSelecionada").val("tematica");//Insere a tabela no modal de excluir
         $('#modalDelete').modal('show')//Mostra modal
 
+        $(this).closest('tr').addClass("selecionado");
 
 
         // tableTematica.row($(this).parents('tr')).remove().draw();
@@ -497,13 +500,13 @@ $(document).ready(function () {
                     })
                     $("#modalCancelar").click();//Simula um click manual no botao de cadastrar
                     $('#tableDisciplinas tr').each(function () { // 
-                        tableTematica.row().remove()
+                        tableTematica.row(".selected").remove()
                     });
                     $('#tableTematica tr').each(function () {
-                        tableTematica.row().remove()
+                        tableTematica.row(".selected").remove()
                     });
                     $('#tableSubgrupo tr').each(function () {
-                        tableTematica.row().remove()
+                        tableTematica.row(".selected").remove()
                     });
 
                 }
@@ -515,6 +518,23 @@ $(document).ready(function () {
     });
 
 
+    function limparSelecionado() {
+        $('#tableDisciplinas tr').each(function () {
+            if ($(this).hasClass("selecionado")) {
+                $(this).removeClass("selecionado");
+            }
+        });
+        $('#tableTematica tr').each(function () {
+            if ($(this).hasClass("selecionado")) {
+                $(this).removeClass("selecionado");
+            }
+        });
+        $('#tableSubgrupo tr').each(function () {
+            if ($(this).hasClass("selecionado")) {
+                $(this).removeClass("selecionado");
+            }
+        });
+    }
 
 
     function atualizarTabelas() {
