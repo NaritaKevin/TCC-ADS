@@ -136,55 +136,12 @@ if ($result->num_rows > 0) {
         <div class="container-fluid page-body-wrapper">
 
             <!-- partial:../../partials/_sidebar.html -->
-            <nav class="sidebar sidebar-offcanvas" id="sidebar">
-                <ul class="nav">
-                    <li class="nav-item">
-                        <a class="nav-link" href="/index.html">
-                            <i class="icon-grid menu-icon"></i>
-                            <span class="menu-title">Dashboard</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="../pages/atividades.php">
-                            <i class="bi bi-file-earmark-text menu-icon"></i>
-                            <span class="menu-title">Atividades</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" data-toggle="collapse" href="#gerencQuestoes" aria-expanded="false"
-                            aria-controls="gerencQuestoes">
-                            <i class="bi bi-question-lg menu-icon"></i>
-                            <span class="menu-title">Questões</span>
-                            <i class="menu-arrow"></i>
-                        </a>
-                        <div class="collapse" id="gerencQuestoes">
-                            <ul class="nav flex-column sub-menu">
-                                <li class="nav-item"> <a class="nav-link" href="../pages/questoes.php">Gerenciar
-                                        Questões</a></li>
-                                <li class="nav-item"> <a class="nav-link" href="../pages/atuacao.php">Area de
-                                        atuação</a></li>
-                            </ul>
-                        </div>
-                    </li>
-
-                    <li class="nav-item">
-                        <a class="nav-link" href="../pages/resultados.php">
-                            <i class="bi bi-file-earmark-bar-graph menu-icon"></i>
-                            <span class="menu-title">Resultados</span>
-
-                        </a>
-                    </li>
-
-
-
-
-                </ul>
-            </nav>
+            <?php require_once '../partials/menu.php';?>
             <!-- Corpo da página-->
             <div class="main-panel">
                 <div class="content-wrapper">
                     <div class="row">
-                        <div class="col-md-12 grid-margin">
+
                             <div class="col-lg-12 grid-margin stretch-card">
                                 <div class="card">
                                     <div class="card-body">
@@ -243,19 +200,18 @@ if ($result->num_rows > 0) {
                                                         </div>
                                                         <div class="form-group">
                                                             <label for="codigobncc">Código BNCC</label>
-                                                            <input type="text" class="form-control" id="codigobncc"
+                                                            <input type="text" class="form-control" name="codigobncc"id="codigobncc"
                                                                 placeholder="Código BNCC">
                                                         </div>
 
                                                         <div class="form-group">
-                                                            <label for="exampleTextarea1">Enunciado</label>
-                                                            <textarea class="form-control" id="exampleTextarea1"
+                                                            <label for="enunciado">Enunciado</label>
+                                                            <textarea class="form-control" name="enunciado" id="enunciado"
                                                                 rows="7"></textarea>
                                                         </div>
                                                         <div class="form-group">
-                                                            <label for="exampleInputUsername1">Palavras
-                                                                chave</label>
-                                                            <input type="text" class="form-control" id="palavrasChave"
+                                                            <label for="palavrasChave">Palavras chave</label>
+                                                            <input type="text" class="form-control" name="palavrasChave" id="palavrasChave"
                                                                 placeholder="Palavras chave">
                                                         </div>
                                                         <div class="form-group">
@@ -275,12 +231,11 @@ if ($result->num_rows > 0) {
                                                             </button>
                                                         </div>
 
-                                                        <ul id="alternativas" class="list-group">
+                                                        <div class="form-group">
+                                                            <ul id="alternativas" class="list-group">
 
-
-
-                                                        </ul>
-
+                                                            </ul>
+                                                        </div>
 
                                                         <button id="cadastrarQuestao" type="submit"
                                                             class="btn btn-primary mr-2">Cadastrar</button>
@@ -291,10 +246,10 @@ if ($result->num_rows > 0) {
                                             </div>
                                         </div>
                                         <div id="tableQuestoesToggle" class="expandable-table table-responsive">
-                                        <table class="table table-hover table-striped" id="tableQuestoes">
+                                        <table class="table table-hover table-striped" style="width: 100%"id="tableQuestoes">
                                                 <thead>
                                                     <tr>
-                                                        <th>Ordem</th>
+                                                        <th>ID</th>
                                                         <th>Enunciado</th>
                                                         <th>Palavras Chave</th>
                                                         <th>Subgrupo</th>
@@ -309,57 +264,14 @@ if ($result->num_rows > 0) {
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <?php if(!empty($arr_questoes)) { $nivel; $revisao; ?>
-                                                        <?php foreach($arr_questoes as $questao) { 
-                                                             if($questao['queNivel'] == "Fácil"){
-                                                                 $nivel = "badge-success";
-                                                                }else if($questao['queNivel'] == "Difícil"){
-                                                                 $nivel = "badge-danger";
-                                                                }else if($questao['queNivel'] == "Médio"){
-                                                                    $nivel = "badge-warning";
-                                                                }
-
-                                                                if($questao['queStsRevisao'] == "Revisada"){
-                                                                    $revisao = "badge-success";
-                                                                   }else{
-                                                                    $revisao = "badge-danger";
-                                                                   }
-                                                            ?>
-                                                            
-                                                            <tr>
-                                                                <td><?php echo $questao['queID']; ?></td>
-                                                                <td><?php echo $questao['queDescricao']; ?></td>
-                                                                <td><?php echo $questao['quePalavrasChave']; ?></td>
-                                                                <td><?php echo $questao['subDescricao']; ?></td>
-                                                                <td><?php echo $questao['queCodigoBncc']; ?></td>                                                                               
-                                                                <td><label  class="badge <?php echo $revisao; ?>  "><?php echo $questao['queNivel']; ?></label></td>
-                                                                <td><?php echo $questao['queAnoID']; ?></td>
-                                                                <td><?php echo $questao['queStsTipo']; ?></td>
-                                                                <td><label  class="badge <?php echo $revisao; ?>  "><?php echo $questao['queStsRevisao']; ?></label></td>
-                                                                <td>
-                                                                    <button type="button"
-                                                                        class="btn btn-inverse-primary btn-rounded btn-icon btn-info-questao">
-                                                                        <i class="bi bi-info-lg"></i>
-                                                                    </button>
-                                                                    <button type="button"
-                                                                        class="btn btn-inverse-success btn-rounded btn-icon btn-edit-questao">
-                                                                        <i class="bi bi-pencil"></i>
-                                                                    </button>
-                                                                    <button type="button"
-                                                                        class="btn btn-inverse-danger btn-rounded btn-icon btn-del-questao">
-                                                                        <i class="bi bi-trash"></i>
-                                                                    </button>
-                                                                </td>
-                                                            </tr>
-                                                        <?php } ?>
-                                                    <?php } ?>
+                                                   
                                                 </tbody>
                                             </table>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        
                     </div>
                 </div>
 
@@ -401,15 +313,8 @@ if ($result->num_rows > 0) {
                 </div>
 
 
-                <footer class="footer">
-                    <div class="d-sm-flex justify-content-center justify-content-sm-between">
-                        <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Copyright © 2021.
-                            Premium <a href="https://www.bootstrapdash.com/" target="_blank">Bootstrap admin
-                                template</a> from BootstrapDash. All rights reserved.</span>
-                        <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">Criado com muito <i
-                                class="ti-heart text-danger ml-1"></i></span>
-                    </div>
-                </footer>
+              
+                <?php require_once '../partials/footer.php';?>
             </div>
 
         </div>

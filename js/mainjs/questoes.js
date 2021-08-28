@@ -1,17 +1,52 @@
 $(document).ready(function () {
-
+    let buscaInicialQuestao = true;
     init();
 
     function init() {
         $("#cadastrarQuestao").hide();
-        $('#tableQuestoes').DataTable({
+        tabelaQuestoes = $('#tableQuestoes').DataTable({
             "columnDefs": [
                 { "orderable": false, "targets": 9 }
             ],
-            "language": {
+            responsive: true,
+            ajax: {
+                "url": "../backend/questoesBack.php",
+                "method": 'POST',
+                "data": { buscaInicialQuestao: buscaInicialQuestao },
+                "dataSrc": ""
+            },
+            language: {
                 url: "../partials/dataTablept-br.json"
             },
-            "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+            lengthMenu: [[5, 15, 25, -1], [5, 15, 25, "Todos"]],
+            columns: [
+                { data: 'queID' },
+                { data: 'queDescricao' },
+                { data: 'quePalavrasChave' },
+                { data: 'subDescricao' },
+                { data: 'queCodigoBncc' },
+                { data: 'queNivel' },
+                { data: 'queAnoID' },
+                { data: 'queStsTipo' },
+                { data: 'queStsRevisao' },
+                {
+                    data: null, render: function (data, type, row) {
+
+                        return ` <button type="button"
+                                    class="btn btn-inverse-primary btn-rounded btn-icon btn-info-questao">
+                                    <i class="bi bi-info-lg"></i>
+                                </button>
+                                <button  type="button"
+                                    class="btn  btn-inverse-success btn-rounded btn-icon btn-edit-questao">
+                                    <i class="bi bi-pencil"></i>
+                                </button>
+                                <button type="button"
+                                    class="btn btn-inverse-danger btn-rounded btn-icon btn-del-questao">
+                                    <i class="bi bi-trash"></i>
+                                </button>`;
+                    }
+                },
+            ]
 
 
         });
