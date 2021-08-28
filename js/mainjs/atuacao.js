@@ -14,24 +14,28 @@ $(document).ready(function () {
         $("#cadastrarTematica").hide();
         tableDisciplina = $('#tableDisciplinas').DataTable({
             "columnDefs": [
-                { "orderable": false, "targets": 2 }
+                { "orderable": false, "targets": 2 } // esta linha retira a ordenação das colunas, pois não ha sentido ordenar os botões 
             ],
             responsive: true,
             ajax: {
                 "url": "../backend/atuacaoBack.php",
-                "method": 'POST',
-                "data": { buscaInicialDisciplina: buscaInicialDisciplina },
+                "method": 'POST', // metodo utilizado para passar os valores das variavesi data para o backend.
+                "data": { buscaInicialDisciplina: buscaInicialDisciplina }, // as variaves bucasInicial.... possuem o valor true  para que no arquivo atuacaoBack.php sirva para buscar os dados da tabela
                 "dataSrc": ""
             },
-            language: {
+            language: { // tradução em portgues da tabela
                 url: "../partials/dataTablept-br.json"
             },
-            lengthMenu: [[5, 15, 25, -1], [5, 15, 25, "Todos"]],
+            lengthMenu: [[5, 15, 25, -1], [5, 15, 25, "Todos"]], // configuração de quantidade de registros a serem mostrados, 5....15 ou todos 
             columns: [
-                { data: 'disID' },
+                //aqui dentro sera configurado o conteudo de cada coluna utilizando as variaveis data
+                //importante - os valores contidos em data não a relação com os nomes dos cabeçalhos da tabela.
+
+                // as tabelas são lidas por indices: 0,1,2,3, de acordo com o tanto de colunas - Neste caso o indice 0 sera o disID.
+                { data: 'disID' }, // o valor contido na variavel data, é o que sera buscado no banco de dados, no caso o ID
                 { data: 'disDescricao' },
                 {
-                    data: null, render: function (data, type, row) {
+                    data: null, render: function (data, type, row) { // renderizar a exibição dos botões 
 
                         return `<button  type="button"
                                 class="btn  btn-inverse-success btn-rounded btn-icon btn-edit-disciplina">
@@ -44,7 +48,7 @@ $(document).ready(function () {
                     }
                 },
             ]
-        });
+        })
 
         tableTematica = $('#tableTematica').DataTable({
 
@@ -197,7 +201,8 @@ $(document).ready(function () {
     //? Botao editar da tabela de disciplina
     $("#tbodyDisciplina").on("click", ".btn-edit-disciplina", function () {
         toggleNovaDisciplina()//Mostra ou esconde tabela
-        let dados = $(this).closest('tr').children("td").map(function () {
+        //children: 
+        let dados = $(this).closest('tr').children("td").map(function () { // função .map é utilizado para pegar todos os dados contidos na linha onde o botão editar foi pressionado, como ID, DESCRICAO E ETC.
             return $(this).text();
         }).get();
         $("#disID").val(dados[0]);//Insere ID no formulario para alterar
@@ -215,7 +220,6 @@ $(document).ready(function () {
         $("#tabelaSelecionada").val("disciplina");//Insere a tabela no modal de excluir
         $('#modalDelete').modal('show')//Mostra modal
 
-        $(this).closest('tr').addClass("selecionado");
 
     });
     //! FIM DISCIPLINA
@@ -331,7 +335,6 @@ $(document).ready(function () {
         $("#tabelaSelecionada").val("subgrupo");
         $('#modalDelete').modal('show')
 
-        $(this).closest('tr').addClass("selecionado");
 
     });
 
@@ -448,7 +451,6 @@ $(document).ready(function () {
         $("#tabelaSelecionada").val("tematica");//Insere a tabela no modal de excluir
         $('#modalDelete').modal('show')//Mostra modal
 
-        $(this).closest('tr').addClass("selecionado");
 
 
         // tableTematica.row($(this).parents('tr')).remove().draw();
@@ -494,14 +496,14 @@ $(document).ready(function () {
                         timer: 2000
                     })
                     $("#modalCancelar").click();//Simula um click manual no botao de cadastrar
-                    $('#tableDisciplinas tr').each(function () {
-                        tableTematica.row(".selected").remove()
+                    $('#tableDisciplinas tr').each(function () { // 
+                        tableTematica.row().remove()
                     });
                     $('#tableTematica tr').each(function () {
-                        tableTematica.row(".selected").remove()
+                        tableTematica.row().remove()
                     });
                     $('#tableSubgrupo tr').each(function () {
-                        tableTematica.row(".selected").remove()
+                        tableTematica.row().remove()
                     });
 
                 }
@@ -513,23 +515,6 @@ $(document).ready(function () {
     });
 
 
-    function limparSelecionado() {
-        $('#tableDisciplinas tr').each(function () {
-            if ($(this).hasClass("selecionado")) {
-                $(this).removeClass("selecionado");
-            }
-        });
-        $('#tableTematica tr').each(function () {
-            if ($(this).hasClass("selecionado")) {
-                $(this).removeClass("selecionado");
-            }
-        });
-        $('#tableSubgrupo tr').each(function () {
-            if ($(this).hasClass("selecionado")) {
-                $(this).removeClass("selecionado");
-            }
-        });
-    }
 
 
     function atualizarTabelas() {
