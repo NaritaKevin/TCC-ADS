@@ -1,9 +1,9 @@
 <?php
 
    require_once '../backend/questao.php';
-
+   require_once '../backend/subgrupo.php';
  $q = new Questao("pedagogy","localhost","root","");
-
+ $s = new Subgrupo("pedagogy","localhost","root","");
 
 
 
@@ -33,7 +33,24 @@ if(isset($_POST['idDeleteSelecionado'])){
 }
 
 
+//Mostrar disciplina e tematica no formulario
+if(isset($_POST['opSelecionada'])){
 
+    $subgrupoID = addslashes($_POST['opSelecionada']);
+
+    if(!empty($subgrupoID)){
+       $dadosSubgrupo = $s->buscarDadosSubgrupo($subgrupoID);
+       if(!empty($dadosSubgrupo)){
+            print json_encode($dadosSubgrupo,JSON_UNESCAPED_UNICODE);
+       }
+    }
+}
+
+// subgrupoopc: subgrupoopc,
+// nivelopc: nivelopc,
+// codigobncc: codigobncc,
+// enunciado: enunciado,
+// palavrasChave: palavrasChave
 
 
 
