@@ -1,17 +1,12 @@
 <?php
-$conn = new mysqli("localhost", "root", "", "pedagogy");
- 
-if ($conn->connect_errno) {
-    die("Conexão falhou: " . $conn->connect_error);
-    
-}
- 
-$sql = "SELECT q.queID, q.queDescricao, q.quePalavrasChave, q.queCodigoBncc, q.queNivel, q.queAnoID, q.queStsTipo,q.queStsRevisao,s.subDescricao  FROM questoes q JOIN subgrupos s ON q.queID = s.subID";
-$result = $conn->query($sql);
-$arr_questoes = [];
-if ($result->num_rows > 0) {
-    $arr_questoes = $result->fetch_all(MYSQLI_ASSOC);
-}
+require_once '../backend/disciplina.php';
+require_once '../backend/tematica.php';
+require_once '../backend/subgrupo.php';
+require_once '../backend/nivel.php';
+$p = new Disciplina("pedagogy","localhost","root","");
+$t = new Tematica("pedagogy","localhost","root","");
+$s = new Subgrupo("pedagogy","localhost","root","");
+$n = new Nivel("pedagogy","localhost","root","");
 ?>
 
 <!DOCTYPE html>
@@ -40,6 +35,12 @@ if ($result->num_rows > 0) {
     <link rel="stylesheet" href="../css/vertical-layout-light/style.css">
     <!-- endinject -->
     <link rel="shortcut icon" href="../images/logo-mini.svg" />
+    <style>
+        
+    .dropdown-item.active, .dropdown-item:active{
+        background-color: #6664bd ;
+    }
+</style>
 </head>
 
 <body>
@@ -160,43 +161,48 @@ if ($result->num_rows > 0) {
                                                     <p class="card-description">
                                                         Cadastre a questão para a atividade.
                                                     </p>
-                                                    <form>
+                                                    <form id="formQuestoes">
+
                                                         <div class="form-group">
-                                                            <label class="labelCadastroAtuacao">Disciplina</label>
-                                                            <select class="selectpicker show-tick" data-width="fit"
-                                                                data-live-search="true">
-                                                                <option disabled selected>Disciplina</option>
-                                                                <option>Matemática</option>
-                                                                <option>Biologia</option>
-                                                            </select>
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <label class="labelCadastroAtuacao">Temática</label>
-                                                            <select class="selectpicker show-tick" data-width="fit"
-                                                                data-live-search="true">
-                                                                <option disabled selected>Temática</option>
-                                                                <option>Operações Matematicas</option>
-                                                                <option>Fisiologia Humana</option>
-                                                            </select>
-                                                        </div>
-                                                        <div class="form-group">
+                                                           <div class="row">
+
+                                                          
+                                                           <div class="col-md-4">
+                                                       
                                                             <label class="labelCadastroAtuacao">Subgrupo</label>
-                                                            <select class="selectpicker show-tick" data-width="fit"
-                                                                data-live-search="true">
-                                                                <option disabled selected>Subgrupo</option>
-                                                                <option>Problemas</option>
-                                                                <option>Sistema Circulatorio</option>
-                                                            </select>
+                                                            <select  id="subgrupoopc" class="selectpicker show-tick" name="subgrupoopc" data-width="fit"
+                                                            data-live-search="true">
+                                                            <option selected disabled value="0">Escolha</option>
+                                                            <?php  $arr_subgrupo = $s->buscarDadosSub() ?>
+                                                            <?php if(!empty($arr_subgrupo)) { ?>
+                                                                <?php foreach($arr_subgrupo as $subgrupoop) { 
+                                                                    ?>        
+                                                                    <option value="<?php echo $subgrupoop['subID']; ?>"><?php echo $subgrupoop['subDescricao']; ?></option>                                                                                                                                                                                                                                                                    
+                                                                <?php } ?>
+                                                            <?php } ?>
+                                                        </select>
+                                                        </div>
+                                                        
+                                                        <div class="col-md-4" id="temSelecionado">
+                                                        
+                                                        </div>  
+                                                        <div class="col-md-4" id="disSelecionado">
+                                                                                                             
+                                                        </div>                                                                                                   
+                                                        </div>
                                                         </div>
                                                         <div class="form-group">
                                                             <label class="labelCadastroAtuacao">Nível</label>
-                                                            <select class="selectpicker show-tick" data-width="fit"
-                                                                data-live-search="true" id="nivelquestao">
-                                                                <option disabled selected>Nível</option>
-                                                                <option>Fácil</option>
-                                                                <option>Médio</option>
-                                                                <option>Difícil</option>
-                                                            </select>
+                                                            <select  id="nivelopc" class="selectpicker show-tick" name="nivelopc" data-width="fit"
+                                                            data-live-search="true">
+                                                            <?php  $arr_nivel = $n->buscarDadosNivel() ?>
+                                                            <?php if(!empty($arr_nivel)) { ?>
+                                                                <?php foreach($arr_nivel as $nivelop) { 
+                                                                    ?>        
+                                                                    <option value="<?php echo $nivelop['nivID']; ?>"><?php echo $nivelop['nivDescricao']; ?></option>                                                                                                                                                                                                                                                                    
+                                                                <?php } ?>
+                                                            <?php } ?>
+                                                        </select>
                                                         </div>
                                                         <div class="form-group">
                                                             <label for="codigobncc">Código BNCC</label>
