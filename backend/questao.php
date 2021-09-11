@@ -21,7 +21,7 @@ class Questao{
     
     public function buscarDadosQuestao(){
         $res = [];
-        $cmd = $this->pdo->query("SELECT * FROM questoes q LEFT JOIN subgrupos s ON q.queID = s.subID LEFT JOIN alternativas a ON q.queID = a.altQuestaoID");
+        $cmd = $this->pdo->query("SELECT * FROM questoes q LEFT JOIN subgrupos s ON q.queID = s.subID LEFT JOIN alternativas a ON q.queID = a.altQuestaoID LEFT JOIN niveis n ON n.nivID = q.queNivelID");
         $res = $cmd->fetchAll(PDO::FETCH_ASSOC);
         return $res;
     }
