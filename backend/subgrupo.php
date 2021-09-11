@@ -49,8 +49,8 @@ class Subgrupo{
     }
 
     public function buscarDadosSubgrupo($id){
-        $res = array();
-        $cmd = $this->pdo->prepare("SELECT * FROM subgrupos where subID = :subID");
+        $res = [];
+        $cmd = $this->pdo->prepare("SELECT * FROM subgrupos s JOIN tematicas t ON s.subTematicaID = t.temID JOIN disciplinas d ON t.temDisciplinaID = d.disID where subID = :subID");
         $cmd->bindValue(":subID",$id);
         $cmd->execute();
         $res = $cmd->fetch(PDO::FETCH_ASSOC);
