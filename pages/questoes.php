@@ -36,7 +36,16 @@ $n = new Nivel("pedagogy","localhost","root","");
     <!-- endinject -->
     <link rel="shortcut icon" href="../images/logo-mini.svg" />
     <style>
-        
+    .subgrupoSelected{
+        cursor: default !important;
+        color: black !important;
+        background-color: #f8f9fa !important;
+        border-color: #f8f9fa !important;
+    }
+    .subgrupoSelected:hover {
+        background-color:    #e6e9ed !important;
+    }
+
     .dropdown-item.active, .dropdown-item:active{
         background-color: #6664bd ;
     }
@@ -180,7 +189,7 @@ $n = new Nivel("pedagogy","localhost","root","");
                                                                     <option value="<?php echo $subgrupoop['subID']; ?>"><?php echo $subgrupoop['subDescricao']; ?></option>                                                                                                                                                                                                                                                                    
                                                                 <?php } ?>
                                                             <?php } ?>
-                                                        </select>
+                                                            </select>
                                                         </div>
                                                         
                                                         <div class="col-md-4" id="temSelecionado">
@@ -191,25 +200,42 @@ $n = new Nivel("pedagogy","localhost","root","");
                                                         </div>                                                                                                   
                                                         </div>
                                                         </div>
-                                                        <div class="form-group">
-                                                            <label class="labelCadastroAtuacao">Nível</label>
-                                                            <select  id="nivelopc" class="selectpicker show-tick" name="nivelopc" data-width="fit"
-                                                            data-live-search="true">
-                                                            <?php  $arr_nivel = $n->buscarDadosNivel() ?>
-                                                            <?php if(!empty($arr_nivel)) { ?>
-                                                                <?php foreach($arr_nivel as $nivelop) { 
-                                                                    ?>        
-                                                                    <option value="<?php echo $nivelop['nivID']; ?>"><?php echo $nivelop['nivDescricao']; ?></option>                                                                                                                                                                                                                                                                    
-                                                                <?php } ?>
-                                                            <?php } ?>
-                                                        </select>
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <label for="codigobncc">Código BNCC</label>
-                                                            <input type="text" class="form-control" name="codigobncc"id="codigobncc"
-                                                                placeholder="Código BNCC">
-                                                        </div>
+                                                        <div class="row">                                                   
+                                                            <div class="col-md-4">
+                                                                <div class="form-group">
+                                                                    <label for="codigobncc">Código BNCC</label>
+                                                                    <input type="text" style="width: auto" class="form-control" name="codigobncc"id="codigobncc"
+                                                                        placeholder="Código BNCC">
+                                                                </div>
+                                                            </div>
+                                                        
+                                                            <div class="col-md-4">
+                                                                <div class="form-group">
+                                                                    <label class="labelCadastroAtuacao">Nível</label>
+                                                                    <select  id="nivelopc" class="selectpicker show-tick" name="nivelopc" data-width="fit">
+                                                                    <?php  $arr_nivel = $n->buscarDadosNivel() ?>
+                                                                    <?php if(!empty($arr_nivel)) { ?>
+                                                                        <?php foreach($arr_nivel as $nivelop) { 
+                                                                            ?>        
+                                                                            <option value="<?php echo $nivelop['nivID']; ?>"><?php echo $nivelop['nivDescricao']; ?></option>                                                                                                                                                                                                                                                                    
+                                                                        <?php } ?>
+                                                                    <?php } ?>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
 
+                                                            <div class="col-md-4">
+                                                                 <div class="form-group">
+                                                                    <label class="labelCadastroAtuacao">Status</label>
+                                                                    <select  id="statusopc" class="selectpicker show-tick" name="statusopc" data-width="fit">
+                                                                    <option value="1">Pública</option>
+                                                                    <option value="2">Privada professor</option>
+                                                                    <option value="3">Privada grupo</option>
+                                                                    <option value="4">Privada escola</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                         <div class="form-group">
                                                             <label for="enunciado">Enunciado</label>
                                                             <textarea class="form-control" name="enunciado" id="enunciado"
@@ -243,7 +269,7 @@ $n = new Nivel("pedagogy","localhost","root","");
                                                             </ul>
                                                         </div>
 
-                                                        <button id="cadastrarQuestao" type="submit"
+                                                        <button id="submitQuestao" type="submit"
                                                             class="btn btn-primary mr-2">Cadastrar</button>
                                                         <button id="cancelarQuestao" type="button"
                                                             class="btn btn-secondary">Cancelar</button>
@@ -256,20 +282,20 @@ $n = new Nivel("pedagogy","localhost","root","");
                                                 <thead>
                                                     <tr>
                                                         <th>ID</th>
-                                                        <th>Enunciado</th>
+                                                        <th >Enunciado</th>
                                                         <th>Palavras Chave</th>
                                                         <th>Subgrupo</th>
                                                         <th>Código BNCC</th>
                                                         <th>Nível</th>
                                                         <th>Ano</th>
                                                         <th>Status Tipo</th>
-                                                        <th>Revisão</th>
+                                                        <th>Revisada</th>
                                                         <th>Ação</th>
                                                        
 
                                                     </tr>
                                                 </thead>
-                                                <tbody>
+                                                <tbody id="tbodyQuestao">
                                                    
                                                 </tbody>
                                             </table>
@@ -289,29 +315,37 @@ $n = new Nivel("pedagogy","localhost","root","");
                                 <div class="stretch-card">
                                     <div class="card">
                                         <div class="card-body">
-                                            <p class="card-title">Informações Adicionais</p>
-                                            <div class="table-responsive">
-                                                <table class="table ">
-                                                    <thead>
-                                                        <tr>
-                                                            <th>Disciplina</th>
-                                                            <th>Temática</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <tr>
-                                                            <td>Biologia</td>
-                                                            <td>Divisão celular</td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
+                                            <p class="card-title">Alternativas Cadastradas</p>
+                                            <div class="list-group">
+                                            <a href="#" class="list-group-item list-group-item-action flex-column align-items-start ">
+                                                <div class="d-flex w-100 justify-content-between">
+                                                <h5 class="mb-1">A)</h5>
+                                                <small><label class="badge badge-danger">Incorreta</label></small>
+                                                </div>
+                                                <p class="mb-1">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
+                                               
+                                            </a>
+                                            <hr/>
+                                            <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+        
+                                                <div>
+                                                <h5 class="mb-1">B)</h5>
+                                                <p class="mb-1">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
+                                                </div>
+                                                <div class="d-flex w-100 justify-content-center">
+                                                <div></div>
+                                                <small><label class="badge badge-success">Incorreta</label></small>
+                                                </div>
+                                               
+                                            </a>
+                                           
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="modal-footer">
-                                <button id="modalCancelar" type="button" class="btn btn-secondary">Cancelar</button>
+                                <button id="modalCancelarAlt" type="button" class="btn btn-secondary mr-auto">Cancelar</button>
                                 <button id="modalConfirmar" type="button" class="btn btn-primary">Confirmar</button>
                             </div>
                         </div>
@@ -319,6 +353,31 @@ $n = new Nivel("pedagogy","localhost","root","");
                 </div>
 
 
+                <div class="modal fade" id="modalDelete" tabindex="-1" aria-labelledby="modalDelete"
+                    aria-hidden="true">
+                    <div class="modal-dialog ">
+                        <div class="modal-content">    
+                            <form id="formDelete" >                
+                            <div class="modal-header">
+                            <h4 class="modal-title ml-auto">Deseja excluir o item selecionada?</h4>
+                                <button type="button" id="buttonXmodal" class="close" data-dismiss="modal" aria-label="Close">
+                                 <span aria-hidden="true">&times;</span>
+                                </button>    
+                                <input type="hidden" name="idDeleteSelecionado" id="idDeleteSelecionado">     
+                                <input type="hidden" name="tabelaSelecionada" id="tabelaSelecionada">               
+                             </div>
+                           
+                            <div class="modal-footer">
+                            <button id="modalCancelar" type="button" class="btn btn-secondary  mr-auto">Cancelar</button>
+                            <button id="modalConfirmar"  type="submit"
+                                             class="btn btn-primary">
+                                            <i class="bi bi-x-circle btn-icon-prepend "></i>
+                                            Excluir</button>                       
+                            </div>  
+                            </form>                       
+                        </div>
+                    </div>
+                </div>
               
                 <?php require_once '../partials/footer.php';?>
             </div>
@@ -336,11 +395,13 @@ $n = new Nivel("pedagogy","localhost","root","");
         <script src="../js/dataTables.select.min.js"></script>
         <script src="../js/off-canvas.js"></script>
         <script src="../js/hoverable-collapse.js"></script>
+        <script src="../js/settings.js"></script>
+        <script src="../js/sweetAlert.js"></script>
         <script src="../js/template.js"></script>
         <script src="../vendors/bootstrapselect/bootstrap-select.min.js"></script>
 
-        <script src="../js/settings.js"></script>
-
+       
+     
         <!-- endinject -->
         <!-- Custom js for this page-->
         <script src="../js/mainjs/questoes.js"></script>

@@ -26,9 +26,10 @@ if(isset($_POST['idDeleteSelecionado'])){
     $tabelaSelecionada = addslashes($_POST['tabelaSelecionada']);
 
     if($tabelaSelecionada == "questoes" && !empty($idDeleteSelecionado)){
-         $q->excluirQuestao($idDeleteSelecionado);
-         $output = json_encode(array('type' => 'excluido', 'text' => 'Excluído com sucesso!'));
-         die($output);
+        $q->excluirAlternativa($idDeleteSelecionado);
+        $q->excluirQuestao($idDeleteSelecionado);
+        $output = json_encode(array('type' => 'excluido', 'text' => 'Excluído com sucesso!'));
+        die($output);
      }
 }
 
@@ -45,6 +46,101 @@ if(isset($_POST['opSelecionada'])){
        }
     }
 }
+
+if(isset($_POST['subgrupoopc']) && isset($_POST['nivelopc']) && isset($_POST['statusopc']) && isset($_POST['codigobncc']) && isset($_POST['enunciado'])){
+    $subgrupoopc = addslashes($_POST['subgrupoopc']);
+    $nivelopc = addslashes($_POST['nivelopc']);
+    $codigobncc = addslashes($_POST['codigobncc']);
+    $statusopc = addslashes($_POST['statusopc']);
+    $enunciado = addslashes($_POST['enunciado']);
+    $palavrasChave = addslashes($_POST['palavrasChave']);
+    //$opQuestao = addslashes($_POST['opQuestao']);
+    $opQuestao ="a";
+    $ano = "1";
+    
+
+    if($opQuestao == "update" && !empty($enunciado) ){
+        
+     
+        //     $s->atualizarDadosSubgrupo($subIdUpdate,$subDescricao,$subTematicaID);     
+        //     $output = json_encode(array('type' => 'sucesso', 'text' => 'Alterado com sucesso!'));
+        //     die($output);                     
+      
+    }else if(!empty($enunciado) && !empty($subgrupoopc)){ // cadastrar
+      
+           if($q->cadastrarQuestao($enunciado,$codigobncc,$palavrasChave,$statusopc,$nivelopc,$ano,$subgrupoopc)){
+              $output = json_encode(array('type' => 'sucesso', 'text' => 'Cadastrada com sucesso!'));
+                  
+           }else{
+              $output = json_encode(array('type' => 'erro', 'text' => 'Questão já cadastrada!'));
+              die($output);  
+           }          
+   }else{
+       $output = json_encode(array('type' => 'validacao', 'text' => 'Preencha todos os campos!'));
+       die($output);
+   }
+
+
+   $altQuestaoID = $q->buscarUltimaQuestaoCadastrada();
+   if(empty($altQuestaoID)){
+        $output = json_encode(array('type' => 'erro', 'text' => 'Questão não cadastrada!'));
+        die($output); 
+   }
+
+   
+    $alternativa = "alternativa";
+    $letra = array("A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P");
+	$texto = "texto";
+    $status = "status";
+    
+    $alternativaX = "";
+    $alternativaxtexto = "";
+    $alternativaxstatus = "";
+
+
+
+   
+  for($x = 0; $x <  count($letra); $x++){
+
+  $alternativa .= "$letra[$x]";
+    $alternativaX = $alternativa;
+
+  $alternativa .= "$texto";
+    $alternativaxtexto = $alternativa;
+
+   $alternativa = substr($alternativa,0, -5);
+
+    $alternativa .= "$status";
+    $alternativaxstatus = $alternativa;
+
+
+    if(isset($_POST[$alternativaX]) && isset($_POST[$alternativaxtexto]) && isset($_POST[$alternativaxstatus])){
+
+        $altLetra = addslashes($_POST[$alternativaX]);
+        $altDescricao = addslashes($_POST[$alternativaxtexto]);
+        $altStsCorreta = addslashes($_POST[$alternativaxstatus]);
+
+        if($q->cadastrarAlternativa($altLetra,$altDescricao,$altStsCorreta,$altQuestaoID['queID'])){
+            $output = json_encode(array('type' => 'sucesso', 'text' => 'Cadastrada com sucesso!'));   
+            }else{
+                $output = json_encode(array('type' => 'erro', 'text' => 'Ocorreu um erro ao cadastrar alternativas!'));
+                die($output);  
+            }
+    }
+  
+
+  
+    $alternativa = substr($alternativa,0, -7);
+    $alternativaX = "";
+    $alternativaxtexto = "";
+    $alternativaxstatus ="";
+
+  }
+
+  die($output); 
+
+}
+
 
 // subgrupoopc: subgrupoopc,
 // nivelopc: nivelopc,
