@@ -13,6 +13,7 @@
  if (isset($_POST["disciplina"])) // clicou no botao cadastrar ou editar DISCIPLINA
  {    
 
+    
      $opDisciplina = addslashes($_POST["opDisciplina"]);
      $disIdUpdate = addslashes($_POST["disID"]);
      $disDescricao = addslashes($_POST['disciplina']);

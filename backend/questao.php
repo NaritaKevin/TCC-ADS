@@ -26,6 +26,7 @@ class Questao{
         return $res;
     }
     
+    
     public function cadastrarQuestao($descricao,$bncc,$palavraChave,$stsTipo,$nivel,$ano,$subgrupo)
     {
         // verificar se a questao ja esta cadastrado

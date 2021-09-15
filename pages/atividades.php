@@ -446,14 +446,7 @@
                                                 <th></th>
                                                 <th>Enunciado</th>
                                                 <th>Palavras Chave</th>
-                                                <th>Subgrupo</th>
-                                                <th>Código BNCC</th>
-                                                <th>Nível</th>
-                                                <th>Ano</th>
-                                                <th>Status Tipo</th>
-                                                <th>Revisão</th>
-                                                <th></th>
-
+                                               
                                             </tr>
                                         </thead>
                                         <tbody id="tbodyModalAtividade">

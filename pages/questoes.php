@@ -315,11 +315,7 @@ $n = new Nivel("pedagogy","localhost","root","");
                                             <p class="card-title text-center">Alternativas Cadastradas</p>
                                             <div style="border-bottom: 1px solid #e3e3e3"></div>
                                             <div class="list-group" id="alternativasModal">
-                                          
-                                           
-                                              
-                                               
-                                          
+                                                                                                                                                                                                              
                                            
                                             </div>
                                         </div>

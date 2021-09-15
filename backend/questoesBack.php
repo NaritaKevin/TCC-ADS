@@ -112,7 +112,6 @@ if(isset($_POST['subgrupoopc']) && isset($_POST['nivelopc']) && isset($_POST['st
     $alternativaxtexto = "";
     $alternativaxstatus = "";
 
-   
   for($x = 0; $x <  count($letra); $x++){
 
   $alternativa .= "$letra[$x]";

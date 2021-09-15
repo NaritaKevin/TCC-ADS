@@ -66,6 +66,7 @@ class Disciplina{
 
     }
 
+    
     public function excluirDisciplina($id)
     {
         $cmd = $this->pdo->prepare(" DELETE FROM disciplinas WHERE disID = :disID ");

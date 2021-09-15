@@ -3,7 +3,6 @@ $(document).ready(function () {
     let buscaInicialTematica = true;
     let buscaInicialSubgrupo = true;
     init();
-
     function init() {
 
         $("#btn-cancelar-disciplina").hide();
