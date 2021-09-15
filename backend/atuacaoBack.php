@@ -4,8 +4,9 @@
    require_once '../backend/tematica.php';
    require_once '../backend/subgrupo.php';
 
- $a = new Disciplina("pedagogy","localhost","root","");
- $q = new Tematica("pedagogy","localhost","root","");
+ $p = new Disciplina("pedagogy","localhost","root","");
+ $t = new Tematica("pedagogy","localhost","root","");
+ $s = new Subgrupo("pedagogy","localhost","root","");
 
 
 
