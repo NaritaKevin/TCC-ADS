@@ -84,8 +84,8 @@ $(document).ready(function () {
                 {
                     data: null, render: function (data, type, row) {
                         return ` <button type="button"
-                                    class="btn btn-inverse-primary btn-rounded btn-icon btn-info-questao">
-                                    <i class="bi bi-info-lg"></i>
+                                    class="btn btn-inverse-primary btn-rounded btn-icon btn-info-questao" >
+                                    <i class="bi bi-ui-checks" style="font-size: 20px;margin-left: -3px;"></i>
                                 </button>
                                 <button  type="button"
                                     class="btn  btn-inverse-success btn-rounded btn-icon btn-edit-questao">
@@ -101,9 +101,6 @@ $(document).ready(function () {
 
 
         });
-        $("#deletarQuestao").prop("disabled", true)
-
-
 
     }
     //! Formulário de cadastro de Questões
@@ -220,39 +217,66 @@ $(document).ready(function () {
         }).get();
 
 
-        // $.ajax({
-        //     url: '../backend/questoesBack.php',
-        //     method: 'POST',
-        //     data: {
-        //         idQuestaoSelecionada: dadosQuestao[0]
-        //     },
-        //     dataType: 'json',
-        //     success: function (data) {
+        $.ajax({
+            url: '../backend/questoesBack.php',
+            method: 'POST',
+            data: {
+                idQuestaoSelecionada: dadosQuestao[0]
+            },
+            dataType: 'json',
+            success: function (data) {
+                let count = data.length;
 
-        //     },
-        //     error: function (data) {
-        //         if (data.type == 'erro') {
-        //             Swal.fire({
-        //                 position: "center",
-        //                 icon: "error",
-        //                 title: data.text,
-        //                 showConfirmButton: false,
-        //                 timer: 2000
-        //             })
+                for (x = 0; x < count; x++) {
+                    let alternativaLetra = data[x].altLetra;
+                    let alternativaDescricao = data[x].altDescricao;
+                    let alternativaStatus = data[x].altStsCorreta;
+                    let iconeCorreto = `<i class="bi bi-check-lg" style="position: absolute;color: #57b657;"></i>`;
 
-        //         }
-        //     },
-        // }).done(function (data) {
-        //     $('#modalInfoQuestao').modal('show');
-        // });
+                    let alternativaCorpo = `  <div class="alternativaGroup">
+                                            <div class="list-group-item list-group-item-action flex-column align-items-start" style="padding-bottom: 0.5rem !important;padding-top: 0.5rem !important">
+                                                <div class="wrapperAlternativa" style="display: flex">
+
+                                                
+                                                <h5 class="mb-1 letraAlternativa" style="padding-right: 0.5rem">${alternativaLetra}</h5>
+                                                <p class="mb-1 textoAlternativa text-success">${alternativaDescricao}</p>
+                                                </div>
+                                            
+                                            </div>
+                                            <div style="border-bottom: 1px solid #e3e3e3"></div>
+                                        </div>`;
+
+                    $("#alternativasModal").append(alternativaCorpo);
+                    if (alternativaStatus == "Correta") {
+                        $(".wrapperAlternativa").append(iconeCorreto);
+                        $(".textoAlternativa").css("text-success");
+                    }
+                }
+            },
+            error: function (data) {
+                if (data.type == 'erro') {
+                    Swal.fire({
+                        position: "center",
+                        icon: "error",
+                        title: data.text,
+                        showConfirmButton: false,
+                        timer: 2000
+                    })
+
+                }
+            },
+        }).done(function (data) {
+            $('#modalInfoQuestao').modal('show');
+        });
         $('#modalInfoQuestao').modal('show');
     });
+
+    //? Modal Alternativas cancelar
     $("#modalCancelarAlt").click(function () {
         $('#modalInfoQuestao').modal('hide')
-    })
+    });
 
-
-    //? Modal cancelar
+    //? Modal Excluir cancelar
     $("#modalCancelar").click(function () {
         $('#modalDelete').modal('hide')
         $("#idDeleteSelecionado,#tabelaSelecionad").val("")
@@ -264,10 +288,10 @@ $(document).ready(function () {
         toggleNovaQuestao();
         resetarFormulario();
 
-    })
+    });
     $("#cancelarQuestao").click(function () {
         toggleNovaQuestao();
-    })
+    });
     //!
     //! Botão Correta ou Incorreta das alternativas
     $("#cadastrarQuestao").on("click", ".toggleAlternativa", function () {

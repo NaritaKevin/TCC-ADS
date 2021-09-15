@@ -61,6 +61,13 @@ class Questao{
         return $res;
     }
 
+    public function buscarAlternativasDaQuestao($questaoID){
+        $res = [];
+        $cmd = $this->pdo->query("SELECT * FROM alternativas WHERE altQuestaoID = :altQuestaoID");
+        $cmd->bindValue(":altQuestaoID",$questaoID);
+        $res = $cmd->fetchAll(PDO::FETCH_ASSOC);
+        return $res;
+    }
 
     public function cadastrarAlternativa($altLetra,$altDescricao,$altStsCorreta,$altQuestaoID)
     {
@@ -95,6 +102,7 @@ class Questao{
         $cmd->execute();
         
     }
+
     public function excluirAlternativa($id)
     {
         $cmd = $this->pdo->prepare(" DELETE FROM alternativas WHERE altQuestaoID = :queID ");

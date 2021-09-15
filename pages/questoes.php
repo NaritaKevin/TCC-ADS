@@ -276,7 +276,7 @@ $n = new Nivel("pedagogy","localhost","root","");
                                                     </form>
                                                 </div>
                                             </div>
-                                        </div>
+                                        </div>                                    
                                         <div id="tableQuestoesToggle" class="expandable-table table-responsive">
                                         <table class="table table-hover table-striped" style="width: 100%"id="tableQuestoes">
                                                 <thead>
@@ -307,37 +307,22 @@ $n = new Nivel("pedagogy","localhost","root","");
                     </div>
                 </div>
 
-                <div class="modal fade" id="modalInfoQuestao" tabindex="-1" aria-labelledby="modalInfoQuestao"
+                <div class="modal fade" id="modalInfoQuestao" tabindex="-1" role="dialog" aria-labelledby="modalInfoQuestao"
                     aria-hidden="true">
-                    <div class="modal-dialog ">
-                        <div class="modal-content">
+                    <div class="modal-dialog modal-md" role="document">
+                        <div class="modal-content " >
                             <div class="modal-body">
                                 <div class="stretch-card">
                                     <div class="card">
-                                        <div class="card-body">
-                                            <p class="card-title">Alternativas Cadastradas</p>
-                                            <div class="list-group">
-                                            <a href="#" class="list-group-item list-group-item-action flex-column align-items-start ">
-                                                <div class="d-flex w-100 justify-content-between">
-                                                <h5 class="mb-1">A)</h5>
-                                                <small><label class="badge badge-danger">Incorreta</label></small>
-                                                </div>
-                                                <p class="mb-1">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
+                                        <div style="padding: 0px" class="card-body">
+                                            <p class="card-title text-center">Alternativas Cadastradas</p>
+                                            <div style="border-bottom: 1px solid #e3e3e3"></div>
+                                            <div class="list-group" id="alternativasModal">
+                                          
+                                           
+                                              
                                                
-                                            </a>
-                                            <hr/>
-                                            <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
-        
-                                                <div>
-                                                <h5 class="mb-1">B)</h5>
-                                                <p class="mb-1">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
-                                                </div>
-                                                <div class="d-flex w-100 justify-content-center">
-                                                <div></div>
-                                                <small><label class="badge badge-success">Incorreta</label></small>
-                                                </div>
-                                               
-                                            </a>
+                                          
                                            
                                             </div>
                                         </div>
@@ -345,8 +330,7 @@ $n = new Nivel("pedagogy","localhost","root","");
                                 </div>
                             </div>
                             <div class="modal-footer">
-                                <button id="modalCancelarAlt" type="button" class="btn btn-secondary mr-auto">Cancelar</button>
-                                <button id="modalConfirmar" type="button" class="btn btn-primary">Confirmar</button>
+                                <button id="modalCancelarAlt" type="button" class="btn btn-secondary">Voltar</button>                              
                             </div>
                         </div>
                     </div>

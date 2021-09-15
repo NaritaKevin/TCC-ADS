@@ -47,6 +47,21 @@ if(isset($_POST['opSelecionada'])){
     }
 }
 
+if(isset($_POST['idQuestaoSelecionada'])){
+
+    $idQuestaoSelecionada = addslashes($_POST['idQuestaoSelecionada']);
+
+    if(!empty($idQuestaoSelecionada)){
+       $dadosAlternativas = $q->buscarAlternativasDaQuestao($idQuestaoSelecionada);
+       if(!empty($dadosAlternativas)){
+            print json_encode($dadosAlternativas,JSON_UNESCAPED_UNICODE);
+       }
+    }else{
+        $output = json_encode(array('type' => 'erro', 'text' => 'Erro ao buscar as alternativas!'));
+        die($output);  
+    }
+}
+
 if(isset($_POST['subgrupoopc']) && isset($_POST['nivelopc']) && isset($_POST['statusopc']) && isset($_POST['codigobncc']) && isset($_POST['enunciado'])){
     $subgrupoopc = addslashes($_POST['subgrupoopc']);
     $nivelopc = addslashes($_POST['nivelopc']);
@@ -59,14 +74,14 @@ if(isset($_POST['subgrupoopc']) && isset($_POST['nivelopc']) && isset($_POST['st
     $ano = "1";
     
 
-    if($opQuestao == "update" && !empty($enunciado) ){
+    if($opQuestao == "update" && !empty($enunciado) ){// Editar questão
         
      
         //     $s->atualizarDadosSubgrupo($subIdUpdate,$subDescricao,$subTematicaID);     
         //     $output = json_encode(array('type' => 'sucesso', 'text' => 'Alterado com sucesso!'));
         //     die($output);                     
       
-    }else if(!empty($enunciado) && !empty($subgrupoopc)){ // cadastrar
+    }else if(!empty($enunciado) && !empty($subgrupoopc)){ // Cadastrar questão
       
            if($q->cadastrarQuestao($enunciado,$codigobncc,$palavrasChave,$statusopc,$nivelopc,$ano,$subgrupoopc)){
               $output = json_encode(array('type' => 'sucesso', 'text' => 'Cadastrada com sucesso!'));
@@ -120,7 +135,7 @@ if(isset($_POST['subgrupoopc']) && isset($_POST['nivelopc']) && isset($_POST['st
         $altDescricao = addslashes($_POST[$alternativaxtexto]);
         $altStsCorreta = addslashes($_POST[$alternativaxstatus]);
 
-        if($q->cadastrarAlternativa($altLetra,$altDescricao,$altStsCorreta,$altQuestaoID['queID'])){
+        if($q->cadastrarAlternativa($altLetra,$altDescricao,$altStsCorreta,$altQuestaoID['queID'])){ // cadastrar alternativa
             $output = json_encode(array('type' => 'sucesso', 'text' => 'Cadastrada com sucesso!'));   
             }else{
                 $output = json_encode(array('type' => 'erro', 'text' => 'Ocorreu um erro ao cadastrar alternativas!'));
@@ -142,11 +157,6 @@ if(isset($_POST['subgrupoopc']) && isset($_POST['nivelopc']) && isset($_POST['st
 }
 
 
-// subgrupoopc: subgrupoopc,
-// nivelopc: nivelopc,
-// codigobncc: codigobncc,
-// enunciado: enunciado,
-// palavrasChave: palavrasChave
 
 
 
