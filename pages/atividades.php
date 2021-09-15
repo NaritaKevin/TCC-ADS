@@ -439,15 +439,21 @@
                     <div class="modal-dialog modal-lg">
                         <div class="modal-content">
                             <div class="modal-body">
-                                <div id="escolherQuestoess" class="table-responsive">
-                                    <table class="table table-hover" id="tableEscolherQuestoes">
+                                <div id="escolherQuestoess" class="expandable-table table-responsive">
+                                    <table class="table table-hover display" id="tableEscolherQuestoes">
                                         <thead>
                                             <tr>
-                                                
+                                                <th></th>
                                                 <th>Enunciado</th>
                                                 <th>Palavras Chave</th>
                                                 <th>Subgrupo</th>
-                                                
+                                                <th>Código BNCC</th>
+                                                <th>Nível</th>
+                                                <th>Ano</th>
+                                                <th>Status Tipo</th>
+                                                <th>Revisão</th>
+                                                <th></th>
+
                                             </tr>
                                         </thead>
                                         <tbody id="tbodyModalAtividade">
