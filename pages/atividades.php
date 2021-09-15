@@ -439,191 +439,19 @@
                     <div class="modal-dialog modal-lg">
                         <div class="modal-content">
                             <div class="modal-body">
-                                <div id="escolherQuestoess" class="expandable-table table-responsive">
-                                    <table class="table table-hover display" id="tableEscolherQuestoes">
+                                <div id="escolherQuestoess" class="table-responsive">
+                                    <table class="table table-hover" id="tableEscolherQuestoes">
                                         <thead>
                                             <tr>
-                                                <th></th>
+                                                
                                                 <th>Enunciado</th>
                                                 <th>Palavras Chave</th>
                                                 <th>Subgrupo</th>
-                                                <th>Código BNCC</th>
-                                                <th>Nível</th>
-                                                <th>Ano</th>
-                                                <th>Status Tipo</th>
-                                                <th>Revisão</th>
-                                                <th></th>
-
+                                                
                                             </tr>
                                         </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>1</td>
-                                                <td>De que forma os animais participam do ciclo
-                                                    da
-                                                    água?</td>
-                                                <td>Animais Ciclos Agua</td>
-                                                <td>Ciência da Natureza</td>
-                                                <td>654633</td>
-                                                <td>Fácil</td>
-                                                <td>20/09/2021</td>
-                                                <td><label class="badge badge-success">Postado</label></td>
-                                                <td><label class="badge badge-success">Postado</label></td>
-                                                <td>
-
-                                                </td>
-
-                                            </tr>
-                                            <tr>
-                                                <td>2</td>
-                                                <td>A geada "cai" do céu? Por quê?</td>
-                                                <td>Cai Ciclos Agua</td>
-                                                <td>Ciência da Natureza</td>
-                                                <td>123454</td>
-                                                <td>Médio</td>
-                                                <td>20/09/2021</td>
-                                                <td><label class="badge badge-success">Postado</label></td>
-                                                <td><label class="badge badge-success">Postado</label></td>
-                                                <td>
-
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>3</td>
-                                                <td>Qual a importância do gás ozônio encontrado
-                                                    na
-                                                    estratosfera?</td>
-                                                <td>Gás camada</td>
-                                                <td>Ciência da Natureza</td>
-                                                <td>546532</td>
-                                                <td>Difícil</td>
-                                                <td>20/09/2021</td>
-                                                <td><label class="badge badge-success">Postado</label></td>
-                                                <td><label class="badge badge-success">Postado</label></td>
-                                                <td>
-
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>4</td>
-                                                <td>De que forma os animais participam do ciclo
-                                                    da
-                                                    água?</td>
-                                                <td>Animais Ciclos Agua</td>
-                                                <td>Ciência da Natureza</td>
-                                                <td>654633</td>
-                                                <td>Fácil</td>
-                                                <td>20/09/2021</td>
-                                                <td><label class="badge badge-success">Postado</label></td>
-                                                <td><label class="badge badge-success">Postado</label></td>
-                                                <td>
-
-                                                </td>
-
-                                            </tr>
-                                            <tr>
-                                                <td>5</td>
-                                                <td>De que forma os animais participam do ciclo
-                                                    da
-                                                    água?</td>
-                                                <td>Animais Ciclos Agua</td>
-                                                <td>Ciência da Natureza</td>
-                                                <td>654633</td>
-                                                <td>Fácil</td>
-                                                <td>20/09/2021</td>
-                                                <td><label class="badge badge-success">Postado</label></td>
-                                                <td><label class="badge badge-success">Postado</label></td>
-                                                <td>
-
-                                                </td>
-
-                                            </tr>
-                                            <tr>
-                                                <td>6</td>
-                                                <td>De que forma os animais participam do ciclo
-                                                    da
-                                                    água?</td>
-                                                <td>Animais Ciclos Agua</td>
-                                                <td>Ciência da Natureza</td>
-                                                <td>654633</td>
-                                                <td>Fácil</td>
-                                                <td>20/09/2021</td>
-                                                <td><label class="badge badge-success">Postado</label></td>
-                                                <td><label class="badge badge-success">Postado</label></td>
-                                                <td>
-
-                                                </td>
-
-                                            </tr>
-                                            <tr>
-                                                <td>7</td>
-                                                <td>De que forma os animais participam do ciclo
-                                                    da
-                                                    água?</td>
-                                                <td>Animais Ciclos Agua</td>
-                                                <td>Ciência da Natureza</td>
-                                                <td>654633</td>
-                                                <td>Fácil</td>
-                                                <td>20/09/2021</td>
-                                                <td><label class="badge badge-success">Postado</label></td>
-                                                <td><label class="badge badge-success">Postado</label></td>
-                                                <td>
-
-                                                </td>
-
-                                            </tr>
-                                            <tr>
-                                                <td>8</td>
-                                                <td>De que forma os animais participam do ciclo
-                                                    da
-                                                    água?</td>
-                                                <td>Animais Ciclos Agua</td>
-                                                <td>Ciência da Natureza</td>
-                                                <td>654633</td>
-                                                <td>Fácil</td>
-                                                <td>20/09/2021</td>
-                                                <td><label class="badge badge-success">Postado</label></td>
-                                                <td><label class="badge badge-success">Postado</label></td>
-                                                <td>
-
-                                                </td>
-
-                                            </tr>
-                                            <tr>
-                                                <td>9</td>
-                                                <td>De que forma os animais participam do ciclo
-                                                    da
-                                                    água?</td>
-                                                <td>Animais Ciclos Agua</td>
-                                                <td>Ciência da Natureza</td>
-                                                <td>654633</td>
-                                                <td>Fácil</td>
-                                                <td>20/09/2021</td>
-                                                <td><label class="badge badge-success">Postado</label></td>
-                                                <td><label class="badge badge-success">Postado</label></td>
-                                                <td>
-
-                                                </td>
-
-                                            </tr>
-                                            <tr>
-                                                <td>10</td>
-                                                <td>De que forma os animais participam do ciclo
-                                                    da
-                                                    água?</td>
-                                                <td>Animais Ciclos Agua</td>
-                                                <td>Ciência da Natureza</td>
-                                                <td>654633</td>
-                                                <td>Fácil</td>
-                                                <td>20/09/2021</td>
-                                                <td><label class="badge badge-success">Postado</label></td>
-                                                <td><label class="badge badge-success">Postado</label></td>
-                                                <td>
-
-                                                </td>
-
-                                            </tr>
-
+                                        <tbody id="tbodyModalAtividade">
+                                            
                                         </tbody>
                                     </table>
                                 </div>

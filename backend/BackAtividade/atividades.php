@@ -26,7 +26,7 @@ class Atividade
         $res = $cmd->fetchAll(PDO::FETCH_ASSOC);
         return $res;
     }
-    // função para cadastrar pessoas no banco de dados
+    // função para cadastrar atividades no banco de dados
     public function cadastrarAtividades($descricao)
     {
         // verificar se o email ja esta cadastrado
@@ -48,7 +48,7 @@ class Atividade
 
     }
 
-    public function buscarDadosDisciplina($id){
+    public function buscarDadosAtividade($id){
         $res = array();
         $cmd = $this->pdo->prepare("SELECT * FROM disciplinas where disID = :disID");
         $cmd->bindValue(":disID",$id);
@@ -57,16 +57,16 @@ class Atividade
 
         return $res;
     }
-    public function atualizarDadosDisciplina($id,$descricao){
+    public function atualizarDadosAtividade($id,$descricao){
        
-        $cmd = $this->pdo->prepare("UPDATE disciplinas SET disDescricao = :disDescricao WHERE disID = :disID ");
-        $cmd->bindValue(":disID",$id);
-        $cmd->bindValue(":disDescricao",$descricao);
+        $cmd = $this->pdo->prepare("UPDATE atividade SET atiDescricao = :atiDescricao WHERE atiID = :atiID ");
+        $cmd->bindValue(":atiID",$id);
+        $cmd->bindValue(":atiDescricao",$descricao);
         $cmd->execute();
 
     }
 
-    public function excluirDisciplina($id)
+    public function excluirAtividade($id)
     {
         $cmd = $this->pdo->prepare(" DELETE FROM disciplinas WHERE disID = :disID ");
         $cmd->bindValue(":disID",$id);

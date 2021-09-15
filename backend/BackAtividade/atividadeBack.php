@@ -1,11 +1,10 @@
 <?php
 
-   require_once '../backend/disciplina.php';
-   require_once '../backend/tematica.php';
-   require_once '../backend/subgrupo.php';
+   require_once '../backend/BackAtividade/atividades.php';
+   require_once '../backend/BackAtividade/questao.php';
 
- $a = new Disciplina("pedagogy","localhost","root","");
- $q = new Tematica("pedagogy","localhost","root","");
+ $a = new Atividade("pedagogy","localhost","root","");
+ $q = new Questao("pedagogy","localhost","root","");
 
 
 
@@ -20,7 +19,7 @@
 
          if (!empty($disDescricao) && !empty($opDisciplina)){  // se os campos nao estiverem vazios entra no if   
              
-                 $p->atualizarDadosDisciplina($disIdUpdate,$disDescricao);
+                 $p->atualizarDadosAtividade($atiIDUpdate,$atiDescricao);
                 $output = json_encode(array('type' => 'sucesso', 'text' => 'Alterado com sucesso!'));
                 die($output);      
          }else{
@@ -30,7 +29,7 @@
      }else if(!empty($disDescricao)){ // cadastrar
          if (!empty($disDescricao)){ 
             
-             if($p->cadastrarDisciplina($disDescricao)){
+             if($p->cadastrarAtividades($disDescricao)){
                 $output = json_encode(array('type' => 'sucesso', 'text' => 'Cadastrado com sucesso!'));
                 die($output);      
              }else{
@@ -56,7 +55,7 @@
         
          if (!empty($temDescricao) && !empty($opTematica)) 
          {   // EDITAR
-             $t->atualizarDadosTematica($temIdUpdate,$temDescricao,$temDisciplinaID);     
+             $t->atualizarDadosQuestao($temIdUpdate,$temDescricao,$temDisciplinaID);     
              $output = json_encode(array('type' => 'sucesso', 'text' => 'Alterado com sucesso!'));
              die($output);                     
          }
@@ -66,7 +65,7 @@
          }
      }else if(!empty($temDescricao)){ // cadastrar
        
-            if($t->cadastrarTematica($temDescricao,$temDisciplinaID)){
+            if($t->cadastrarQuestao($temDescricao,$temDisciplinaID)){
                $output = json_encode(array('type' => 'sucesso', 'text' => 'Cadastrado com sucesso!'));
                die($output);      
             }else{
@@ -115,13 +114,13 @@
  }
 
 //chamada para carregar a tabela
- if(isset($_POST['buscaInicialDisciplina'])){
-    $buscaInicialDisciplina = addslashes($_POST['buscaInicialDisciplina']);
+ if(isset($_POST['buscaInicialQuestao'])){
+    $buscaInicialDisciplina = addslashes($_POST['buscaInicialQuestao']);
 
     if($buscaInicialDisciplina == true){
-       $dadosDisciplina = $p->buscarDados();
-       if (!empty($dadosDisciplina)) {
-        print json_encode($dadosDisciplina,JSON_UNESCAPED_UNICODE);
+       $dadosQuestao = $p->buscarDadosQuestao();
+       if (!empty($dadosQuestao)) {
+        print json_encode($dadosQuestao,JSON_UNESCAPED_UNICODE);
        }      
     }
 }
