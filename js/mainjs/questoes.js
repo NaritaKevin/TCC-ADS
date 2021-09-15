@@ -122,7 +122,6 @@ $(document).ready(function () {
             palavrasChave: palavrasChave
         };
 
-
         $('li textarea').each(function () {
 
             let alternativa = $(this).attr("id"); //* Pega o id da alternativa
@@ -140,7 +139,6 @@ $(document).ready(function () {
             // Object.assign(data, { keys[i]: alternativa });
 
         });
-
         console.log(data);
         $.ajax({
             url: '../backend/questoesBack.php',

@@ -52,7 +52,6 @@ class Questao{
             return true;
         }
     }
-    
 
     public function buscarUltimaQuestaoCadastrada(){
         $res = [];
