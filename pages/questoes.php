@@ -289,9 +289,7 @@ $n = new Nivel("pedagogy","localhost","root","");
                                                         <th>Ano</th>
                                                         <th>Status Tipo</th>
                                                         <th>Revisada</th>
-                                                        <th>Ação</th>
-                                                       
-
+                                                        <th>Ação</th>                                                     
                                                     </tr>
                                                 </thead>
                                                 <tbody id="tbodyQuestao">
