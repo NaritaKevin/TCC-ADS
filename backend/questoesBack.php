@@ -1,4 +1,5 @@
 <?php
+ header('Content-Type: text/html; charset=utf-8');
 
    require_once '../backend/questao.php';
    require_once '../backend/subgrupo.php';
@@ -55,12 +56,67 @@ if(isset($_POST['idQuestaoSelecionada'])){
        $dadosAlternativas = $q->buscarAlternativasDaQuestao($idQuestaoSelecionada);
        if(!empty($dadosAlternativas)){
             print json_encode($dadosAlternativas,JSON_UNESCAPED_UNICODE);
+       }else{
+           print json_encode($dadosAlternativas,JSON_UNESCAPED_UNICODE);
        }
     }else{
         $output = json_encode(array('type' => 'erro', 'text' => 'Erro ao buscar as alternativas!'));
         die($output);  
     }
 }
+
+// BUSCAR QUESTAO PARA ALTERARRR
+if(isset($_POST['idEditQuestao']) && isset($_POST['opQuestao'])){
+    $opQuestao = addslashes($_POST["opQuestao"]);
+    $queID = addslashes($_POST["idEditQuestao"]);
+
+    if($opQuestao == "update" && !empty($queID) ){// Editar questão
+
+        $questao = $q->buscarQuestao($queID);
+        $alternativas = $q->buscarAlternativasDaQuestao($queID);
+        if(empty($questao)){
+            $output = json_encode(array('type' => 'erro', 'text' => 'Erro ao editar questão!'));
+            die($output); 
+        }else{
+
+           $output =  array('queID' => $questao[0]['queID'], 'queDescricao' => $questao[0]['queDescricao'], 'queCodigoBncc' => $questao[0]['queCodigoBncc'],
+            'quePalavrasChave' => $questao[0]['quePalavrasChave'], 'queStsTipo' => $questao[0]['queStsTipo'], 'queStsRevisao'=> $questao[0]['queStsRevisao'],
+            'nivID' => $questao[0]['nivID'],
+            'subID' => $questao[0]['subID'],
+            'temID' => $questao[0]['temID'],
+            'disID' => $questao[0]['disID'], 
+            'subDescricao' => $questao[0]['subDescricao'],
+            'temDescricao' => $questao[0]['temDescricao'],
+            'disDescricao' => $questao[0]['disDescricao'],
+            'nivDescricao' => $questao[0]['nivDescricao'],$alternativas);
+           
+            $output2 = json_encode($output);
+           
+            die($output2);  
+        }
+         
+    
+    } else{
+        $output = json_encode(array('type' => 'erro', 'text' => 'Erro ao editar questão!'));
+        die($output); 
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+// $q->atualizarDadosQuestao($queID,$enunciado,$codigobncc,$palavrasChave,$statusopc,$nivelopc,$ano,$subgrupoopc);     
+// $output = json_encode(array('type' => 'sucesso', 'text' => 'Alterado com sucesso!'));
+// die($output);      
+
+
 
 if(isset($_POST['subgrupoopc']) && isset($_POST['nivelopc']) && isset($_POST['statusopc']) && isset($_POST['codigobncc']) && isset($_POST['enunciado'])){
     $subgrupoopc = addslashes($_POST['subgrupoopc']);
@@ -69,23 +125,17 @@ if(isset($_POST['subgrupoopc']) && isset($_POST['nivelopc']) && isset($_POST['st
     $statusopc = addslashes($_POST['statusopc']);
     $enunciado = addslashes($_POST['enunciado']);
     $palavrasChave = addslashes($_POST['palavrasChave']);
-    //$opQuestao = addslashes($_POST['opQuestao']);
-    $opQuestao ="a";
+
+
+    // MUDAR PRA QUANDO TIVER ANOOOOOOOOOOOOOOOOOOOOO
     $ano = "1";
     
 
-    if($opQuestao == "update" && !empty($enunciado) ){// Editar questão
-        
-     
-        //     $s->atualizarDadosSubgrupo($subIdUpdate,$subDescricao,$subTematicaID);     
-        //     $output = json_encode(array('type' => 'sucesso', 'text' => 'Alterado com sucesso!'));
-        //     die($output);                     
-      
-    }else if(!empty($enunciado) && !empty($subgrupoopc)){ // Cadastrar questão
+   if(!empty($enunciado) && !empty($subgrupoopc)){ // Cadastrar questão
       
            if($q->cadastrarQuestao($enunciado,$codigobncc,$palavrasChave,$statusopc,$nivelopc,$ano,$subgrupoopc)){
               $output = json_encode(array('type' => 'sucesso', 'text' => 'Cadastrada com sucesso!'));
-                  
+              die($output);  
            }else{
               $output = json_encode(array('type' => 'erro', 'text' => 'Questão já cadastrada!'));
               die($output);  

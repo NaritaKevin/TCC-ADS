@@ -65,7 +65,7 @@ $(document).ready(function () {
                 { data: 'queAnoID' },
                 {
                     data: null, render: function (data, type, row) {
-                        if (data.queStsTipo == "Publica") {
+                        if (data.queStsTipo == "Publica" || data.queStsTipo == "Pública") {
                             return `<label class="badge badge-info">${data.queStsTipo}</label>`;
                         } else {
                             return `<label class="badge badge-warning">${data.queStsTipo}</label>`;
@@ -138,13 +138,15 @@ $(document).ready(function () {
             // Object.assign(data, { keys[i]: alternativa });
 
         });
-        console.log(data);
+
         $.ajax({
             url: '../backend/questoesBack.php',
             method: 'POST',
             data: data,
             dataType: 'json',
             success: function (data) {
+
+                alert("entrou success")
                 if (data.type == 'erro') {
                     Swal.fire({
                         position: "center",
@@ -187,6 +189,7 @@ $(document).ready(function () {
                 }
             },
         }).done(function (data) {
+            alert("entroudone")
             tabelaQuestoes.ajax.reload(null, false);
         });
 
@@ -223,31 +226,10 @@ $(document).ready(function () {
             dataType: 'json',
             success: function (data) {
                 let count = data.length;
-
+                $("#alternativasModal").html("");
                 for (x = 0; x < count; x++) {
-                    let alternativaLetra = data[x].altLetra;
-                    let alternativaDescricao = data[x].altDescricao;
-                    let alternativaStatus = data[x].altStsCorreta;
-                    let iconeCorreto = `<i class="bi bi-check-lg" style="position: absolute;color: #57b657;"></i>`;
 
-                    let alternativaCorpo = `  <div class="alternativaGroup">
-                                            <div class="list-group-item list-group-item-action flex-column align-items-start" style="padding-bottom: 0.5rem !important;padding-top: 0.5rem !important">
-                                                <div class="wrapperAlternativa" style="display: flex">
-
-                                                
-                                                <h5 class="mb-1 letraAlternativa" style="padding-right: 0.5rem">${alternativaLetra}</h5>
-                                                <p class="mb-1 textoAlternativa text-success">${alternativaDescricao}</p>
-                                                </div>
-                                            
-                                            </div>
-                                            <div style="border-bottom: 1px solid #e3e3e3"></div>
-                                        </div>`;
-
-                    $("#alternativasModal").append(alternativaCorpo);
-                    if (alternativaStatus == "Correta") {
-                        $(".wrapperAlternativa").append(iconeCorreto);
-                        $(".textoAlternativa").css("text-success");
-                    }
+                    mostrarAlternativa(data[x].altLetra, data[x].altDescricao, data[x].altStsCorreta);
                 }
             },
             error: function (data) {
@@ -275,9 +257,8 @@ $(document).ready(function () {
 
     //? Modal Excluir cancelar
     $("#modalCancelar").click(function () {
-        $('#modalDelete').modal('hide')
-        $("#idDeleteSelecionado,#tabelaSelecionad").val("")
-        //limparSelecionado();
+        $('#modalDelete').modal('hide');
+        $("#idDeleteSelecionado,#tabelaSelecionad").val("");
     });
 
     //! Esconder/mostrar cadastrar questao
@@ -288,6 +269,7 @@ $(document).ready(function () {
     });
     $("#cancelarQuestao").click(function () {
         toggleNovaQuestao();
+        resetarFormulario();
     });
     //!
     //! Botão Correta ou Incorreta das alternativas
@@ -310,8 +292,63 @@ $(document).ready(function () {
         $('#modalDelete').modal('show')
 
         $(this).closest('tr').addClass("selecionado");
-
     });
+
+    //? Botao editar da tabela de questão
+    $("#tbodyQuestao").on("click", ".btn-edit-questao", function () {
+
+
+        let dados = $(this).closest('tr').children("td").map(function () { // função .map é utilizado para pegar todos os dados contidos na linha onde o botão editar foi pressionado, como ID, DESCRICAO E ETC.
+            return $(this).text();
+        }).get();
+
+        // $("#queID").val(dados[0]);
+        let id = dados[0];
+        $.ajax({
+            url: '../backend/questoesBack.php',
+            method: 'POST',
+            data: {
+                idEditQuestao: id,
+                opQuestao: "update"
+            },
+            dataType: 'json',
+            success: function (data) {
+
+                carregarFormulario(data.queID, data.queDescricao, data.queCodigoBncc, data.quePalavrasChave, data.queStsTipo, data.StsRevisao, data.subID, data.nivID, data.subDescricao, data.temDescricao, data.disDescricao, data.nivDescricao,)
+                //preencher as alternativas
+                for (let i = 0; i < data[0].length; i++) {
+                    $("#adicionarQuestao").click();
+                    // console.log(data[0][i].altID);
+                    // console.log(data[0][i].altLetra);
+                    // console.log(data[0][i].altDescricao);
+                    // console.log(data[0][i].altStsCorreta);
+                    // console.log(data[0][i].altQuestaoID);
+
+                    if (data[0][i].altStsCorreta == "Correta") {
+                        $('#alternativas li#' + i).find('.toggleAlternativa').click();
+                    }
+                    $('#alternativas li#' + i).find('#alternativa' + data[0][i].altLetra).text(data[0][i].altDescricao);
+
+
+                }
+
+
+
+                toggleNovaQuestao()
+            }, error: function (data) {
+                if (data.type == 'erro') {
+                    Swal.fire({
+                        position: "center",
+                        icon: "error",
+                        title: data.text,
+                        showConfirmButton: false,
+                        timer: 2000
+                    })
+
+                }
+            },
+        });
+    })
 
     //! Botão de adicionar alternativas
     $(".form-group").on('click', "#adicionarQuestao", function () {
@@ -433,12 +470,14 @@ $(document).ready(function () {
             },
             dataType: 'json',
             success: function (data) {
-                let disciplina = `<label class="labelCadastroAtuacao">Temática</label>  <div class="btn btn-inverse-secondary btn-fw subgrupoSelected">${data.disDescricao}</div>`
+                // let disciplina = `<label class="labelCadastroAtuacao">Temática</label>  <div id="disDescricaoSelected" class="btn btn-inverse-secondary btn-fw subgrupoSelected">${data.disDescricao}</div>`
 
-                let tematica = `<label class="labelCadastroAtuacao">Disciplina</label>  <div class="btn btn-inverse-secondary btn-fw subgrupoSelected">${data.temDescricao}</div>`
+                // let tematica = `<label class="labelCadastroAtuacao">Disciplina</label>  <div id="temDescricaoSelected" class="btn btn-inverse-secondary btn-fw subgrupoSelected">${data.temDescricao}</div>`
 
-                $("#temSelecionado").html(tematica);
-                $("#disSelecionado").html(disciplina);
+                // $("#temSelecionado").html(tematica);
+                // $("#disSelecionado").html(disciplina);
+                $("#temDescricaoSelected").text(data.temDescricao);
+                $("#disDescricaoSelected").text(data.disDescricao);
 
                 $("#temSelecionado,#disSelecionado").show();
             }
@@ -453,7 +492,8 @@ $(document).ready(function () {
         $("#statusopc").closest(".dropdown").find(".btn").children().children(".filter-option-inner").children(".filter-option-inner-inner").text("Pública");
         $("#subgrupoopc").closest(".dropdown").find(".btn").children().children(".filter-option-inner").children(".filter-option-inner-inner").text("Escolha");
         $("#temSelecionado,#disSelecionado").hide();
-        $("#codigobncc,#enunciado,#palavrasChave").val("");
+
+        $("#codigobncc,#enunciado,#palavrasChave,#disDescricaoSelected,#disDescricaoSelected").val("");
 
         let count = $('#alternativas li').length;
 
@@ -461,6 +501,38 @@ $(document).ready(function () {
             $("#" + x).remove();
         }
         i = 0;
+    }
+    function carregarFormulario(queID, enunciado, codigoBncc, palavrasChave, stsTipo, StsRevisao, subID, nivID, subgrupo, tematica, disciplina, nivel) {
+
+        let opcTipo = "";
+        if (stsTipo == "Pública" || stsTipo == "Publica") {
+            opcTipo = 1;
+        } else if (stsTipo == "Privada professor") {
+            opcTipo = 2;
+        } else if (stsTipo == "Privada grupo") {
+            opcTipo = 3;
+        } else if (stsTipo == "Privada escola") {
+            opcTipo = 4;
+        }
+
+
+        $("#queID").val(queID);
+        $("#opQuestao").val("update");
+
+        $('#subgrupoopc').val(subID);
+        $("#nivelopc").val(nivID);
+        $("#statusopc").val(opcTipo);
+        $("#nivelopc").closest(".dropdown").find(".btn").children().children(".filter-option-inner").children(".filter-option-inner-inner").text(nivel);
+        $("#statusopc").closest(".dropdown").find(".btn").children().children(".filter-option-inner").children(".filter-option-inner-inner").text(stsTipo);
+        $("#subgrupoopc").closest(".dropdown").find(".btn").children().children(".filter-option-inner").children(".filter-option-inner-inner").text(subgrupo);
+        $("#disDescricaoSelected").text(disciplina);
+        $("#temDescricaoSelected").text(tematica);
+        $("#temSelecionado,#disSelecionado").show();
+        $("#codigobncc").val(codigoBncc);
+        $("#enunciado").val(enunciado);
+        $("#palavrasChave").val(palavrasChave);
+
+
     }
     function limparSelecionado() {
         $('#tableQuestoes tr').each(function () {
@@ -528,6 +600,43 @@ $(document).ready(function () {
         //* Reload table
         tabelaQuestoes.ajax.reload(null, false);
 
+    }
+
+    function mostrarAlternativa(letra, descricao, statuss) {
+
+        let iconeCorreto = `<i class="bi bi-check-lg" style="position: absolute;color: #57b657;"></i>`;
+
+        let alternativaCorpo1 = `  <div class="alternativaGroup">
+                                <div class="list-group-item list-group-item-action flex-column align-items-start" style="padding-bottom: 0.5rem !important;padding-top: 0.5rem !important">
+                                    <div class="wrapperAlternativa" style="display: flex">
+
+                                    
+                                    <h5 class="mb-1 letraAlternativa" style="padding-right: 0.5rem">${letra})</h5>
+                                    <p class="mb-1 textoAlternativa">${descricao}</p>
+                                    </div>
+                                
+                                </div>
+                                <div style="border-bottom: 1px solid #e3e3e3"></div>
+                            </div>`;
+        let alternativaCorpo2 = `  <div class="alternativaGroup">
+                                    <div class="list-group-item list-group-item-action flex-column align-items-start" style="padding-bottom: 0.5rem !important;padding-top: 0.5rem !important">
+                                        <div class="wrapperAlternativa" style="display: flex">
+
+                                        <i class="bi bi-check-lg" style="position: absolute;color: #57b657;"></i>
+                                        <h5 class="mb-1 letraAlternativa" style="padding-right: 0.5rem">${letra})</h5>
+                                        <p class="mb-1 textoAlternativa text-success">${descricao}</p>
+                                        </div>
+                                    
+                                    </div>
+                                    <div style="border-bottom: 1px solid #e3e3e3"></div>
+                                </div>`;
+
+
+        if (statuss == "Correta") {
+            $("#alternativasModal").append(alternativaCorpo2);
+        } else {
+            $("#alternativasModal").append(alternativaCorpo1);
+        }
     }
 
 

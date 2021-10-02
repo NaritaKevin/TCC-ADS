@@ -3,10 +3,10 @@ require_once '../backend/disciplina.php';
 require_once '../backend/tematica.php';
 require_once '../backend/subgrupo.php';
 require_once '../backend/nivel.php';
-$p = new Disciplina("pedagogy","localhost","root","");
-$t = new Tematica("pedagogy","localhost","root","");
-$s = new Subgrupo("pedagogy","localhost","root","");
-$n = new Nivel("pedagogy","localhost","root","");
+$p = new Disciplina("pedagogy", "localhost", "root", "");
+$t = new Tematica("pedagogy", "localhost", "root", "");
+$s = new Subgrupo("pedagogy", "localhost", "root", "");
+$n = new Nivel("pedagogy", "localhost", "root", "");
 ?>
 
 <!DOCTYPE html>
@@ -36,20 +36,22 @@ $n = new Nivel("pedagogy","localhost","root","");
     <!-- endinject -->
     <link rel="shortcut icon" href="../images/logo-mini.svg" />
     <style>
-    .subgrupoSelected{
-        cursor: default !important;
-        color: black !important;
-        background-color: #f8f9fa !important;
-        border-color: #f8f9fa !important;
-    }
-    .subgrupoSelected:hover {
-        background-color:    #e6e9ed !important;
-    }
+        .subgrupoSelected {
+            cursor: default !important;
+            color: black !important;
+            background-color: #f8f9fa !important;
+            border-color: #f8f9fa !important;
+        }
 
-    .dropdown-item.active, .dropdown-item:active{
-        background-color: #6664bd ;
-    }
-</style>
+        .subgrupoSelected:hover {
+            background-color: #e6e9ed !important;
+        }
+
+        .dropdown-item.active,
+        .dropdown-item:active {
+            background-color: #6664bd;
+        }
+    </style>
 </head>
 
 <body>
@@ -57,10 +59,8 @@ $n = new Nivel("pedagogy","localhost","root","");
         <!-- partial:../../partials/_navbar.html -->
         <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
             <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
-                <a id="" class="navbar-brand brand-logo mr-5" href="../index.html"><img src="../images/logo-full.svg"
-                        class="mr-4 filter-purple" alt="logo" /></a>
-                <a class="navbar-brand brand-logo-mini" href="../index.html"><img src="../images/logo-mini.svg"
-                        alt="logo" /></a>
+                <a id="" class="navbar-brand brand-logo mr-5" href="../index.html"><img src="../images/logo-full.svg" class="mr-4 filter-purple" alt="logo" /></a>
+                <a class="navbar-brand brand-logo-mini" href="../index.html"><img src="../images/logo-mini.svg" alt="logo" /></a>
             </div>
             <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
                 <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
@@ -69,13 +69,11 @@ $n = new Nivel("pedagogy","localhost","root","");
 
                 <ul class="navbar-nav navbar-nav-right">
                     <li class="nav-item dropdown">
-                        <a class="nav-link count-indicator dropdown-toggle" id="notificationDropdown" href="#"
-                            data-toggle="dropdown">
+                        <a class="nav-link count-indicator dropdown-toggle" id="notificationDropdown" href="#" data-toggle="dropdown">
                             <i class="icon-bell mx-0"></i>
                             <span class="count"></span>
                         </a>
-                        <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list"
-                            aria-labelledby="notificationDropdown">
+                        <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list" aria-labelledby="notificationDropdown">
                             <p class="mb-0 font-weight-normal float-left dropdown-header">Notifications</p>
                             <a class="dropdown-item preview-item">
                                 <div class="preview-thumbnail">
@@ -122,8 +120,7 @@ $n = new Nivel("pedagogy","localhost","root","");
                         <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="profileDropdown">
                             <span>Perfil</span>
                         </a>
-                        <div class="dropdown-menu dropdown-menu-right navbar-dropdown"
-                            aria-labelledby="profileDropdown">
+                        <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
                             <a class="dropdown-item">
                                 <i class="ti-settings text-primary"></i>
                                 Settings
@@ -136,8 +133,7 @@ $n = new Nivel("pedagogy","localhost","root","");
                     </li>
 
                 </ul>
-                <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button"
-                    data-toggle="offcanvas">
+                <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">
                     <span class="icon-menu"></span>
                 </button>
             </div>
@@ -146,168 +142,159 @@ $n = new Nivel("pedagogy","localhost","root","");
         <div class="container-fluid page-body-wrapper">
 
             <!-- partial:../../partials/_sidebar.html -->
-            <?php require_once '../partials/menu.php';?>
+            <?php require_once '../partials/menu.php'; ?>
             <!-- Corpo da página-->
             <div class="main-panel">
                 <div class="content-wrapper">
                     <div class="row">
-                            <div class="col-lg-12 grid-margin stretch-card">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <h4 class="card-title">Tabela de Questões</h4>
-                                        <p class="card-description">
-                                            <button type="button" id="btn-nova-questao"
-                                                class="btn btn-primary btn-icon-text">
-                                                <i class="bi bi-plus-circle btn-icon-prepend"></i>
-                                                Nova questão
-                                            </button>
-                                        </p>
-                                        <div id="cadastrarQuestao" class=" stretch-card">
-                                            <div class="card">
-                                                <div class="card-body">
-                                                    <h4 class="card-title">Questão</h4>
-                                                    <p class="card-description">
-                                                        Cadastre a questão para a atividade.
-                                                    </p>
-                                                    <form id="formQuestoes">
+                        <div class="col-lg-12 grid-margin stretch-card">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h4 class="card-title">Tabela de Questões</h4>
+                                    <p class="card-description">
+                                        <button type="button" id="btn-nova-questao" class="btn btn-primary btn-icon-text">
+                                            <i class="bi bi-plus-circle btn-icon-prepend"></i>
+                                            Nova questão
+                                        </button>
+                                    </p>
+                                    <div id="cadastrarQuestao" class=" stretch-card">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <h4 class="card-title">Questão</h4>
+                                                <p class="card-description">
+                                                    Cadastre a questão para a atividade.
+                                                </p>
+                                                <form id="formQuestoes">
 
-                                                        <div class="form-group">
-                                                           <div class="row">
-
-                                                          
-                                                           <div class="col-md-4">
-                                                       
-                                                            <label class="labelCadastroAtuacao">Subgrupo</label>
-                                                            <select  id="subgrupoopc" class="selectpicker show-tick" name="subgrupoopc" data-width="fit"
-                                                            data-live-search="true">
-                                                            <option selected disabled value="0">Escolha</option>
-                                                            <?php  $arr_subgrupo = $s->buscarDadosSub() ?>
-                                                            <?php if(!empty($arr_subgrupo)) { ?>
-                                                                <?php foreach($arr_subgrupo as $subgrupoop) { 
-                                                                    ?>        
-                                                                    <option value="<?php echo $subgrupoop['subID']; ?>"><?php echo $subgrupoop['subDescricao']; ?></option>                                                                                                                                                                                                                                                                    
-                                                                <?php } ?>
-                                                            <?php } ?>
-                                                            </select>
-                                                        </div>
-                                                        
-                                                        <div class="col-md-4" id="temSelecionado">
-                                                        
-                                                        </div>  
-                                                        <div class="col-md-4" id="disSelecionado">
-                                                                                                             
-                                                        </div>                                                                                                   
-                                                        </div>
-                                                        </div>
-                                                        <div class="row">                                                   
+                                                    <div class="form-group">
+                                                        <div class="row">
                                                             <div class="col-md-4">
-                                                                <div class="form-group">
-                                                                    <label for="codigobncc">Código BNCC</label>
-                                                                    <input type="text" style="width: auto" class="form-control" name="codigobncc"id="codigobncc"
-                                                                        placeholder="Código BNCC">
-                                                                </div>
-                                                            </div>
-                                                        
-                                                            <div class="col-md-4">
-                                                                <div class="form-group">
-                                                                    <label class="labelCadastroAtuacao">Nível</label>
-                                                                    <select  id="nivelopc" class="selectpicker show-tick" name="nivelopc" data-width="fit">
-                                                                    <?php  $arr_nivel = $n->buscarDadosNivel() ?>
-                                                                    <?php if(!empty($arr_nivel)) { ?>
-                                                                        <?php foreach($arr_nivel as $nivelop) { 
-                                                                            ?>        
-                                                                            <option value="<?php echo $nivelop['nivID']; ?>"><?php echo $nivelop['nivDescricao']; ?></option>                                                                                                                                                                                                                                                                    
+                                                                <label class="labelCadastroAtuacao">Subgrupo</label>
+                                                                <select id="subgrupoopc" class="selectpicker show-tick" name="subgrupoopc" data-width="fit" data-live-search="true">
+                                                                    <option selected disabled value="0">Escolha</option>
+                                                                    <?php $arr_subgrupo = $s->buscarDadosSub() ?>
+                                                                    <?php if (!empty($arr_subgrupo)) { ?>
+                                                                        <?php foreach ($arr_subgrupo as $subgrupoop) {
+                                                                        ?>
+                                                                            <option value="<?php echo $subgrupoop['subID']; ?>"><?php echo $subgrupoop['subDescricao']; ?></option>
                                                                         <?php } ?>
                                                                     <?php } ?>
-                                                                    </select>
-                                                                </div>
+                                                                </select>
                                                             </div>
 
-                                                            <div class="col-md-4">
-                                                                 <div class="form-group">
-                                                                    <label class="labelCadastroAtuacao">Status</label>
-                                                                    <select  id="statusopc" class="selectpicker show-tick" name="statusopc" data-width="fit">
+                                                            <div class="col-md-4" id="temSelecionado">
+                                                                <label class="labelCadastroAtuacao">Temática</label>  
+                                                                <div id="temDescricaoSelected" class="btn btn-inverse-secondary btn-fw subgrupoSelected"></div>
+                                                            </div>
+                                                            <div class="col-md-4" id="disSelecionado">
+                                                                <label class="labelCadastroAtuacao">Disciplina</label>
+                                                                <div id="disDescricaoSelected" class="btn btn-inverse-secondary btn-fw subgrupoSelected"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-4">
+                                                            <div class="form-group">
+                                                                <label for="codigobncc">Código BNCC</label>
+                                                                <input type="hidden" name="opQuestao" id="opQuestao">
+                                                                <input type="hidden" name="queID" id="queID">
+                                                                <input type="text" style="width: auto" class="form-control" name="codigobncc" id="codigobncc" placeholder="Código BNCC">
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-md-4">
+                                                            <div class="form-group">
+                                                                <label class="labelCadastroAtuacao">Nível</label>
+                                                                <select id="nivelopc" class="selectpicker show-tick" name="nivelopc" data-width="fit">
+                                                                    <?php $arr_nivel = $n->buscarDadosNivel() ?>
+                                                                    <?php if (!empty($arr_nivel)) { ?>
+                                                                        <?php foreach ($arr_nivel as $nivelop) {
+                                                                        ?>
+                                                                            <option value="<?php echo $nivelop['nivID']; ?>"><?php echo $nivelop['nivDescricao']; ?></option>
+                                                                        <?php } ?>
+                                                                    <?php } ?>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-md-4">
+                                                            <div class="form-group">
+                                                                <label class="labelCadastroAtuacao">Status</label>
+                                                                <select id="statusopc" class="selectpicker show-tick" name="statusopc" data-width="fit">
                                                                     <option value="1">Pública</option>
                                                                     <option value="2">Privada professor</option>
                                                                     <option value="3">Privada grupo</option>
                                                                     <option value="4">Privada escola</option>
-                                                                    </select>
-                                                                </div>
+                                                                </select>
                                                             </div>
                                                         </div>
-                                                        <div class="form-group">
-                                                            <label for="enunciado">Enunciado</label>
-                                                            <textarea class="form-control" name="enunciado" id="enunciado"
-                                                                rows="7"></textarea>
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <label for="palavrasChave">Palavras chave</label>
-                                                            <input type="text" class="form-control" name="palavrasChave" id="palavrasChave"
-                                                                placeholder="Palavras chave">
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <p class="card-title">
-                                                                Alternativas.
-                                                            </p>
-                                                            <p class="card-description">
-                                                                Cadastre as alternativas da questão.
-                                                            </p>
-                                                            <button id="adicionarQuestao" type="button"
-                                                                class="btn btn-inverse-primary btn-rounded btn-icon">
-                                                                <i class="bi bi-plus-lg"></i>
-                                                            </button>
-                                                            <button id="deletarQuestao" type="button"
-                                                                class="btn btn-inverse-danger btn-rounded btn-icon">
-                                                                <i class="bi-trash"></i>
-                                                            </button>
-                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="enunciado">Enunciado</label>
+                                                        <textarea class="form-control" name="enunciado" id="enunciado" rows="7"></textarea>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="palavrasChave">Palavras chave</label>
+                                                        <input type="text" class="form-control" name="palavrasChave" id="palavrasChave" placeholder="Palavras chave">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <p class="card-title">
+                                                            Alternativas.
+                                                        </p>
+                                                        <p class="card-description">
+                                                            Cadastre as alternativas da questão.
+                                                        </p>
+                                                        <button id="adicionarQuestao" type="button" class="btn btn-inverse-primary btn-rounded btn-icon">
+                                                            <i class="bi bi-plus-lg"></i>
+                                                        </button>
+                                                        <button id="deletarQuestao" type="button" class="btn btn-inverse-danger btn-rounded btn-icon">
+                                                            <i class="bi-trash"></i>
+                                                        </button>
+                                                    </div>
 
-                                                        <div class="form-group">
-                                                            <ul id="alternativas" class="list-group">
+                                                    <div class="form-group">
+                                                        <ul id="alternativas" class="list-group">
 
-                                                            </ul>
-                                                        </div>
+                                                        </ul>
+                                                    </div>
 
-                                                        <button id="submitQuestao" type="submit"
-                                                            class="btn btn-primary mr-2">Cadastrar</button>
-                                                        <button id="cancelarQuestao" type="button"
-                                                            class="btn btn-secondary">Cancelar</button>
-                                                    </form>
-                                                </div>
+                                                    <button id="submitQuestao" type="submit" class="btn btn-primary mr-2">Cadastrar</button>
+                                                    <button id="cancelarQuestao" type="button" class="btn btn-secondary">Cancelar</button>
+                                                </form>
                                             </div>
-                                        </div>                                    
-                                        <div id="tableQuestoesToggle" class="expandable-table table-responsive">
-                                        <table class="table table-hover table-striped" style="width: 100%"id="tableQuestoes">
-                                                <thead>
-                                                    <tr>
-                                                        <th>ID</th>
-                                                        <th >Enunciado</th>
-                                                        <th>Palavras Chave</th>
-                                                        <th>Subgrupo</th>
-                                                        <th>Código BNCC</th>
-                                                        <th>Nível</th>
-                                                        <th>Ano</th>
-                                                        <th>Status Tipo</th>
-                                                        <th>Revisada</th>
-                                                        <th>Ação</th>                                                     
-                                                    </tr>
-                                                </thead>
-                                                <tbody id="tbodyQuestao">
-                                                   
-                                                </tbody>
-                                            </table>
                                         </div>
+                                    </div>
+                                    <div id="tableQuestoesToggle" class="expandable-table table-responsive">
+                                        <table class="table table-hover table-striped" style="width: 100%" id="tableQuestoes">
+                                            <thead>
+                                                <tr>
+                                                    <th>ID</th>
+                                                    <th>Enunciado</th>
+                                                    <th>Palavras Chave</th>
+                                                    <th>Subgrupo</th>
+                                                    <th>Código BNCC</th>
+                                                    <th>Nível</th>
+                                                    <th>Ano</th>
+                                                    <th>Status Tipo</th>
+                                                    <th>Revisada</th>
+                                                    <th>Ação</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="tbodyQuestao">
+
+                                            </tbody>
+                                        </table>
                                     </div>
                                 </div>
                             </div>
-                        
+                        </div>
+
                     </div>
                 </div>
 
-                <div class="modal fade" id="modalInfoQuestao" tabindex="-1" role="dialog" aria-labelledby="modalInfoQuestao"
-                    aria-hidden="true">
+                <div class="modal fade" id="modalInfoQuestao" tabindex="-1" role="dialog" aria-labelledby="modalInfoQuestao" aria-hidden="true">
                     <div class="modal-dialog modal-md" role="document">
-                        <div class="modal-content " >
+                        <div class="modal-content ">
                             <div class="modal-body">
                                 <div class="stretch-card">
                                     <div class="card">
@@ -315,48 +302,46 @@ $n = new Nivel("pedagogy","localhost","root","");
                                             <p class="card-title text-center">Alternativas Cadastradas</p>
                                             <div style="border-bottom: 1px solid #e3e3e3"></div>
                                             <div class="list-group" id="alternativasModal">
-                                                                                                                                                                                                              
-                                           
+
+
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="modal-footer">
-                                <button id="modalCancelarAlt" type="button" class="btn btn-secondary">Voltar</button>                              
+                                <button id="modalCancelarAlt" type="button" class="btn btn-secondary">Voltar</button>
                             </div>
                         </div>
                     </div>
                 </div>
 
 
-                <div class="modal fade" id="modalDelete" tabindex="-1" aria-labelledby="modalDelete"
-                    aria-hidden="true">
+                <div class="modal fade" id="modalDelete" tabindex="-1" aria-labelledby="modalDelete" aria-hidden="true">
                     <div class="modal-dialog ">
-                        <div class="modal-content">    
-                            <form id="formDelete" >                
-                            <div class="modal-header">
-                            <h4 class="modal-title ml-auto">Deseja excluir o item selecionada?</h4>
-                                <button type="button" id="buttonXmodal" class="close" data-dismiss="modal" aria-label="Close">
-                                 <span aria-hidden="true">&times;</span>
-                                </button>    
-                                <input type="hidden" name="idDeleteSelecionado" id="idDeleteSelecionado">     
-                                <input type="hidden" name="tabelaSelecionada" id="tabelaSelecionada">               
-                             </div>
-                           
-                            <div class="modal-footer">
-                            <button id="modalCancelar" type="button" class="btn btn-secondary  mr-auto">Cancelar</button>
-                            <button id="modalConfirmar"  type="submit"
-                                             class="btn btn-primary">
-                                            <i class="bi bi-x-circle btn-icon-prepend "></i>
-                                            Excluir</button>                       
-                            </div>  
-                            </form>                       
+                        <div class="modal-content">
+                            <form id="formDelete">
+                                <div class="modal-header">
+                                    <h4 class="modal-title ml-auto">Deseja excluir o item selecionada?</h4>
+                                    <button type="button" id="buttonXmodal" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                    <input type="hidden" name="idDeleteSelecionado" id="idDeleteSelecionado">
+                                    <input type="hidden" name="tabelaSelecionada" id="tabelaSelecionada">
+                                </div>
+
+                                <div class="modal-footer">
+                                    <button id="modalCancelar" type="button" class="btn btn-secondary  mr-auto">Cancelar</button>
+                                    <button id="modalConfirmar" type="submit" class="btn btn-primary">
+                                        <i class="bi bi-x-circle btn-icon-prepend "></i>
+                                        Excluir</button>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
-              
-                <?php require_once '../partials/footer.php';?>
+
+                <?php require_once '../partials/footer.php'; ?>
             </div>
 
         </div>
@@ -377,8 +362,8 @@ $n = new Nivel("pedagogy","localhost","root","");
         <script src="../js/template.js"></script>
         <script src="../vendors/bootstrapselect/bootstrap-select.min.js"></script>
 
-       
-     
+
+
         <!-- endinject -->
         <!-- Custom js for this page-->
         <script src="../js/mainjs/questoes.js"></script>

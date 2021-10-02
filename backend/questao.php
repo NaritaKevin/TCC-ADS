@@ -60,11 +60,25 @@ class Questao{
         $res = $cmd->fetch();
         return $res;
     }
+    
+    public function buscarQuestao($id){
+        $res = [];
+        $cmd = $this->pdo->prepare("SELECT * FROM questoes q 
+        LEFT JOIN subgrupos s ON q.queSubgrupoID = s.subID  
+        LEFT JOIN tematicas t ON t.temID =  subTematicaID
+        LEFT JOIN disciplinas d ON d.disID = temDisciplinaID
+        LEFT JOIN niveis n ON n.nivID = q.queNivelID  WHERE q.queID = :id");
+        $cmd->bindValue(":id",$id);
+        $cmd->execute();
+        $res = $cmd->fetchAll(PDO::FETCH_ASSOC);
+        return $res;
+    }
 
     public function buscarAlternativasDaQuestao($questaoID){
         $res = [];
-        $cmd = $this->pdo->query("SELECT * FROM alternativas WHERE altQuestaoID = :altQuestaoID");
+        $cmd = $this->pdo->prepare("SELECT * FROM alternativas WHERE altQuestaoID = :altQuestaoID");
         $cmd->bindValue(":altQuestaoID",$questaoID);
+        $cmd->execute();
         $res = $cmd->fetchAll(PDO::FETCH_ASSOC);
         return $res;
     }
@@ -85,12 +99,18 @@ class Questao{
 
     }
  
-    public function atualizarDadosQuestao($id,$descricao,$idTematica){
+    public function atualizarDadosQuestao($id,$descricao,$codigoBncc,$palavrasChave,$queStstipo,$queNivelID,$queAnoID,$queSubgrupoID){
        
-        $cmd = $this->pdo->prepare("UPDATE subgrupos SET subDescricao = :subDescricao, subTematicaID = :subTematicaID WHERE subID = :subID ");
-        $cmd->bindValue(":subID",$id);
-        $cmd->bindValue(":subDescricao",$descricao);
-        $cmd->bindValue(":subTematicaID",$idTematica);
+        $cmd = $this->pdo->prepare("UPDATE questoes SET queDescricao = :queDescricao, queCodigoBncc = :queCodigoBncc, quePalavrasChave = :quePalavrasChave, queStstipo = :queStstipo, queStsRevisao = :queStsRevisao, queNivelID = :queNivelID, queAnoID = :queAnoID , queSubgrupoID = :queSubgrupoID WHERE queID = :queID ");
+        $cmd->bindValue(":queID",$id);
+        $cmd->bindValue(":queDescricao",$descricao);
+        $cmd->bindValue(":queCodigoBncc",$codigoBncc);
+        $cmd->bindValue(":quePalavrasChave",$palavrasChave);
+        $cmd->bindValue(":queStstipo",$queStstipo);
+        $cmd->bindValue(":queStsRevisao","Não");
+        $cmd->bindValue(":queNivelID",$queNivelID);
+        $cmd->bindValue(":queAnoID",$queAnoID);
+        $cmd->bindValue(":queSubgrupoID",$queSubgrupoID);
         $cmd->execute();
 
     }
