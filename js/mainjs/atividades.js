@@ -14,11 +14,27 @@ $(document).ready(function () {
         })
         //? Tabela de escolher questões
         tableEscolher = $('#tableEscolherQuestoes').DataTable({
+
+            "select": {
+                "style": 'multi'
+            },
+            "columnDefs": [
+                {
+                    //"orderable": true,
+                    //"targets": [9]
+                },
+                {
+                    'targets': 0,
+                    'checkboxes': {
+                      'selectRow': true
+                    }
+                }
+            ],
             responsive: true,
             ajax: {
                 "url": "../backend/BackAtividade/atividadeBack.php",
                 "method": 'POST', // metodo utilizado para passar os valores das variavesi data para o backend.
-                "data": { buscaInicialQuestao: buscaInicialQuestao }, // as variaves bucasInicial.... possuem o valor true  para que no arquivo atuacaoBack.php sirva para buscar os dados da tabela
+                "data": { buscaInicialQuestao: buscaInicialQuestao }, // as variaves bucasInicial.... possuem o valor true  para que no arquivo atividadeBack.php sirva para buscar os dados da tabela
                 "dataSrc": ""
             },
             language: { // tradução em portgues da tabela
@@ -29,9 +45,11 @@ $(document).ready(function () {
                 //aqui dentro sera configurado o conteudo de cada coluna utilizando as variaveis data
                 //importante - os valores contidos em data não a relação com os nomes dos cabeçalhos da tabela.
 
-                // as tabelas são lidas por indices: 0,1,2,3, de acordo com o tanto de colunas - Neste caso o indice 0 sera o disID.
+                // as tabelas são lidas por indices: 0,1,2,3, de acordo com o tanto de colunas - Neste caso o indice 0 sera o queID.
                 { data: 'queID' }, // o valor contido na variavel data, é o que sera buscado no banco de dados, no caso o ID
                 { data: 'queDescricao' },
+                { data: 'queCodigoBncc' },
+                { data: 'queStsTipo' },
                 {
                     data: null, render: function (data, type, row) { // renderizar a exibição dos botões 
 
@@ -46,6 +64,8 @@ $(document).ready(function () {
                     }
                 },
             ]
+
+            
         })
 
     }

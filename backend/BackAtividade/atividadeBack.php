@@ -1,7 +1,7 @@
 <?php
 
    require_once 'atividades.php';
-   require_once 'questao.php';
+   require_once '../questao.php';
 
  $a = new Atividade("pedagogy","localhost","root","");
  $q = new Questao("pedagogy","localhost","root","");
@@ -13,6 +13,7 @@
 
     if($buscaInicialDisciplina == true){
        $dadosQuestao = $q->buscarDadosQuestao();
+       //die($dadosQuestao);
        if (!empty($dadosQuestao)) {
         print json_encode($dadosQuestao,JSON_UNESCAPED_UNICODE);
        }      

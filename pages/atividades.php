@@ -443,9 +443,13 @@
                                     <table class="table table-hover display" id="tableEscolherQuestoes">
                                         <thead>
                                             <tr>
-                                                <th></th>
+                                                <th>ID</th>
                                                 <th>Enunciado</th>
-                                                <th>Palavras Chave</th>
+                                                <th>Código BNCC</th>
+                                                <th>Tipo</th>
+                                                <th>Ações</th>
+                                                <th></th>
+                                                
                                                
                                             </tr>
                                         </thead>
