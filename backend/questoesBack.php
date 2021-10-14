@@ -65,17 +65,17 @@ if(isset($_POST['idQuestaoSelecionada'])){
     }
 }
 
-// BUSCAR QUESTAO PARA ALTERARRR
+// BUSCAR QUESTAO PARA ALTERARRR/ALTERARR
 if(isset($_POST['idEditQuestao']) && isset($_POST['opQuestao'])){
     $opQuestao = addslashes($_POST["opQuestao"]);
     $queID = addslashes($_POST["idEditQuestao"]);
 
-    if($opQuestao == "update" && !empty($queID) ){// Editar questão
+    if($opQuestao == "update" && !empty($queID) ){
 
         $questao = $q->buscarQuestao($queID);
         $alternativas = $q->buscarAlternativasDaQuestao($queID);
         if(empty($questao)){
-            $output = json_encode(array('type' => 'erro', 'text' => 'Erro ao editar questão!'));
+            $output = json_encode(array('type' => 'erro', 'text' => 'Erro ao buscar questão!'));
             die($output); 
         }else{
 
@@ -89,7 +89,7 @@ if(isset($_POST['idEditQuestao']) && isset($_POST['opQuestao'])){
             'temDescricao' => $questao[0]['temDescricao'],
             'disDescricao' => $questao[0]['disDescricao'],
             'nivDescricao' => $questao[0]['nivDescricao'],$alternativas);
-           
+
             $output2 = json_encode($output);
            
             die($output2);  
@@ -97,24 +97,10 @@ if(isset($_POST['idEditQuestao']) && isset($_POST['opQuestao'])){
          
     
     } else{
-        $output = json_encode(array('type' => 'erro', 'text' => 'Erro ao editar questão!'));
+        $output = json_encode(array('type' => 'erro', 'text' => 'Erro ao buscar questão!'));
         die($output); 
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-// $q->atualizarDadosQuestao($queID,$enunciado,$codigobncc,$palavrasChave,$statusopc,$nivelopc,$ano,$subgrupoopc);     
-// $output = json_encode(array('type' => 'sucesso', 'text' => 'Alterado com sucesso!'));
-// die($output);      
 
 
 
@@ -126,31 +112,67 @@ if(isset($_POST['subgrupoopc']) && isset($_POST['nivelopc']) && isset($_POST['st
     $enunciado = addslashes($_POST['enunciado']);
     $palavrasChave = addslashes($_POST['palavrasChave']);
 
+    $id='';
+    $update = '';
+    $cadastrar = true;
+    if(isset($_POST['atualizarQuestao']) && isset($_POST['questaoID'])){
+        $opQuestao = addslashes($_POST["atualizarQuestao"]);
+        $queID = addslashes($_POST["questaoID"]);
+
+        $id = $queID;
+        $update = $opQuestao;
+    }
+
 
     // MUDAR PRA QUANDO TIVER ANOOOOOOOOOOOOOOOOOOOOO
     $ano = "1";
+
+    if ( $update == "update" && !empty($queID)) {// Editar questão
+        if(!empty($enunciado) && !empty($subgrupoopc)){
+
+            if($q->atualizarDadosQuestao($id,$enunciado,$codigobncc,$palavrasChave,$statusopc,$nivelopc,$ano,$subgrupoopc)){
+                $output = json_encode(array('type' => 'sucesso', 'text' => 'Alterado com sucesso!'));
+                $q->excluirAlternativa($id);
+                //die($output); 
+                $cadastrar = false;
+            }else{
+                $output = json_encode(array('type' => 'erro', 'text' => 'Erro ao atualizar!'));
+                die($output); 
+            }       
+        }else{
+            $output = json_encode(array('type' => 'validacao', 'text' => 'Preencha todos os campos!'));
+            die($output); 
+        }
+                           
+    }
+   
+    if($cadastrar == true){
+        if(!empty($enunciado) && !empty($subgrupoopc)){ // Cadastrar questão
+        
+            if($q->cadastrarQuestao($enunciado,$codigobncc,$palavrasChave,$statusopc,$nivelopc,$ano,$subgrupoopc)){
+            $output = json_encode(array('type' => 'sucesso', 'text' => 'Cadastrada com sucesso!'));
+            //die($output);  
+            }else{
+            $output = json_encode(array('type' => 'erro', 'text' => 'Questão já cadastrada!'));
+            die($output);  
+            }          
+        }else{
+            $output = json_encode(array('type' => 'validacao', 'text' => 'Preencha todos os campos!'));
+            die($output);
+        }
+
+        
+        $altQuestaoID = $q->buscarUltimaQuestaoCadastrada();
+        if(empty($altQuestaoID)){
+             $output = json_encode(array('type' => 'erro', 'text' => 'Questão não cadastrada!'));
+             die($output); 
+        }
     
-
-   if(!empty($enunciado) && !empty($subgrupoopc)){ // Cadastrar questão
-      
-           if($q->cadastrarQuestao($enunciado,$codigobncc,$palavrasChave,$statusopc,$nivelopc,$ano,$subgrupoopc)){
-              $output = json_encode(array('type' => 'sucesso', 'text' => 'Cadastrada com sucesso!'));
-              die($output);  
-           }else{
-              $output = json_encode(array('type' => 'erro', 'text' => 'Questão já cadastrada!'));
-              die($output);  
-           }          
-   }else{
-       $output = json_encode(array('type' => 'validacao', 'text' => 'Preencha todos os campos!'));
-       die($output);
-   }
+    }
 
 
-   $altQuestaoID = $q->buscarUltimaQuestaoCadastrada();
-   if(empty($altQuestaoID)){
-        $output = json_encode(array('type' => 'erro', 'text' => 'Questão não cadastrada!'));
-        die($output); 
-   }
+   
+  
 
    
     $alternativa = "alternativa";
@@ -182,12 +204,22 @@ if(isset($_POST['subgrupoopc']) && isset($_POST['nivelopc']) && isset($_POST['st
         $altDescricao = addslashes($_POST[$alternativaxtexto]);
         $altStsCorreta = addslashes($_POST[$alternativaxstatus]);
 
-        if($q->cadastrarAlternativa($altLetra,$altDescricao,$altStsCorreta,$altQuestaoID['queID'])){ // cadastrar alternativa
-            $output = json_encode(array('type' => 'sucesso', 'text' => 'Cadastrada com sucesso!'));   
+        if($cadastrar == true){
+            if($q->cadastrarAlternativa($altLetra,$altDescricao,$altStsCorreta,$altQuestaoID['queID'])){ // cadastrar alternativa
+                $output = json_encode(array('type' => 'sucesso', 'text' => 'Cadastrada com sucesso!'));   
             }else{
                 $output = json_encode(array('type' => 'erro', 'text' => 'Ocorreu um erro ao cadastrar alternativas!'));
                 die($output);  
             }
+        }else{
+            if($q->cadastrarAlternativa($altLetra,$altDescricao,$altStsCorreta,$id)){ // cadastrar alternativa
+                $output = json_encode(array('type' => 'sucesso', 'text' => 'Cadastrada com sucesso!'));   
+            }else{
+                $output = json_encode(array('type' => 'erro', 'text' => 'Ocorreu um erro ao cadastrar alternativas!'));
+                die($output);  
+            }
+        }
+       
     }
   
 

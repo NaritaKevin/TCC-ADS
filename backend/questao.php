@@ -113,6 +113,8 @@ class Questao{
         $cmd->bindValue(":queSubgrupoID",$queSubgrupoID);
         $cmd->execute();
 
+        return true;
+
     }
 
     public function excluirQuestao($id)
@@ -125,9 +127,19 @@ class Questao{
 
     public function excluirAlternativa($id)
     {
-        $cmd = $this->pdo->prepare(" DELETE FROM alternativas WHERE altQuestaoID = :queID ");
-        $cmd->bindValue(":queID",$id);
+        $cmd = $this->pdo->prepare("SELECT altQuestaoID FROM alternativas where altQuestaoID = :queID");
+
+        $cmd->bindValue(':queID',$id);
         $cmd->execute();
+
+        if ($cmd->rowCount() > 0) {// questao ja existe no banco
+            $cmd = $this->pdo->prepare(" DELETE FROM alternativas WHERE altQuestaoID = :queID ");
+            $cmd->bindValue(":queID", $id);
+            $cmd->execute();
+            return true;
+        } else { //não foi encontrado a questao p/ excluir
+        return false;
+        }
     }
 }
 ?>

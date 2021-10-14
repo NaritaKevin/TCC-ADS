@@ -1,5 +1,7 @@
 $(document).ready(function () {
     let buscaInicialQuestao = true;
+    let atualizarQuestaoo = false;
+    let idQuestao;
     init();
 
     function init() {
@@ -139,14 +141,17 @@ $(document).ready(function () {
 
         });
 
+        if (atualizarQuestaoo) {
+            data['atualizarQuestao'] = "update";
+            data['questaoID'] = idQuestao;
+        }
+
         $.ajax({
             url: '../backend/questoesBack.php',
             method: 'POST',
             data: data,
             dataType: 'json',
             success: function (data) {
-
-                alert("entrou success")
                 if (data.type == 'erro') {
                     Swal.fire({
                         position: "center",
@@ -189,8 +194,8 @@ $(document).ready(function () {
                 }
             },
         }).done(function (data) {
-            alert("entroudone")
             tabelaQuestoes.ajax.reload(null, false);
+            atualizarQuestaoo = false;
         });
 
         return false;
@@ -270,6 +275,7 @@ $(document).ready(function () {
     $("#cancelarQuestao").click(function () {
         toggleNovaQuestao();
         resetarFormulario();
+        atualizarQuestaoo = false;
     });
     //!
     //! Botão Correta ou Incorreta das alternativas
@@ -304,6 +310,8 @@ $(document).ready(function () {
 
         // $("#queID").val(dados[0]);
         let id = dados[0];
+        idQuestao = dados[0];
+        atualizarQuestaoo = true;
         $.ajax({
             url: '../backend/questoesBack.php',
             method: 'POST',
