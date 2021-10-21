@@ -2,8 +2,11 @@ $(document).ready(function () {
     let buscaInicialQuestao = true;
     let buscaInicialAtividade = true;
 
+    var opAtividade
+    var opId
 
     init();
+
     function init() {
 
         $("#cadastrarAtividade").hide();
@@ -12,6 +15,7 @@ $(document).ready(function () {
         $("#data-inicial,#data-final").datetimepicker({
             timepicker: false, mask: true, format: 'd/m/Y',
         })
+
         //? Tabela de escolher questões
         tableEscolher = $('#tableEscolherQuestoes').DataTable({
 
@@ -68,7 +72,150 @@ $(document).ready(function () {
             
         })
 
+
+        tableAtividade = $('#tableAtividade').DataTable({
+            
+            responsive: true,
+            ajax: {
+                "url": "../backend/BackAtividade/atividadeBack.php",
+                "method": 'POST', // metodo utilizado para passar os valores das variavesi data para o backend.
+                "data": { buscaInicialAtividade: buscaInicialAtividade }, // as variaves bucasInicial.... possuem o valor true  para que no arquivo atividadeBack.php sirva para buscar os dados da tabela
+                "dataSrc": ""
+            },
+            language: { // tradução em portgues da tabela
+                url: "../partials/dataTablept-br.json"
+            },
+            lengthMenu: [[5, 15, 25, -1], [5, 15, 25, "Todos"]], // configuração de quantidade de registros a serem mostrados, 5....15 ou todos 
+            columns: [
+                //aqui dentro sera configurado o conteudo de cada coluna utilizando as variaveis data
+                //importante - os valores contidos em data não a relação com os nomes dos cabeçalhos da tabela.
+
+                // as tabelas são lidas por indices: 0,1,2,3, de acordo com o tanto de colunas - Neste caso o indice 0 sera o queID.
+                { data: 'atiID' }, // o valor contido na variavel data, é o que sera buscado no banco de dados, no caso o ID
+                { data: 'atiDescricao' },
+                { data: 'atiObservacao' },
+                { data: 'atiDataInicio' },
+                { data: 'atiDataFim' },
+                { data: 'atiTipoID' },
+                {
+                    data: null, render: function (data, type, row) { // renderizar a exibição dos botões 
+
+                        return `<button id="btn" type="button"
+                        class="btn btn-inverse-primary btn-rounded btn-icon btn-info-questao ">
+                        <i class="bi bi-info-lg"></i>
+                    </button>
+                    <button type="button"
+                        class="btn btn-inverse-success btn-rounded btn-icon btn-editar-atividade">
+                        <i class="bi bi-pencil"></i>
+                    </button>
+                    <button type="button"
+                        class="btn btn-inverse-danger btn-rounded btn-icon  btn-excluir-atividade">
+                        <i class="bi bi-trash"></i>
+                    </button>`;
+                    }
+                },
+            ]
+
+            
+        })
+
     }
+    //? Formulario de Cadastro de Atividade
+    $('#formAtividades').submit(function (e) {
+        e.preventDefault();//evita de dar reload na pagina
+        var nome = $('#nome').val();
+        var descricao = $('#descricao').val();
+        var tipoopc = $("#tipoopc").val();
+        var dataInicial = $("#data-inicial").val();
+        var dataFinal = $("#data-final").val();
+
+        var dataFormInicial
+        var dataFormFinal
+        function formatarData(data) {
+            var dia = data.split("/")[0];
+            var mes = data.split("/")[1];
+            var ano = data.split("/")[2];
+            
+
+            return ano + '-' + ("0" + mes).slice(-2) + '-' + ("0" + dia).slice(-2);
+            // Utilizo o .slice(-2) para garantir o formato com 2 digitos.
+        }
+
+        dataFormInicial = formatarData(dataInicial);
+        dataFormFinal = formatarData(dataFinal);
+
+        console.log(dataFormInicial);
+        console.log(dataFormFinal);
+        console.log(nome);
+        console.log(descricao);
+        console.log(tipoopc);
+
+        $.ajax({
+            url: '../backend/BackAtividade/atividadeBack.php',
+            method: 'POST',
+            data: {
+                nome: nome,
+                descricao: descricao,
+                tioopc: tipoopc,
+                dataFormInicial: dataFormInicial,
+                dataFormFinal: dataFormFinal
+            },
+            dataType: 'json',
+            success: function (data) {
+                if (data.type == 'erro') {
+                    Swal.fire({
+                        position: "center",
+                        icon: "error",
+                        title: data.text,
+                        showConfirmButton: false,
+                        timer: 2000
+                    })
+
+                } else if (data.type == 'sucesso') {
+                    Swal.fire({
+                        position: "center",
+                        icon: "success",
+                        title: data.text,
+                        showConfirmButton: false,
+                        timer: 2000
+                    })
+
+                    $("#btn-nova-atividade").click();//Simula um click manual no botao de cadastrar
+                } else if (data.type == 'validacao') {
+                    Swal.fire({
+                        position: "center",
+                        icon: "warning",
+                        title: data.text,
+                        showConfirmButton: false,
+                        timer: 2000
+                    })
+                    //!fazer validação dos campos inserindo no html depois
+                }
+            }
+        }).done(function (data) {
+            //? tableAtividade.ajax.reload(null, false);
+        });
+
+    });
+
+    
+
+    //?Botao da tabela de editar atividade
+$("#tbodyAtivdades").on("click", ".btn-edit-subgrupo", function () {
+    toggleNovoSubgrupo()
+    let dados = $(this).closest('tr').children("td").map(function () {
+        return $(this).text();
+    }).get();
+
+    $("#subID").val(dados[0]);
+    $("#subgrupo").val(dados[1]);
+    $("#opSubgrupo").val("update");
+
+    $("#tematicaopc option:contains(" + dados[2] + ")").attr("selected", true);//Pré seleciona opção no dropdown
+    $(".filter-option-inner-inner").text(dados[2]);//Escreve a disciplina selecionada no botão do dropdown
+
+
+});
 
     //? Tabela de atividades
     $('#tableAtividade').DataTable({
@@ -114,6 +261,7 @@ $(document).ready(function () {
     //! Esconder/mostrar cadastrar atividade
     $("#btn-nova-atividade").click(function () {
         toggleNovaAtividade()
+        $('#nome, #data-final, #data-inicial, #tipoopc, #descricao').val("");
     });
     $("#cancelarAtividade").click(function () {
         toggleNovaAtividade()

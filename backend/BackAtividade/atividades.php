@@ -22,12 +22,12 @@ class Atividade
     //FUNÇÃO PARA BUSCAR OS DADOS E EXIBIR NO CANTO DEREITO
     public function buscarDados(){
         $res = array();
-        $cmd = $this->pdo->query("SELECT * FROM atividades");
+        $cmd = $this->pdo->query("SELECT * FROM atividades a INNER JOIN tipos t on a.atiTipoID = t.tipID");
         $res = $cmd->fetchAll(PDO::FETCH_ASSOC);
         return $res;
     }
     // função para cadastrar atividades no banco de dados
-    public function cadastrarAtividades($descricao)
+    public function cadastrarAtividades($nome, $descricao, $tipo, $dataInicial, $dataFinal )
     {
         // verificar se o email ja esta cadastrado
         $cmd = $this->pdo->prepare("SELECT atiID FROM atividades where atiDescricao = :atiDescricao");
@@ -39,9 +39,14 @@ class Atividade
                 return false;
         } else { //não foi encontrado o email
             $cmd = $this->pdo->prepare(
-            "INSERT INTO disciplinas (disDescricao) 
-            VALUES (:disDescricao)");
-            $cmd->bindValue(":disDescricao",$descricao);
+            "INSERT INTO atividades (atiDescricao, atiDataInicio, atiDataFim, atiObservacao, atiTipoID) 
+            VALUES (:nome, :dataInicio, :dataFim, :observacao, :tipo)");
+            $cmd->bindValue(":nome",$nome);
+            $cmd->bindValue(":dataInicio",$dataInicial);
+            $cmd->bindValue(":dataFim",$dataFinal);
+            $cmd->bindValue(":observacao",$descricao);
+            $cmd->bindValue(":tipo",$tipo);
+            
             $cmd->execute();
             return true;
         }

@@ -49046,6 +49046,10 @@ table.datatable thead th.no-sort {
  
   display: block;
 }
+.form-group .labelCadastroAtividade {
+ 
+  display: block;
+}
 /*
 .dataTables_wrapper {
   display: inline-table;

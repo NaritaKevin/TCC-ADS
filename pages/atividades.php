@@ -1,3 +1,8 @@
+<?php
+require_once '../backend/tipo.php';
+$t = new Tipo("pedagogy", "localhost", "root", "");
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -11,6 +16,7 @@
     <link rel="stylesheet" href="../vendors/ti-icons/css/themify-icons.css">
     <link rel="stylesheet" href="../vendors/css/vendor.bundle.base.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="../vendors/bootstrapselect/bootstrap-select.min.css">
     <!-- endinject -->
     <!-- Plugin css for this page -->
     <link rel="stylesheet" href="../vendors/datatables.net-bs4/dataTables.bootstrap4.css">
@@ -24,6 +30,24 @@
     <link rel="stylesheet" href="../css/vertical-layout-light/style.css">
     <!-- endinject -->
     <link rel="shortcut icon" href="../images/logo-mini.svg" />
+
+    <style>
+        .subgrupoSelected {
+            cursor: default !important;
+            color: black !important;
+            background-color: #f8f9fa !important;
+            border-color: #f8f9fa !important;
+        }
+
+        .subgrupoSelected:hover {
+            background-color: #e6e9ed !important;
+        }
+
+        .dropdown-item.active,
+        .dropdown-item:active {
+            background-color: #6664bd;
+        }
+    </style>
 </head>
 
 <body>
@@ -143,31 +167,41 @@
                                                     <h4 class="card-title">Cadastro de atividades</h4>
                                                     <p class="card-description">Informe os dados da atividade a ser
                                                         cadastrada.</p>
-                                                    <form>
-                                                        <div class="form-group">
-                                                            <label for="exampleInputUsername1">Nome</label>
-                                                            <input type="text" class="form-control"
-                                                                id="exampleInputUsername1" placeholder="Nome">
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <label for="exampleInputEmail1">Observações</label>
-                                                            <input type="email" class="form-control"
-                                                                id="exampleInputEmail1" placeholder="Observações">
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <label for="exampleSelectGender">Tipo</label>
-                                                            <select class="form-control" onfocus='this.size=5;'
-                                                                onblur='this.size=1;'
-                                                                onchange='this.size=1; this.blur();'>
-                                                                <option selected>Tipo</option>
-                                                                <option value="1">Trabalho</option>
-                                                                <option value="2">Projeto</option>
-                                                                <option value="3">Redação</option>
-                                                                <option value="4">Fórum</option>
-                                                                <option value="4">Fórum</option>
+                                                    <form id="formAtividades">
 
-                                                            </select>
+                                                        <div class="form-group">
+                                                            <label for="nome">Nome</label>
+                                                            <input type="text" class="form-control" id="nome" placeholder="Nome">
                                                         </div>
+
+                                                        <div class="form-group">
+                                                            <label for="exampleInputEmail1">Descricao</label>
+                                                            <textarea class="form-control" name="descricao" id="descricao" rows="7"></textarea>
+                                                        </div>
+                                                            
+                                                                <div class="form-group">
+                                                                <label class="labelCadastroAtividade">Tipo</label>
+                                                                <select id="tipoopc" class="selectpicker show-tick" name="tipoopc" data-width="fit">
+                                                                    <?php $arr_tipo = $t->buscarTipo() ?>
+                                                                    <?php if (!empty($arr_tipo)) { ?>
+                                                                        <?php foreach ($arr_tipo as $tipoop) {
+                                                                        ?>
+                                                                            <option value="<?php echo $tipoop['tipID']; ?>"><?php echo $tipoop['tipDescricao']; ?></option>
+                                                                        <?php } ?>
+                                                                    <?php } ?>
+                                                                </select>
+                                                                </div>
+
+
+                                                                <div class="form-group">
+                                                                <label class="labelCadastroAtividade">Tipo</label>
+                                                                <select id="status" class="selectpicker show-tick" name="tipoopc" data-width="fit">
+                                                                    <option value="1" >Não Postado</option>
+                                                                    <option value="2" >Postado</option>
+                                                                    
+                                                                </select>
+                                                                </div>
+                                                        
                                                         <div class="form-group">
                                                             <div class="row">
                                                                 <div class="col-md-6">
@@ -287,10 +321,8 @@
                                                         </div>
                                                         <div class="form-group">
                                                             <div class="row">
-                                                                <button id="cadastrarAtividade" type="submit"
-                                                                    class="btn btn-primary mr-2">Cadastrar</button>
-                                                                <button id="cancelarAtividade" type="button"
-                                                                    class="btn btn-secondary">Cancelar</button>
+                                                                <button id="cadastrarAtividade" type="submit" class="btn btn-primary mr-2">Cadastrar</button>
+                                                                <button id="cancelarAtividade" type="button" class="btn btn-secondary">Cancelar</button>
                                                             </div>
                                                         </div>
                                                     </form>
@@ -303,87 +335,17 @@
                                         <table id="tableAtividade" class="table table-striped table-hover ">
                                             <thead>
                                                 <tr>
-                                                    <th>Nº</th>
+                                                    <th>ID</th>
                                                     <th>Nome</th>
                                                     <th>Observação</th>
                                                     <th>Data Início</th>
                                                     <th>Data Final</th>
                                                     <th>Tipo</th>
-                                                    <th>Status</th>
                                                     <th>Ação</th>
                                                 </tr>
                                             </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td class="index">1</td>
-                                                    <td>T1 - Trabalho semestral</td>
-                                                    <td>Programação para Dispositivos Móveis</td>
-                                                    <td>26/10/2021</td>
-                                                    <td>30/10/2021</td>
-                                                    <td>Trabalho</td>
-                                                    <td><label class="badge badge-success">Postado</label></td>
-                                                    <td>
-                                                        <button type="button"
-                                                            class="btn btn-inverse-primary btn-rounded btn-icon btn-info-questao ">
-                                                            <i class="bi bi-info-lg"></i>
-                                                        </button>
-                                                        <button type="button"
-                                                            class="btn btn-inverse-success btn-rounded btn-icon">
-                                                            <i class="bi bi-pencil"></i>
-                                                        </button>
-                                                        <button type="button"
-                                                            class="btn btn-inverse-danger btn-rounded btn-icon">
-                                                            <i class="bi bi-trash"></i>
-                                                        </button>
-                                                    </td>
-                                                </tr>
-
-                                                <tr>
-                                                    <td class="index">1</td>
-                                                    <td>P1 - Divisão celular</td>
-                                                    <td>Biologia</td>
-                                                    <td>26/10/2021</td>
-                                                    <td>30/10/2021</td>
-                                                    <td>Trabalho</td>
-                                                    <td><label class="badge badge-success">Postado</label></td>
-                                                    <td>
-                                                        <button id="btn" type="button"
-                                                            class="btn btn-inverse-primary btn-rounded btn-icon btn-info-questao ">
-                                                            <i class="bi bi-info-lg"></i>
-                                                        </button>
-                                                        <button type="button"
-                                                            class="btn btn-inverse-success btn-rounded btn-icon">
-                                                            <i class="bi bi-pencil"></i>
-                                                        </button>
-                                                        <button type="button"
-                                                            class="btn btn-inverse-danger btn-rounded btn-icon">
-                                                            <i class="bi bi-trash"></i>
-                                                        </button>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="index">1</td>
-                                                    <td>Conjunto numérico: naturais e inteiros</td>
-                                                    <td>Matemática</td>
-                                                    <td>26/10/2021</td>
-                                                    <td>30/10/2021</td>
-                                                    <td>Trabalho</td>
-                                                    <td><label class="badge badge-success">Postado</label></td>
-                                                    <td>
-                                                        <button id="btn" type="button"
-                                                            class="btn btn-inverse-primary btn-rounded btn-icon btn-info-questao ">
-                                                            <i class="bi bi-info-lg"></i>
-                                                        </button>
-                                                        <button type="button"
-                                                            class="btn btn-inverse-success btn-rounded btn-icon">
-                                                            <i class="bi bi-pencil"></i>
-                                                        </button>
-                                                        <button type="button"
-                                                            class="btn btn-inverse-danger btn-rounded btn-icon">
-                                                            <i class="bi bi-trash"></i>
-                                                        </button>
-                                                    </td>
-                                                </tr>
+                                            <tbody id="tbodyAtivdades">
+                                                
 
                                             </tbody>
                                         </table>
@@ -490,12 +452,16 @@
     <script src="../vendors/datatables.net-bs4/dataTables.bootstrap4.js"></script>
     <script src="../js/dataTables.select.min.js"></script>
     <script src="../js/off-canvas.js"></script>
+    <script src="../js/hoverable-collapse.js"></script>
+    <script src="../js/settings.js"></script>
 
     <script src="../js/template.js"></script>
     <script src="../vendors/jquery-ui/jquery-ui.min.js"></script>
     <script src="../js/jquery.datetimepicker.full.min.js"></script>
+    <script src="../js/sweetAlert.js"></script>
     <script src="../js/dataTables.checkboxes.min.js"></script>
     <script src="../js/mainjs/atividades.js"></script>
+    <script src="../vendors/bootstrapselect/bootstrap-select.min.js"></script>
 
     <!-- endinject -->
 </body>
