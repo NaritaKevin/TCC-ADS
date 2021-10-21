@@ -15,8 +15,19 @@
      $tioopc = addslashes($_POST['tioopc']);
      $dataInicial = addslashes($_POST['dataFormInicial']);
      $dataFinal = addslashes($_POST['dataFormFinal']);
+     $status = addslashes($_POST['status']);
+     $opID = addslashes($_POST['opID']);
+     $opAtividade = addslashes($_POST['opAtividade']);
+
+     if($opAtividade == "update" && !empty($opId)){
+
+       $updateAtividade =  $a->buscarDadosAtividade($opID);
+        $output = json_encode($updateAtividade);
+        die($output);
+
+     }
      
-     //if($opDisciplina == "update" && !empty($disDescricao) ){// editar
+     if(!empty($updateAtividade) && !empty($disDescricao) ){// editar
 
     //     if (!empty($disDescricao) && !empty($opDisciplina)){  // se os campos nao estiverem vazios entra no if   
              
@@ -28,9 +39,13 @@
        //     die($output);
        //  }
   //   }
-     if(!empty($nome) && !empty($descricao) && !empty($tioopc) && !empty($dataInicial) && !empty($dataFinal) ){
-
-         $a->cadastrarAtividades($nome, $descricao, $tioopc,  $dataInicial, $dataFinal);
+     if(!empty($nome) && !empty($descricao) && !empty($tioopc) && !empty($dataInicial) && !empty($dataFinal) && !empty($dataFinal) ){
+        if($status == 2){
+            $tipoStatus = "Postado";
+        }else{
+            $tipoStatus = "Não Postado";
+        }
+         $a->cadastrarAtividades($nome, $descricao, $tioopc,  $dataInicial, $dataFinal, $tipoStatus);
          $output = json_encode(array('type' => 'sucesso', 'text' => 'Cadastrado com sucesso!'));
          die($output);
      }

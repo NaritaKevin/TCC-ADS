@@ -20,6 +20,7 @@ class Atividade
 
     }
     //FUNÇÃO PARA BUSCAR OS DADOS E EXIBIR NO CANTO DEREITO
+    
     public function buscarDados(){
         $res = array();
         $cmd = $this->pdo->query("SELECT * FROM atividades a INNER JOIN tipos t on a.atiTipoID = t.tipID");
@@ -27,7 +28,7 @@ class Atividade
         return $res;
     }
     // função para cadastrar atividades no banco de dados
-    public function cadastrarAtividades($nome, $descricao, $tipo, $dataInicial, $dataFinal )
+    public function cadastrarAtividades($nome, $descricao, $tipo, $dataInicial, $dataFinal, $Status )
     {
         // verificar se o email ja esta cadastrado
         $cmd = $this->pdo->prepare("SELECT atiID FROM atividades where atiDescricao = :atiDescricao");
@@ -39,13 +40,14 @@ class Atividade
                 return false;
         } else { //não foi encontrado o email
             $cmd = $this->pdo->prepare(
-            "INSERT INTO atividades (atiDescricao, atiDataInicio, atiDataFim, atiObservacao, atiTipoID) 
-            VALUES (:nome, :dataInicio, :dataFim, :observacao, :tipo)");
+            "INSERT INTO atividades (atiDescricao, atiDataInicio, atiDataFim, atiObservacao, atiStatus, atiTipoID) 
+            VALUES (:nome, :dataInicio, :dataFim, :observacao,:tipoStatus , :tipo)");
             $cmd->bindValue(":nome",$nome);
             $cmd->bindValue(":dataInicio",$dataInicial);
             $cmd->bindValue(":dataFim",$dataFinal);
             $cmd->bindValue(":observacao",$descricao);
             $cmd->bindValue(":tipo",$tipo);
+            $cmd->bindValue(":tipoStatus",$Status);
             
             $cmd->execute();
             return true;
@@ -55,8 +57,8 @@ class Atividade
 
     public function buscarDadosAtividade($id){
         $res = array();
-        $cmd = $this->pdo->prepare("SELECT * FROM disciplinas where disID = :disID");
-        $cmd->bindValue(":disID",$id);
+        $cmd = $this->pdo->prepare("SELECT * FROM atividade where atiID = :atiID");
+        $cmd->bindValue(":atiID",$id);
         $cmd->execute();
         $res = $cmd->fetch(PDO::FETCH_ASSOC);
 

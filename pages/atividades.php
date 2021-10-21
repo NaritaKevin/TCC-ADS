@@ -195,7 +195,7 @@ $t = new Tipo("pedagogy", "localhost", "root", "");
 
                                                                 <div class="form-group">
                                                                 <label class="labelCadastroAtividade">Tipo</label>
-                                                                <select id="status" class="selectpicker show-tick" name="tipoopc" data-width="fit">
+                                                                <select id="status" class="selectpicker show-tick" name="status" data-width="fit">
                                                                     <option value="1" >Não Postado</option>
                                                                     <option value="2" >Postado</option>
                                                                     
@@ -341,6 +341,7 @@ $t = new Tipo("pedagogy", "localhost", "root", "");
                                                     <th>Data Início</th>
                                                     <th>Data Final</th>
                                                     <th>Tipo</th>
+                                                    <th>Status</th>
                                                     <th>Ação</th>
                                                 </tr>
                                             </thead>

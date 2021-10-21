@@ -94,9 +94,36 @@ $(document).ready(function () {
                 { data: 'atiID' }, // o valor contido na variavel data, é o que sera buscado no banco de dados, no caso o ID
                 { data: 'atiDescricao' },
                 { data: 'atiObservacao' },
-                { data: 'atiDataInicio' },
-                { data: 'atiDataFim' },
-                { data: 'atiTipoID' },
+                {
+                    data: null, render: function (data, type, row) { // renderizar a exibição dos botões 
+
+                        let data_americana = data.atiDataInicio;
+                        let data_brasileira = data_americana.split('-').reverse().join('/');
+                        
+                        return data_brasileira;
+                    }
+                },
+                {
+                    data: null, render: function (data, type, row) { // renderizar a exibição dos botões 
+
+                        let data_americana = data.atiDataFim;
+                        let data_brasileira = data_americana.split('-').reverse().join('/');
+                        
+                        return data_brasileira;
+                    }
+                },
+                { data: 'tipDescricao' },
+
+                {
+                    data: null, render: function (data, type, row) {
+                        if (data.atiStatus == "Postado") {
+                            return `<label class="badge badge-success">${data.atiStatus}</label>`;
+                        
+                        } else {
+                            return `<label class="badge badge-danger">${data.atiStatus}</label>`;
+                        }
+                    }
+                },
                 {
                     data: null, render: function (data, type, row) { // renderizar a exibição dos botões 
 
@@ -128,6 +155,7 @@ $(document).ready(function () {
         var tipoopc = $("#tipoopc").val();
         var dataInicial = $("#data-inicial").val();
         var dataFinal = $("#data-final").val();
+        var status = $("#status").val();
 
         var dataFormInicial
         var dataFormFinal
@@ -144,12 +172,7 @@ $(document).ready(function () {
         dataFormInicial = formatarData(dataInicial);
         dataFormFinal = formatarData(dataFinal);
 
-        console.log(dataFormInicial);
-        console.log(dataFormFinal);
-        console.log(nome);
-        console.log(descricao);
-        console.log(tipoopc);
-
+        console.log(status);
         $.ajax({
             url: '../backend/BackAtividade/atividadeBack.php',
             method: 'POST',
@@ -158,7 +181,10 @@ $(document).ready(function () {
                 descricao: descricao,
                 tioopc: tipoopc,
                 dataFormInicial: dataFormInicial,
-                dataFormFinal: dataFormFinal
+                dataFormFinal: dataFormFinal,
+                status: status,
+                opAtividade: opAtividade,
+                opId: opId,
             },
             dataType: 'json',
             success: function (data) {
@@ -189,11 +215,10 @@ $(document).ready(function () {
                         showConfirmButton: false,
                         timer: 2000
                     })
-                    //!fazer validação dos campos inserindo no html depois
                 }
             }
         }).done(function (data) {
-            //? tableAtividade.ajax.reload(null, false);
+            tableAtividade.ajax.reload(null, false);
         });
 
     });
@@ -201,48 +226,58 @@ $(document).ready(function () {
     
 
     //?Botao da tabela de editar atividade
-$("#tbodyAtivdades").on("click", ".btn-edit-subgrupo", function () {
-    toggleNovoSubgrupo()
-    let dados = $(this).closest('tr').children("td").map(function () {
+$("#tbodyAtivdades").on("click", ".btn-editar-atividade", function () {
+    toggleNovaAtividade()//Mostra ou esconde tabela
+    //children: 
+    let dados = $(this).closest('tr').children("td").map(function () { // função .map é utilizado para pegar todos os dados contidos na linha onde o botão editar foi pressionado, como ID, DESCRICAO E ETC.
         return $(this).text();
     }).get();
+    opId = dados[0];
+    //? $("#disID").val(dados[0]);//Insere ID no formulario para alterar
+    $("#nome").val(dados[1]);//Insere disciplina selecionada
+    opAtividade = "update";
+    //? $("#opDisciplina").val("update");//Informa update para atualizar no backend
+    $.ajax({
+        url: '../backend/BackAtividade/atividadeBack.php',
+        method: 'POST',
+        data: {
+            opId: opId,
+            opAtividade: opAtividade
+        },
+        dataType: 'json',
+        success: function (data) {
+            
+            if (data.type == 'erro') {
+                Swal.fire({
+                    position: "center",
+                    icon: "error",
+                    title: data.text,
+                    showConfirmButton: false,
+                    timer: 2000
+                })
 
-    $("#subID").val(dados[0]);
-    $("#subgrupo").val(dados[1]);
-    $("#opSubgrupo").val("update");
+            } else if (data.type == 'sucesso') {
+                Swal.fire({
+                    position: "center",
+                    icon: "success",
+                    title: data.text,
+                    showConfirmButton: false,
+                    timer: 2000
+                })
 
-    $("#tematicaopc option:contains(" + dados[2] + ")").attr("selected", true);//Pré seleciona opção no dropdown
-    $(".filter-option-inner-inner").text(dados[2]);//Escreve a disciplina selecionada no botão do dropdown
-
-
+                $("#btn-nova-atividade").click();//Simula um click manual no botao de cadastrar
+            } else if (data.type == 'validacao') {
+                Swal.fire({
+                    position: "center",
+                    icon: "warning",
+                    title: data.text,
+                    showConfirmButton: false,
+                    timer: 2000
+                })
+            }
+        }
+    })
 });
-
-    //? Tabela de atividades
-    $('#tableAtividade').DataTable({
-        "columnDefs": [
-            { "orderable": false, "targets": 7 }
-        ],
-        "language": {
-            url: "../partials/dataTablept-br.json"
-        },
-        "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]]
-    });
-
-    $('#tableQuestoesAtividade').DataTable({
-        "ordering": false,
-        "Filter": false,
-        "columnDefs": [{
-            "searchable": false,
-            "orderable": false,
-            "targets": [1, 2, 3, 4, 5]
-        }],
-        "language": {
-            url: "../partials/dataTablept-br.json"
-        },
-        "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
-
-    });
-
 
 
     function toggleNovaAtividade() {
@@ -261,7 +296,7 @@ $("#tbodyAtivdades").on("click", ".btn-edit-subgrupo", function () {
     //! Esconder/mostrar cadastrar atividade
     $("#btn-nova-atividade").click(function () {
         toggleNovaAtividade()
-        $('#nome, #data-final, #data-inicial, #tipoopc, #descricao').val("");
+        $('#nome, #data-final, #data-inicial, #tipoopc, #descricao, #status').val("");
     });
     $("#cancelarAtividade").click(function () {
         toggleNovaAtividade()
