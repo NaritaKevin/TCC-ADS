@@ -236,6 +236,11 @@ $("#tbodyAtivdades").on("click", ".btn-editar-atividade", function () {
     //? $("#disID").val(dados[0]);//Insere ID no formulario para alterar
     $("#nome").val(dados[1]);//Insere disciplina selecionada
     opAtividade = "update";
+    $("#descricao").val(dados[2]);
+    $("#data-inicial").val(dados[3]);
+    $("#data-final").val(dados[4]);
+    $("#tipoopc").val(dados[5]);
+    $("#status").val(dados[6])
     //? $("#opDisciplina").val("update");//Informa update para atualizar no backend
     $.ajax({
         url: '../backend/BackAtividade/atividadeBack.php',

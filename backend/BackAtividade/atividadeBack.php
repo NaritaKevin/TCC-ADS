@@ -7,7 +7,7 @@
  $q = new Questao("pedagogy","localhost","root","");
 
  if (isset($_POST["nome"])) // clicou no botao cadastrar ou editar DISCIPLINA
- {    
+{
 
     
      $nome = addslashes($_POST["nome"]);
@@ -19,26 +19,41 @@
      $opID = addslashes($_POST['opID']);
      $opAtividade = addslashes($_POST['opAtividade']);
 
-     if($opAtividade == "update" && !empty($opId)){
+     if($opAtividade == "update" && !empty($opId)){//buscar atividade no banco e alterar
 
        $updateAtividade =  $a->buscarDadosAtividade($opID);
+       if(empty($updateAtividade))
+       {
+         $output = json_encode(array('type' => 'erro', 'text' => 'Erro ao buscar questão!'));
+         die($output);
+       }
+       else
+       {
         $output = json_encode($updateAtividade);
         die($output);
-
-     }
+       }
+   
      
-     if(!empty($updateAtividade) && !empty($disDescricao) ){// editar
+       if(!empty($nome) && !empty($descricao) && !empty($tioopc) && !empty($dataInicial) && !empty($dataFinal) && !empty($dataFinal) ){// editar
 
-    //     if (!empty($disDescricao) && !empty($opDisciplina)){  // se os campos nao estiverem vazios entra no if   
+         if($status == 2){
+            $tipoStatus = "Postado";
+        }else{
+            $tipoStatus = "Não Postado";
+        }
+
+         //if (!empty($disDescricao) && !empty($opAtividade)){  // se os campos nao estiverem vazios entra no if   
              
-           //      $p->atualizarDadosDisciplina($disIdUpdate,$disDescricao);
-          //      $output = json_encode(array('type' => 'sucesso', 'text' => 'Alterado com sucesso!'));
-         //       die($output);      
-       //  }else{
-       //     $output = json_encode(array('type' => 'validacao', 'text' => 'Preencha todos os campos!'));
-       //     die($output);
-       //  }
-  //   }
+                $a->atualizarDadosAtividade($opID,$nome,$descricao, $tioopc, $dataInicial, $dataFinal, $status );
+                $output = json_encode(array('type' => 'sucesso', 'text' => 'Alterado com sucesso!'));
+               die($output);      
+         }else{
+            $output = json_encode(array('type' => 'validacao', 'text' => 'Preencha todos os campos!'));
+           die($output);
+        // }
+         }
+      }
+
      if(!empty($nome) && !empty($descricao) && !empty($tioopc) && !empty($dataInicial) && !empty($dataFinal) && !empty($dataFinal) ){
         if($status == 2){
             $tipoStatus = "Postado";
@@ -55,7 +70,9 @@
             die($output);
          }
      
- }
+      
+}
+   
 //chamada para carregar a tabela
  if(isset($_POST['buscaInicialQuestao'])){
     $buscaInicialDisciplina = addslashes($_POST['buscaInicialQuestao']);
@@ -84,4 +101,3 @@ if(isset($_POST['buscaInicialAtividade'])){
 
 //Deletar da tabela
 ?>
-

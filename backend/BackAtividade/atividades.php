@@ -57,18 +57,21 @@ class Atividade
 
     public function buscarDadosAtividade($id){
         $res = array();
-        $cmd = $this->pdo->prepare("SELECT * FROM atividade where atiID = :atiID");
+        $cmd = $this->pdo->prepare("SELECT * FROM atividades where atiID = :atiID");
         $cmd->bindValue(":atiID",$id);
         $cmd->execute();
         $res = $cmd->fetch(PDO::FETCH_ASSOC);
 
         return $res;
     }
-    public function atualizarDadosAtividade($id,$descricao){
+    public function atualizarDadosAtividade($id,$nome,$dataInicial,$dataFinal,$descricao, $Status){
        
-        $cmd = $this->pdo->prepare("UPDATE atividade SET atiDescricao = :atiDescricao WHERE atiID = :atiID ");
+        $cmd = $this->pdo->prepare(
+            "UPDATE atividade SET atiDescricao = :atiDescricao, atiDatainicio = :atiDatainicio, atidataFim = :atidataFim, atiObservacao = :atiObservacao, atiStatus = :atiStatus 
+            WHERE atiID = :atiID ");
         $cmd->bindValue(":atiID",$id);
-        $cmd->bindValue(":atiDescricao",$descricao);
+        $cmd->bindValue(":atiDescricao",$nome);
+        $cmd->bindValue(":atiDatainicio",$dataInicial);
         $cmd->execute();
 
     }
