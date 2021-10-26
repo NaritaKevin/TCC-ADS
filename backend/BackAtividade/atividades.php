@@ -72,8 +72,9 @@ class Atividade
         $cmd->bindValue(":atiID",$id);
         $cmd->bindValue(":atiDescricao",$nome);
         $cmd->bindValue(":atiDatainicio",$dataInicial);
-        $cmd->execute();
-
+        $cmd->execute(":atidataFim", $dataFinal);
+        $cmd->execute(":atiObservacao", $descricao);
+        $cmd->execute(":atiStatus", $Status);
     }
 
     public function excluirAtividade($id)
