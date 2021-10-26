@@ -173,7 +173,7 @@ $s = new Subgrupo("pedagogy","localhost","root","");
                                                         placeholder="Matemática">
                                                     </div>
                                                     <button id="btn-cadastrarDisciplina" type="submit"                                        
-                                                        class="btn btn-primary mr-2">
+                                                        class="btn btn-icon-text btn-primary mr-2">
                                                         <i class="bi bi-check2-circle btn-icon-prepend"></i>
                                                         Cadastrar</button>
                                                         
@@ -244,7 +244,7 @@ $s = new Subgrupo("pedagogy","localhost","root","");
                                                         <input type="hidden" name="temID" id="temID">
                                                     </div>
                                                     <button id="btn-cadastrarTematica" type="submit"
-                                                        class="btn btn-primary mr-2"> 
+                                                        class="btn btn-icon-text btn-primary mr-2"> 
                                                         <i class="bi bi-check2-circle btn-icon-prepend"></i>
                                                         Cadastrar</button>
                                                    <!--  <button id="btn-cancelarTematica" type="button"
@@ -314,7 +314,7 @@ $s = new Subgrupo("pedagogy","localhost","root","");
                                                             placeholder="Geometria">
                                                     </div>
                                                     <button id="btn-cadastrarSubgrupo" type="submit"
-                                                        class="btn btn-primary mr-2"> 
+                                                        class="btn btn-icon-text btn-primary mr-2"> 
                                                         <i class="bi bi-check2-circle btn-icon-prepend"></i>
                                                         Cadastrar</button>
                                                     

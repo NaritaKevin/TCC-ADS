@@ -30,7 +30,7 @@ $(document).ready(function () {
                 {
                     'targets': 0,
                     'checkboxes': {
-                      'selectRow': true
+                        'selectRow': true
                     }
                 }
             ],
@@ -69,12 +69,12 @@ $(document).ready(function () {
                 },
             ]
 
-            
+
         })
 
 
         tableAtividade = $('#tableAtividade').DataTable({
-            
+
             responsive: true,
             ajax: {
                 "url": "../backend/BackAtividade/atividadeBack.php",
@@ -99,7 +99,7 @@ $(document).ready(function () {
 
                         let data_americana = data.atiDataInicio;
                         let data_brasileira = data_americana.split('-').reverse().join('/');
-                        
+
                         return data_brasileira;
                     }
                 },
@@ -108,7 +108,7 @@ $(document).ready(function () {
 
                         let data_americana = data.atiDataFim;
                         let data_brasileira = data_americana.split('-').reverse().join('/');
-                        
+
                         return data_brasileira;
                     }
                 },
@@ -118,7 +118,7 @@ $(document).ready(function () {
                     data: null, render: function (data, type, row) {
                         if (data.atiStatus == "Postado") {
                             return `<label class="badge badge-success">${data.atiStatus}</label>`;
-                        
+
                         } else {
                             return `<label class="badge badge-danger">${data.atiStatus}</label>`;
                         }
@@ -143,7 +143,7 @@ $(document).ready(function () {
                 },
             ]
 
-            
+
         })
 
     }
@@ -152,10 +152,10 @@ $(document).ready(function () {
         e.preventDefault();//evita de dar reload na pagina
         var nome = $('#nome').val();
         var descricao = $('#descricao').val();
-        var tipoopc = $("#tipoopc").val();
+        var tipoopc = $('#tipoopc option:selected').val();
         var dataInicial = $("#data-inicial").val();
         var dataFinal = $("#data-final").val();
-        var status = $("#status").val();
+        var status = $("#status option:selected").val();
 
         var dataFormInicial
         var dataFormFinal
@@ -163,7 +163,7 @@ $(document).ready(function () {
             var dia = data.split("/")[0];
             var mes = data.split("/")[1];
             var ano = data.split("/")[2];
-            
+
 
             return ano + '-' + ("0" + mes).slice(-2) + '-' + ("0" + dia).slice(-2);
             // Utilizo o .slice(-2) para garantir o formato com 2 digitos.
@@ -172,7 +172,9 @@ $(document).ready(function () {
         dataFormInicial = formatarData(dataInicial);
         dataFormFinal = formatarData(dataFinal);
 
-        console.log(status);
+        console.log(nome, descricao, tipoopc, dataInicial, dataFinal, status);
+        opAtividade = "update2";
+
         $.ajax({
             url: '../backend/BackAtividade/atividadeBack.php',
             method: 'POST',
@@ -184,10 +186,78 @@ $(document).ready(function () {
                 dataFormFinal: dataFormFinal,
                 status: status,
                 opAtividade: opAtividade,
-                opId: opId,
+                opID: opId,
             },
             dataType: 'json',
             success: function (data) {
+
+
+                if (data.type == 'erro') {
+                    Swal.fire({
+                        position: "center",
+                        icon: "error",
+                        title: data.text,
+                        showConfirmButton: false,
+                        timer: 2000
+                    })
+
+                } else if (data.type == 'sucesso') {
+                    Swal.fire({
+                        position: "center",
+                        icon: "success",
+                        title: data.text,
+                        showConfirmButton: false,
+                        timer: 2000
+                    })
+
+                    $("#btn-nova-atividade").click();//Simula um click manual no botao de cadastrar
+                } else if (data.type == 'validacao') {
+                    Swal.fire({
+                        position: "center",
+                        icon: "warning",
+                        title: data.text,
+                        showConfirmButton: false,
+                        timer: 2000
+                    })
+                }
+            }, error: function (data) {
+                alert("erro")
+            }
+        }).done(function (data) {
+            tableAtividade.ajax.reload(null, false);
+        });
+
+    });
+
+
+
+    //?Botao da tabela de editar atividade
+    $("#tbodyAtivdades").on("click", ".btn-editar-atividade", function () {
+        toggleNovaAtividade()//Mostra ou esconde tabela
+        //children: 
+        let dados = $(this).closest('tr').children("td").map(function () { // função .map é utilizado para pegar todos os dados contidos na linha onde o botão editar foi pressionado, como ID, DESCRICAO E ETC.
+            return $(this).text();
+        }).get();
+        opId = dados[0];
+        //? $("#disID").val(dados[0]);//Insere ID no formulario para alterar
+        $("#nome").val(dados[1]);//Insere disciplina selecionada
+        opAtividade = "update";
+        $("#descricao").val(dados[2]);
+        $("#data-inicial").val(dados[3]);
+        $("#data-final").val(dados[4]);
+        $("#tipoopc").val(dados[5]);
+        $("#status").val(dados[6])
+        //? $("#opDisciplina").val("update");//Informa update para atualizar no backend
+        $.ajax({
+            url: '../backend/BackAtividade/atividadeBack.php',
+            method: 'POST',
+            data: {
+                opId: opId,
+                opAtividade: opAtividade
+            },
+            dataType: 'json',
+            success: function (data) {
+
                 if (data.type == 'erro') {
                     Swal.fire({
                         position: "center",
@@ -217,72 +287,8 @@ $(document).ready(function () {
                     })
                 }
             }
-        }).done(function (data) {
-            tableAtividade.ajax.reload(null, false);
-        });
-
+        })
     });
-
-    
-
-    //?Botao da tabela de editar atividade
-$("#tbodyAtivdades").on("click", ".btn-editar-atividade", function () {
-    toggleNovaAtividade()//Mostra ou esconde tabela
-    //children: 
-    let dados = $(this).closest('tr').children("td").map(function () { // função .map é utilizado para pegar todos os dados contidos na linha onde o botão editar foi pressionado, como ID, DESCRICAO E ETC.
-        return $(this).text();
-    }).get();
-    opId = dados[0];
-    //? $("#disID").val(dados[0]);//Insere ID no formulario para alterar
-    $("#nome").val(dados[1]);//Insere disciplina selecionada
-    opAtividade = "update";
-    $("#descricao").val(dados[2]);
-    $("#data-inicial").val(dados[3]);
-    $("#data-final").val(dados[4]);
-    $("#tipoopc").val(dados[5]);
-    $("#status").val(dados[6])
-    //? $("#opDisciplina").val("update");//Informa update para atualizar no backend
-    $.ajax({
-        url: '../backend/BackAtividade/atividadeBack.php',
-        method: 'POST',
-        data: {
-            opId: opId,
-            opAtividade: opAtividade
-        },
-        dataType: 'json',
-        success: function (data) {
-            
-            if (data.type == 'erro') {
-                Swal.fire({
-                    position: "center",
-                    icon: "error",
-                    title: data.text,
-                    showConfirmButton: false,
-                    timer: 2000
-                })
-
-            } else if (data.type == 'sucesso') {
-                Swal.fire({
-                    position: "center",
-                    icon: "success",
-                    title: data.text,
-                    showConfirmButton: false,
-                    timer: 2000
-                })
-
-                $("#btn-nova-atividade").click();//Simula um click manual no botao de cadastrar
-            } else if (data.type == 'validacao') {
-                Swal.fire({
-                    position: "center",
-                    icon: "warning",
-                    title: data.text,
-                    showConfirmButton: false,
-                    timer: 2000
-                })
-            }
-        }
-    })
-});
 
 
     function toggleNovaAtividade() {
@@ -301,7 +307,10 @@ $("#tbodyAtivdades").on("click", ".btn-editar-atividade", function () {
     //! Esconder/mostrar cadastrar atividade
     $("#btn-nova-atividade").click(function () {
         toggleNovaAtividade()
-        $('#nome, #data-final, #data-inicial, #tipoopc, #descricao, #status').val("");
+        $('#nome, #data-final, #data-inicial, #descricao').val("");
+
+        $("#tipoopc").val(1);
+        $("#status").val(1);
     });
     $("#cancelarAtividade").click(function () {
         toggleNovaAtividade()

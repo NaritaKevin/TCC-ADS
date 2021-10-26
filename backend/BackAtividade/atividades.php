@@ -67,14 +67,16 @@ class Atividade
     public function atualizarDadosAtividade($id,$nome,$dataInicial,$dataFinal,$descricao, $Status){
        
         $cmd = $this->pdo->prepare(
-            "UPDATE atividade SET atiDescricao = :atiDescricao, atiDatainicio = :atiDatainicio, atidataFim = :atidataFim, atiObservacao = :atiObservacao, atiStatus = :atiStatus 
+            "UPDATE atividades SET atiDescricao = :atiDescricao, atiDatainicio = :atiDatainicio, atidataFim = :atidataFim, atiObservacao = :atiObservacao, atiStatus = :atiStatus 
             WHERE atiID = :atiID ");
         $cmd->bindValue(":atiID",$id);
         $cmd->bindValue(":atiDescricao",$nome);
         $cmd->bindValue(":atiDatainicio",$dataInicial);
-        $cmd->execute(":atidataFim", $dataFinal);
-        $cmd->execute(":atiObservacao", $descricao);
-        $cmd->execute(":atiStatus", $Status);
+        $cmd->bindValue(":atidataFim", $dataFinal);
+        $cmd->bindValue(":atiObservacao", $descricao);
+        $cmd->bindValue(":atiStatus", $Status);
+
+        $cmd->execute();
     }
 
     public function excluirAtividade($id)

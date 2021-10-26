@@ -258,8 +258,8 @@ $n = new Nivel("pedagogy", "localhost", "root", "");
                                                         </ul>
                                                     </div>
 
-                                                    <button id="submitQuestao" type="submit" class="btn btn-primary mr-2">Cadastrar</button>
-                                                    <button id="cancelarQuestao" type="button" class="btn btn-secondary">Cancelar</button>
+                                                    <button id="submitQuestao" type="submit" class="btn btn-icon-text btn-primary mr-2"><i class="bi bi-check2-circle btn-icon-prepend"></i>Cadastrar</button>
+                                                    <button id="cancelarQuestao" type="button" class="btn btn-icon-text btn-secondary"><i class="bi bi-x-circle btn-icon-prepend"></i>Cancelar</button>
                                                 </form>
                                             </div>
                                         </div>

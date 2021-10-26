@@ -146,6 +146,8 @@ $(document).ready(function () {
             data['questaoID'] = idQuestao;
         }
 
+        console.log(data)
+
         $.ajax({
             url: '../backend/questoesBack.php',
             method: 'POST',
@@ -253,6 +255,8 @@ $(document).ready(function () {
             $('#modalInfoQuestao').modal('show');
         });
         $('#modalInfoQuestao').modal('show');
+
+
     });
 
     //? Modal Alternativas cancelar
@@ -274,7 +278,8 @@ $(document).ready(function () {
     });
     $("#cancelarQuestao").click(function () {
         toggleNovaQuestao();
-        resetarFormulario();
+        setTimeout(function () { resetarFormulario(); }, 1000);
+
         atualizarQuestaoo = false;
     });
     //!
@@ -321,7 +326,7 @@ $(document).ready(function () {
             },
             dataType: 'json',
             success: function (data) {
-
+                resetarFormulario()
                 carregarFormulario(data.queID, data.queDescricao, data.queCodigoBncc, data.quePalavrasChave, data.queStsTipo, data.StsRevisao, data.subID, data.nivID, data.subDescricao, data.temDescricao, data.disDescricao, data.nivDescricao,)
                 //preencher as alternativas
                 for (let i = 0; i < data[0].length; i++) {
@@ -631,8 +636,8 @@ $(document).ready(function () {
                                         <div class="wrapperAlternativa" style="display: flex">
 
                                         <i class="bi bi-check-lg" style="position: absolute;color: #57b657;"></i>
-                                        <h5 class="mb-1 letraAlternativa" style="padding-right: 0.5rem">${letra})</h5>
-                                        <p class="mb-1 textoAlternativa text-success">${descricao}</p>
+                                        <h5 class="mb-1 letraAlternativa" style="padding-right: 0.5rem"><b>${letra})</b></h5>
+                                        <p class="mb-1 textoAlternativa text-success"><b>${descricao}</b></p>
                                         </div>
                                     
                                     </div>

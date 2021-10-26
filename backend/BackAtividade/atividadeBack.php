@@ -16,10 +16,19 @@
      $dataInicial = addslashes($_POST['dataFormInicial']);
      $dataFinal = addslashes($_POST['dataFormFinal']);
      $status = addslashes($_POST['status']);
-     $opID = addslashes($_POST['opID']);
-     $opAtividade = addslashes($_POST['opAtividade']);
+    
+     $opID = "";
+     $opAtividade = "";
+     
+     if(isset($_POST["opID"])){
+         $opID =  addslashes($_POST['opID']);
+     }
+     if(isset($_POST["opAtividade"])){
+         $opAtividade=  addslashes($_POST['opAtividade']);
+     }
+ 
 
-     if($opAtividade == "update" && !empty($opId)){//buscar atividade no banco e alterar
+     if($opAtividade == "update" && !empty($opID)){//buscar atividade no banco e alterar
 
        $updateAtividade =  $a->buscarDadosAtividade($opID);
        if(empty($updateAtividade))
@@ -32,27 +41,29 @@
         $output = json_encode($updateAtividade);
         die($output);
        }
-   
-     
-       if(!empty($nome) && !empty($descricao) && !empty($tioopc) && !empty($dataInicial) && !empty($dataFinal) && !empty($dataFinal) ){// editar
 
-         if($status == 2){
-            $tipoStatus = "Postado";
-        }else{
-            $tipoStatus = "Não Postado";
-        }
-
-         //if (!empty($disDescricao) && !empty($opAtividade)){  // se os campos nao estiverem vazios entra no if   
-             
-                $a->atualizarDadosAtividade($opID,$nome,$descricao, $tioopc, $dataInicial, $dataFinal, $status );
-                $output = json_encode(array('type' => 'sucesso', 'text' => 'Alterado com sucesso!'));
-               die($output);      
-         }else{
-            $output = json_encode(array('type' => 'validacao', 'text' => 'Preencha todos os campos!'));
-           die($output);
-        // }
-         }
       }
+
+     if($opAtividade == "update2" && !empty($opID)){
+         if(!empty($nome) && !empty($descricao) && !empty($tioopc) && !empty($dataInicial) && !empty($dataFinal) && !empty($dataFinal) ){// editar
+
+             if($status == 2){
+                 $tipoStatus = "Postado";
+             }else{
+                 $tipoStatus = "Não Postado";
+             }
+
+             //if (!empty($disDescricao) && !empty($opAtividade)){  // se os campos nao estiverem vazios entra no if
+
+             $a->atualizarDadosAtividade($opID,$nome,$descricao, $tioopc, $dataInicial, $dataFinal, $status );
+             $output = json_encode(array('type' => 'sucesso', 'text' => 'Alterado com sucesso!'));
+             die($output);
+         }else{
+             $output = json_encode(array('type' => 'validacao', 'text' => 'Preencha todos os campos!'));
+             die($output);
+             // }
+         }
+     }
 
      if(!empty($nome) && !empty($descricao) && !empty($tioopc) && !empty($dataInicial) && !empty($dataFinal) && !empty($dataFinal) ){
         if($status == 2){
@@ -63,9 +74,7 @@
          $a->cadastrarAtividades($nome, $descricao, $tioopc,  $dataInicial, $dataFinal, $tipoStatus);
          $output = json_encode(array('type' => 'sucesso', 'text' => 'Cadastrado com sucesso!'));
          die($output);
-     }
-     else
-        {
+     } else {
             $output = json_encode(array('type' => 'validacao', 'text' => 'Preencha todos os campos!'));
             die($output);
          }

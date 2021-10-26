@@ -181,7 +181,9 @@ $t = new Tipo("pedagogy", "localhost", "root", "");
                                                             
                                                                 <div class="form-group">
                                                                 <label class="labelCadastroAtividade">Tipo</label>
+                                                              
                                                                 <select id="tipoopc" class="selectpicker show-tick" name="tipoopc" data-width="fit">
+                                                               
                                                                     <?php $arr_tipo = $t->buscarTipo() ?>
                                                                     <?php if (!empty($arr_tipo)) { ?>
                                                                         <?php foreach ($arr_tipo as $tipoop) {
@@ -194,7 +196,7 @@ $t = new Tipo("pedagogy", "localhost", "root", "");
 
 
                                                                 <div class="form-group">
-                                                                <label class="labelCadastroAtividade">Tipo</label>
+                                                                <label class="labelCadastroAtividade">Status</label>
                                                                 <select id="status" class="selectpicker show-tick" name="status" data-width="fit">
                                                                     <option value="1" >Não Postado</option>
                                                                     <option value="2" >Postado</option>
