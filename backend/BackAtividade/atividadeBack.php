@@ -6,6 +6,31 @@
  $a = new Atividade("pedagogy","localhost","root","");
  $q = new Questao("pedagogy","localhost","root","");
 
+
+
+if(isset($_POST["opID"]) && isset($_POST["opAtividade"])){
+   $opID =  addslashes($_POST['opID']);
+   $opAtividade=  addslashes($_POST['opAtividade']);
+
+
+
+   if($opAtividade == "update" && !empty($opID)){//buscar atividade no banco e alterar
+
+      $updateAtividade =  $a->buscarDadosAtividade($opID);
+      if(empty($updateAtividade))
+      {
+        $output = json_encode(array('type' => 'erro', 'text' => 'Erro ao buscar questão!'));
+        die($output);
+      }
+      else
+      {
+       $output = json_encode($updateAtividade);
+       die($output);
+      }
+   
+     }
+}
+ 
  if (isset($_POST["nome"])) // clicou no botao cadastrar ou editar DISCIPLINA
 {
 
@@ -28,21 +53,7 @@
      }
  
 
-     if($opAtividade == "update" && !empty($opID)){//buscar atividade no banco e alterar
-
-       $updateAtividade =  $a->buscarDadosAtividade($opID);
-       if(empty($updateAtividade))
-       {
-         $output = json_encode(array('type' => 'erro', 'text' => 'Erro ao buscar questão!'));
-         die($output);
-       }
-       else
-       {
-        $output = json_encode($updateAtividade);
-        die($output);
-       }
-
-      }
+     
 
      if($opAtividade == "update2" && !empty($opID)){
          if(!empty($nome) && !empty($descricao) && !empty($tioopc) && !empty($dataInicial) && !empty($dataFinal) && !empty($dataFinal) ){// editar
