@@ -240,7 +240,6 @@ $(document).ready(function () {
         }).get();
         opId = dados[0];
         //? $("#disID").val(dados[0]);//Insere ID no formulario para alterar
-        $("#nome").val(dados[1]);//Insere disciplina selecionada
         opAtividade = "update";
         $("#descricao").val(dados[2]);
         $("#data-inicial").val(dados[3]);
@@ -252,12 +251,12 @@ $(document).ready(function () {
             url: '../backend/BackAtividade/atividadeBack.php',
             method: 'POST',
             data: {
-                opId: opId,
+                opID: opId,
                 opAtividade: opAtividade
             },
             dataType: 'json',
             success: function (data) {
-
+                console.log('entrei');
                 if (data.type == 'erro') {
                     Swal.fire({
                         position: "center",
@@ -267,25 +266,13 @@ $(document).ready(function () {
                         timer: 2000
                     })
 
-                } else if (data.type == 'sucesso') {
-                    Swal.fire({
-                        position: "center",
-                        icon: "success",
-                        title: data.text,
-                        showConfirmButton: false,
-                        timer: 2000
-                    })
+                } else {
+                    console.log('entrei');
+                 $("#nome").val(data.atiDescricao);
 
+                    
                     $("#btn-nova-atividade").click();//Simula um click manual no botao de cadastrar
-                } else if (data.type == 'validacao') {
-                    Swal.fire({
-                        position: "center",
-                        icon: "warning",
-                        title: data.text,
-                        showConfirmButton: false,
-                        timer: 2000
-                    })
-                }
+                } 
             }
         })
     });

@@ -55,7 +55,7 @@
 
              //if (!empty($disDescricao) && !empty($opAtividade)){  // se os campos nao estiverem vazios entra no if
 
-             $a->atualizarDadosAtividade($opID,$nome,$descricao, $tioopc, $dataInicial, $dataFinal, $status );
+             $a->atualizarDadosAtividade($opID,$nome,$descricao, $tioopc, $dataInicial, $dataFinal, $tipoStatus );
              $output = json_encode(array('type' => 'sucesso', 'text' => 'Alterado com sucesso!'));
              die($output);
          }else{

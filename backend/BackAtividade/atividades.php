@@ -64,10 +64,10 @@ class Atividade
 
         return $res;
     }
-    public function atualizarDadosAtividade($id,$nome,$dataInicial,$dataFinal,$descricao, $Status){
+    public function atualizarDadosAtividade($id,$nome,$descricao,$tipo, $dataInicial,$dataFinal, $Status){
        
         $cmd = $this->pdo->prepare(
-            "UPDATE atividades SET atiDescricao = :atiDescricao, atiDatainicio = :atiDatainicio, atidataFim = :atidataFim, atiObservacao = :atiObservacao, atiStatus = :atiStatus 
+            "UPDATE atividades SET atiDescricao = :atiDescricao, atiDatainicio = :atiDatainicio, atidataFim = :atidataFim, atiObservacao = :atiObservacao, atiStatus = :atiStatus, atiTipoID = :atiTipoID
             WHERE atiID = :atiID ");
         $cmd->bindValue(":atiID",$id);
         $cmd->bindValue(":atiDescricao",$nome);
@@ -75,6 +75,7 @@ class Atividade
         $cmd->bindValue(":atidataFim", $dataFinal);
         $cmd->bindValue(":atiObservacao", $descricao);
         $cmd->bindValue(":atiStatus", $Status);
+        $cmd->bindValue(":atiTipoID", $tipo);
 
         $cmd->execute();
     }
