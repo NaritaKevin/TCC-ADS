@@ -38,6 +38,9 @@ $s = new Subgrupo("pedagogy","localhost","root","");
     .dropdown-item.active, .dropdown-item:active{
         background-color: #6664bd ;
     }
+    .bootstrap-select .dropdown-menu li.active small {
+            color: #fff !important;
+        }
 </style>
 </head>
 
@@ -225,16 +228,8 @@ $s = new Subgrupo("pedagogy","localhost","root","");
                                                 <form id="formTematica" >
                                                     <div class="form-group" >
                                                         <label class="labelCadastroAtuacao">Disciplina</label>
-                                                        <select class="selectpicker show-tick" name="disciplinaopc" id="disciplinaopc" data-width="fit"
-                                                            data-live-search="true">
-                                                            <?php  $arr_disciplina = $p->buscarDados() ?>
-                                    
-                                                            <?php if(!empty($arr_disciplina)) { ?>
-                                                                <?php foreach($arr_disciplina as $disciplina) { 
-                                                                    ?>        
-                                                                    <option value="<?php echo $disciplina['disID']; ?>"><?php echo $disciplina['disDescricao']; ?></option>                                                                                                                                                                                                                                                                    
-                                                                <?php } ?>
-                                                            <?php } ?>                                                                                                                   
+                                                        <select class="selectpicker show-tick" name="disciplinaopc" id="disciplinaopc" data-width="fit" data-live-search="true">
+                                                                                                                                                                                                                              
                                                         </select>                                                      
                                                     </div>
                                                     <div class="form-group">
@@ -295,14 +290,8 @@ $s = new Subgrupo("pedagogy","localhost","root","");
                                                     <div class="form-group">
                                                         <label class="labelCadastroAtuacao">Temática</label>
                                                         <select  id="tematicaopc" class="selectpicker show-tick" name="tematicaopc" data-width="fit"
-                                                            data-live-search="true">
-                                                            <?php  $arr_tematica = $t->BuscarTematica() ?>
-                                                            <?php if(!empty($arr_tematica)) { ?>
-                                                                <?php foreach($arr_tematica as $tematicaop) { 
-                                                                    ?>        
-                                                                    <option value="<?php echo $tematicaop['temID']; ?>"><?php echo $tematicaop['temDescricao']; ?></option>                                                                                                                                                                                                                                                                    
-                                                                <?php } ?>
-                                                            <?php } ?>
+                                                            data-live-search="true" data-show-subtext="true">
+                                                          
                                                         </select>
                                                        
                                                     </div>

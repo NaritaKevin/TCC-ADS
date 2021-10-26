@@ -148,6 +148,34 @@ if(isset($_POST['buscaInicialSubgrupo'])){
    }
 }
 
+//chamada para pegar informações do dropdown
+if(isset($_POST['buscarDisciplina'])){
+    $buscarDisciplina = addslashes($_POST['buscarDisciplina']);
+
+    if($buscarDisciplina == true){
+       $dadosDisciplina = $p->buscarDados();
+       if (!empty($dadosDisciplina)) {
+        print json_encode($dadosDisciplina,JSON_UNESCAPED_UNICODE);
+       }else{
+        $output = json_encode(array('type' => 'erro', 'text' => 'Erro ao buscar disciplina!'));
+        die($output);
+       }
+    }
+}
+if(isset($_POST['buscarTematica'])){
+    $buscarTematica = addslashes($_POST['buscarTematica']);
+
+    if($buscarTematica == true){
+       $dadosTematica = $t->BuscarTematica();
+       if (!empty($dadosTematica)) {
+           print json_encode($dadosTematica,JSON_UNESCAPED_UNICODE);
+       }else{
+        $output = json_encode(array('type' => 'erro', 'text' => 'Erro ao buscar temática!'));
+        die($output);
+       }
+    }
+}
+
 //Deletar da tabela
 if(isset($_POST['idDeleteSelecionado'])){
     $idDeleteSelecionado = addslashes($_POST['idDeleteSelecionado']);
