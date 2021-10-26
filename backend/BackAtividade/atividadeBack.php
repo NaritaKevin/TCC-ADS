@@ -12,7 +12,13 @@ if(isset($_POST["opID"]) && isset($_POST["opAtividade"])){
    $opID =  addslashes($_POST['opID']);
    $opAtividade=  addslashes($_POST['opAtividade']);
 
+   if($opAtividade == "delete" && !empty($opID)){
 
+      $a->excluirAtividade($id);
+      $output = json_encode(array('type' => 'excluido', 'text' => 'Excluído com sucesso!'));
+      die($output);
+
+   }
 
    if($opAtividade == "update" && !empty($opID)){//buscar atividade no banco e alterar
 
@@ -29,6 +35,8 @@ if(isset($_POST["opID"]) && isset($_POST["opAtividade"])){
       }
    
      }
+
+
 }
  
  if (isset($_POST["nome"])) // clicou no botao cadastrar ou editar DISCIPLINA

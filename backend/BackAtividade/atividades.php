@@ -82,8 +82,8 @@ class Atividade
 
     public function excluirAtividade($id)
     {
-        $cmd = $this->pdo->prepare(" DELETE FROM disciplinas WHERE disID = :disID ");
-        $cmd->bindValue(":disID",$id);
+        $cmd = $this->pdo->prepare(" DELETE FROM atividades WHERE atiID = :atiID ");
+        $cmd->bindValue(":atiID",$id);
         $cmd->execute();
     }
 

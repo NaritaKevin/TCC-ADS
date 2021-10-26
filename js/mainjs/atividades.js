@@ -316,6 +316,67 @@ $(document).ready(function () {
     $("#btn-modal-escolher").on("click", function () {
         $('#modalQuestao').modal('show')
     });
+
+
+
+    //! Modal Excluir Atividade
+    $("#tbodyAtivdades").on("click", ".btn-excluir-atividade", function () {
+        // console.log("apertou");
+        $('#modalDelete').modal('show');
+
+        let dadosAtividade = $(this).closest('tr').children("td").map(function () { // função .map é utilizado para pegar todos os dados contidos na linha onde o botão editar foi pressionado, como ID, DESCRICAO E ETC.
+            return $(this).text();
+        }).get();
+
+        opAtividade = "delete"
+        opId = dadosAtividade[0];
+        console.log(opId);
+        $.ajax({
+            url: '../backend/BackAtividade/atividadeBack.php',
+            method: 'POST',
+            data: {
+                opID: opId,
+                opAtividade: opAtividade
+            },
+            dataType: 'json',
+            success: function (data) {
+
+
+                if (data.type == 'erro') {
+                    Swal.fire({
+                        position: "center",
+                        icon: "error",
+                        title: data.text,
+                        showConfirmButton: false,
+                        timer: 2000
+                    })
+
+                } else if (data.type == 'sucesso') {
+                    Swal.fire({
+                        position: "center",
+                        icon: "success",
+                        title: data.text,
+                        showConfirmButton: false,
+                        timer: 2000
+                    })
+
+                    $("#btn-nova-atividade").click();//Simula um click manual no botao de cadastrar
+                } else if (data.type == 'validacao') {
+                    Swal.fire({
+                        position: "center",
+                        icon: "warning",
+                        title: data.text,
+                        showConfirmButton: false,
+                        timer: 2000
+                    })
+                }
+            }, error: function (data) {
+                alert("erro")
+            }
+        })
+
+    });
+
     $("#btn-modalCancelarQuestao").click(function () {
         $('#modalQuestao').modal('hide')
     });
