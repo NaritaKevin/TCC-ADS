@@ -51,6 +51,9 @@ $n = new Nivel("pedagogy", "localhost", "root", "");
         .dropdown-item:active {
             background-color: #6664bd;
         }
+        .bootstrap-select .dropdown-menu li.active small {
+            color: #fff !important;
+        }
     </style>
 </head>
 
@@ -170,26 +173,19 @@ $n = new Nivel("pedagogy", "localhost", "root", "");
                                                         <div class="row">
                                                             <div class="col-md-4">
                                                                 <label class="labelCadastroAtuacao">Subgrupo</label>
-                                                                <select id="subgrupoopc" class="selectpicker show-tick" name="subgrupoopc" data-width="fit" data-live-search="true">
-                                                                    <option selected disabled value="0">Escolha</option>
+                                                                <select id="subgrupoopc" class="selectpicker show-tick" name="subgrupoopc" data-width="fit" data-live-search="true" data-show-subtext="true">
+                                                                    <option disabled selected value="0" >Escolha</option>
                                                                     <?php $arr_subgrupo = $s->buscarDadosSub() ?>
                                                                     <?php if (!empty($arr_subgrupo)) { ?>
                                                                         <?php foreach ($arr_subgrupo as $subgrupoop) {
                                                                         ?>
-                                                                            <option value="<?php echo $subgrupoop['subID']; ?>"><?php echo $subgrupoop['subDescricao']; ?></option>
+                                                                            <option data-subtext="<?php echo " - ", $subgrupoop['temDescricao'], " - " ,$subgrupoop['disDescricao']; ?>" value="<?php echo $subgrupoop['subID']; ?>"><?php echo $subgrupoop['subDescricao']; ?></option>
                                                                         <?php } ?>
                                                                     <?php } ?>
                                                                 </select>
                                                             </div>
 
-                                                            <div class="col-md-4" id="temSelecionado">
-                                                                <label class="labelCadastroAtuacao">Temática</label>  
-                                                                <div id="temDescricaoSelected" class="btn btn-inverse-secondary btn-fw subgrupoSelected"></div>
-                                                            </div>
-                                                            <div class="col-md-4" id="disSelecionado">
-                                                                <label class="labelCadastroAtuacao">Disciplina</label>
-                                                                <div id="disDescricaoSelected" class="btn btn-inverse-secondary btn-fw subgrupoSelected"></div>
-                                                            </div>
+                                                        
                                                         </div>
                                                     </div>
                                                     <div class="row">

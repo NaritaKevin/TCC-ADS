@@ -472,31 +472,7 @@ $(document).ready(function () {
             $("#alternativas").append(carregar);
         }
     }
-    //! Select de subgrupo
-    $("#cadastrarQuestao").on("change", "#subgrupoopc", function () {
-        let opSelecionada = $(this).val();
-        $.ajax({
-            url: '../backend/questoesBack.php',
-            method: 'POST',
-            data: {
-                opSelecionada: opSelecionada,
-            },
-            dataType: 'json',
-            success: function (data) {
-                // let disciplina = `<label class="labelCadastroAtuacao">Temática</label>  <div id="disDescricaoSelected" class="btn btn-inverse-secondary btn-fw subgrupoSelected">${data.disDescricao}</div>`
 
-                // let tematica = `<label class="labelCadastroAtuacao">Disciplina</label>  <div id="temDescricaoSelected" class="btn btn-inverse-secondary btn-fw subgrupoSelected">${data.temDescricao}</div>`
-
-                // $("#temSelecionado").html(tematica);
-                // $("#disSelecionado").html(disciplina);
-                $("#temDescricaoSelected").text(data.temDescricao);
-                $("#disDescricaoSelected").text(data.disDescricao);
-
-                $("#temSelecionado,#disSelecionado").show();
-            }
-
-        })
-    })
 
     function resetarFormulario() {
         $('#subgrupoopc').val(0);
@@ -504,9 +480,9 @@ $(document).ready(function () {
         $("#nivelopc").closest(".dropdown").find(".btn").children().children(".filter-option-inner").children(".filter-option-inner-inner").text("Fácil");
         $("#statusopc").closest(".dropdown").find(".btn").children().children(".filter-option-inner").children(".filter-option-inner-inner").text("Pública");
         $("#subgrupoopc").closest(".dropdown").find(".btn").children().children(".filter-option-inner").children(".filter-option-inner-inner").text("Escolha");
-        $("#temSelecionado,#disSelecionado").hide();
 
-        $("#codigobncc,#enunciado,#palavrasChave,#disDescricaoSelected,#disDescricaoSelected").val("");
+
+        $("#codigobncc,#enunciado,#palavrasChave").val("");
 
         let count = $('#alternativas li').length;
 
@@ -538,9 +514,9 @@ $(document).ready(function () {
         $("#nivelopc").closest(".dropdown").find(".btn").children().children(".filter-option-inner").children(".filter-option-inner-inner").text(nivel);
         $("#statusopc").closest(".dropdown").find(".btn").children().children(".filter-option-inner").children(".filter-option-inner-inner").text(stsTipo);
         $("#subgrupoopc").closest(".dropdown").find(".btn").children().children(".filter-option-inner").children(".filter-option-inner-inner").text(subgrupo);
-        $("#disDescricaoSelected").text(disciplina);
-        $("#temDescricaoSelected").text(tematica);
-        $("#temSelecionado,#disSelecionado").show();
+
+
+
         $("#codigobncc").val(codigoBncc);
         $("#enunciado").val(enunciado);
         $("#palavrasChave").val(palavrasChave);
