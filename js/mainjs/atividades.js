@@ -349,7 +349,7 @@ $(document).ready(function () {
         method: 'POST',
         data: {
             opID: opidDelete,
-            opAtividade: opidDelete
+            opAtividade: opDelete
         },
         dataType: 'json',
         success: function (data) {
@@ -386,6 +386,11 @@ $(document).ready(function () {
         }, error: function (data) {
             alert("erro")
         }
+    }).done(function (data) {
+
+        $("#modalDelete").modal('hide');
+        tableAtividade.ajax.reload(null, false);
+
     })
 })
 
