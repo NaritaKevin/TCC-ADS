@@ -2,6 +2,9 @@ $(document).ready(function () {
     let buscaInicialDisciplina = true;
     let buscaInicialTematica = true;
     let buscaInicialSubgrupo = true;
+
+
+
     init();
     function init() {
 
@@ -305,6 +308,38 @@ $(document).ready(function () {
         toggleNovoSubgrupo();
         $("#opSubgrupo").val("");
         $("#subgrupo").val("");
+
+
+        let buscarTematica = true;
+        $.ajax({
+            url: '../backend/atuacaoBack.php',
+            method: 'POST',
+            data: {
+                buscarTematica: buscarTematica
+            },
+            dataType: 'json',
+            success: function (data) {
+                if (data.type == 'erro') {
+                    Swal.fire({
+                        position: "center",
+                        icon: "error",
+                        title: data.text,
+                        showConfirmButton: false,
+                        timer: 2000
+                    })
+                } else {
+                    $('#tematicaopc').html("");
+                    for (let i = 0; i < data.length; i++) {
+                        let option = `<option data-subtext=" - ${data[i].disDescricao}" value="${data[i].temID}">${data[i].temDescricao}</option>`;
+
+                        $('#tematicaopc').append(option);
+                    }
+                }
+            }
+        }).done(function (data) {
+
+            $('#tematicaopc').selectpicker('refresh');
+        });
     })
 
     //?Botao da tabela de editar subgrupo
@@ -318,8 +353,41 @@ $(document).ready(function () {
         $("#subgrupo").val(dados[1]);
         $("#opSubgrupo").val("update");
 
-        $("#tematicaopc option:contains(" + dados[2] + ")").attr("selected", true);//Pré seleciona opção no dropdown
-        $(".filter-option-inner-inner").text(dados[2]);//Escreve a disciplina selecionada no botão do dropdown
+
+        let buscarTematica = true;
+        $.ajax({
+            url: '../backend/atuacaoBack.php',
+            method: 'POST',
+            data: {
+                buscarTematica: buscarTematica
+            },
+            dataType: 'json',
+            success: function (data) {
+                if (data.type == 'erro') {
+                    Swal.fire({
+                        position: "center",
+                        icon: "error",
+                        title: data.text,
+                        showConfirmButton: false,
+                        timer: 2000
+                    })
+                } else {
+                    $('#tematicaopc').html("");
+                    for (let i = 0; i < data.length; i++) {
+                        let option = `<option data-subtext=" - ${data[i].disDescricao}" value="${data[i].temID}">${data[i].temDescricao}</option>`;
+
+                        $('#tematicaopc').append(option);
+                    }
+                }
+            }
+        }).done(function (data) {
+
+            $('#tematicaopc').selectpicker('refresh');
+            $("#tematicaopc option:contains(" + dados[2] + ")").attr("selected", true);//Pré seleciona opção no dropdown
+            $(".filter-option-inner-inner").text(dados[2]);//Escreve a disciplina selecionada no botão do dropdown
+        });
+
+
 
 
     });
@@ -423,11 +491,44 @@ $(document).ready(function () {
         toggleNovaTematica();
         $('#opTematica,#tematica,#temID').val("");//Limpa os campos
 
+        let buscarDisciplina = true;
+        $.ajax({
+            url: '../backend/atuacaoBack.php',
+            method: 'POST',
+            data: {
+                buscarDisciplina: buscarDisciplina
+            },
+            dataType: 'json',
+            success: function (data) {
+                if (data.type == 'erro') {
+                    Swal.fire({
+                        position: "center",
+                        icon: "error",
+                        title: data.text,
+                        showConfirmButton: false,
+                        timer: 2000
+                    })
+                } else {
+                    $('#disciplinaopc').html("");
+                    for (let i = 0; i < data.length; i++) {
+                        let option = `<option value="${data[i].disID}">${data[i].disDescricao}</option>`;
+
+                        $('#disciplinaopc').append(option);
+                    }
+                }
+            }
+        }).done(function (data) {
+
+            $('#disciplinaopc').selectpicker('refresh');
+        });
+
     })
 
     //? Botao editar da tabela de tematica
     $("#tbodyTematica").on("click", ".btn-edit-tematica", function () {
         toggleNovaTematica()//Mostra ou esconde tabela
+
+
         let dados = $(this).closest('tr').children("td").map(function () {
             return $(this).text();
         }).get();
@@ -436,8 +537,41 @@ $(document).ready(function () {
         $("#tematica").val(dados[1]);//Insere disciplina selecionada
         $("#opTematica").val("update");//Informa update para atualizar no backend
 
-        $("#disciplinaopc option:contains(" + dados[2] + ")").attr("selected", true);//Pré seleciona opção no dropdown
-        $(".filter-option-inner-inner").text(dados[2]);//Escreve a disciplina selecionada no botão do dropdown
+
+        let buscarDisciplina = true;
+        $.ajax({
+            url: '../backend/atuacaoBack.php',
+            method: 'POST',
+            data: {
+                buscarDisciplina: buscarDisciplina
+            },
+            dataType: 'json',
+            success: function (data) {
+                if (data.type == 'erro') {
+                    Swal.fire({
+                        position: "center",
+                        icon: "error",
+                        title: data.text,
+                        showConfirmButton: false,
+                        timer: 2000
+                    })
+                } else {
+                    $('#disciplinaopc').html("");
+                    for (let i = 0; i < data.length; i++) {
+                        let option = `<option value="${data[i].disID}">${data[i].disDescricao}</option>`;
+
+                        $('#disciplinaopc').append(option);
+                    }
+                }
+            }
+        }).done(function (data) {
+
+            $('#disciplinaopc').selectpicker('refresh');
+            $("#disciplinaopc option:contains(" + dados[2] + ")").attr("selected", true);//Pré seleciona opção no dropdown
+            $(".filter-option-inner-inner").text(dados[2]);//Escreve a disciplina selecionada no botão do dropdown
+
+        });
+
 
     })
 
@@ -459,7 +593,6 @@ $(document).ready(function () {
     });
 
     // window.history.pushState(null, null, window.location.pathname);
-
 
 
     //! FIM TEMATICA
