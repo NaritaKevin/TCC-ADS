@@ -5,6 +5,9 @@ $(document).ready(function () {
     var opAtividade
     var opId
 
+    var opDelete
+    var opidDelete
+
     init();
 
     function init() {
@@ -328,54 +331,68 @@ $(document).ready(function () {
             return $(this).text();
         }).get();
 
-        opAtividade = "delete"
-        opId = dadosAtividade[0];
-        console.log(opId);
-        $.ajax({
-            url: '../backend/BackAtividade/atividadeBack.php',
-            method: 'POST',
-            data: {
-                opID: opId,
-                opAtividade: opAtividade
-            },
-            dataType: 'json',
-            success: function (data) {
-
-
-                if (data.type == 'erro') {
-                    Swal.fire({
-                        position: "center",
-                        icon: "error",
-                        title: data.text,
-                        showConfirmButton: false,
-                        timer: 2000
-                    })
-
-                } else if (data.type == 'sucesso') {
-                    Swal.fire({
-                        position: "center",
-                        icon: "success",
-                        title: data.text,
-                        showConfirmButton: false,
-                        timer: 2000
-                    })
-
-                    $("#btn-nova-atividade").click();//Simula um click manual no botao de cadastrar
-                } else if (data.type == 'validacao') {
-                    Swal.fire({
-                        position: "center",
-                        icon: "warning",
-                        title: data.text,
-                        showConfirmButton: false,
-                        timer: 2000
-                    })
-                }
-            }, error: function (data) {
-                alert("erro")
-            }
-        })
+        opDelete = "delete"
+        opidDelete = dadosAtividade[0];
+        //console.log(opAtividade);
+       // console.log(opId);
+        
 
     });
+
+
+    $('#formDelete').submit(function (e) {
+        e.preventDefault();
+        console.log(opDelete);
+        console.log(opidDelete);
+    $.ajax({
+        url: '../backend/BackAtividade/atividadeBack.php',
+        method: 'POST',
+        data: {
+            opID: opidDelete,
+            opAtividade: opidDelete
+        },
+        dataType: 'json',
+        success: function (data) {
+
+
+            if (data.type == 'erro') {
+                Swal.fire({
+                    position: "center",
+                    icon: "error",
+                    title: data.text,
+                    showConfirmButton: false,
+                    timer: 2000
+                })
+
+            } else if (data.type == 'sucesso') {
+                Swal.fire({
+                    position: "center",
+                    icon: "success",
+                    title: data.text,
+                    showConfirmButton: false,
+                    timer: 2000
+                })
+
+              //  $("#btn-nova-atividade").click();//Simula um click manual no botao de cadastrar
+            } else if (data.type == 'validacao') {
+                Swal.fire({
+                    position: "center",
+                    icon: "warning",
+                    title: data.text,
+                    showConfirmButton: false,
+                    timer: 2000
+                })
+            }
+        }, error: function (data) {
+            alert("erro")
+        }
+    })
+})
+
+      //! modal Cancelar Exclusão Atividade
+      $("#modalCancelarAtividade").click(function () {
+        $('#modalDelete').modal('hide')
+    })
 
     $("#btn-modalCancelarQuestao").click(function () {
         $('#modalQuestao').modal('hide')
@@ -385,8 +402,10 @@ $(document).ready(function () {
         $('#modalInfoAtividade').modal('show')
     });
     $("#modalCancelar").click(function () {
-        $('#modalInfoAtividade').modal('hide')
+        $('#modalDelete').modal('hide')
     })
+
+  
     //!
     function jqueryuiinit() {
 

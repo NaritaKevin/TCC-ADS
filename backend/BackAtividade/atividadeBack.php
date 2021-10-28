@@ -7,18 +7,16 @@
  $q = new Questao("pedagogy","localhost","root","");
 
 
-
 if(isset($_POST["opID"]) && isset($_POST["opAtividade"])){
    $opID =  addslashes($_POST['opID']);
    $opAtividade=  addslashes($_POST['opAtividade']);
 
    if($opAtividade == "delete" && !empty($opID)){
 
-      $a->excluirAtividade($id);
-      $output = json_encode(array('type' => 'excluido', 'text' => 'Excluído com sucesso!'));
-      die($output);
-
-   }
+    $a->excluirAtividade($opID);
+    $output = json_encode(array('type' => 'sucesso', 'text' => 'Excluido com sucesso!'));
+    die($output);
+    }
 
    if($opAtividade == "update" && !empty($opID)){//buscar atividade no banco e alterar
 
@@ -35,6 +33,7 @@ if(isset($_POST["opID"]) && isset($_POST["opAtividade"])){
       }
    
      }
+
 
 
 }
@@ -100,6 +99,8 @@ if(isset($_POST["opID"]) && isset($_POST["opAtividade"])){
      
       
 }
+
+
    
 //chamada para carregar a tabela
  if(isset($_POST['buscaInicialQuestao'])){
@@ -128,4 +129,7 @@ if(isset($_POST['buscaInicialAtividade'])){
 
 
 //Deletar da tabela
+
+
+
 ?>

@@ -416,7 +416,7 @@ $t = new Tipo("pedagogy", "localhost", "root", "");
                              </div>
                            
                             <div class="modal-footer">
-                            <button id="modalCancelar" type="button" class="btn btn-secondary  mr-auto">Cancelar</button>
+                            <button id="modalCancelarAtividade" type="button" class="btn btn-secondary  mr-auto">Cancelar</button>
                             <button id="modalConfirmar"  type="submit"
                                              class="btn btn-primary">
                                             <i class="bi bi-x-circle btn-icon-prepend "></i>
