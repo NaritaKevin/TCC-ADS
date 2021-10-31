@@ -8,9 +8,12 @@ $(document).ready(function () {
         i = 0;
         $("#cadastrarQuestao").hide();
         tabelaQuestoes = $('#tableQuestoes').DataTable({
-            "columnDefs": [
-                { "orderable": false, "targets": 9 }
-            ],
+            // "columnDefs": [
+            //     { "orderable": false, "targets": 9 }
+            // ],
+            rowReorder: {
+                selector: 'td:nth-child(2)'
+            },
             responsive: true,
             ajax: {
                 "url": "../backend/questoesBack.php",

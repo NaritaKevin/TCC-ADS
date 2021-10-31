@@ -1,20 +1,58 @@
 $(document).ready(function () {
+    let buscaInicialAtividades = true;
+    let buscaInicialAlunosResultados = true;
+
 
     init();
 
     function init() {
         $("#cadastrarQuestao").hide();
         $("#verResultados").hide();
-        tableQuestoes = $('#tableResultados').DataTable({
-            "columnDefs": [
-                { "orderable": false, "targets": 1 }
-            ],
-            "language": {
+        tableResultados = $('#tableResultados').DataTable({
+            ajax: {
+                "url": "../backend/resultados/resultadosBack.php",
+                "method": 'POST',
+                "data": { buscaInicialAtividades: buscaInicialAtividades },
+                "dataSrc": ""
+            },
+            language: {
                 url: "../partials/dataTablept-br.json"
             },
-            "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+            lengthMenu: [[5, 15, 25, -1], [5, 15, 25, "Todos"]],
+            columns: [
+                { data: 'atiID' },
+                {
+                    data: null, render: function (data, type, row) {
+
+                        let descricao = data.atiDescricao.slice(0, 200);
+                        let tamanho = descricao.length;
+                        if (tamanho >= 200) {
+                            descricao = descricao + "..."
+                        }
+
+                        return `<span style=" max-width: 500px;
+                        min-width: 200px;
+                        display: block;
+                        overflow-wrap: break-word;
+                        white-space: break-spaces;">${descricao}</span>`;
+
+                    }
+                },
+                { data: 'claNome' },
+                {
+                    data: null, render: function (data, type, row) {
+
+                        return ` <button type="button"
+                        class="btn btn-inverse-primary btn-rounded btn-icon btn-info-atividade ">
+                        <i class="bi bi-clipboard-data"></i>
+                    </button>`;
+                    }
+                },
+            ]
 
         });
+
+
 
 
 
@@ -35,7 +73,7 @@ $(document).ready(function () {
     }
 
     //!  Botão Modal info atividade e cancelar
-    $(".btn-info-aluno").on("click", function () {
+    $("#tbodyResultadosAluno").on("click", ".btn-info-aluno", function () {
         $('#modalAluno').modal('show')
     });
     $("#modalCancelar").click(function () {
@@ -43,9 +81,98 @@ $(document).ready(function () {
     })
     //!
     //! Botão Mostrar resultados dos alunos
-    $(".btn-info-atividade").on("click", function () {
+    $("#tbodyResultados").on("click", ".btn-info-atividade", function () {
+
         $("#tabelaResultados").toggle("slow");
         $("#verResultados").toggle("slow");
+
+        if ($.fn.dataTable.isDataTable('#tableResultadosAluno')) {
+            $('#tableResultadosAluno').DataTable().destroy();
+            console.log("entrou")
+        }
+
+
+
+
+        let dados = $(this).closest('tr').children("td").map(function () {
+            return $(this).text();
+        }).get();
+
+        tableResultadosAluno = $('#tableResultadosAluno').DataTable({
+            responsive: true,
+            destroy: true,
+            ajax: {
+                url: "../backend/resultados/resultadosBack.php",
+                method: 'POST',
+                cache: false,
+                "data": {
+                    buscaInicialAlunosResultados: buscaInicialAlunosResultados,
+                    idAtividade: dados[0]
+                },
+                "dataSrc": ""
+            },
+
+            language: {
+                url: "../partials/dataTablept-br.json"
+            },
+            lengthMenu: [[5, 15, 25, -1], [5, 15, 25, "Todos"]],
+            columns: [
+                { data: 'pesNome' },
+                {
+                    data: null, render: function (data, type, row) {
+
+                        // let descricao = data.atiDescricao.slice(0, 200);
+                        // let tamanho = descricao.length;
+                        // if (tamanho >= 200) {
+                        //     descricao = descricao + "..."
+                        // }
+
+                        return `  <div class="progress">
+                                    <div class="progress-bar bg-success" role="progressbar"
+                                        style="width: 50%" aria-valuenow="25" aria-valuemin="0"
+                                        aria-valuemax="100"></div>
+                                </div>`;
+
+                    }
+                },
+                {
+                    data: null, render: function (data, type, row) {
+
+
+                        let acertos = data.Acertos;
+                        let totalQuestoes = data.TotalQuestoes;
+
+                        return `<span>${acertos}/${totalQuestoes}</span>`;
+
+                    }
+                },
+                {
+                    data: null, render: function (data, type, row) {
+
+                        let data_americana = data.usuDataRealizacao;
+                        let data_brasileira = data_americana.split('-').reverse().join('/');
+
+                        return data_brasileira;
+
+                    }
+                },
+
+                {
+                    data: null, render: function (data, type, row) {
+
+                        return `  <button type="button"
+                                    class="btn btn-inverse-primary btn-rounded btn-icon btn-info-aluno ">
+                                    <i class="bi bi-file-earmark-text"></i>
+                                </button>`;
+                    }
+                },
+            ]
+
+        });
+        // $('#tableResultadosAluno').removeAttr('style');
+        // tableResultadosAluno.fnDraw();
+        // tableResultadosAluno.ajax.reload(null, false);
+
     })
     $("#btn-voltar-resultados").click(function () {
         $("#tabelaResultados").toggle("slow");
@@ -53,7 +180,7 @@ $(document).ready(function () {
     })
     //! 
     $('#tableResultados').on('mouseenter', 'tbody tr', function () {
-        var rowData = tableQuestoes.row(this).data();
-
+        var rowData = tableResultados.row(this).data();
+        //console.log(rowData)
     });
 });

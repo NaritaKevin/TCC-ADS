@@ -146,41 +146,15 @@
                                         <table class="table table-hover" id="tableResultados">
                                             <thead>
                                                 <tr>
+                                                    <th width="5%">ID</th>
                                                     <th>Atividade</th>
+                                                    <th>Classe</th>
                                                     <th>Resultados</th>
                                                 </tr>
                                             </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td>T1 - Trabalho semestral</td>
-                                                    <td>
-                                                        <button type="button"
-                                                            class="btn btn-inverse-primary btn-rounded btn-icon btn-info-atividade ">
-                                                            <i class="bi bi-clipboard-data"></i>
-                                                        </button>
-
-                                                    </td>
-
-
-                                                </tr>
-                                                <tr>
-                                                    <td>P1 - Divisão celular</td>
-                                                    <td> <button type="button"
-                                                            class="btn btn-inverse-primary btn-rounded btn-icon btn-info-atividade ">
-                                                            <i class="bi bi-clipboard-data"></i>
-                                                        </button></td>
-
-
-                                                </tr>
-                                                <tr>
-                                                    <td>Conjunto numérico: naturais e inteiros</td>
-                                                    <td> <button type="button"
-                                                            class="btn btn-inverse-primary btn-rounded btn-icon btn-info-atividade ">
-                                                            <i class="bi bi-clipboard-data"></i>
-                                                        </button></td>
-
-
-                                                </tr>
+                                            <tbody id="tbodyResultados">
+                                        
+                                               
                                             </tbody>
                                         </table>
                                     </div>
@@ -204,52 +178,18 @@
                                     </p>
 
                                     <div id="tableTiposToggle" class="table-responsive">
-                                        <table id="tableTipos" class="table table-striped table-hover ">
+                                        <table id="tableResultadosAluno" class="table table-striped table-hover" >
                                             <thead>
                                                 <tr>
-                                                    <th>Aluno</th>
+                                                    <th>Aluno(a)</th>
                                                     <th>Desempenho</th>
                                                     <th>Acertos</th>
+                                                    <th>Data de conclusão</th>
                                                     <th>Ver Atividade</th>
                                                 </tr>
                                             </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td>Luan de Oliveira</td>
-                                                    <td>
-                                                        <div class="progress">
-                                                            <div class="progress-bar bg-success" role="progressbar"
-                                                                style="width: 50%" aria-valuenow="25" aria-valuemin="0"
-                                                                aria-valuemax="100"></div>
-                                                        </div>
-                                                    </td>
-                                                    <td>5/10</td>
-                                                    <td>
-                                                        <button type="button"
-                                                            class="btn btn-inverse-primary btn-rounded btn-icon btn-info-aluno ">
-                                                            <i class="bi bi-file-earmark-text"></i>
-                                                        </button>
-
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Paulo Rodrigues</td>
-                                                    <td>
-                                                        <div class="progress">
-                                                            <div class="progress-bar bg-danger" role="progressbar"
-                                                                style="width: 20%" aria-valuenow="25" aria-valuemin="0"
-                                                                aria-valuemax="100"></div>
-                                                        </div>
-                                                    </td>
-                                                    <td>2/10</td>
-                                                    <td>
-                                                        <button type="button"
-                                                            class="btn btn-inverse-primary btn-rounded btn-icon btn-info-aluno ">
-                                                            <i class="bi bi-file-earmark-text"></i>
-                                                        </button>
-                                                    </td>
-                                                </tr>
-
+                                            <tbody id="tbodyResultadosAluno">
+                                               
                                             </tbody>
                                         </table>
                                     </div>
@@ -292,7 +232,7 @@
         <script src="../js/off-canvas.js"></script>
         <script src="../js/hoverable-collapse.js"></script>
         <script src="../js/template.js"></script>
-
+        <script src="../vendors/chart.js/Chart.min.js"></script>
 
         <!-- endinject -->
         <!-- Custom js for this page-->

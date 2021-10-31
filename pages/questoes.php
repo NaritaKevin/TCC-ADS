@@ -23,11 +23,13 @@ $n = new Nivel("pedagogy", "localhost", "root", "");
     <link rel="stylesheet" href="../vendors/css/vendor.bundle.base.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
     <link rel="stylesheet" href="../vendors/bootstrapselect/bootstrap-select.min.css">
+
     <!-- endinject -->
     <!-- Plugin css for this page -->
     <link rel="stylesheet" href="../vendors/datatables.net-bs4/dataTables.bootstrap4.css">
     <link rel="stylesheet" href="../vendors/ti-icons/css/themify-icons.css">
     <link rel="stylesheet" type="text/css" href="../js/select.dataTables.min.css">
+
     <link rel="stylesheet" href="../js/jquery.datetimepicker.min.css">
 
     <!-- End plugin css for this page -->
@@ -260,7 +262,7 @@ $n = new Nivel("pedagogy", "localhost", "root", "");
                                             </div>
                                         </div>
                                     </div>
-                                    <div id="tableQuestoesToggle" class="expandable-table table-responsive">
+                                    <div id="tableQuestoesToggle" class="expandable-table table-responsive ">
                                         <table class="table table-hover table-striped" style="width: 100%" id="tableQuestoes">
                                             <thead>
                                                 <tr>
@@ -358,7 +360,8 @@ $n = new Nivel("pedagogy", "localhost", "root", "");
         <script src="../js/template.js"></script>
         <script src="../vendors/bootstrapselect/bootstrap-select.min.js"></script>
 
-
+        <!-- <script src="https://cdn.datatables.net/rowreorder/1.2.8/js/dataTables.rowReorder.min.js"></script>
+        <script src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script> -->
 
         <!-- endinject -->
         <!-- Custom js for this page-->

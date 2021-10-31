@@ -49043,12 +49043,15 @@ table.datatable thead th.no-sort {
   pointer-events: none;
 }
 .form-group .labelCadastroAtuacao {
- 
   display: block;
 }
 .form-group .labelCadastroAtividade {
- 
   display: block;
+}
+
+.table,
+.jsgrid .jsgrid-table {
+  width: 100% !important;
 }
 /*
 .dataTables_wrapper {
