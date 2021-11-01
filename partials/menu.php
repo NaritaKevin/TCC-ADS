@@ -18,7 +18,7 @@
                             <li class="nav-item"> <a class="nav-link" href="../pages/atuacao.php">Area de
                                         atuação</a></li>
                                 <li class="nav-item"> <a class="nav-link" href="../pages/questoes.php">Gerenciar
-                                        Questões</a></li>
+                                        questões</a></li>
                                
                             </ul>
                         </div>

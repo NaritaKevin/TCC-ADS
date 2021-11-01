@@ -7,7 +7,7 @@ $(document).ready(function () {
 
     init();
     function init() {
-
+        $('[data-toggle="tooltip"]').tooltip()
         $("#btn-cancelar-disciplina").hide();
         $("#btn-cancelar-tematica").hide();
         $("#alterarTematica").hide();
@@ -39,21 +39,26 @@ $(document).ready(function () {
                 {
                     data: null, render: function (data, type, row) { // renderizar a exibição dos botões 
 
-                        return `<button  type="button"
-                                class="btn  btn-inverse-success btn-rounded btn-icon btn-edit-disciplina">
+                        return `<div class="text-center">
+                        <button  type="button"
+                                class="btn  btn-inverse-success btn-rounded btn-icon btn-edit-disciplina" data-toggle="tooltip" data-placement="top" title="Alterar">
                                 <i class="bi bi-pencil"></i>
                             </button>
                             <button type="button"
-                                class="btn btn-inverse-danger btn-rounded btn-icon btn-del-disciplina">
+                                class="btn btn-inverse-danger btn-rounded btn-icon btn-del-disciplina" data-toggle="tooltip" data-placement="top" title="Excluir">
                                 <i class="bi bi-trash"></i>
-                            </button>`;
+                            </button>
+                        </div>`;
                     }
                 },
             ]
         })
 
         tableTematica = $('#tableTematica').DataTable({
-
+            responsive: true,
+            columnDefs: [
+                { "orderable": false, "targets": 3 } // esta linha retira a ordenação das colunas, pois não ha sentido ordenar os botões 
+            ],
             ajax: {
                 "url": "../backend/atuacaoBack.php",
                 "method": 'POST',
@@ -71,20 +76,26 @@ $(document).ready(function () {
                 {
                     data: null, render: function (data, type, row) {
 
-                        return `<button  type="button"
-                                class="btn  btn-inverse-success btn-rounded btn-icon btn-edit-tematica">
+                        return `<div class="text-center">
+                        <button  type="button"
+                                class="btn  btn-inverse-success btn-rounded btn-icon btn-edit-tematica" data-toggle="tooltip" data-placement="top" title="Alterar">
                                 <i class="bi bi-pencil"></i>
                             </button>
                             <button type="button"
-                                class="btn btn-inverse-danger btn-rounded btn-icon btn-del-tematica">
+                                class="btn btn-inverse-danger btn-rounded btn-icon btn-del-tematica" data-toggle="tooltip" data-placement="top" title="Excluir">
                                 <i class="bi bi-trash"></i>
-                            </button>`;
+                            </button>
+                        </div>`;
                     }
                 },
             ]
         });
 
         tableSubgrupo = $('#tableSubgrupo').DataTable({
+            responsive: true,
+            columnDefs: [
+                { "orderable": false, "targets": 4 } // esta linha retira a ordenação das colunas, pois não ha sentido ordenar os botões 
+            ],
             ajax: {
                 "url": "../backend/atuacaoBack.php",
                 "method": 'POST',
@@ -103,14 +114,16 @@ $(document).ready(function () {
                 {
                     data: null, render: function (data, type, row) {
 
-                        return `<button  type="button"
-                                class="btn  btn-inverse-success btn-rounded btn-icon btn-edit-subgrupo">
+                        return `<div class="text-center">
+                        <button  type="button"
+                                class="btn  btn-inverse-success btn-rounded btn-icon btn-edit-subgrupo" data-toggle="tooltip" data-placement="top" title="Alterar">
                                 <i class="bi bi-pencil"></i>
                             </button>
                             <button type="button"
-                                class="btn btn-inverse-danger btn-rounded btn-icon btn-del-subgrupo">
+                                class="btn btn-inverse-danger btn-rounded btn-icon btn-del-subgrupo" data-toggle="tooltip" data-placement="top" title="Excluir">
                                 <i class="bi bi-trash"></i>
-                            </button>`;
+                            </button>
+                                </div>`;
                     }
                 },
             ]
@@ -187,7 +200,7 @@ $(document).ready(function () {
             $("#tableDisciplinaToggle").toggle("slow");
 
         } else {
-            $("#btn-nova-disciplina").text('Adicionar disciplina').prepend(adicionarIcon).removeClass("btn-secondary").addClass("btn-primary");
+            $("#btn-nova-disciplina").text('Nova Disciplina').prepend(adicionarIcon).removeClass("btn-secondary").addClass("btn-primary");
             $("#tableDisciplinaToggle").toggle("slow");
         }
         $("#cadastrarDisciplina").toggle("slow");
@@ -195,6 +208,7 @@ $(document).ready(function () {
 
     //? Botao cadastrar disciplina
     $("#btn-nova-disciplina").click(function () {
+        $("#titleDisciplina").toggle("slow")
         toggleNovaDisciplina();//Mostra ou esconde tabela
         $('#opDisciplina,#disciplina,#disID').val("");//Limpa os campos
     })
@@ -298,13 +312,14 @@ $(document).ready(function () {
             $("#btn-novo-subgrupo").text('Cancelar').prepend(cancelarIcon).removeClass("btn-primary").addClass("btn-secondary");
             $("#tableSubgrupoToggle").toggle("slow");
         } else {
-            $("#btn-novo-subgrupo").text('Adicionar subgrupo').prepend(adicionarIcon).removeClass("btn-secondary").addClass("btn-primary");
+            $("#btn-novo-subgrupo").text('Novo Subgrupo').prepend(adicionarIcon).removeClass("btn-secondary").addClass("btn-primary");
             $("#tableSubgrupoToggle").toggle("slow");
         }
         $("#cadastrarSubgrupo").toggle("slow");
     }
     //? Botao cadastrar subgrupo
     $("#btn-novo-subgrupo").click(function () {
+        $("#titleSubgrupo").toggle("slow")
         toggleNovoSubgrupo();
         $("#opSubgrupo").val("");
         $("#subgrupo").val("");
@@ -481,13 +496,14 @@ $(document).ready(function () {
             $("#btn-novo-tematica").text('Cancelar').prepend(cancelarIcon).removeClass("btn-primary").addClass("btn-secondary");
             $("#tableTematicaToggle").toggle("slow");
         } else {
-            $("#btn-novo-tematica").text('Adicionar tematica').prepend(adicionarIcon).removeClass("btn-secondary").addClass("btn-primary");
+            $("#btn-novo-tematica").text('Nova Temática').prepend(adicionarIcon).removeClass("btn-secondary").addClass("btn-primary");
             $("#tableTematicaToggle").toggle("slow");
         }
         $("#cadastrarTematica").toggle("slow");
     }
     //?Botao para abrir/fechar formulario de cadastro do tematica
     $("#btn-novo-tematica").click(function () {
+        $("#titleTematica").toggle("slow")
         toggleNovaTematica();
         $('#opTematica,#tematica,#temID').val("");//Limpa os campos
 

@@ -214,7 +214,7 @@ $(document).ready(function () {
             $("#btn-nova-questao").text('Cancelar').prepend(cancelarIcon).removeClass("btn-primary").addClass("btn-secondary");
             $("#tableQuestoesToggle").toggle("slow");
         } else {
-            $("#btn-nova-questao").text('Adicionar questão').prepend(adicionarIcon).removeClass("btn-secondary").addClass("btn-primary");
+            $("#btn-nova-questao").text('Nova questão').prepend(adicionarIcon).removeClass("btn-secondary").addClass("btn-primary");
             $("#tableQuestoesToggle").toggle("slow");
         }
         $("#cadastrarQuestao").toggle("slow");

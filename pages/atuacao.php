@@ -9,7 +9,7 @@ $s = new Subgrupo("pedagogy","localhost","root","");
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 
 <head>
     <!-- Required meta tags -->
@@ -21,6 +21,7 @@ $s = new Subgrupo("pedagogy","localhost","root","");
     <link rel="stylesheet" href="../vendors/ti-icons/css/themify-icons.css">
     <link rel="stylesheet" href="../vendors/css/vendor.bundle.base.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+    
     <link rel="stylesheet" href="../vendors/bootstrapselect/bootstrap-select.min.css">
     <!-- endinject -->
     <!-- Plugin css for this page -->
@@ -40,7 +41,29 @@ $s = new Subgrupo("pedagogy","localhost","root","");
     }
     .bootstrap-select .dropdown-menu li.active small {
             color: #fff !important;
-        }
+    }
+    .tab-content {
+        border: 1px solid #ebedf2;
+        border-top: 0;
+        padding: 0px;
+        text-align: justify;
+        border-radius: 0px 0px 20px 20px;
+    }
+    .nav-tabs .nav-link {
+        background: none; 
+        color:  #1f1f1f;
+        font-size: 1.125rem;
+        font-weight: 600;
+        border-radius: 0px; 
+        border: 1px solid transparent; 
+        padding: 0.75rem 1.5rem;
+    }
+    .nav-tabs .nav-link.active, .nav-tabs .nav-item.show .nav-link {
+        color: #4B49AC ;
+        background-color: #ffffff;
+        border-color: #ebedf2 #ebedf2 #ffffff;
+    }
+   
 </style>
 </head>
 
@@ -144,194 +167,219 @@ $s = new Subgrupo("pedagogy","localhost","root","");
             <div class="main-panel">
                 <div class="content-wrapper">                   
                     <div class="row">
-                    
-                        <!--Disciplina-->
-                        <div class="col-lg-12 grid-margin stretch-card">
+
+
+                    <div class="col-lg-12 grid-margin stretch-card">
                             <div class="card">
                                 <div class="card-body">
-                                    <h4 class="card-title">Tabela de disciplinas</h4>
-                                   
-                                    <p class="card-description">                                
-                                        <button type="button" id="btn-nova-disciplina"
-                                            class="btn btn-primary btn-icon-text">
-                                            <i class="bi bi-plus-circle btn-icon-prepend"></i>
-                                            Cadastrar Disciplina
-                                        </button>
-                                    </p>
-                                  
-                                    <div id="cadastrarDisciplina" class=" stretch-card">
-                                        <div class="card">
-                                            <div class="card-body">
-                                                <h4 class="card-title">Cadastrar Disciplina</h4>
-                                                <p class="card-description">
-                                                    Cadastre uma disciplina para as questões.
-                                                </p>
-                                                <form id="formDisciplina" >
-                                                    <div class="form-group">                                                 
-                                                        <label for="disciplina">Disciplina</label>
-                                                        <input type="hidden" name="opDisciplina" id="opDisciplina">
-                                                        <input type="hidden" name="disID" id="disID">
-                                                        <input type="text" name="disciplina" class="form-control" id="disciplina"
-                                                       
-                                                        placeholder="Matemática">
-                                                    </div>
-                                                    <button id="btn-cadastrarDisciplina" type="submit"                                        
-                                                        class="btn btn-icon-text btn-primary mr-2">
-                                                        <i class="bi bi-check2-circle btn-icon-prepend"></i>
-                                                        Cadastrar</button>
-                                                        
-                                                   <!--  <button id="btn-cancelarDisciplina" type="button"
-                                                        class="btn btn-secondary">Cancelar</button> -->
-                                                </form>
-                                            </div>
+                        
+                                    <nav>
+                                        <div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
+                                            <a class="nav-link active" id="nav-disciplina-tab" data-toggle="tab" href="#nav-disciplina" role="tab" aria-controls="nav-disciplina" aria-selected="true" style="border-radius: 20px 0px 0px 0px;">Disciplinas</a>
+                                            <a class="nav-link" id="nav-tematica-tab" data-toggle="tab" href="#nav-tematica" role="tab" aria-controls="nav-tematica" aria-selected="false">Temáticas</a>
+                                            <a class="nav-link" id="nav-subgrupo-tab" data-toggle="tab" href="#nav-subgrupo" role="tab" aria-controls="nav-subgrupo" aria-selected="false" style="border-radius: 0px 20px 0px 0px;">Subgrupos</a>
                                         </div>
-                                    </div>
-                                   
-                                    <div id="tableDisciplinaToggle" class="expandable-table table-responsive">
-                                        <table class="table table-hover table-striped" style="width: 100%" id="tableDisciplinas">
-                                            <thead>
-                                                <tr>
-                                                    <th width="5%">ID</th>
-                                                    <th>Disciplina</th>
-                                                    <th width="10%">Ações</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody id="tbodyDisciplina">
-                                               
-
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!--Tematica-->
-                        <div class="col-lg-12 grid-margin stretch-card">
-                            <div class="card">
-                                <div class="card-body">
-                                    <h4 class="card-title">Tabela de tematicas</h4>
-                                    <p class="card-description">                                  
-                                        <button type="button" id="btn-novo-tematica"
-                                            class="btn btn-primary btn-icon-text">
-                                            <i class="bi bi-plus-circle btn-icon-prepend"></i>
-                                            Cadastrar tematica
-                                        </button>
-                                    </p>
-                                    <div id="cadastrarTematica" class=" stretch-card">
-                                        <div class="card">
-                                            <div class="card-body">
-                                                <h4 class="card-title">Cadastrar Temática</h4>
-                                                <p class="card-description">
-                                                    Cadastre uma temática para os subgrupos.
-                                                </p>
-                                                <form id="formTematica" >
-                                                    <div class="form-group" >
-                                                        <label class="labelCadastroAtuacao">Disciplina</label>
-                                                        <select class="selectpicker show-tick" name="disciplinaopc" id="disciplinaopc" data-width="fit" data-live-search="true">
-                                                                                                                                                                                                                              
-                                                        </select>                                                      
-                                                    </div>
-                                                    <div class="form-group">
-                                                    <label for="cadastroTematica">Temática</label>
-                                                    <input type="text" class="form-control" name="tematica" id="tematica" placeholder="Operações Matemáticas">
-                                                        <input type="hidden" name="opTematica" id="opTematica">
-                                                        <input type="hidden" name="temID" id="temID">
-                                                    </div>
-                                                    <button id="btn-cadastrarTematica" type="submit"
-                                                        class="btn btn-icon-text btn-primary mr-2"> 
-                                                        <i class="bi bi-check2-circle btn-icon-prepend"></i>
-                                                        Cadastrar</button>
-                                                   <!--  <button id="btn-cancelarTematica" type="button"
-                                                        class="btn btn-secondary">Cancelar</button> -->
-                                                </form>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div id="tableTematicaToggle" class="expandable-table table-responsive">
-                                        <table class="table table-hover table-striped" style="width: 100%" id="tableTematica">
-                                            <thead>
-                                                <tr>
-                                                    <th width="5%">ID</th>
-                                                    <th>Temática</th>
-                                                    <th>Disciplina</th>
-                                                    <th width="10%">Ações</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody id="tbodyTematica">
-
-                                            </tbody>
-                                           
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!--Subgrupo-->
-                        <div class="col-lg-12 grid-margin stretch-card">
-                            <div class="card">
-                                <div class="card-body">
-                                    <h4 class="card-title">Tabela de subgrupos</h4>
-                                    <p class="card-description">
-                                        <button type="button" id="btn-novo-subgrupo"
-                                            class="btn btn-primary btn-icon-text">
-                                            <i class="bi bi-plus-circle btn-icon-prepend"></i>
-                                            Novo subgrupo
-                                        </button>
-                                    </p>
-                                    <div id="cadastrarSubgrupo" class=" stretch-card">
-                                        <div class="card">
-                                            <div class="card-body">
-                                                <h4 class="card-title">Cadastro subgrupo</h4>
-                                                <p class="card-description">
-                                                    Cadastre um subgrupo para as disciplinas.
-                                                </p>
-                                                <form id="formSubrgrupo" >
-                                                    <div class="form-group">
-                                                        <label class="labelCadastroAtuacao">Temática</label>
-                                                        <select  id="tematicaopc" class="selectpicker show-tick" name="tematicaopc" data-width="fit"
-                                                            data-live-search="true" data-show-subtext="true">
-                                                          
-                                                        </select>
-                                                       
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label for="subgrupo">Subgrupo</label>
-                                                        <input type="hidden" name="opSubgrupo" id="opSubgrupo">
-                                                        <input type="hidden" name="subID" id="subID">
-                                                        <input type="text" class="form-control" name="subgrupo" id="subgrupo"
-                                                            placeholder="Geometria">
-                                                    </div>
-                                                    <button id="btn-cadastrarSubgrupo" type="submit"
-                                                        class="btn btn-icon-text btn-primary mr-2"> 
-                                                        <i class="bi bi-check2-circle btn-icon-prepend"></i>
-                                                        Cadastrar</button>
-                                                    
-                                                </form>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div id="tableSubgrupoToggle" class="expandable-table table-responsive">
-                                        <table class="table table-hover table-striped" style="width: 100%" id="tableSubgrupo">
-                                            <thead>
-                                                <tr>
-                                                    <th width="5%">ID</th>
-                                                    <th>Subgrupo</th>
-                                                    <th>Temática</th>
-                                                    <th>Discplina</th>
-                                                    <th width="10%">Ações</th>
-
-                                                </tr>
-                                            </thead>
-                                            <tbody id="tbodySubgrupo">
+                                    </nav>
+                                        <div class="tab-content" id="nav-tabContent">
                                             
-                                            </tbody>
-                                        </table>
-                                    </div>
+                                        <!--Disciplina-->
+
+                                            <div class="tab-pane fade show active" id="nav-disciplina" role="tabpanel" aria-labelledby="nav-disciplina-tab">
+                                                <div class="col-lg-12 grid-margin stretch-card">
+                                                    <div class="card">
+                                                        <div class="card-body" style="padding-bottom: 0px">
+                                                        <h4 class="card-title" id="titleDisciplina">Tabela de disciplinas cadastradas</h4>
+                                                            <p class="card-description ">                                
+                                                                <button type="button" id="btn-nova-disciplina"
+                                                                    class="btn btn-primary btn-icon-text">
+                                                                    <i class="bi bi-plus-circle btn-icon-prepend"></i>Nova Disciplina
+                                                                </button>
+                                                            </p>
+                                                        
+                                                            <div id="cadastrarDisciplina" class=" stretch-card">
+                                                                <div class="card">
+                                                                    <div class="card-body" style="padding-left: 0px; padding-right: 0px;">
+                                                                        <h4 class="card-title">Cadastrar Disciplina</h4>
+                                                                        <p class="card-description">
+                                                                            Cadastre disciplinas para as temáticas.
+                                                                        </p>
+                                                                        <form id="formDisciplina" >
+                                                                            <div class="form-group">                                                 
+                                                                                <label for="disciplina">Disciplina</label>
+                                                                                <input type="hidden" name="opDisciplina" id="opDisciplina">
+                                                                                <input type="hidden" name="disID" id="disID">
+                                                                                <input type="text" name="disciplina" class="form-control" id="disciplina"
+                                                                            
+                                                                                placeholder="Matemática">
+                                                                            </div>
+                                                                            <button id="btn-cadastrarDisciplina" type="submit"                                        
+                                                                                class="btn btn-icon-text btn-primary mr-2">
+                                                                                <i class="bi bi-check2-circle btn-icon-prepend"></i>
+                                                                                Cadastrar</button>
+                                                                                
+                                                                        <!--  <button id="btn-cancelarDisciplina" type="button"
+                                                                                class="btn btn-secondary">Cancelar</button> -->
+                                                                        </form>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        
+                                                            <div id="tableDisciplinaToggle" class="expandable-table table-responsive">
+                                                                <table class="table table-hover table-striped" style="width: 100%" id="tableDisciplinas">
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th width="10%">ID</th>
+                                                                            <th>Disciplina</th>
+                                                                            <th width="20%" style="text-align: center">Opções</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody id="tbodyDisciplina">
+                                                                    
+
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        <!--Tematica-->
+                                            
+                                            <div class="tab-pane fade" id="nav-tematica" role="tabpanel" aria-labelledby="nav-tematica-tab">
+                                                <div class="col-lg-12 grid-margin stretch-card">
+                                                    <div class="card">
+                                                        <div class="card-body" style="padding-bottom: 0px">
+                                                            <h4 class="card-title" id="titleTematica">Tabela de temáticas cadastradas</h4>
+                                                            <p class="card-description">                                  
+                                                                <button type="button" id="btn-novo-tematica"
+                                                                    class="btn btn-primary btn-icon-text">
+                                                                    <i class="bi bi-plus-circle btn-icon-prepend"></i>Nova Temática
+                                                                </button>
+                                                            </p>
+                                                            <div id="cadastrarTematica" class=" stretch-card">
+                                                                <div class="card">
+                                                                    <div class="card-body" style="padding-left: 0px; padding-right: 0px;">
+                                                                        <h4 class="card-title">Cadastrar Temática</h4>
+                                                                        <p class="card-description">
+                                                                            Cadastre temáticas para os subgrupos.
+                                                                        </p>
+                                                                        <form id="formTematica" >
+                                                                            <div class="form-group" >
+                                                                                <label class="labelCadastroAtuacao">Disciplina</label>
+                                                                                <select class="selectpicker show-tick" name="disciplinaopc" id="disciplinaopc" data-width="fit" data-live-search="true">
+                                                                                                                                                                                                                                                    
+                                                                                </select>                                                      
+                                                                            </div>
+                                                                            <div class="form-group">
+                                                                            <label for="cadastroTematica">Temática</label>
+                                                                            <input type="text" class="form-control" name="tematica" id="tematica" placeholder="Operações Matemáticas">
+                                                                                <input type="hidden" name="opTematica" id="opTematica">
+                                                                                <input type="hidden" name="temID" id="temID">
+                                                                            </div>
+                                                                            <button id="btn-cadastrarTematica" type="submit"
+                                                                                class="btn btn-icon-text btn-primary mr-2"> 
+                                                                                <i class="bi bi-check2-circle btn-icon-prepend"></i>
+                                                                                Cadastrar</button>
+                                                                        <!--  <button id="btn-cancelarTematica" type="button"
+                                                                                class="btn btn-secondary">Cancelar</button> -->
+                                                                        </form>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div id="tableTematicaToggle" class="expandable-table table-responsive">
+                                                                <table class="table table-hover table-striped" style="width: 100%" id="tableTematica">
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th width="5%">ID</th>
+                                                                            <th>Temática</th>
+                                                                            <th>Disciplina</th>
+                                                                            <th width="10%" style="text-align: center">Opções</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody id="tbodyTematica">
+
+                                                                    </tbody>
+                                                                
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        <!--Subgrupo-->
+                                            <div class="tab-pane fade" id="nav-subgrupo" role="tabpanel" aria-labelledby="nav-subgrupo-tab">
+                                                <div class="col-lg-12 grid-margin stretch-card">
+                                                    <div class="card">
+                                                        <div class="card-body" style="padding-bottom: 0px">
+                                                            <h4 class="card-title" id="titleSubgrupo">Tabela de subgrupos cadastrados</h4>
+                                                            <p class="card-description">
+                                                                <button type="button" id="btn-novo-subgrupo"
+                                                                    class="btn btn-primary btn-icon-text">
+                                                                    <i class="bi bi-plus-circle btn-icon-prepend"></i>Novo Subgrupo
+                                                                </button>
+                                                            </p>
+                                                            <div id="cadastrarSubgrupo" class=" stretch-card">
+                                                                <div class="card">
+                                                                    <div class="card-body" style="padding-left: 0px; padding-right: 0px;">
+                                                                        <h4 class="card-title">Cadastrar subgrupo</h4>
+                                                                        <p class="card-description">
+                                                                            Cadastre subgrupos para as questões.
+                                                                        </p>
+                                                                        <form id="formSubrgrupo" >
+                                                                            <div class="form-group">
+                                                                                <label class="labelCadastroAtuacao">Temática</label>
+                                                                                <select  id="tematicaopc" class="selectpicker show-tick" name="tematicaopc" data-width="fit"
+                                                                                    data-live-search="true" data-show-subtext="true">
+                                                                                
+                                                                                </select>
+                                                                            
+                                                                            </div>
+                                                                            <div class="form-group">
+                                                                                <label for="subgrupo">Subgrupo</label>
+                                                                                <input type="hidden" name="opSubgrupo" id="opSubgrupo">
+                                                                                <input type="hidden" name="subID" id="subID">
+                                                                                <input type="text" class="form-control" name="subgrupo" id="subgrupo"
+                                                                                    placeholder="Geometria">
+                                                                            </div>
+                                                                            <button id="btn-cadastrarSubgrupo" type="submit"
+                                                                                class="btn btn-icon-text btn-primary mr-2"> 
+                                                                                <i class="bi bi-check2-circle btn-icon-prepend"></i>
+                                                                                Cadastrar</button>
+                                                                            
+                                                                        </form>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <div id="tableSubgrupoToggle" class="expandable-table table-responsive">
+                                                                <table class="table table-hover table-striped" style="width: 100%" id="tableSubgrupo">
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th width="5%">ID</th>
+                                                                            <th>Subgrupo</th>
+                                                                            <th>Temática</th>
+                                                                            <th>Disciplina</th>
+                                                                            <th width="10%" style="text-align: center">Opções</th>
+
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody id="tbodySubgrupo">
+                                                                    
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                 </div>
                             </div>
                         </div>
+
+                                         
 
                     </div>
                 </div>

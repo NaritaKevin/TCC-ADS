@@ -158,8 +158,7 @@ $n = new Nivel("pedagogy", "localhost", "root", "");
                                     <h4 class="card-title">Tabela de Questões</h4>
                                     <p class="card-description">
                                         <button type="button" id="btn-nova-questao" class="btn btn-primary btn-icon-text">
-                                            <i class="bi bi-plus-circle btn-icon-prepend"></i>
-                                            Nova questão
+                                            <i class="bi bi-plus-circle btn-icon-prepend"></i>Nova questão
                                         </button>
                                     </p>
                                     <div id="cadastrarQuestao" class=" stretch-card">
@@ -275,7 +274,7 @@ $n = new Nivel("pedagogy", "localhost", "root", "");
                                                     <th>Ano</th>
                                                     <th>Status Tipo</th>
                                                     <th>Revisada</th>
-                                                    <th>Ação</th>
+                                                    <th>Ações</th>
                                                 </tr>
                                             </thead>
                                             <tbody id="tbodyQuestao">

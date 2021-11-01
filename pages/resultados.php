@@ -146,7 +146,7 @@
                                         <table class="table table-hover" id="tableResultados">
                                             <thead>
                                                 <tr>
-                                                    <th width="5%">ID</th>
+                                                    <th>ID</th>
                                                     <th>Atividade</th>
                                                     <th>Classe</th>
                                                     <th>Resultados</th>
@@ -178,14 +178,16 @@
                                     </p>
 
                                     <div id="tableTiposToggle" class="table-responsive">
-                                        <table id="tableResultadosAluno" class="table table-striped table-hover" >
+                                        <table id="tableResultadosAluno" class="table display expandable-table table-striped table-hover" >
                                             <thead>
                                                 <tr>
                                                     <th>Aluno(a)</th>
                                                     <th>Desempenho</th>
                                                     <th>Acertos</th>
+                                                    <th>Pontuação</th>
                                                     <th>Data de conclusão</th>
-                                                    <th>Ver Atividade</th>
+                                                    <th width="2%">Ver Atividade</th>
+                                                    <th></th>
                                                 </tr>
                                             </thead>
                                             <tbody id="tbodyResultadosAluno">
@@ -232,6 +234,7 @@
         <script src="../js/off-canvas.js"></script>
         <script src="../js/hoverable-collapse.js"></script>
         <script src="../js/template.js"></script>
+        <script src="../js/settings.js"></script>
         <script src="../vendors/chart.js/Chart.min.js"></script>
 
         <!-- endinject -->
