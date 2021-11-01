@@ -391,7 +391,7 @@ $s = new Subgrupo("pedagogy","localhost","root","");
                         <div class="modal-content">    
                             <form id="formDelete" >                
                             <div class="modal-header">
-                            <h4 class="modal-title ml-auto">Deseja excluir o item selecionada?</h4>
+                            <h4 class="modal-title ml-auto">Deseja excluir o item selecionado?</h4>
                                 <button type="button" id="buttonXmodal" class="close" data-dismiss="modal" aria-label="Close">
                                  <span aria-hidden="true">&times;</span>
                                 </button>    
@@ -400,11 +400,9 @@ $s = new Subgrupo("pedagogy","localhost","root","");
                              </div>
                            
                             <div class="modal-footer">
-                            <button id="modalCancelar" type="button" class="btn btn-secondary  mr-auto">Cancelar</button>
-                            <button id="modalConfirmar"  type="submit"
-                                             class="btn btn-primary">
-                                            <i class="bi bi-x-circle btn-icon-prepend "></i>
-                                            Excluir</button>                       
+                            <button id="modalCancelar" type="button" class="btn btn-secondary  mr-auto"><i class="bi bi-x-circle btn-icon-prepend "></i> Cancelar</button>
+                            <button id="modalConfirmar"  type="submit" class="btn btn-primary">
+                                            <i class="bi bi-check2-circle btn-icon-prepend "></i> Excluir</button>                       
                             </div>  
                             </form>                       
                         </div>
