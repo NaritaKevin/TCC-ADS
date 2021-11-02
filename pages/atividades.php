@@ -1,6 +1,10 @@
 <?php
 require_once '../backend/tipo.php';
+require_once '../backend/classe.php';
+require_once '../backend/questao.php';
 $t = new Tipo("pedagogy", "localhost", "root", "");
+$c = new Classe("pedagogy", "localhost", "root", "");
+$q = new Questao("pedagogy", "localhost", "root", "");
 ?>
 
 <!DOCTYPE html>
@@ -194,6 +198,21 @@ $t = new Tipo("pedagogy", "localhost", "root", "");
                                                                 </select>
                                                                 </div>
 
+                                                                <div class="form-group">
+                                                                <label class="labelCadastroAtividade">Turma</label>
+                                                              
+                                                                <select id="classe" class="selectpicker show-tick" name="classe" data-width="fit">
+                                                               
+                                                                    <?php $arr_classe = $c->buscarClasse() ?>
+                                                                    <?php if (!empty($arr_classe)) { ?>
+                                                                        <?php foreach ($arr_classe as $classe) {
+                                                                        ?>
+                                                                            <option value="<?php echo $classe['claCodigo']; ?>"><?php echo $classe['claNome']; ?></option>
+                                                                        <?php } ?>
+                                                                    <?php } ?>
+                                                                </select>
+                                                                </div>
+                                                               
 
                                                                 <div class="form-group">
                                                                 <label class="labelCadastroAtividade">Status</label>
@@ -264,51 +283,13 @@ $t = new Tipo("pedagogy", "localhost", "root", "");
                                                                                             <th width="3%">Código BNCC
                                                                                             </th>
                                                                                             <th width="2%">Nível</th>
+                                                                                            <th width="2%">Ações</th>
 
                                                                                         </tr>
                                                                                     </thead>
                                                                                     <tbody id="tbodyQuestoesAtividade">
-                                                                                        <tr>
-                                                                                            <td class="index">1</td>
-                                                                                            <td>De que forma os animais
-                                                                                                participam do ciclo da
-                                                                                                água?</td>
-                                                                                            <td>Animais Ciclos Agua</td>
-                                                                                            <td>Subgrupo teste</td>
-                                                                                            <td>654633</td>
-                                                                                            <td>Fácil</td>
-
-
-                                                                                        </tr>
-                                                                                        <tr>
-                                                                                            <td class="index">2</td>
-                                                                                            <td>22dsds?</td>
-                                                                                            <td>Animais Ciclos Agua</td>
-                                                                                            <td>Subgrupo teste</td>
-                                                                                            <td>654633</td>
-                                                                                            <td>Fácil</td>
-
-
-                                                                                        </tr>
-                                                                                        <tr>
-                                                                                            <td class="index">3</td>
-                                                                                            <td>33fdfdf</td>
-                                                                                            <td>Animais Ciclos Agua</td>
-                                                                                            <td>Subgrupo teste</td>
-                                                                                            <td>654633</td>
-                                                                                            <td>Fácil</td>
-
-                                                                                        </tr>
-                                                                                        <tr>
-                                                                                            <td class="index">4</td>
-                                                                                            <td>44adsads</td>
-                                                                                            <td>Animais Ciclos Agua</td>
-                                                                                            <td>Subgrupo teste</td>
-                                                                                            <td>654633</td>
-                                                                                            <td>Fácil</td>
-
-
-                                                                                        </tr>
+                                                                                       
+                                                                                           
 
                                                                                     </tbody>
                                                                                 </table>
@@ -349,6 +330,7 @@ $t = new Tipo("pedagogy", "localhost", "root", "");
                                             </thead>
                                             <tbody id="tbodyAtivdades">
                                                 
+                                            
 
                                             </tbody>
                                         </table>
@@ -431,13 +413,19 @@ $t = new Tipo("pedagogy", "localhost", "root", "");
                 <div class="modal fade" id="modalQuestao" tabindex="-1" aria-labelledby="modalQuestao"
                     aria-hidden="true">
                     <div class="modal-dialog modal-lg">
+                    
                         <div class="modal-content">
+                        
                             <div class="modal-body">
+                           
                                 <div id="escolherQuestoess" class="expandable-table table-responsive">
+                               
+                                    <p>Sera mostrado o ID  de todas as linhas selecionadas</p>
+                                    <pre id="visualizar-ids"></pre>
                                     <table class="table table-hover display" id="tableEscolherQuestoes">
                                         <thead>
                                             <tr>
-                                                <th>ID</th>
+                                                
                                                 <th>Enunciado</th>
                                                 <th>Código BNCC</th>
                                                 <th>Tipo</th>
@@ -448,9 +436,10 @@ $t = new Tipo("pedagogy", "localhost", "root", "");
                                             </tr>
                                         </thead>
                                         <tbody id="tbodyModalAtividade">
-                                            
+                                       
                                         </tbody>
                                     </table>
+                                    
                                 </div>
                             </div>
                             <div class="modal-footer">
@@ -459,8 +448,10 @@ $t = new Tipo("pedagogy", "localhost", "root", "");
                                 <button id="btn-modalConfirmarQuestao" type="button"
                                     class="btn btn-primary">Confirmar</button>
                             </div>
+                        
                         </div>
                     </div>
+                    
                 </div>
                 <!-- content-wrapper ends -->
                 <!-- partial:../../partials/_footer.html -->

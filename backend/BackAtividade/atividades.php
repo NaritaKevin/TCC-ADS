@@ -88,4 +88,13 @@ class Atividade
     }
 
 
+    public function buscarDadosQuestaoSelecionadas($id){
+        $res = array();
+        $cmd = $this->pdo->query("SELECT * FROM questoes where queID in ($id)");
+
+        $res = $cmd->fetchAll();(PDO::FETCH_ASSOC);
+
+        return $res;
+    }
+
 }
