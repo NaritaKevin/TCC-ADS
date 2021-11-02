@@ -18,6 +18,7 @@ $(document).ready(function () {
         $("#cadastrarAtividade").hide();
         $("#cadastroQuestoes").hide();
         $("#escolherQuestoes").hide();
+        $("#cadastrarQuestao").hide();
         $("#data-inicial,#data-final").datetimepicker({
             timepicker: false, mask: true, format: 'd/m/Y',
         })
@@ -164,7 +165,7 @@ $(document).ready(function () {
     //? BOTAO DE CONFIMAR ESCOLHA QUESTÕES
 
     $('#btn-modalConfirmarQuestao').click(function (e) {
-        
+        buscaInicialQuestoesSelecionadas = true;
         var form = this
         var rowsel = tableEscolher.column(0).checkboxes.selected();
     
@@ -173,8 +174,8 @@ $(document).ready(function () {
       //          $('<input>').attr('type', 'hidden').attr('name', 'id[]').val(rowID)
       //     )
      //  })
-        
-       queSel = rowsel.join(",");
+        if(rowsel.length > 0){
+            queSel = rowsel.join(",");
 
        console.log(queSel);
         $("#visualizar-ids").text(rowsel.join(","))
@@ -190,7 +191,7 @@ $(document).ready(function () {
             console.log("entrou")
         }
          //? TABELA DE QUESÕES JA ESCOLHIDAS
-         tableEscolher = $('#tableQuestoesAtividade').DataTable({
+         tableEscolhidas = $('#tableQuestoesAtividade').DataTable({
             destroy: true,
             responsive: true,
         
@@ -212,9 +213,9 @@ $(document).ready(function () {
                 { data: 'queID' }, // o valor contido na variavel data, é o que sera buscado no banco de dados, no caso o ID
                 { data: 'queDescricao' },//enunciado da questão
                 { data: 'quePalavrasChave' },
-                { data: 'queSubgrupoID' },
+                { data: 'subDescricao' },
                 { data: 'queCodigoBncc' },
-                { data: 'queNivelID' },
+                { data: 'nivDescricao' },
                 {
                     data: null, render: function (data, type, row) { // renderizar a exibição dos botões 
 
@@ -229,6 +230,12 @@ $(document).ready(function () {
 
 
         })
+        }else{
+            tableEscolhidas.clear().draw();
+        }
+        $('#modalQuestao').modal('hide');
+         e.preventDefault();
+       
 
     })
     
@@ -407,10 +414,18 @@ $(document).ready(function () {
     //!  Modal esconder/mostrar
     $("#btn-modal-escolher").on("click", function () {
         $('#modalQuestao').modal('show');
-        tableEscolher.ajax.reload(null, false);
+        buscaInicialQuestoesSelecionadas = false;
+        //tableEscolher.ajax.reload(null, false);
     });
 
 
+
+    //! BOTAO DE ADICIONAR QUESTAO DIRETO EM ATIVIDADES
+    $("#adicionarQuestoes").click(function () {
+        $("#tableQuestoesToggle").toggle("slow");
+       $("#cadastrarQuestao").toggle("slow");
+       $("#cadastrarAtividade").toggle("slow");
+    })
 
     //! Modal Excluir Atividade
     $("#tbodyAtivdades").on("click", ".btn-excluir-atividade", function () {

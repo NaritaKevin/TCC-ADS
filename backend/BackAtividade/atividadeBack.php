@@ -116,17 +116,28 @@ if(isset($_POST["opID"]) && isset($_POST["opAtividade"])){
 }
 
 
+
+
+
 if(isset($_POST['buscaInicialQuestoesSelecionadas'])){
     $buscaInicialQuestoes = addslashes($_POST['buscaInicialQuestoesSelecionadas']);
     $dadosQuestoes = addslashes($_POST['queSel']);
+    $semNada =[];
     if($buscaInicialQuestoes == true){
        $dadosQuestao = $a->buscarDadosQuestaoSelecionadas($dadosQuestoes);
-       //die($dadosQuestao);
+
+       if (empty($dadosQuestao)) {
+           
+        print json_encode(array('semNada'=> ''),JSON_UNESCAPED_UNICODE);
+       }  
        if (!empty($dadosQuestao)) {
         print json_encode($dadosQuestao,JSON_UNESCAPED_UNICODE);
        }      
     }
 }
+
+
+
 
 if(isset($_POST['buscaInicialAtividade'])){
     $buscaInicialAtividade = addslashes($_POST['buscaInicialAtividade']);

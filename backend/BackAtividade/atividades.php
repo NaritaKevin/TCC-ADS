@@ -40,14 +40,15 @@ class Atividade
                 return false;
         } else { //não foi encontrado o email
             $cmd = $this->pdo->prepare(
-            "INSERT INTO atividades (atiDescricao, atiDataInicio, atiDataFim, atiObservacao, atiStatus, atiTipoID) 
-            VALUES (:nome, :dataInicio, :dataFim, :observacao,:tipoStatus , :tipo)");
+            "INSERT INTO atividades (atiDescricao, atiDataInicio, atiDataFim, atiObservacao, atiStatus, atiTipoID, atiUsuarioID) 
+            VALUES (:nome, :dataInicio, :dataFim, :observacao,:tipoStatus , :tipo, :atiUsuarioID)");
             $cmd->bindValue(":nome",$nome);
             $cmd->bindValue(":dataInicio",$dataInicial);
             $cmd->bindValue(":dataFim",$dataFinal);
             $cmd->bindValue(":observacao",$descricao);
             $cmd->bindValue(":tipo",$tipo);
             $cmd->bindValue(":tipoStatus",$Status);
+            $cmd->bindValue(":atiUsuarioID",2);
             
             $cmd->execute();
             return true;
@@ -90,7 +91,7 @@ class Atividade
 
     public function buscarDadosQuestaoSelecionadas($id){
         $res = array();
-        $cmd = $this->pdo->query("SELECT * FROM questoes where queID in ($id)");
+        $cmd = $this->pdo->query("SELECT * FROM questoes q LEFT JOIN subgrupos s ON q.queSubgrupoID = s.subID  LEFT JOIN niveis n ON n.nivID = q.queNivelID where queID in ($id)");
 
         $res = $cmd->fetchAll();(PDO::FETCH_ASSOC);
 

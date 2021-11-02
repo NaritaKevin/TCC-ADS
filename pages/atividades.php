@@ -2,9 +2,13 @@
 require_once '../backend/tipo.php';
 require_once '../backend/classe.php';
 require_once '../backend/questao.php';
+require_once '../backend/subgrupo.php';
+require_once '../backend/nivel.php';
 $t = new Tipo("pedagogy", "localhost", "root", "");
 $c = new Classe("pedagogy", "localhost", "root", "");
 $q = new Questao("pedagogy", "localhost", "root", "");
+$s = new Subgrupo("pedagogy", "localhost", "root", "");
+$n = new Nivel("pedagogy", "localhost", "root", "");
 ?>
 
 <!DOCTYPE html>
@@ -164,6 +168,8 @@ $q = new Questao("pedagogy", "localhost", "root", "");
                                             Nova atividade
                                         </button>
                                     </p>
+
+
                                     <div id="cadastrarAtividade">
                                         <div class="stretch-card">
                                             <div class="card">
@@ -261,12 +267,18 @@ $q = new Questao("pedagogy", "localhost", "root", "");
                                                                                     <i class="bi bi-list-check "></i>
                                                                                     Escolher
                                                                                 </button>
-                                                                                <a href="../pages/questoes.html">
-                                                                                    <button type="button"
+                                                                                
+                                                                                    <button type="button" id="adicionarQuestoes"
                                                                                         class="btn btn-primary btn-rounded btn-icon">
                                                                                         <i class="bi bi-plus"></i>
-                                                                                    </button></a>
+                                                                                    </button>
                                                                             </p>
+
+
+                                                                            
+
+
+
 
                                                                             <div id="tableQuestoesToggle"
                                                                                 class="table-responsive">
@@ -303,17 +315,123 @@ $q = new Questao("pedagogy", "localhost", "root", "");
                                                             </div>
                                                         </div>
                                                         <div class="form-group">
-                                                            <div class="row">
+                                                            <div class="row" id="botoesAtividade">
                                                                 <button id="cadastrarAtividade" type="submit" class="btn btn-primary mr-2">Cadastrar</button>
                                                                 <button id="cancelarAtividade" type="button" class="btn btn-secondary">Cancelar</button>
                                                             </div>
                                                         </div>
                                                     </form>
+
+                                    </div>
+
+                                    <div id="cadastrarQuestao" class=" stretch-card">
+                                         <div class="card">
+                                                <div class="card-body">
+                                                <h4 class="card-title">Questão</h4>
+                                                <p class="card-description">
+                                                        Cadastre a questão para a atividade.
+                                                            </p>
+                                                        <form id="formQuestoes">
+
+                                                     <div class="form-group">
+                                                     <div class="row">
+                                                                                                    <div class="col-md-4">
+                                                                                                        <label class="labelCadastroAtuacao">Subgrupo</label>
+                                                                                                        <select id="subgrupoopc" class="selectpicker show-tick" name="subgrupoopc" data-width="fit" data-live-search="true" data-show-subtext="true">
+                                                                                                            <option disabled selected value="0" >Escolha</option>
+                                                                                                            <?php $arr_subgrupo = $s->buscarDadosSub() ?>
+                                                                                                            <?php if (!empty($arr_subgrupo)) { ?>
+                                                                                                                <?php foreach ($arr_subgrupo as $subgrupoop) {
+                                                                                                                ?>
+                                                                                                                    <option data-subtext="<?php echo " - ", $subgrupoop['temDescricao'], " - " ,$subgrupoop['disDescricao']; ?>" value="<?php echo $subgrupoop['subID']; ?>"><?php echo $subgrupoop['subDescricao']; ?></option>
+                                                                                                                <?php } ?>
+                                                                                                            <?php } ?>
+                                                                                                        </select>
+                                                                                                    </div>
+
+                                                                                                
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            <div class="row">
+                                                                                                <div class="col-md-4">
+                                                                                                    <div class="form-group">
+                                                                                                        <label for="codigobncc">Código BNCC</label>
+                                                                                                        <input type="hidden" name="opQuestao" id="opQuestao">
+                                                                                                        <input type="hidden" name="queID" id="queID">
+                                                                                                        <input type="text" style="width: auto" class="form-control" name="codigobncc" id="codigobncc" placeholder="Código BNCC">
+                                                                                                    </div>
+                                                                                                </div>
+
+                                                                                                <div class="col-md-4">
+                                                                                                    <div class="form-group">
+                                                                                                        <label class="labelCadastroAtuacao">Nível</label>
+                                                                                                        <select id="nivelopc" class="selectpicker show-tick" name="nivelopc" data-width="fit">
+                                                                                                            <?php $arr_nivel = $n->buscarDadosNivel() ?>
+                                                                                                            <?php if (!empty($arr_nivel)) { ?>
+                                                                                                                <?php foreach ($arr_nivel as $nivelop) {
+                                                                                                                ?>
+                                                                                                                    <option value="<?php echo $nivelop['nivID']; ?>"><?php echo $nivelop['nivDescricao']; ?></option>
+                                                                                                                <?php } ?>
+                                                                                                            <?php } ?>
+                                                                                                        </select>
+                                                                                                    </div>
+                                                                                                </div>
+
+                                                                                                <div class="col-md-4">
+                                                                                                    <div class="form-group">
+                                                                                                        <label class="labelCadastroAtuacao">Status</label>
+                                                                                                        <select id="statusopc" class="selectpicker show-tick" name="statusopc" data-width="fit">
+                                                                                                            <option value="1">Pública</option>
+                                                                                                            <option value="2">Privada professor</option>
+                                                                                                            <option value="3">Privada grupo</option>
+                                                                                                            <option value="4">Privada escola</option>
+                                                                                                        </select>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            <div class="form-group">
+                                                                                                <label for="enunciado">Enunciado</label>
+                                                                                                <textarea class="form-control" name="enunciado" id="enunciado" rows="7"></textarea>
+                                                                                            </div>
+                                                                                            <div class="form-group">
+                                                                                                <label for="palavrasChave">Palavras chave</label>
+                                                                                                <input type="text" class="form-control" name="palavrasChave" id="palavrasChave" placeholder="Palavras chave">
+                                                                                            </div>
+                                                                                            <div class="form-group">
+                                                                                                <p class="card-title">
+                                                                                                    Alternativas.
+                                                                                                </p>
+                                                                                                <p class="card-description">
+                                                                                                    Cadastre as alternativas da questão.
+                                                                                                </p>
+                                                                                                <button id="adicionarQuestao" type="button" class="btn btn-inverse-primary btn-rounded btn-icon">
+                                                                                                    <i class="bi bi-plus-lg"></i>
+                                                                                                </button>
+                                                                                                <button id="deletarQuestao" type="button" class="btn btn-inverse-danger btn-rounded btn-icon">
+                                                                                                    <i class="bi-trash"></i>
+                                                                                                </button>
+                                                                                            </div>
+
+                                                                                            <div class="form-group">
+                                                                                                <ul id="alternativas" class="list-group">
+
+                                                                                                </ul>
+                                                                                            </div>
+
+                                                                                            <button id="submitQuestao" type="submit" class="btn btn-icon-text btn-primary mr-2"><i class="bi bi-check2-circle btn-icon-prepend"></i>Cadastrar</button>
+                                                                                            <button id="cancelarQuestao" type="button" class="btn btn-icon-text btn-secondary"><i class="bi bi-x-circle btn-icon-prepend"></i>Cancelar</button>
+                                                                                        </form>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
                                                 </div>
                                             </div>
                                         </div>
 
-                                    </div>
+
+
+
+
                                     <div id="tableAtividadesToggle" class="expandable-table table-responsive">
                                         <table id="tableAtividade" class="table table-striped table-hover ">
                                             <thead>
@@ -483,8 +601,12 @@ $q = new Questao("pedagogy", "localhost", "root", "");
     <script src="../js/jquery.datetimepicker.full.min.js"></script>
     <script src="../js/sweetAlert.js"></script>
     <script src="../js/dataTables.checkboxes.min.js"></script>
-    <script src="../js/mainjs/atividades.js"></script>
     <script src="../vendors/bootstrapselect/bootstrap-select.min.js"></script>
+    <script src="../js/mainjs/atividades.js"></script>
+    <script src="../js/mainjs/questoes.js"></script>
+    
+
+    
 
     <!-- endinject -->
 </body>
