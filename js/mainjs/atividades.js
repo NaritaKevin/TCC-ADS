@@ -249,7 +249,7 @@ $(document).ready(function () {
         var dataInicial = $("#data-inicial").val();
         var dataFinal = $("#data-final").val();
         var status = $("#status option:selected").val();
-        //var classe = $("#classe").val();
+        var classe = $("#classe").val();
         var dataFormInicial
         var dataFormFinal
         function formatarData(data) {
@@ -265,13 +265,13 @@ $(document).ready(function () {
         dataFormInicial = formatarData(dataInicial);
         dataFormFinal = formatarData(dataFinal);
 
-        console.log(nome);
-        console.log(descricao);
-        console.log(tipoopc);
-        console.log(dataFormInicial);
-        console.log(dataFormFinal);
-        console.log(status);
-        opAtividade = "update2";
+        console.log(classe);
+        //console.log(descricao);
+        //console.log(tipoopc);
+       // console.log(dataFormInicial);
+       // console.log(dataFormFinal);
+       // console.log(status);
+       // opAtividade = "update2";
 
         $.ajax({
             url: '../backend/BackAtividade/atividadeBack.php',
@@ -422,9 +422,17 @@ $(document).ready(function () {
 
     //! BOTAO DE ADICIONAR QUESTAO DIRETO EM ATIVIDADES
     $("#adicionarQuestoes").click(function () {
-        $("#tableQuestoesToggle").toggle("slow");
+        $("#tableQuestoesSelecionadas").toggle("slow");
        $("#cadastrarQuestao").toggle("slow");
-       $("#cadastrarAtividade").toggle("slow");
+       $("#botoesAtividade").hide();
+    })
+
+    //! BOTAO CANCELAR CADASTRO DE QUESTÃO EM ATIVIDADES
+
+    $("#cancelarQuestao").click(function () {
+        $("#tableQuestoesSelecionadas").toggle("slow");
+        $("#botoesAtividade").toggle("slow");
+        $("#tableQuestoesToggle").toggle();
     })
 
     //! Modal Excluir Atividade

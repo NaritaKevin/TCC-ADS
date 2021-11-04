@@ -253,12 +253,12 @@ $n = new Nivel("pedagogy", "localhost", "root", "");
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <div class="form-group">
+                                                        <div class="form-group" id="tableQuestoesSelecionadas">
                                                             <div class="row">
                                                                 <div class="col-lg-12 grid-margin stretch-card">
                                                                     <div class="card">
-                                                                        <div class="card-body">
-                                                                            <h4 class="card-title">Questões</h4>
+                                                                        <div class="card-body" >
+                                                                            <h4 class="card-title">Questões Selecionadas</h4>
                                                                             <p class="card-description">
 
                                                                                 <button id="btn-modal-escolher"
@@ -273,13 +273,6 @@ $n = new Nivel("pedagogy", "localhost", "root", "");
                                                                                         <i class="bi bi-plus"></i>
                                                                                     </button>
                                                                             </p>
-
-
-                                                                            
-
-
-
-
                                                                             <div id="tableQuestoesToggle"
                                                                                 class="table-responsive">
                                                                                 <table class=" table table-hover"
@@ -315,16 +308,14 @@ $n = new Nivel("pedagogy", "localhost", "root", "");
                                                             </div>
                                                         </div>
                                                         <div class="form-group">
-                                                            <div class="row" id="botoesAtividade">
-                                                                <button id="cadastrarAtividade" type="submit" class="btn btn-primary mr-2">Cadastrar</button>
-                                                                <button id="cancelarAtividade" type="button" class="btn btn-secondary">Cancelar</button>
-                                                            </div>
-                                                        </div>
-                                                    </form>
+                                                    <div class="row" id="botoesAtividade">
+                                                         <button id="cadastrarAtividade" type="submit" class="btn btn-primary mr-2">Cadastrar</button>
+                                                         <button id="cancelarAtividade" type="button" class="btn btn-secondary">Cancelar</button>
+                                                  </div>
+                                             </div>
+                                        </form>
 
-                                    </div>
-
-                                    <div id="cadastrarQuestao" class=" stretch-card">
+                                        <div id="cadastrarQuestao" class=" stretch-card">
                                          <div class="card">
                                                 <div class="card-body">
                                                 <h4 class="card-title">Questão</h4>
@@ -335,23 +326,21 @@ $n = new Nivel("pedagogy", "localhost", "root", "");
 
                                                      <div class="form-group">
                                                      <div class="row">
-                                                                                                    <div class="col-md-4">
-                                                                                                        <label class="labelCadastroAtuacao">Subgrupo</label>
-                                                                                                        <select id="subgrupoopc" class="selectpicker show-tick" name="subgrupoopc" data-width="fit" data-live-search="true" data-show-subtext="true">
-                                                                                                            <option disabled selected value="0" >Escolha</option>
-                                                                                                            <?php $arr_subgrupo = $s->buscarDadosSub() ?>
-                                                                                                            <?php if (!empty($arr_subgrupo)) { ?>
-                                                                                                                <?php foreach ($arr_subgrupo as $subgrupoop) {
-                                                                                                                ?>
-                                                                                                                    <option data-subtext="<?php echo " - ", $subgrupoop['temDescricao'], " - " ,$subgrupoop['disDescricao']; ?>" value="<?php echo $subgrupoop['subID']; ?>"><?php echo $subgrupoop['subDescricao']; ?></option>
-                                                                                                                <?php } ?>
-                                                                                                            <?php } ?>
-                                                                                                        </select>
-                                                                                                    </div>
-
-                                                                                                
+                                                            <div class="col-md-4">
+                                                                <label class="labelCadastroAtuacao">Subgrupo</label>
+                                                                     <select id="subgrupoopc" class="selectpicker show-tick" name="subgrupoopc" data-width="fit" data-live-search="true" data-show-subtext="true">
+                                                                         <option disabled selected value="0" >Escolha</option>
+                                                                             <?php $arr_subgrupo = $s->buscarDadosSub() ?>
+                                                                                <?php if (!empty($arr_subgrupo)) { ?>
+                                                                                     <?php foreach ($arr_subgrupo as $subgrupoop) {
+                                                                                     ?>
+                                                                                        <option data-subtext="<?php echo " - ", $subgrupoop['temDescricao'], " - " ,$subgrupoop['disDescricao']; ?>" value="<?php echo $subgrupoop['subID']; ?>"><?php echo $subgrupoop['subDescricao']; ?></option>
+                                                                                            <?php } ?>
+                                                                                            <?php } ?>
+                                                                                            </select>
                                                                                                 </div>
-                                                                                            </div>
+                                                                                                     </div>
+                                                                                                        </div>
                                                                                             <div class="row">
                                                                                                 <div class="col-md-4">
                                                                                                     <div class="form-group">
@@ -411,28 +400,22 @@ $n = new Nivel("pedagogy", "localhost", "root", "");
                                                                                                     <i class="bi-trash"></i>
                                                                                                 </button>
                                                                                             </div>
-
-                                                                                            <div class="form-group">
-                                                                                                <ul id="alternativas" class="list-group">
-
-                                                                                                </ul>
-                                                                                            </div>
-
-                                                                                            <button id="submitQuestao" type="submit" class="btn btn-icon-text btn-primary mr-2"><i class="bi bi-check2-circle btn-icon-prepend"></i>Cadastrar</button>
-                                                                                            <button id="cancelarQuestao" type="button" class="btn btn-icon-text btn-secondary"><i class="bi bi-x-circle btn-icon-prepend"></i>Cancelar</button>
-                                                                                        </form>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
+                                                                                        <div class="form-group">
+                                                                                    <ul id="alternativas" class="list-group">
+                                                                                 </ul>
+                                                                             </div>
+                                                                         <button id="submitQuestao" type="submit" class="btn btn-icon-text btn-primary mr-2"><i class="bi bi-check2-circle btn-icon-prepend"></i>Cadastrar</button>
+                                                                    <button id="cancelarQuestao" type="button" class="btn btn-icon-text btn-secondary"><i class="bi bi-x-circle btn-icon-prepend"></i>Cancelar</button>
+                                                     </form>
                                                 </div>
                                             </div>
                                         </div>
+                                    </div>
+                                 </div>
+                             </div>
+                        </div>
 
-
-
-
-
-                                    <div id="tableAtividadesToggle" class="expandable-table table-responsive">
+                                        <div id="tableAtividadesToggle" class="expandable-table table-responsive">
                                         <table id="tableAtividade" class="table table-striped table-hover ">
                                             <thead>
                                                 <tr>
