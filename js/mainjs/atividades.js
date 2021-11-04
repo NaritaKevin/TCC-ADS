@@ -1,6 +1,6 @@
 $(document).ready(function () {
-     let buscaInicialQuestao = true;
-     let buscaInicialAtividade = true;
+    let buscaInicialQuestao = true;
+    let buscaInicialAtividade = true;
 
     var opAtividade
     var opId
@@ -9,7 +9,7 @@ $(document).ready(function () {
     var opidDelete
     var queSel = [];
     var dadosQuestao = [];
-    let buscaInicialQuestoesSelecionadas= true;
+    let buscaInicialQuestoesSelecionadas = true;
 
     init();
 
@@ -23,7 +23,7 @@ $(document).ready(function () {
             timepicker: false, mask: true, format: 'd/m/Y',
         })
 
-        
+
 
 
         tableAtividade = $('#tableAtividade').DataTable({
@@ -103,7 +103,7 @@ $(document).ready(function () {
         tableEscolher = $('#tableEscolherQuestoes').DataTable({
 
             "select": {
-               "style": 'multi'
+                "style": 'multi'
             },
             "columnDefs": [
                 {
@@ -111,7 +111,7 @@ $(document).ready(function () {
                     //"targets": [9]
                 },
                 {
-                   'targets': 0,
+                    'targets': 0,
                     'checkboxes': {
                         'selectRow': true
                     }
@@ -155,90 +155,94 @@ $(document).ready(function () {
 
         })
 
-
-
-        
-        
-
     }
 
+    $("#cancelarAtividade").click(function (e) {
+        if ($.fn.dataTable.isDataTable('#tableQuestoesAtividade')) {
+            let teste = tableEscolhidas.columns(0).data().eq(0).sort()
+
+            console.log(teste)
+        }
+
+
+    })
     //? BOTAO DE CONFIMAR ESCOLHA QUESTÕES
 
     $('#btn-modalConfirmarQuestao').click(function (e) {
         buscaInicialQuestoesSelecionadas = true;
         var form = this
         var rowsel = tableEscolher.column(0).checkboxes.selected();
-    
-      //  $.each(rowsel, function (index, rowID){
-      //      $(form).append(
-      //          $('<input>').attr('type', 'hidden').attr('name', 'id[]').val(rowID)
-      //     )
-     //  })
-        if(rowsel.length > 0){
+
+        //  $.each(rowsel, function (index, rowID){
+        //      $(form).append(
+        //          $('<input>').attr('type', 'hidden').attr('name', 'id[]').val(rowID)
+        //     )
+        //  })
+        if (rowsel.length > 0) {
             queSel = rowsel.join(",");
 
-       console.log(queSel);
-        $("#visualizar-ids").text(rowsel.join(","))
-       // $('input[name="id\[\]"]',form).remove()
+            console.log(queSel);
+            $("#visualizar-ids").text(rowsel.join(","))
+            // $('input[name="id\[\]"]',form).remove()
 
-        //tableQuestoes.ajax.reload(null, false);
-        $('#modalQuestao').modal('hide');
-         e.preventDefault();
+            //tableQuestoes.ajax.reload(null, false);
+            $('#modalQuestao').modal('hide');
+            e.preventDefault();
 
 
-         if ($.fn.dataTable.isDataTable('#tableQuestoesAtividade')) {
-            $('#tableQuestoesAtividade').DataTable().destroy();
-            console.log("entrou")
-        }
-         //? TABELA DE QUESÕES JA ESCOLHIDAS
-         tableEscolhidas = $('#tableQuestoesAtividade').DataTable({
-            destroy: true,
-            responsive: true,
-        
-            ajax: {
-                "url": "../backend/BackAtividade/atividadeBack.php",
-                "method": 'POST', // metodo utilizado para passar os valores das variavesi data para o backend.
-                "data": { queSel: queSel, buscaInicialQuestoesSelecionadas: buscaInicialQuestoesSelecionadas  }, // as variaves bucasInicial.... possuem o valor true  para que no arquivo atividadeBack.php sirva para buscar os dados da tabela
-                "dataSrc": ""
-            },
-            language: { // tradução em portgues da tabela
-                url: "../partials/dataTablept-br.json"
-            },
-            lengthMenu: [[5, 15, 25, -1], [5, 15, 25, "Todos"]], // configuração de quantidade de registros a serem mostrados, 5....15 ou todos 
-            columns: [
-                //aqui dentro sera configurado o conteudo de cada coluna utilizando as variaveis data
-                //importante - os valores contidos em data não a relação com os nomes dos cabeçalhos da tabela.
+            if ($.fn.dataTable.isDataTable('#tableQuestoesAtividade')) {
+                $('#tableQuestoesAtividade').DataTable().destroy();
+                console.log("entrou")
+            }
+            //? TABELA DE QUESÕES JA ESCOLHIDAS
+            tableEscolhidas = $('#tableQuestoesAtividade').DataTable({
+                destroy: true,
+                responsive: true,
 
-                // as tabelas são lidas por indices: 0,1,2,3, de acordo com o tanto de colunas - Neste caso o indice 0 sera o queID.
-                { data: 'queID' }, // o valor contido na variavel data, é o que sera buscado no banco de dados, no caso o ID
-                { data: 'queDescricao' },//enunciado da questão
-                { data: 'quePalavrasChave' },
-                { data: 'subDescricao' },
-                { data: 'queCodigoBncc' },
-                { data: 'nivDescricao' },
-                {
-                    data: null, render: function (data, type, row) { // renderizar a exibição dos botões 
+                ajax: {
+                    "url": "../backend/BackAtividade/atividadeBack.php",
+                    "method": 'POST', // metodo utilizado para passar os valores das variavesi data para o backend.
+                    "data": { queSel: queSel, buscaInicialQuestoesSelecionadas: buscaInicialQuestoesSelecionadas }, // as variaves bucasInicial.... possuem o valor true  para que no arquivo atividadeBack.php sirva para buscar os dados da tabela
+                    "dataSrc": ""
+                },
+                language: { // tradução em portgues da tabela
+                    url: "../partials/dataTablept-br.json"
+                },
+                lengthMenu: [[5, 15, 25, -1], [5, 15, 25, "Todos"]], // configuração de quantidade de registros a serem mostrados, 5....15 ou todos 
+                columns: [
+                    //aqui dentro sera configurado o conteudo de cada coluna utilizando as variaveis data
+                    //importante - os valores contidos em data não a relação com os nomes dos cabeçalhos da tabela.
 
-                        return `
+                    // as tabelas são lidas por indices: 0,1,2,3, de acordo com o tanto de colunas - Neste caso o indice 0 sera o queID.
+                    { data: 'queID' }, // o valor contido na variavel data, é o que sera buscado no banco de dados, no caso o ID
+                    { data: 'queDescricao' },//enunciado da questão
+                    { data: 'quePalavrasChave' },
+                    { data: 'subDescricao' },
+                    { data: 'queCodigoBncc' },
+                    { data: 'nivDescricao' },
+                    {
+                        data: null, render: function (data, type, row) { // renderizar a exibição dos botões 
+
+                            return `
                         <button type="button"
                             class="btn btn-inverse-danger btn-rounded btn-icon btn-del-questaoEscolhida">
                             <i class="bi bi-trash"></i>
                         </button>`;
-                    }
-                },
-            ]
+                        }
+                    },
+                ]
 
 
-        })
-        }else{
+            })
+        } else {
             tableEscolhidas.clear().draw();
         }
         $('#modalQuestao').modal('hide');
-         e.preventDefault();
-       
+        e.preventDefault();
+
 
     })
-    
+
 
     //? Formulario de Cadastro de Atividade
     $('#formAtividades').submit(function (e) {
@@ -268,10 +272,10 @@ $(document).ready(function () {
         console.log(classe);
         //console.log(descricao);
         //console.log(tipoopc);
-       // console.log(dataFormInicial);
-       // console.log(dataFormFinal);
-       // console.log(status);
-       // opAtividade = "update2";
+        // console.log(dataFormInicial);
+        // console.log(dataFormFinal);
+        // console.log(status);
+        // opAtividade = "update2";
 
         $.ajax({
             url: '../backend/BackAtividade/atividadeBack.php',
@@ -284,7 +288,7 @@ $(document).ready(function () {
                 dataFormFinal: dataFormFinal,
                 status: status,
                 opAtividade: opAtividade,
-               // opID: opId,
+                // opID: opId,
             },
             dataType: 'json',
             success: function (data) {
@@ -342,7 +346,7 @@ $(document).ready(function () {
         $("#descricao").val(dados[2]);
         $("#data-inicial").val(dados[3]);
         $("#data-final").val(dados[4]);
-        
+
         $("#status").val(dados[6])
 
         //? console.log('entrei');
@@ -356,7 +360,7 @@ $(document).ready(function () {
             },
             dataType: 'json',
             success: function (data) {
-               
+
                 if (data.type == 'erro') {
                     Swal.fire({
                         position: "center",
@@ -367,19 +371,19 @@ $(document).ready(function () {
                     })
 
                 } else {
-                    
-                 $("#nome").val(data.atiDescricao);
-                 $("#tipoopc").val(data.atiTipoID);
-                 if(data.atiStatus == "Postado"){
-                    $("#status").val(2);
-                    $("#status").closest(".dropdown").find(".btn").children().children(".filter-option-inner").children(".filter-option-inner-inner").text("Postado");
-                }else{
-                    $("#status").val(1);
-                    $("#status").closest(".dropdown").find(".btn").children().children(".filter-option-inner").children(".filter-option-inner-inner").text("Não Postado");
-                }
-                 $("#tipoopc").closest(".dropdown").find(".btn").children().children(".filter-option-inner").children(".filter-option-inner-inner").text(dados[5]);
+
+                    $("#nome").val(data.atiDescricao);
+                    $("#tipoopc").val(data.atiTipoID);
+                    if (data.atiStatus == "Postado") {
+                        $("#status").val(2);
+                        $("#status").closest(".dropdown").find(".btn").children().children(".filter-option-inner").children(".filter-option-inner-inner").text("Postado");
+                    } else {
+                        $("#status").val(1);
+                        $("#status").closest(".dropdown").find(".btn").children().children(".filter-option-inner").children(".filter-option-inner-inner").text("Não Postado");
+                    }
+                    $("#tipoopc").closest(".dropdown").find(".btn").children().children(".filter-option-inner").children(".filter-option-inner-inner").text(dados[5]);
                     //? $("#btn-nova-atividade").click();//Simula um click manual no botao de cadastrar
-                } 
+                }
             }
         })
     });
@@ -423,8 +427,8 @@ $(document).ready(function () {
     //! BOTAO DE ADICIONAR QUESTAO DIRETO EM ATIVIDADES
     $("#adicionarQuestoes").click(function () {
         $("#tableQuestoesSelecionadas").toggle("slow");
-       $("#cadastrarQuestao").toggle("slow");
-       $("#botoesAtividade").hide();
+        $("#cadastrarQuestao").toggle("slow");
+        $("#botoesAtividade").hide();
     })
 
     //! BOTAO CANCELAR CADASTRO DE QUESTÃO EM ATIVIDADES
@@ -447,8 +451,8 @@ $(document).ready(function () {
         opDelete = "delete"
         opidDelete = dadosAtividade[0];
         //console.log(opAtividade);
-       // console.log(opId);
-        
+        // console.log(opId);
+
 
     });
 
@@ -457,58 +461,58 @@ $(document).ready(function () {
         e.preventDefault();
         console.log(opDelete);
         console.log(opidDelete);
-    $.ajax({
-        url: '../backend/BackAtividade/atividadeBack.php',
-        method: 'POST',
-        data: {
-            opID: opidDelete,
-            opAtividade: opDelete
-        },
-        dataType: 'json',
-        success: function (data) {
+        $.ajax({
+            url: '../backend/BackAtividade/atividadeBack.php',
+            method: 'POST',
+            data: {
+                opID: opidDelete,
+                opAtividade: opDelete
+            },
+            dataType: 'json',
+            success: function (data) {
 
 
-            if (data.type == 'erro') {
-                Swal.fire({
-                    position: "center",
-                    icon: "error",
-                    title: data.text,
-                    showConfirmButton: false,
-                    timer: 2000
-                })
+                if (data.type == 'erro') {
+                    Swal.fire({
+                        position: "center",
+                        icon: "error",
+                        title: data.text,
+                        showConfirmButton: false,
+                        timer: 2000
+                    })
 
-            } else if (data.type == 'sucesso') {
-                Swal.fire({
-                    position: "center",
-                    icon: "success",
-                    title: data.text,
-                    showConfirmButton: false,
-                    timer: 2000
-                })
+                } else if (data.type == 'sucesso') {
+                    Swal.fire({
+                        position: "center",
+                        icon: "success",
+                        title: data.text,
+                        showConfirmButton: false,
+                        timer: 2000
+                    })
 
-              //  $("#btn-nova-atividade").click();//Simula um click manual no botao de cadastrar
-            } else if (data.type == 'validacao') {
-                Swal.fire({
-                    position: "center",
-                    icon: "warning",
-                    title: data.text,
-                    showConfirmButton: false,
-                    timer: 2000
-                })
+                    //  $("#btn-nova-atividade").click();//Simula um click manual no botao de cadastrar
+                } else if (data.type == 'validacao') {
+                    Swal.fire({
+                        position: "center",
+                        icon: "warning",
+                        title: data.text,
+                        showConfirmButton: false,
+                        timer: 2000
+                    })
+                }
+            }, error: function (data) {
+                alert("erro")
             }
-        }, error: function (data) {
-            alert("erro")
-        }
-    }).done(function (data) {
+        }).done(function (data) {
 
-        $("#modalDelete").modal('hide');
-        tableAtividade.ajax.reload(null, false);
+            $("#modalDelete").modal('hide');
+            tableAtividade.ajax.reload(null, false);
 
+        })
     })
-})
 
-      //! modal Cancelar Exclusão Atividade
-      $("#modalCancelarAtividade").click(function () {
+    //! modal Cancelar Exclusão Atividade
+    $("#modalCancelarAtividade").click(function () {
         $('#modalDelete').modal('hide')
     })
 
@@ -523,7 +527,7 @@ $(document).ready(function () {
         $('#modalDelete').modal('hide')
     })
 
-  
+
     //!
     function jqueryuiinit() {
 

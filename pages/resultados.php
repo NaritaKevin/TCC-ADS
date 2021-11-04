@@ -200,6 +200,32 @@
                         </div>
                         <!--Tabela de atividades-->
                     </div>
+
+                    <div id="verGraficos" class="row">
+                        <div class="col-md-6 grid-margin stretch-card">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h4 class="card-title">Graficos</h4>
+                                    <button type="button" id="btn-voltar-resultados"
+                                        class="btn btn-secondary btn-icon-text">
+                                        <i class="bi bi-arrow-left-circle btn-icon-prepend"></i>
+                                        Voltar
+                                    </button>
+                                    <p class="card-description">
+
+                                    </p>
+                                    <div id="sales-legend" class="chartjs-legend mt-4 mb-2"></div>
+                                    <canvas id="sales-chart"></canvas>
+
+                                </div>
+                            </div>
+                        </div>
+                        <!--Tabela de atividades-->
+                    </div>
+
+
+
+
                 </div>
 
                 <div class="modal fade" id="modalAluno" tabindex="-1" aria-labelledby="modalAluno" aria-hidden="true">
@@ -240,6 +266,8 @@
         <!-- endinject -->
         <!-- Custom js for this page-->
         <script src="../js/mainjs/resultados.js"></script>
+        <!-- <script src="../js/dashboard.js"></script> -->
+        <script src="../js/Chart.roundedBarCharts.js"></script>
         <!-- End custom js for this page-->
 </body>
 

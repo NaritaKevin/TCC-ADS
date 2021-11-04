@@ -14,6 +14,8 @@ $(document).ready(function () {
         $("#cadastrarDisciplina").hide();
         $("#cadastrarSubgrupo").hide();
         $("#cadastrarTematica").hide();
+
+
         tableDisciplina = $('#tableDisciplinas').DataTable({
             "columnDefs": [
                 { "orderable": false, "targets": 2 } // esta linha retira a ordenação das colunas, pois não ha sentido ordenar os botões 
