@@ -202,7 +202,7 @@
                     </div>
 
                     <div id="verGraficos" class="row">
-                        <div class="col-md-6 grid-margin stretch-card">
+                        <div class="col-md-12 grid-margin stretch-card">
                             <div class="card">
                                 <div class="card-body">
                                     <h4 class="card-title">Graficos</h4>

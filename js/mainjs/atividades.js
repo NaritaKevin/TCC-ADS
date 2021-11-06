@@ -157,15 +157,15 @@ $(document).ready(function () {
 
     }
 
-   // $("#cancelarAtividade").click(function (e) {
-   //     if ($.fn.dataTable.isDataTable('#tableQuestoesAtividade')) {
-         //   let teste = tableEscolhidas.columns(0).data().eq(0).sort()
+    // $("#cancelarAtividade").click(function (e) {
+    //     if ($.fn.dataTable.isDataTable('#tableQuestoesAtividade')) {
+    //   let teste = tableEscolhidas.columns(0).data().eq(0).sort()
 
-     //       console.log(teste)
-     //   }
+    //       console.log(teste)
+    //   }
 
 
-   // })
+    // })
     //? BOTAO DE CONFIMAR ESCOLHA QUESTÕES
 
     $('#btn-modalConfirmarQuestao').click(function (e) {
@@ -181,7 +181,7 @@ $(document).ready(function () {
         if (rowsel.length > 0) {
             queSel = rowsel.join(",");
 
-            console.log(queSel);
+
             $("#visualizar-ids").text(rowsel.join(","))
             // $('input[name="id\[\]"]',form).remove()
 
@@ -271,13 +271,13 @@ $(document).ready(function () {
 
 
         if ($.fn.dataTable.isDataTable('#tableQuestoesAtividade')) {
-             questoesID = tableEscolhidas.columns(0).data().eq(0).sort()
+            questoesID = tableEscolhidas.columns(0).data().eq(0).sort()
 
-            
-        } 
 
-        console.log(questoesID);
-        if(questoesID.length == 0){
+        }
+
+
+        if (questoesID.length == 0) {
             Swal.fire({
                 position: "center",
                 icon: "warning",
@@ -285,39 +285,47 @@ $(document).ready(function () {
                 showConfirmButton: false,
                 timer: 2000
             })
-            
-        }else {
+
+        } else {
+
+
             dataFormInicial = formatarData(dataInicial);
             dataFormFinal = formatarData(dataFinal);
-    
-            //console.log(classe);
+
+
             console.log(nome);
             console.log(descricao);
             console.log(tipoopc);
             console.log(dataFormInicial);
             console.log(dataFormFinal);
             console.log(status);
+            console.log("questoes")
             console.log(questoesID)
-             opAtividade = "update2";
-    
+
+            let arrayID = [];
+
+            for (var i = 0; i < questoesID.length; i++) {
+                arrayID.push(questoesID[i]);
+            }
+            arrayID = arrayID.sort((a, b) => a - b);//* Ordenar numeros crescente
+            // console.log("Lista de ID:", arrayID)
             $.ajax({
                 url: '../backend/BackAtividade/atividadeBack.php',
                 method: 'POST',
                 data: {
                     nome: nome,
                     descricao: descricao,
-                    tioopc: tipoopc,
+                    tipoopc: tipoopc,
                     dataFormInicial: dataFormInicial,
                     dataFormFinal: dataFormFinal,
                     status: status,
-                    opAtividade: opAtividade,
-                    questoesID: questoesID
-                    //opID: opId,
+                    questoesID: arrayID
+
                 },
                 dataType: 'json',
                 success: function (data) {
-    
-    
+
+
                     if (data.type == 'erro') {
                         Swal.fire({
                             position: "center",
@@ -326,7 +334,7 @@ $(document).ready(function () {
                             showConfirmButton: false,
                             timer: 2000
                         })
-    
+
                     } else if (data.type == 'sucesso') {
                         Swal.fire({
                             position: "center",
@@ -335,7 +343,7 @@ $(document).ready(function () {
                             showConfirmButton: false,
                             timer: 2000
                         })
-    
+
                         $("#btn-nova-atividade").click();//Simula um click manual no botao de cadastrar
                     } else if (data.type == 'validacao') {
                         Swal.fire({
@@ -352,11 +360,11 @@ $(document).ready(function () {
             }).done(function (data) {
                 tableAtividade.ajax.reload(null, false);
             });
-    
-        }
-      
 
-       
+        }
+
+
+
     });
 
 

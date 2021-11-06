@@ -31,9 +31,11 @@ class Atividade
     public function cadastrarAtividades($nome, $descricao, $tipo, $dataInicial, $dataFinal, $Status )
     {
         // verificar se o email ja esta cadastrado
-        $cmd = $this->pdo->prepare("SELECT atiID FROM atividades where atiDescricao = :atiDescricao");
+        $cmd = $this->pdo->prepare("SELECT atiID FROM atividades where atiDescricao = :atiDescricao and atiTipoID = :tipo and atiObservacao = :observacao");
 
-        $cmd->bindValue(':atiDescricao',$descricao);
+        $cmd->bindValue(':atiDescricao',$nome);
+        $cmd->bindValue(':tipo',$tipo);
+        $cmd->bindValue(':observacao',$descricao);
         $cmd->execute();
 
         if ($cmd->rowCount() > 0) {// email ja existe no banco
@@ -59,8 +61,8 @@ class Atividade
     public function CadastrarAtividadeQuestao($dataInicial, $atividadeID, $questaoID){
 
         $cmd = $this->pdo->prepare("INSERT INTO atividade_questao 
-        (atiqID, atiqData, atiqAtividadeID, atiqQuestaoID) 
-        VALUES (:dataInicial, :AtividadeID, :questaoID,)");
+        (atiqData, atiqAtividadeID, atiqQuestaoID) 
+        VALUES (:dataInicial, :AtividadeID, :questaoID)");
         $cmd->bindValue(":dataInicial",$dataInicial);
         $cmd->bindValue(":AtividadeID", $atividadeID);
         $cmd->bindValue(":questaoID",$questaoID);
@@ -82,9 +84,10 @@ class Atividade
     public function buscarUltimaAtividadeCadastrada(){
         $res = [];
         $cmd = $this->pdo->query("SELECT MAX(atiID) AS atiID FROM atividades LIMIT 1");
-        $res = $cmd->fetch();
+        $res = $cmd->fetch(PDO::FETCH_ASSOC);
         return $res;
     }
+
     public function atualizarDadosAtividade($id,$nome,$descricao,$tipo, $dataInicial,$dataFinal, $Status){
        
         $cmd = $this->pdo->prepare(
