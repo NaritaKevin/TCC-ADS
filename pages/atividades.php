@@ -415,8 +415,8 @@ $n = new Nivel("pedagogy", "localhost", "root", "");
                              </div>
                         </div>
 
-                                        <div id="tableAtividadesToggle" class="expandable-table table-responsive">
-                                        <table id="tableAtividade" class="table table-striped table-hover ">
+                        <div id="tableAtividadesToggle" class="expandable-table table-responsive">
+                            <table id="tableAtividade" class="table table-striped table-hover ">
                                             <thead>
                                                 <tr>
                                                     <th>ID</th>
@@ -429,16 +429,14 @@ $n = new Nivel("pedagogy", "localhost", "root", "");
                                                     <th>Ação</th>
                                                 </tr>
                                             </thead>
-                                            <tbody id="tbodyAtivdades">
-                                                
-                                            
-
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
+                                <tbody id="tbodyAtivdades">
+                                    
+                                </tbody>
+                            </table>
                         </div>
+                    </div>
+                </div>
+            </div>
 
 
 

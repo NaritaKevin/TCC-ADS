@@ -42,12 +42,18 @@ if(isset($_POST["opID"]) && isset($_POST["opAtividade"])){
 {
 
     
+
+
      $nome = addslashes($_POST["nome"]);
      $descricao = addslashes($_POST["descricao"]);
      $tioopc = addslashes($_POST['tioopc']);
      $dataInicial = addslashes($_POST['dataFormInicial']);
      $dataFinal = addslashes($_POST['dataFormFinal']);
      $status = addslashes($_POST['status']);
+     $questoesID = addslashes($_POST['questoesID']);
+
+     $questoesID = array();
+     
     
      $opID = "";
      $opAtividade = "";
@@ -83,13 +89,27 @@ if(isset($_POST["opID"]) && isset($_POST["opAtividade"])){
          }
      }
 
-     if(!empty($nome) && !empty($descricao) && !empty($tioopc) && !empty($dataInicial) && !empty($dataFinal) && !empty($dataFinal) ){
+     if(!empty($nome) && !empty($descricao) && !empty($tioopc) && !empty($dataInicial) && !empty($dataFinal) && !empty($dataFinal) && !empty($questoesID) ){
         if($status == 2){
             $tipoStatus = "Postado";
         }else{
             $tipoStatus = "Não Postado";
         }
+
+
          $a->cadastrarAtividades($nome, $descricao, $tioopc,  $dataInicial, $dataFinal, $tipoStatus);
+         $contador = count($questoesID);
+
+         $atividadeID = $a->buscarUltimaAtividadeCadastrada();
+
+
+        for ($i = 0; $i <= $contador; $i++) {
+      
+        $ID = $questoesID[$i];
+        $a->CadastrarAtividadeQuestao($dataInicial,$atividadeID, $ID);
+        }
+
+
          $output = json_encode(array('type' => 'sucesso', 'text' => 'Cadastrado com sucesso!'));
          die($output);
      } else {

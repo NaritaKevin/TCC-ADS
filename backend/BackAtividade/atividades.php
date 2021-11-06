@@ -56,6 +56,18 @@ class Atividade
 
     }
 
+    public function CadastrarAtividadeQuestao($dataInicial, $atividadeID, $questaoID){
+
+        $cmd = $this->pdo->prepare("INSERT INTO atividade_questao 
+        (atiqID, atiqData, atiqAtividadeID, atiqQuestaoID) 
+        VALUES (:dataInicial, :AtividadeID, :questaoID,)");
+        $cmd->bindValue(":dataInicial",$dataInicial);
+        $cmd->bindValue(":AtividadeID", $atividadeID);
+        $cmd->bindValue(":questaoID",$questaoID);
+        $cmd->execute();
+        return true;
+    }
+
     public function buscarDadosAtividade($id){
         $res = array();
         $cmd = $this->pdo->prepare("SELECT * FROM atividades where atiID = :atiID");
@@ -63,6 +75,14 @@ class Atividade
         $cmd->execute();
         $res = $cmd->fetch(PDO::FETCH_ASSOC);
 
+        return $res;
+    }
+
+
+    public function buscarUltimaAtividadeCadastrada(){
+        $res = [];
+        $cmd = $this->pdo->query("SELECT MAX(atiID) AS atiID FROM atividades LIMIT 1");
+        $res = $cmd->fetch();
         return $res;
     }
     public function atualizarDadosAtividade($id,$nome,$descricao,$tipo, $dataInicial,$dataFinal, $Status){

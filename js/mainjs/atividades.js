@@ -157,15 +157,15 @@ $(document).ready(function () {
 
     }
 
-    $("#cancelarAtividade").click(function (e) {
-        if ($.fn.dataTable.isDataTable('#tableQuestoesAtividade')) {
-            let teste = tableEscolhidas.columns(0).data().eq(0).sort()
+   // $("#cancelarAtividade").click(function (e) {
+   //     if ($.fn.dataTable.isDataTable('#tableQuestoesAtividade')) {
+         //   let teste = tableEscolhidas.columns(0).data().eq(0).sort()
 
-            console.log(teste)
-        }
+     //       console.log(teste)
+     //   }
 
 
-    })
+   // })
     //? BOTAO DE CONFIMAR ESCOLHA QUESTÕES
 
     $('#btn-modalConfirmarQuestao').click(function (e) {
@@ -194,6 +194,8 @@ $(document).ready(function () {
                 $('#tableQuestoesAtividade').DataTable().destroy();
                 console.log("entrou")
             }
+
+
             //? TABELA DE QUESÕES JA ESCOLHIDAS
             tableEscolhidas = $('#tableQuestoesAtividade').DataTable({
                 destroy: true,
@@ -256,6 +258,7 @@ $(document).ready(function () {
         var classe = $("#classe").val();
         var dataFormInicial
         var dataFormFinal
+        var questoesID
         function formatarData(data) {
             var dia = data.split("/")[0];
             var mes = data.split("/")[1];
@@ -266,69 +269,94 @@ $(document).ready(function () {
             // Utilizo o .slice(-2) para garantir o formato com 2 digitos.
         }
 
-        dataFormInicial = formatarData(dataInicial);
-        dataFormFinal = formatarData(dataFinal);
 
-        console.log(classe);
-        //console.log(descricao);
-        //console.log(tipoopc);
-        // console.log(dataFormInicial);
-        // console.log(dataFormFinal);
-        // console.log(status);
-        // opAtividade = "update2";
+        if ($.fn.dataTable.isDataTable('#tableQuestoesAtividade')) {
+             questoesID = tableEscolhidas.columns(0).data().eq(0).sort()
 
-        $.ajax({
-            url: '../backend/BackAtividade/atividadeBack.php',
-            method: 'POST',
-            data: {
-                nome: nome,
-                descricao: descricao,
-                tioopc: tipoopc,
-                dataFormInicial: dataFormInicial,
-                dataFormFinal: dataFormFinal,
-                status: status,
-                opAtividade: opAtividade,
-                // opID: opId,
-            },
-            dataType: 'json',
-            success: function (data) {
+            
+        } 
 
-
-                if (data.type == 'erro') {
-                    Swal.fire({
-                        position: "center",
-                        icon: "error",
-                        title: data.text,
-                        showConfirmButton: false,
-                        timer: 2000
-                    })
-
-                } else if (data.type == 'sucesso') {
-                    Swal.fire({
-                        position: "center",
-                        icon: "success",
-                        title: data.text,
-                        showConfirmButton: false,
-                        timer: 2000
-                    })
-
-                    $("#btn-nova-atividade").click();//Simula um click manual no botao de cadastrar
-                } else if (data.type == 'validacao') {
-                    Swal.fire({
-                        position: "center",
-                        icon: "warning",
-                        title: data.text,
-                        showConfirmButton: false,
-                        timer: 2000
-                    })
+        console.log(questoesID);
+        if(questoesID.length == 0){
+            Swal.fire({
+                position: "center",
+                icon: "warning",
+                title: "Por favor, selecione as Questões",
+                showConfirmButton: false,
+                timer: 2000
+            })
+            
+        }else {
+            dataFormInicial = formatarData(dataInicial);
+            dataFormFinal = formatarData(dataFinal);
+    
+            //console.log(classe);
+            console.log(nome);
+            console.log(descricao);
+            console.log(tipoopc);
+            console.log(dataFormInicial);
+            console.log(dataFormFinal);
+            console.log(status);
+            console.log(questoesID)
+             opAtividade = "update2";
+    
+            $.ajax({
+                url: '../backend/BackAtividade/atividadeBack.php',
+                method: 'POST',
+                data: {
+                    nome: nome,
+                    descricao: descricao,
+                    tioopc: tipoopc,
+                    dataFormInicial: dataFormInicial,
+                    dataFormFinal: dataFormFinal,
+                    status: status,
+                    opAtividade: opAtividade,
+                    questoesID: questoesID
+                    //opID: opId,
+                },
+                dataType: 'json',
+                success: function (data) {
+    
+    
+                    if (data.type == 'erro') {
+                        Swal.fire({
+                            position: "center",
+                            icon: "error",
+                            title: data.text,
+                            showConfirmButton: false,
+                            timer: 2000
+                        })
+    
+                    } else if (data.type == 'sucesso') {
+                        Swal.fire({
+                            position: "center",
+                            icon: "success",
+                            title: data.text,
+                            showConfirmButton: false,
+                            timer: 2000
+                        })
+    
+                        $("#btn-nova-atividade").click();//Simula um click manual no botao de cadastrar
+                    } else if (data.type == 'validacao') {
+                        Swal.fire({
+                            position: "center",
+                            icon: "warning",
+                            title: data.text,
+                            showConfirmButton: false,
+                            timer: 2000
+                        })
+                    }
+                }, error: function (data) {
+                    alert("erro")
                 }
-            }, error: function (data) {
-                alert("erro")
-            }
-        }).done(function (data) {
-            tableAtividade.ajax.reload(null, false);
-        });
+            }).done(function (data) {
+                tableAtividade.ajax.reload(null, false);
+            });
+    
+        }
+      
 
+       
     });
 
 
