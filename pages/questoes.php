@@ -274,7 +274,7 @@ $n = new Nivel("pedagogy", "localhost", "root", "");
                                                     <th>Ano</th>
                                                     <th>Status Tipo</th>
                                                     <th>Revisada</th>
-                                                    <th style="text-align: center">Ações</th>
+                                                    <th style="text-align: center"tableQuestoes>Ações</th>
                                                 </tr>
                                             </thead>
                                             <tbody id="tbodyQuestao">

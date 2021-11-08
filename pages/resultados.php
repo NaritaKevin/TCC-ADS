@@ -205,7 +205,7 @@
                         <div class="col-md-12 grid-margin stretch-card">
                             <div class="card">
                                 <div class="card-body">
-                                    <h4 class="card-title">Graficos</h4>
+                                    <h4 id="titleDiv" class="card-title">Graficos da atividade 1</h4>
                                     <button type="button" id="btn-voltar-resultados"
                                         class="btn btn-secondary btn-icon-text">
                                         <i class="bi bi-arrow-left-circle btn-icon-prepend"></i>
@@ -214,9 +214,13 @@
                                     <p class="card-description">
 
                                     </p>
-                                    <div id="sales-legend" class="chartjs-legend mt-4 mb-2"></div>
-                                    <canvas id="sales-chart"></canvas>
-
+                                    <div class="table-responsive">
+                                        <canvas id="grafico1"  class="table"></canvas>
+                                    </div>
+                                    <div class="table-responsive">
+                                        <canvas id="grafico2"  class="table"></canvas>
+                                    </div>
+                                    
                                 </div>
                             </div>
                         </div>

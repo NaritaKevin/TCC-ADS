@@ -76,32 +76,90 @@
             return $res;
         }
 
-         public function buscarDadosTematica($id){
-            $res = array();
-            $cmd = $this->pdo->prepare("SELECT * FROM tematicas where temID = :temID");
-            $cmd->bindValue(":temID",$id);
+        //  public function graficoQtdeAcertos($id){
+        //     $res = array();
+        //     $cmd = $this->pdo->prepare("SELECT resQuestaoID,COUNT(*) as acertos from resultados WHERE resAtividadeID = :atiID AND resResposta = 'Sim' AND resStsResposta = 'Respondido' GROUP BY resQuestaoID asc ;");
+        //     $cmd->bindValue(":atiID",$id);
+        //     $cmd->execute();
+        //     $res = $cmd->fetchAll(PDO::FETCH_ASSOC);
+    
+        //     return $res;
+        // }
+     
+        public function criarViewAcertos($id)
+        {
+            // verificar se o subgrupo ja esta cadastrado
+            $cmd = $this->pdo->prepare("SELECT resQuestaoID,COUNT(*) as acertos from resultados WHERE resAtividadeID = :atiID AND resResposta = 'Sim' AND resStsResposta = 'Respondido' GROUP BY resQuestaoID asc ;");
+            $cmd->bindValue(":atiID",$id);
             $cmd->execute();
-            $res = $cmd->fetch(PDO::FETCH_ASSOC);
+    
+            if ($cmd->rowCount() == 0) {// subgrupo ja existe no banco
+                    return false;
+            } else { //não foi encontrado o subgrupo
+                $cmd = $this->pdo->prepare("CREATE OR REPLACE VIEW resultados_acertos AS
+                SELECT r.resQuestaoID,COUNT(r.resID) acertos,(SELECT atiDescricao FROM atividades a  WHERE a.atiID = r.resAtividadeID) AS atividade
+                FROM resultados r
+                WHERE resAtividadeID = :atiID AND resResposta = 'Sim' AND resStsResposta = 'Respondido' GROUP BY resQuestaoID ASC;");
+                $cmd->bindValue(":atiID",$id);
+                $cmd->execute();
+                return true;
+            }
+    
+        }
+
+        public function criarViewErros($id)
+        {
+            // verificar se o subgrupo ja esta cadastrado
+            $cmd = $this->pdo->prepare("SELECT resQuestaoID,COUNT(*) as acertos from resultados WHERE resAtividadeID = :atiID AND resResposta = 'Não' AND resStsResposta = 'Respondido' GROUP BY resQuestaoID asc ;");
+            $cmd->bindValue(":atiID",$id);
+            $cmd->execute();
+    
+            if ($cmd->rowCount() == 0) {// subgrupo ja existe no banco
+                    return false;
+            } else { //não foi encontrado o subgrupo
+                $cmd = $this->pdo->prepare("CREATE OR REPLACE VIEW resultados_erros AS
+                SELECT r.resQuestaoID,COUNT(r.resID) erros
+                FROM resultados r
+                WHERE resAtividadeID = :atiID AND resResposta = 'Nao' AND resStsResposta = 'Respondido' GROUP BY resQuestaoID ASC;");
+                $cmd->bindValue(":atiID",$id);
+                $cmd->execute();
+                return true;
+            }
+        }
+
+        public function criarViewTotalAlunos($id)
+        {
+            // verificar se o subgrupo ja esta cadastrado
+            $cmd = $this->pdo->prepare("SELECT resQuestaoID,COUNT(resUsuarioAtividadeID) AS totalAlunos FROM resultados WHERE resAtividadeID = :atiID  AND resStsResposta = 'Respondido'  GROUP BY resQuestaoID ORDER BY resQuestaoID;");
+            $cmd->bindValue(":atiID",$id);
+            $cmd->execute();
+    
+            if ($cmd->rowCount() == 0) {// subgrupo ja existe no banco
+                    return false;
+            } else { //não foi encontrado o subgrupo
+                $cmd = $this->pdo->prepare("CREATE OR REPLACE VIEW resultados_totalalunos AS
+                SELECT resQuestaoID,COUNT(resUsuarioAtividadeID) AS totalAlunos FROM resultados 
+                WHERE resAtividadeID = :atiID  AND resStsResposta = 'Respondido'  GROUP BY resQuestaoID ORDER BY resQuestaoID;");
+                $cmd->bindValue(":atiID",$id);
+                $cmd->execute();
+                return true;
+            }
+    
+        }
+
+        public function resultadoQuestao($id){
+            $res = array();
+            $cmd = $this->pdo->prepare("SELECT atiqOrdemQuestao,r1.*,r2.erros,atiqPontuacao, r3.totalAlunos 
+            FROM atividade_questao aq left JOIN resultados_acertos r1 ON r1.resQuestaoID = aq.atiqQuestaoID 
+            LEFT JOIN resultados_erros r2 ON aq.atiqQuestaoID = r2.resQuestaoID 
+            JOIN resultados_totalalunos r3 ON r3.resQuestaoID = aq.atiqQuestaoID
+            WHERE atiqAtividadeID = :atiID ORDER BY atiqOrdemQuestao;");
+            $cmd->bindValue(":atiID",$id);
+            $cmd->execute();
+            $res = $cmd->fetchAll(PDO::FETCH_ASSOC);
     
             return $res;
         }
-        public function atualizarDadosTematica($id,$descricao,$disciplina){
-           
-            $cmd = $this->pdo->prepare("UPDATE tematicas SET temDescricao = :temDescricao,temDisciplinaID = :temDisciplinaID WHERE temID = :temID ");
-            $cmd->bindValue(":temID",$id);
-            $cmd->bindValue(":temDescricao",$descricao);
-            $cmd->bindValue(":temDisciplinaID",$disciplina);
-            $cmd->execute();
-    
-        }
-
-        public function excluirTematica($id)
-    {
-        $cmd = $this->pdo->prepare(" DELETE FROM tematicas WHERE temID = :temID ");
-        $cmd->bindValue(":temID",$id);
-        $cmd->execute();
-    }
-
     }
 
 

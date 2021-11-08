@@ -14,6 +14,8 @@ $(document).ready(function () {
             rowReorder: {
                 selector: 'td:nth-child(2)'
             },
+
+            // "dom": '<"pull-left"f><"pull-right"l>tip<"pull-left"i>',
             responsive: true,
             ajax: {
                 "url": "../backend/questoesBack.php",

@@ -1,7 +1,7 @@
 $(document).ready(function () {
     let buscaInicialAtividades = true;
     let buscaInicialAlunosResultados = true;
-
+    let buscaGrafico = true;
 
     init();
 
@@ -44,6 +44,10 @@ $(document).ready(function () {
 
                         return ` <button type="button"
                         class="btn btn-inverse-primary btn-rounded btn-icon btn-info-atividade ">
+                        <i class="bi bi-people-fill"></i>
+                    </button>
+                    <button type="button"
+                        class="btn btn-inverse-primary btn-rounded btn-icon btn-info-grafico ">
                         <i class="bi bi-clipboard-data"></i>
                     </button>`;
                     }
@@ -217,8 +221,6 @@ $(document).ready(function () {
         '</tr>' +
             '</table>';
     }
-
-
     $('#tableResultadosAluno tbody').on('click', 'td.details-control', function () {
         var tr = $(this).closest('tr');
         var row = tableResultadosAluno.row(tr);
@@ -237,7 +239,260 @@ $(document).ready(function () {
     });
 
 
+    $("#tbodyResultados").on("click", ".btn-info-grafico", function () {
+        let dadosAtividade = $(this).closest('tr').children("td").map(function () {
+            return $(this).text();
+        }).get();
 
+        $.ajax({
+            url: '../backend/resultados/resultadosBack.php',
+            method: 'POST',
+            data: { atividadeID: dadosAtividade[0] },
+            dataType: 'json',
+            success: function (data) {
+                if (data.type == 'buscaVazia') {
+                    Swal.fire({
+                        position: "center",
+                        icon: "error",
+                        title: data.text,
+                        showConfirmButton: false,
+                        timer: 3000
+                    })
+                } else {
+                    let questao = [];
+                    let acertos = [];
+                    let erros = [];
+                    let porcErros = [];
+                    let porcAcertos = [];
+                    let enunciadoAtiv = "";
+                    for (let i = 0; i < data.length; i++) {
+                        questao.push(`Questão ${data[i].atiqOrdemQuestao}`);
+                        acertos.push(data[i].acertos);
+
+                        if (data[0].atividade != null) {
+                            enunciadoAtiv = data[0].atividade
+                        }
+                        if (data[i].erros == 0 || data[i].erros == null) {
+                            erros.push(0)
+                        } else {
+                            erros.push(data[i].erros)
+                        }
+                        if (data[i].acertos == null) {
+                            porcAcertos.push(0)
+                        } else {
+                            porcAcertos.push(Math.round(((data[i].acertos * 100) / data[i].totalAlunos + Number.EPSILON) * 100) / 100)
+                        }
+                        if (data[i].erros == null) {
+                            porcErros.push(0)
+                        } else {
+                            porcErros.push(Math.round(((data[i].erros * 100) / data[i].totalAlunos + Number.EPSILON) * 100) / 100)
+                        }
+
+                    }
+
+                    acertos.push(0);
+
+                    $("#titleDiv").html(`Gráficos da Atividade ${enunciadoAtiv}`);
+
+
+                    if (window.qtdeAcertoQuestoes instanceof Chart) {
+                        window.qtdeAcertoQuestoes.destroy();
+                    }
+                    if (window.porcAcertoQuestoes instanceof Chart) {
+                        window.porcAcertoQuestoes.destroy();
+                    }
+
+
+                    if ($("#grafico1").length) {
+                        var qtdeQuestoesCanvas = $("#grafico1").get(0).getContext("2d");
+                        qtdeAcertoQuestoes = new Chart(qtdeQuestoesCanvas, {
+                            type: 'bar',
+                            data: {
+                                labels: questao,
+                                datasets: [{
+                                    label: 'Acertos',
+                                    data: acertos,
+                                    backgroundColor: '#4B49AC'
+                                },
+                                {
+                                    label: 'Erros',
+                                    data: erros,
+                                    backgroundColor: '#98BDFF'
+                                }
+                                ]
+                            },
+                            options: {
+                                title: {
+                                    display: true,
+                                    text: 'Quantidade de acertos e erros nas questões',
+                                    fontSize: 20,
+                                },
+                                cornerRadius: 5,
+                                responsive: true,
+                                maintainAspectRatio: false,
+                                layout: {
+                                    padding: {
+                                        left: 0,
+                                        right: 0,
+                                        top: 20,
+                                        bottom: 0
+                                    }
+                                },
+
+                                // scales: {
+                                //     yAxes: [{
+                                //         display: true,
+
+                                //         gridLines: {
+                                //             display: true,
+                                //             drawBorder: false,
+                                //             color: "#F2F2F2"
+                                //         },
+                                //         ticks: {
+                                //             display: true,
+                                //             min: 0,
+                                //             max: 3,
+                                //             callback: function (value, index, values) {
+                                //                 return value;
+                                //                 // return value + '$';
+                                //             },
+                                //             autoSkip: true,
+                                //             maxTicksLimit: 10,
+                                //             fontColor: "#6C7383"
+                                //         }
+                                //     }],
+                                //     xAxes: [{
+                                //         stacked: false,
+                                //         ticks: {
+                                //             beginAtZero: true,
+                                //             fontColor: "#6C7383"
+                                //         },
+                                //         gridLines: {
+                                //             color: "rgba(0, 0, 0, 0)",
+                                //             display: false
+                                //         },
+                                //         barPercentage: 1
+                                //     }]
+                                // },
+                                legend: {
+                                    display: true
+                                },
+                                elements: {
+                                    point: {
+                                        radius: 0
+                                    }
+                                },
+
+                            },
+
+                        });
+                    }
+                    if ($("#grafico2").length) {
+                        var qtdeQuestoesCanvas = $("#grafico2").get(0).getContext("2d");
+                        porcAcertoQuestoes = new Chart(qtdeQuestoesCanvas, {
+                            type: 'bar',
+                            data: {
+                                labels: questao,
+                                datasets: [{
+                                    label: 'Acertos',
+                                    data: porcAcertos,
+                                    backgroundColor: '#4B49AC'
+                                },
+                                {
+                                    label: 'Erros',
+                                    data: porcErros,
+                                    backgroundColor: '#98BDFF'
+                                }
+                                ]
+                            },
+                            options: {
+                                title: {
+                                    display: true,
+                                    text: 'Porcentagem de acertos e erros nas questões',
+                                    fontSize: 20,
+                                },
+                                cornerRadius: 5,
+                                responsive: true,
+                                maintainAspectRatio: false,
+                                layout: {
+                                    padding: {
+                                        left: 0,
+                                        right: 0,
+                                        top: 20,
+                                        bottom: 0
+                                    }
+                                },
+
+                                scales: {
+                                    yAxes: [{
+                                        display: true,
+
+                                        // gridLines: {
+                                        //     display: true,
+                                        //     drawBorder: false,
+                                        //     color: "#F2F2F2"
+                                        // },
+                                        ticks: {
+                                            display: true,
+                                            // min: 0,
+                                            // max: 3,
+                                            callback: function (value, index, values) {
+                                                // return value;
+                                                return value + '%';
+                                            },
+                                            autoSkip: true,
+                                            // maxTicksLimit: 10,
+                                            fontColor: "#6C7383"
+                                        }
+                                    }],
+                                    // xAxes: [{
+                                    //     stacked: false,
+                                    //     ticks: {
+                                    //         beginAtZero: true,
+                                    //         fontColor: "#6C7383"
+                                    //     },
+                                    //     gridLines: {
+                                    //         color: "rgba(0, 0, 0, 0)",
+                                    //         display: false
+                                    //     },
+                                    //     barPercentage: 1
+                                    // }]
+                                },
+                                legend: {
+                                    display: true
+                                },
+                                elements: {
+                                    point: {
+                                        radius: 0
+                                    }
+                                },
+
+                            },
+
+                        });
+                    }
+                }
+
+
+
+            },
+            error: function (data) {
+
+                if (data.type == 'erro') {
+                    Swal.fire({
+                        position: "center",
+                        icon: "error",
+                        title: "Ocorreu um erro ao buscar os gráficos!",
+                        showConfirmButton: false,
+                        timer: 2000
+                    })
+
+                }
+            },
+        }).done(function (data) {
+
+        });
+    })
 
 
     // $('#tableResultados').on('mouseenter', 'tbody tr', function () {
@@ -249,81 +504,6 @@ $(document).ready(function () {
     //! ******************    GRÁFICOS   *********************
 
 
-    if ($("#sales-chart").length) {
-        var SalesChartCanvas = $("#sales-chart").get(0).getContext("2d");
-        var SalesChart = new Chart(SalesChartCanvas, {
-            type: 'bar',
-            data: {
-                labels: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23"],
-                datasets: [{
-                    label: 'Offline Sales',
-                    data: [480, 230, 470, 210, 330, 480, 230, 470, 210, 330, 480, 230, 470, 210, 330, 480, 230, 470, 210, 330, 480, 230, 470, 210, 330, 480, 230, 470, 210, 330],
-                    backgroundColor: '#98BDFF'
-                },
-                {
-                    label: 'Online Sales',
-                    data: [400, 340, 550, 480, 170, 400, 340, 550, 480, 170, 400, 340, 550, 480, 170, 400, 340, 550, 480, 170, 400, 340, 550, 480, 170, 400, 340, 550, 480, 170],
-                    backgroundColor: '#4B49AC'
-                }
-                ]
-            },
-            options: {
-                cornerRadius: 5,
-                responsive: true,
-                maintainAspectRatio: true,
-                layout: {
-                    padding: {
-                        left: 0,
-                        right: 0,
-                        top: 20,
-                        bottom: 0
-                    }
-                },
-                scales: {
-                    yAxes: [{
-                        display: true,
-                        gridLines: {
-                            display: true,
-                            drawBorder: false,
-                            color: "#F2F2F2"
-                        },
-                        ticks: {
-                            display: true,
-                            min: 0,
-                            max: 560,
-                            callback: function (value, index, values) {
-                                return value + '$';
-                            },
-                            autoSkip: true,
-                            maxTicksLimit: 10,
-                            fontColor: "#6C7383"
-                        }
-                    }],
-                    xAxes: [{
-                        stacked: false,
-                        ticks: {
-                            beginAtZero: true,
-                            fontColor: "#6C7383"
-                        },
-                        gridLines: {
-                            color: "rgba(0, 0, 0, 0)",
-                            display: false
-                        },
-                        barPercentage: 1
-                    }]
-                },
-                legend: {
-                    display: true
-                },
-                elements: {
-                    point: {
-                        radius: 0
-                    }
-                }
-            },
-        });
-        document.getElementById('sales-legend').innerHTML = SalesChart.generateLegend();
-    }
 
 
 
