@@ -206,19 +206,12 @@ if(isset($_POST['buscaInicialQuestõesEditar'])){
 
 if(isset($_POST['buscaInicialNada'])){
     $buscaInicialQuestoes = addslashes($_POST['buscaInicialNada']);
-    $dadosQuestoes = addslashes($_POST['queSel']);
-    $semNada =[];
+   
+   
     if($buscaInicialQuestoes == true){
-       $dadosQuestao = $a->buscarDadosQuestaoSelecionadas($dadosQuestoes);
-
-       if (empty($dadosQuestao)) {
-           
-        print json_encode(array('semNada'=> ''),JSON_UNESCAPED_UNICODE);
+       $dadosQuestao = $a->buscarNada();
+        print json_encode( $dadosQuestao,JSON_UNESCAPED_UNICODE);
        }  
-       if (!empty($dadosQuestao)) {
-        print json_encode($dadosQuestao,JSON_UNESCAPED_UNICODE);
-       }      
-    }
 }
 
 ?>
