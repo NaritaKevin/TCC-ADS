@@ -519,16 +519,14 @@ $n = new Nivel("pedagogy", "localhost", "root", "");
                            
                                 <div id="escolherQuestoess" class="expandable-table table-responsive">
                                
-                                    <p>Sera mostrado o ID  de todas as linhas selecionadas</p>
-                                    <pre id="visualizar-ids"></pre>
+                                    
                                     <table class="table table-hover display" id="tableEscolherQuestoes">
                                         <thead>
                                             <tr>
-                                                
+                                                 <th>ID</th>
                                                 <th>Enunciado</th>
                                                 <th>Código BNCC</th>
                                                 <th>Tipo</th>
-                                                <th>Ações</th>
                                                 <th></th>
                                                 
                                                

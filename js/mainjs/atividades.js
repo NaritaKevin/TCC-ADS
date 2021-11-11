@@ -1,6 +1,8 @@
 $(document).ready(function () {
     let buscaInicialQuestao = true;
     let buscaInicialAtividade = true;
+    let buscaInicialQuestõesEditar = true;
+    let buscaInicialNada = true ;
 
     var opAtividade
     var opId
@@ -10,6 +12,11 @@ $(document).ready(function () {
     var queSel = [];
     var dadosQuestao = [];
     let buscaInicialQuestoesSelecionadas = true;
+    var queIDdelete
+    var arrayDelete = []
+    var questoesID
+    var atualizar
+    var IDatividade
 
     init();
 
@@ -134,22 +141,37 @@ $(document).ready(function () {
 
                 // as tabelas são lidas por indices: 0,1,2,3, de acordo com o tanto de colunas - Neste caso o indice 0 sera o queID.
                 { data: 'queID' }, // o valor contido na variavel data, é o que sera buscado no banco de dados, no caso o ID
-                { data: 'queDescricao' },
-                { data: 'queCodigoBncc' },
-                { data: 'queStsTipo' },
-                {
-                    data: null, render: function (data, type, row) { // renderizar a exibição dos botões 
+                { 
+                    data: null, render: function (data, type, row) {
+                        let descricao = data.queDescricao.slice(0, 200);
+                        let tamanho = descricao.length;
+                        if (tamanho >= 200) {
+                            descricao = descricao + "..."
+                        }
 
-                        return `<button  type="button"
-                            class="btn  btn-inverse-success btn-rounded btn-icon btn-edit-disciplina">
-                            <i class="bi bi-pencil"></i>
-                        </button>
-                        <button type="button"
-                            class="btn btn-inverse-danger btn-rounded btn-icon btn-del-disciplina">
-                            <i class="bi bi-trash"></i>
-                        </button>`;
+                        return `<span style=" max-width: 1200px;
+                        min-width: 1200px;
+                        display: block;
+                        overflow-wrap: break-word;
+                        white-space: break-spaces;">${descricao}</span>`;
+
                     }
                 },
+                { data: 'queCodigoBncc' },
+                { data: 'queStsTipo' },
+               // {
+               //     data: null, render: function (data, type, row) { // renderizar a exibição dos botões 
+
+               //         return `<button  type="button"
+               //             class="btn  btn-inverse-success btn-rounded btn-icon btn-edit-disciplina">
+               //             <i class="bi bi-pencil"></i>
+               //         </button>
+               //         <button type="button"
+               //             class="btn btn-inverse-danger btn-rounded btn-icon btn-del-disciplina">
+                //            <i class="bi bi-trash"></i>
+               //         </button>`;
+               //     }
+               // },
             ]
 
 
@@ -170,22 +192,14 @@ $(document).ready(function () {
 
     $('#btn-modalConfirmarQuestao').click(function (e) {
         buscaInicialQuestoesSelecionadas = true;
-        var form = this
         var rowsel = tableEscolher.column(0).checkboxes.selected();
 
-        //  $.each(rowsel, function (index, rowID){
-        //      $(form).append(
-        //          $('<input>').attr('type', 'hidden').attr('name', 'id[]').val(rowID)
-        //     )
-        //  })
         if (rowsel.length > 0) {
             queSel = rowsel.join(",");
 
 
             $("#visualizar-ids").text(rowsel.join(","))
-            // $('input[name="id\[\]"]',form).remove()
 
-            //tableQuestoes.ajax.reload(null, false);
             $('#modalQuestao').modal('hide');
             e.preventDefault();
 
@@ -217,7 +231,23 @@ $(document).ready(function () {
 
                     // as tabelas são lidas por indices: 0,1,2,3, de acordo com o tanto de colunas - Neste caso o indice 0 sera o queID.
                     { data: 'queID' }, // o valor contido na variavel data, é o que sera buscado no banco de dados, no caso o ID
-                    { data: 'queDescricao' },//enunciado da questão
+                    //{ data: 'queDescricao' },//enunciado da questão
+                    {
+                        data: null, render: function (data, type, row) {
+                            let descricao = data.queDescricao.slice(0, 200);
+                            let tamanho = descricao.length;
+                            if (tamanho >= 200) {
+                                descricao = descricao + "..."
+                            }
+    
+                            return `<span style=" max-width: 500px;
+                            min-width: 200px;
+                            display: block;
+                            overflow-wrap: break-word;
+                            white-space: break-spaces;">${descricao}</span>`;
+    
+                        }
+                     },
                     { data: 'quePalavrasChave' },
                     { data: 'subDescricao' },
                     { data: 'queCodigoBncc' },
@@ -258,7 +288,11 @@ $(document).ready(function () {
         var classe = $("#classe").val();
         var dataFormInicial
         var dataFormFinal
-        var questoesID
+        var questoesID = []
+        var opcao = atualizar;
+        IDatividade = opId;
+
+        console.log(opcao);
         function formatarData(data) {
             var dia = data.split("/")[0];
             var mes = data.split("/")[1];
@@ -268,7 +302,7 @@ $(document).ready(function () {
             return ano + '-' + ("0" + mes).slice(-2) + '-' + ("0" + dia).slice(-2);
             // Utilizo o .slice(-2) para garantir o formato com 2 digitos.
         }
-
+        
 
         if ($.fn.dataTable.isDataTable('#tableQuestoesAtividade')) {
             questoesID = tableEscolhidas.columns(0).data().eq(0).sort()
@@ -319,7 +353,9 @@ $(document).ready(function () {
                     dataFormInicial: dataFormInicial,
                     dataFormFinal: dataFormFinal,
                     status: status,
-                    questoesID: arrayID
+                    questoesID: arrayID,
+                    opAtividade:opcao,
+                    IDatividade: IDatividade
 
                 },
                 dataType: 'json',
@@ -359,6 +395,7 @@ $(document).ready(function () {
                 }
             }).done(function (data) {
                 tableAtividade.ajax.reload(null, false);
+                atualizar = "";
             });
 
         }
@@ -379,20 +416,92 @@ $(document).ready(function () {
         opId = dados[0];
         //? $("#disID").val(dados[0]);//Insere ID no formulario para alterar
         opAtividade = "update";
+        atualizar = "update2";
         $("#descricao").val(dados[2]);
         $("#data-inicial").val(dados[3]);
         $("#data-final").val(dados[4]);
-
         $("#status").val(dados[6])
 
-        //? console.log('entrei');
-        //? $("#opDisciplina").val("update");//Informa update para atualizar no backend
+
+        console.log(opId);
+
+        
+         //? TABELA DE QUESÕES JA ESCOLHIDAS
+         tableEscolhidas = $('#tableQuestoesAtividade').DataTable({
+            destroy: true,
+            responsive: true,
+
+            ajax: {
+                "url": "../backend/BackAtividade/atividadeBack.php",
+                "method": 'POST', // metodo utilizado para passar os valores das variavesi data para o backend.
+                "data": {opID: opId, buscaInicialQuestõesEditar: buscaInicialQuestõesEditar}, // as variaves bucasInicial.... possuem o valor true  para que no arquivo atividadeBack.php sirva para buscar os dados da tabela
+                "dataSrc": ""
+            },
+            language: { // tradução em portgues da tabela
+                url: "../partials/dataTablept-br.json"
+            },
+            lengthMenu: [[5, 15, 25, -1], [5, 15, 25, "Todos"]], // configuração de quantidade de registros a serem mostrados, 5....15 ou todos 
+            columns: [
+                //aqui dentro sera configurado o conteudo de cada coluna utilizando as variaveis data
+                //importante - os valores contidos em data não a relação com os nomes dos cabeçalhos da tabela.
+
+                // as tabelas são lidas por indices: 0,1,2,3, de acordo com o tanto de colunas - Neste caso o indice 0 sera o queID.
+                { data: 'queID' }, // o valor contido na variavel data, é o que sera buscado no banco de dados, no caso o ID
+                //{ data: 'queDescricao' },//enunciado da questão
+                {
+                    data: null, render: function (data, type, row) {
+                        let descricao = data.queDescricao.slice(0, 200);
+                        let tamanho = descricao.length;
+                        if (tamanho >= 200) {
+                            descricao = descricao + "..."
+                        }
+
+                        return `<span style=" max-width: 500px;
+                        min-width: 200px;
+                        display: block;
+                        overflow-wrap: break-word;
+                        white-space: break-spaces;">${descricao}</span>`;
+
+                    }
+                 },
+                { data: 'quePalavrasChave' },
+                { data: 'queCodigoBncc' },
+                { data: 'queStsTipo' },
+                { data: 'queNivelID' },
+                {
+                    data: null, render: function (data, type, row) { // renderizar a exibição dos botões 
+
+                        return `
+                    <button type="button"
+                        class="btn btn-inverse-danger btn-rounded btn-icon btn-del-questaoEscolhida">
+                        <i class="bi bi-trash"></i>
+                    </button>`;
+                    }
+                },
+            ]
+
+
+        })
+
+
+        if ($.fn.dataTable.isDataTable('#tableQuestoesAtividade')) {
+            questoesID = tableEscolhidas.columns(0).data().eq(0).sort()
+
+        }
+        
+        let arrayID = [];
+
+        for (var i = 0; i < questoesID.length; i++) {
+            arrayID.push(questoesID[i]);
+        }
+
         $.ajax({
             url: '../backend/BackAtividade/atividadeBack.php',
             method: 'POST',
             data: {
                 opID: opId,
-                opAtividade: opAtividade
+                opAtividade: opAtividade,
+                
             },
             dataType: 'json',
             success: function (data) {
@@ -446,6 +555,72 @@ $(document).ready(function () {
         $("#tipoopc").val(1);
         $("#status").val(1);
         $("#classe").val(1);
+        
+        if ($.fn.dataTable.isDataTable('#tableQuestoesAtividade')) {
+
+            $('#tableQuestoesAtividade').DataTable().destroy();
+            console.log("entrou");
+            tableEscolhidas = $('#tableQuestoesAtividade').DataTable({
+                destroy: true,
+                responsive: true,
+
+                ajax: {
+                    "url": "../backend/BackAtividade/atividadeBack.php",
+                    "method": 'POST', // metodo utilizado para passar os valores das variavesi data para o backend.
+                    "data": {buscaInicialNada: buscaInicialNada }, // as variaves bucasInicial.... possuem o valor true  para que no arquivo atividadeBack.php sirva para buscar os dados da tabela
+                    "dataSrc": ""
+                },
+                language: { // tradução em portgues da tabela
+                    url: "../partials/dataTablept-br.json"
+                },
+                lengthMenu: [[5, 15, 25, -1], [5, 15, 25, "Todos"]], // configuração de quantidade de registros a serem mostrados, 5....15 ou todos 
+                columns: [
+                    //aqui dentro sera configurado o conteudo de cada coluna utilizando as variaveis data
+                    //importante - os valores contidos em data não a relação com os nomes dos cabeçalhos da tabela.
+
+                    // as tabelas são lidas por indices: 0,1,2,3, de acordo com o tanto de colunas - Neste caso o indice 0 sera o queID.
+                    { data: 'queID' }, // o valor contido na variavel data, é o que sera buscado no banco de dados, no caso o ID
+                    //{ data: 'queDescricao' },//enunciado da questão
+                    {
+                        data: null, render: function (data, type, row) {
+                            let descricao = data.queDescricao.slice(0, 200);
+                            let tamanho = descricao.length;
+                            if (tamanho >= 200) {
+                                descricao = descricao + "..."
+                            }
+    
+                            return `<span style=" max-width: 500px;
+                            min-width: 200px;
+                            display: block;
+                            overflow-wrap: break-word;
+                            white-space: break-spaces;">${descricao}</span>`;
+    
+                        }
+                     },
+                    { data: 'quePalavrasChave' },
+                    { data: 'subDescricao' },
+                    { data: 'queCodigoBncc' },
+                    { data: 'nivDescricao' },
+                    {
+                        data: null, render: function (data, type, row) { // renderizar a exibição dos botões 
+
+                            return `
+                        <button type="button"
+                            class="btn btn-inverse-danger btn-rounded btn-icon btn-del-questaoEscolhida">
+                            <i class="bi bi-trash"></i>
+                        </button>`;
+                        }
+                    },
+                ]
+
+
+            })
+            
+        }
+
+
+
+        
     });
     $("#cancelarAtividade").click(function () {
         toggleNovaAtividade()
@@ -484,6 +659,19 @@ $(document).ready(function () {
             return $(this).text();
         }).get();
 
+
+       // if ($.fn.dataTable.isDataTable('#tableQuestoesAtividade')) {
+       //     queIDdelete = tableEscolhidas.columns(0).data().eq(0).sort()
+
+
+      //  }
+
+
+       // for (var i = 0; i < queIDdelete.length; i++) {
+      //      arrayDelete.push(queIDdelete[i]);
+       // }
+      //  arrayDelete = arrayDelete.sort((a, b) => a - b);//* Ordenar numeros crescente
+
         opDelete = "delete"
         opidDelete = dadosAtividade[0];
         //console.log(opAtividade);
@@ -502,7 +690,8 @@ $(document).ready(function () {
             method: 'POST',
             data: {
                 opID: opidDelete,
-                opAtividade: opDelete
+                opAtividade: opDelete,
+                //queIDdelete: arrayDelete
             },
             dataType: 'json',
             success: function (data) {

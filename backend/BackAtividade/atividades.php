@@ -81,6 +81,26 @@ class Atividade
     }
 
 
+    public function buscarDadosAtividadeQuestao(){
+        $res = array();
+        $cmd = $this->pdo->query("SELECT * FROM atividade_questao a inner join questoes q on  a.atiqQuestaoID = q.queID");
+        $cmd->execute();
+        $res = $cmd->fetchAll(PDO::FETCH_ASSOC);
+
+        return $res;
+    }
+
+
+    public function buscarDadosAtividadeEditar($id){
+        $res = array();
+        $cmd = $this->pdo->prepare("SELECT * FROM questoes q inner join atividade_questao a on  a.atiqQuestaoID = q.queID  inner join niveis n on n.nivID = q.queNivelID where a.atiqAtividadeID = :atiqAtividadeID ");
+        $cmd->bindValue(":atiqAtividadeID",$id);
+        $cmd->execute();
+        $res = $cmd->fetchAll(PDO::FETCH_ASSOC);
+
+        return $res;
+    }
+
     public function buscarUltimaAtividadeCadastrada(){
         $res = [];
         $cmd = $this->pdo->query("SELECT MAX(atiID) AS atiID FROM atividades LIMIT 1");
@@ -112,9 +132,25 @@ class Atividade
     }
 
 
+    public function excluirAtividadeQuestao($id)
+    {
+        $cmd = $this->pdo->prepare(" DELETE FROM atividade_questao WHERE atiqAtividadeID = :atiqAtividadeID ");
+        $cmd->bindValue(":atiqAtividadeID",$id);
+        $cmd->execute();
+    }
+
     public function buscarDadosQuestaoSelecionadas($id){
         $res = array();
         $cmd = $this->pdo->query("SELECT * FROM questoes q LEFT JOIN subgrupos s ON q.queSubgrupoID = s.subID  LEFT JOIN niveis n ON n.nivID = q.queNivelID where queID in ($id)");
+
+        $res = $cmd->fetchAll();(PDO::FETCH_ASSOC);
+
+        return $res;
+    }
+
+    public function buscarNada(){
+        $res = array();
+        $cmd = $this->pdo->query("SELECT * FROM questoes q LEFT JOIN subgrupos s ON q.queSubgrupoID = s.subID  LEFT JOIN niveis n ON n.nivID = q.queNivelID where 1 = 2");
 
         $res = $cmd->fetchAll();(PDO::FETCH_ASSOC);
 

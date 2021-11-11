@@ -12,6 +12,7 @@ if(isset($_POST["opID"]) && isset($_POST["opAtividade"])){
    $opAtividade=  addslashes($_POST['opAtividade']);
 
    if($opAtividade == "delete" && !empty($opID)){
+    $a->excluirAtividadeQuestao($opID);// excluir primeiro da tabela atividade questão
 
     $a->excluirAtividade($opID);
     $output = json_encode(array('type' => 'sucesso', 'text' => 'Excluido com sucesso!'));
@@ -21,6 +22,8 @@ if(isset($_POST["opID"]) && isset($_POST["opAtividade"])){
    if($opAtividade == "update" && !empty($opID)){//buscar atividade no banco e alterar
 
       $updateAtividade =  $a->buscarDadosAtividade($opID);
+
+      
       if(empty($updateAtividade))
       {
         $output = json_encode(array('type' => 'erro', 'text' => 'Erro ao buscar questão!'));
@@ -51,6 +54,9 @@ if(isset($_POST["opID"]) && isset($_POST["opAtividade"])){
      
      if(isset($_POST["opID"])){
          $opID =  addslashes($_POST['opID']);
+         
+     }else if(isset($_POST["IDatividade"])){
+        $opID =  addslashes($_POST['IDatividade']);
      }
      if(isset($_POST["opAtividade"])){
          $opAtividade=  addslashes($_POST['opAtividade']);
@@ -69,7 +75,19 @@ if(isset($_POST["opID"]) && isset($_POST["opAtividade"])){
              //if (!empty($disDescricao) && !empty($opAtividade)){  // se os campos nao estiverem vazios entra no if
 
              $a->atualizarDadosAtividade($opID,$nome,$descricao, $tipoopc, $dataInicial, $dataFinal, $tipoStatus );
-             $output = json_encode(array('type' => 'sucesso', 'text' => 'Alterado com sucesso!'));
+
+            $a->excluirAtividadeQuestao($opID);
+
+
+            for ($i = 0; $i < count($questoesID); $i++) {
+                if($a->CadastrarAtividadeQuestao($dataInicial,$opID, $questoesID[$i])){
+                    $output = json_encode(array('type' => 'sucesso', 'text' => 'Alterado com sucesso!'));
+                }else{
+                    $output = json_encode(array('type' => 'erro', 'text' => 'Erro ao cadastrar questões!'));
+                    die($output);
+                }
+             }
+            // $output = json_encode(array('type' => 'sucesso', 'text' => 'Alterado com sucesso!'));
              die($output);
          }else{
              $output = json_encode(array('type' => 'validacao', 'text' => 'Preencha todos os campos!'));
@@ -165,5 +183,42 @@ if(isset($_POST['buscaInicialQuestoesSelecionadas'])){
     }
 }
 
+
+if(isset($_POST['buscaInicialQuestõesEditar'])){
+    $buscaInicialQuestoes = addslashes($_POST['buscaInicialQuestõesEditar']);
+    $atividadeID = addslashes($_POST['opID']);
+   $semNada =[];
+   // $questoesAtividade = array();
+    if($buscaInicialQuestoes == true){
+        $questoesAtividade =  $a->buscarDadosAtividadeEditar($atividadeID);
+        if (empty($questoesAtividade)) {
+           
+           print json_encode(array('semNada'=> ''),JSON_UNESCAPED_UNICODE);
+          }  
+
+        if(!empty($questoesAtividade)){
+            print json_encode($questoesAtividade,JSON_UNESCAPED_UNICODE);
+         }
+    }
+     
+}
+
+
+if(isset($_POST['buscaInicialNada'])){
+    $buscaInicialQuestoes = addslashes($_POST['buscaInicialNada']);
+    $dadosQuestoes = addslashes($_POST['queSel']);
+    $semNada =[];
+    if($buscaInicialQuestoes == true){
+       $dadosQuestao = $a->buscarDadosQuestaoSelecionadas($dadosQuestoes);
+
+       if (empty($dadosQuestao)) {
+           
+        print json_encode(array('semNada'=> ''),JSON_UNESCAPED_UNICODE);
+       }  
+       if (!empty($dadosQuestao)) {
+        print json_encode($dadosQuestao,JSON_UNESCAPED_UNICODE);
+       }      
+    }
+}
 
 ?>
