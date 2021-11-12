@@ -46,6 +46,7 @@ if(isset($_POST["opID"]) && isset($_POST["opAtividade"])){
      $dataInicial = addslashes($_POST['dataFormInicial']);
      $dataFinal = addslashes($_POST['dataFormFinal']);
      $status = addslashes($_POST['status']);
+     $turma = addslashes($_POST['turma']);
 
     $questoesID  = array_map( 'addslashes', $_POST['questoesID'] );
 
@@ -74,7 +75,7 @@ if(isset($_POST["opID"]) && isset($_POST["opAtividade"])){
 
              //if (!empty($disDescricao) && !empty($opAtividade)){  // se os campos nao estiverem vazios entra no if
 
-             $a->atualizarDadosAtividade($opID,$nome,$descricao, $tipoopc, $dataInicial, $dataFinal, $tipoStatus );
+             $a->atualizarDadosAtividade($opID,$nome,$descricao, $tipoopc, $dataInicial, $dataFinal, $tipoStatus, $turma );
 
             $a->excluirAtividadeQuestao($opID);
 
@@ -96,7 +97,7 @@ if(isset($_POST["opID"]) && isset($_POST["opAtividade"])){
          }
      }
 
-     if(!empty($nome) && !empty($descricao) && !empty($tipoopc) && !empty($dataInicial) && !empty($dataFinal) && !empty($dataFinal) && !empty($questoesID) ){
+     if(!empty($nome) && !empty($descricao) && !empty($tipoopc) && !empty($dataInicial) && !empty($dataFinal) && !empty($dataFinal)  && !empty($turma) ){
         if($status == 2){
             $tipoStatus = "Postado";
         }else{
@@ -104,7 +105,7 @@ if(isset($_POST["opID"]) && isset($_POST["opAtividade"])){
         }
 
 
-         if($a->cadastrarAtividades($nome, $descricao, $tipoopc,  $dataInicial, $dataFinal, $tipoStatus)){
+         if($a->cadastrarAtividades($nome, $descricao, $tipoopc,  $dataInicial, $dataFinal, $tipoStatus, $turma)){
 
              $atividadeID = $a->buscarUltimaAtividadeCadastrada();
              if(empty($atividadeID)){

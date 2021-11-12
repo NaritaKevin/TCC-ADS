@@ -426,7 +426,9 @@ $n = new Nivel("pedagogy", "localhost", "root", "");
                                                     <th>Data Final</th>
                                                     <th>Tipo</th>
                                                     <th>Status</th>
+                                                    <th>Turma</th>
                                                     <th>Ação</th>
+                                                    <th></th>
                                                 </tr>
                                             </thead>
                                 <tbody id="tbodyAtivdades">

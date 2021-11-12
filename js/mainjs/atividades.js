@@ -84,6 +84,7 @@ $(document).ready(function () {
                         }
                     }
                 },
+                { data: 'claNome'},
                 {
                     data: null, render: function (data, type, row) { // renderizar a exibição dos botões 
 
@@ -355,7 +356,8 @@ $(document).ready(function () {
                     status: status,
                     questoesID: arrayID,
                     opAtividade:opcao,
-                    IDatividade: IDatividade
+                    IDatividade: IDatividade,
+                    turma: classe
 
                 },
                 dataType: 'json',
@@ -527,6 +529,7 @@ $(document).ready(function () {
                         $("#status").closest(".dropdown").find(".btn").children().children(".filter-option-inner").children(".filter-option-inner-inner").text("Não Postado");
                     }
                     $("#tipoopc").closest(".dropdown").find(".btn").children().children(".filter-option-inner").children(".filter-option-inner-inner").text(dados[5]);
+                    $("#classe").closest(".dropdown").find(".btn").children().children(".filter-option-inner").children(".filter-option-inner-inner").text(dados[7]);
                     //? $("#btn-nova-atividade").click();//Simula um click manual no botao de cadastrar
                 }
             }

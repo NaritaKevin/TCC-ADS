@@ -23,12 +23,12 @@ class Atividade
     
     public function buscarDados(){
         $res = array();
-        $cmd = $this->pdo->query("SELECT * FROM atividades a INNER JOIN tipos t on a.atiTipoID = t.tipID");
+        $cmd = $this->pdo->query("SELECT * FROM atividades a INNER JOIN tipos t on a.atiTipoID = t.tipID inner join classes c on a.atiClasseID = c.claCodigo");
         $res = $cmd->fetchAll(PDO::FETCH_ASSOC);
         return $res;
     }
     // função para cadastrar atividades no banco de dados
-    public function cadastrarAtividades($nome, $descricao, $tipo, $dataInicial, $dataFinal, $Status )
+    public function cadastrarAtividades($nome, $descricao, $tipo, $dataInicial, $dataFinal, $Status, $turma )
     {
         // verificar se o email ja esta cadastrado
         $cmd = $this->pdo->prepare("SELECT atiID FROM atividades where atiDescricao = :atiDescricao and atiTipoID = :tipo and atiObservacao = :observacao");
@@ -42,8 +42,8 @@ class Atividade
                 return false;
         } else { //não foi encontrado o email
             $cmd = $this->pdo->prepare(
-            "INSERT INTO atividades (atiDescricao, atiDataInicio, atiDataFim, atiObservacao, atiStatus, atiTipoID, atiUsuarioID) 
-            VALUES (:nome, :dataInicio, :dataFim, :observacao,:tipoStatus , :tipo, :atiUsuarioID)");
+            "INSERT INTO atividades (atiDescricao, atiDataInicio, atiDataFim, atiObservacao, atiStatus, atiTipoID, atiUsuarioID, atiClasseID) 
+            VALUES (:nome, :dataInicio, :dataFim, :observacao,:tipoStatus , :tipo, :atiUsuarioID, :atiClasseID)");
             $cmd->bindValue(":nome",$nome);
             $cmd->bindValue(":dataInicio",$dataInicial);
             $cmd->bindValue(":dataFim",$dataFinal);
@@ -51,6 +51,7 @@ class Atividade
             $cmd->bindValue(":tipo",$tipo);
             $cmd->bindValue(":tipoStatus",$Status);
             $cmd->bindValue(":atiUsuarioID",2);
+            $cmd->bindValue(":atiClasseID",$turma);
             
             $cmd->execute();
             return true;
@@ -108,10 +109,10 @@ class Atividade
         return $res;
     }
 
-    public function atualizarDadosAtividade($id,$nome,$descricao,$tipo, $dataInicial,$dataFinal, $Status){
+    public function atualizarDadosAtividade($id,$nome,$descricao,$tipo, $dataInicial,$dataFinal, $Status, $turma){
        
         $cmd = $this->pdo->prepare(
-            "UPDATE atividades SET atiDescricao = :atiDescricao, atiDatainicio = :atiDatainicio, atidataFim = :atidataFim, atiObservacao = :atiObservacao, atiStatus = :atiStatus, atiTipoID = :atiTipoID
+            "UPDATE atividades SET atiDescricao = :atiDescricao, atiDatainicio = :atiDatainicio, atidataFim = :atidataFim, atiObservacao = :atiObservacao, atiStatus = :atiStatus, atiTipoID = :atiTipoID , atiClasseID = :atiClasseID
             WHERE atiID = :atiID ");
         $cmd->bindValue(":atiID",$id);
         $cmd->bindValue(":atiDescricao",$nome);
@@ -120,6 +121,7 @@ class Atividade
         $cmd->bindValue(":atiObservacao", $descricao);
         $cmd->bindValue(":atiStatus", $Status);
         $cmd->bindValue(":atiTipoID", $tipo);
+        $cmd->bindValue(":atiClasseID", $turma);
 
         $cmd->execute();
     }
