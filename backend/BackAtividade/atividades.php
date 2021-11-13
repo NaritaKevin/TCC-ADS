@@ -28,7 +28,7 @@ class Atividade
         return $res;
     }
     // função para cadastrar atividades no banco de dados
-    public function cadastrarAtividades($nome, $descricao, $tipo, $dataInicial, $dataFinal, $Status, $turma )
+    public function cadastrarAtividades($nome, $descricao, $tipo, $dataInicial, $dataFinal, $Status, $turma, $StatusQuestoes )
     {
         // verificar se o email ja esta cadastrado
         $cmd = $this->pdo->prepare("SELECT atiID FROM atividades where atiDescricao = :atiDescricao and atiTipoID = :tipo and atiObservacao = :observacao");
@@ -42,14 +42,15 @@ class Atividade
                 return false;
         } else { //não foi encontrado o email
             $cmd = $this->pdo->prepare(
-            "INSERT INTO atividades (atiDescricao, atiDataInicio, atiDataFim, atiObservacao, atiStatus, atiTipoID, atiUsuarioID, atiClasseID) 
-            VALUES (:nome, :dataInicio, :dataFim, :observacao,:tipoStatus , :tipo, :atiUsuarioID, :atiClasseID)");
+            "INSERT INTO atividades (atiDescricao, atiDataInicio, atiDataFim, atiObservacao, atiStatus, atiStsQuestoes, atiTipoID, atiUsuarioID, atiClasseID) 
+            VALUES (:nome, :dataInicio, :dataFim, :observacao,:tipoStatus, :StatusQuestoes , :tipo, :atiUsuarioID, :atiClasseID)");
             $cmd->bindValue(":nome",$nome);
             $cmd->bindValue(":dataInicio",$dataInicial);
             $cmd->bindValue(":dataFim",$dataFinal);
             $cmd->bindValue(":observacao",$descricao);
             $cmd->bindValue(":tipo",$tipo);
             $cmd->bindValue(":tipoStatus",$Status);
+            $cmd->bindValue(":StatusQuestoes",$StatusQuestoes);
             $cmd->bindValue(":atiUsuarioID",2);
             $cmd->bindValue(":atiClasseID",$turma);
             

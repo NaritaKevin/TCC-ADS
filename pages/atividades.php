@@ -189,26 +189,25 @@ $n = new Nivel("pedagogy", "localhost", "root", "");
                                                             <textarea class="form-control" name="descricao" id="descricao" rows="7"></textarea>
                                                         </div>
                                                             
-                                                                <div class="form-group">
-                                                                <label class="labelCadastroAtividade">Tipo</label>
-                                                              
-                                                                <select id="tipoopc" class="selectpicker show-tick" name="tipoopc" data-width="fit">
+                                                         <div class="form-group">
+                                                            <div class="row">
+                                                                <div class="col-md-2">
+                                                                        <label label class="labelCadastroAtividade">Tipo</label>
+                                                                            <select id="tipoopc" class="selectpicker show-tick" name="tipoopc" data-width="fit">
                                                                
-                                                                    <?php $arr_tipo = $t->buscarTipo() ?>
-                                                                    <?php if (!empty($arr_tipo)) { ?>
-                                                                        <?php foreach ($arr_tipo as $tipoop) {
-                                                                        ?>
-                                                                            <option value="<?php echo $tipoop['tipID']; ?>"><?php echo $tipoop['tipDescricao']; ?></option>
-                                                                        <?php } ?>
-                                                                    <?php } ?>
-                                                                </select>
+                                                                                <?php $arr_tipo = $t->buscarTipo() ?>
+                                                                                <?php if (!empty($arr_tipo)) { ?>
+                                                                                <?php foreach ($arr_tipo as $tipoop) {
+                                                                                 ?>
+                                                                                 <option value="<?php echo $tipoop['tipID']; ?>"><?php echo $tipoop['tipDescricao']; ?></option>
+                                                                                <?php } ?>
+                                                                                <?php } ?>
+                                                                            </select>
                                                                 </div>
 
-                                                                <div class="form-group">
-                                                                <label class="labelCadastroAtividade">Turma</label>
-                                                              
-                                                                <select id="classe" class="selectpicker show-tick" name="classe" data-width="fit">
-                                                               
+                                                                <div class="col-md-2">
+                                                                    <label class="labelCadastroAtividade">Turma</label>
+                                                                     <select id="classe" class="selectpicker show-tick" name="classe" data-width="fit">
                                                                     <?php $arr_classe = $c->buscarClasse() ?>
                                                                     <?php if (!empty($arr_classe)) { ?>
                                                                         <?php foreach ($arr_classe as $classe) {
@@ -216,19 +215,28 @@ $n = new Nivel("pedagogy", "localhost", "root", "");
                                                                             <option value="<?php echo $classe['claCodigo']; ?>"><?php echo $classe['claNome']; ?></option>
                                                                         <?php } ?>
                                                                     <?php } ?>
-                                                                </select>
+                                                                    </select>
                                                                 </div>
-                                                               
+                                                                        
+                                                                <div class="col-md-2">
+                                                                    <label class="labelCadastroAtividade">Visibilidade</label>
+                                                                     <select id="status" class="selectpicker show-tick" name="status" data-width="fit">
+                                                                        <option value="1" >Privada</option>
+                                                                        <option value="2" >Pública</option>
+                                                                    </select>
+                                                                </div>
 
-                                                                <div class="form-group">
-                                                                <label class="labelCadastroAtividade">Status</label>
-                                                                <select id="status" class="selectpicker show-tick" name="status" data-width="fit">
-                                                                    <option value="1" >Não Postado</option>
-                                                                    <option value="2" >Postado</option>
-                                                                    
-                                                                </select>
+                                                                <div class="col-md-2">
+                                                                    <label class="labelCadastroAtividade">Exibição das Questoes</label>
+                                                                     <select id="StsQuestoes" class="selectpicker show-tick" name="StsQuestoes" data-width="fit">
+                                                                        <option value="1" >Aleatorias</option>
+                                                                        <option value="2" >Na ordem</option>
+                                                                    </select>
                                                                 </div>
-                                                        
+                                                            </div>
+                                                        </div>
+                                                     </div>
+
                                                         <div class="form-group">
                                                             <div class="row">
                                                                 <div class="col-md-6">

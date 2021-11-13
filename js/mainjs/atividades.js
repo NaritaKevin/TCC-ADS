@@ -76,7 +76,7 @@ $(document).ready(function () {
 
                 {
                     data: null, render: function (data, type, row) {
-                        if (data.atiStatus == "Postado") {
+                        if (data.atiStatus == "Pública") {
                             return `<label class="badge badge-success">${data.atiStatus}</label>`;
 
                         } else {
@@ -287,13 +287,14 @@ $(document).ready(function () {
         var dataFinal = $("#data-final").val();
         var status = $("#status option:selected").val();
         var classe = $("#classe").val();
+        var StsQuestoes = $("#StsQuestoes option:selected").val();
         var dataFormInicial
         var dataFormFinal
         var questoesID = []
         var opcao = atualizar;
         IDatividade = opId;
 
-        console.log(opcao);
+       console.log(StsQuestoes);
         function formatarData(data) {
             var dia = data.split("/")[0];
             var mes = data.split("/")[1];
@@ -328,14 +329,14 @@ $(document).ready(function () {
             dataFormFinal = formatarData(dataFinal);
 
 
-            console.log(nome);
-            console.log(descricao);
-            console.log(tipoopc);
-            console.log(dataFormInicial);
-            console.log(dataFormFinal);
-            console.log(status);
-            console.log("questoes")
-            console.log(questoesID)
+          //  console.log(nome);
+          //  console.log(descricao);
+          //  console.log(tipoopc);
+          //  console.log(dataFormInicial);
+          //  console.log(dataFormFinal);
+           // console.log(status);
+          //  console.log("questoes")
+           // console.log(questoesID)
 
             let arrayID = [];
 
@@ -357,7 +358,8 @@ $(document).ready(function () {
                     questoesID: arrayID,
                     opAtividade:opcao,
                     IDatividade: IDatividade,
-                    turma: classe
+                    turma: classe,
+                    StsQuestoes: StsQuestoes
 
                 },
                 dataType: 'json',
@@ -422,7 +424,7 @@ $(document).ready(function () {
         $("#descricao").val(dados[2]);
         $("#data-inicial").val(dados[3]);
         $("#data-final").val(dados[4]);
-        $("#status").val(dados[6])
+         $("#status").val(dados[6])
 
 
         console.log(opId);
@@ -521,12 +523,12 @@ $(document).ready(function () {
 
                     $("#nome").val(data.atiDescricao);
                     $("#tipoopc").val(data.atiTipoID);
-                    if (data.atiStatus == "Postado") {
+                    if (data.atiStatus == "Pública") {
                         $("#status").val(2);
-                        $("#status").closest(".dropdown").find(".btn").children().children(".filter-option-inner").children(".filter-option-inner-inner").text("Postado");
+                        $("#status").closest(".dropdown").find(".btn").children().children(".filter-option-inner").children(".filter-option-inner-inner").text("Pública");
                     } else {
                         $("#status").val(1);
-                        $("#status").closest(".dropdown").find(".btn").children().children(".filter-option-inner").children(".filter-option-inner-inner").text("Não Postado");
+                        $("#status").closest(".dropdown").find(".btn").children().children(".filter-option-inner").children(".filter-option-inner-inner").text("Privada");
                     }
                     $("#tipoopc").closest(".dropdown").find(".btn").children().children(".filter-option-inner").children(".filter-option-inner-inner").text(dados[5]);
                     $("#classe").closest(".dropdown").find(".btn").children().children(".filter-option-inner").children(".filter-option-inner-inner").text(dados[7]);

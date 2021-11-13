@@ -47,6 +47,7 @@ if(isset($_POST["opID"]) && isset($_POST["opAtividade"])){
      $dataFinal = addslashes($_POST['dataFormFinal']);
      $status = addslashes($_POST['status']);
      $turma = addslashes($_POST['turma']);
+     $StsQuestoes = addslashes($_POST['StsQuestoes']);
 
     $questoesID  = array_map( 'addslashes', $_POST['questoesID'] );
 
@@ -68,9 +69,9 @@ if(isset($_POST["opID"]) && isset($_POST["opAtividade"])){
          if(!empty($nome) && !empty($descricao) && !empty($tipoopc) && !empty($dataInicial) && !empty($dataFinal) && !empty($dataFinal) ){// editar
 
              if($status == 2){
-                 $tipoStatus = "Postado";
+                 $tipoStatus = "Pública";
              }else{
-                 $tipoStatus = "Não Postado";
+                 $tipoStatus = "Privada";
              }
 
              //if (!empty($disDescricao) && !empty($opAtividade)){  // se os campos nao estiverem vazios entra no if
@@ -97,15 +98,23 @@ if(isset($_POST["opID"]) && isset($_POST["opAtividade"])){
          }
      }
 
-     if(!empty($nome) && !empty($descricao) && !empty($tipoopc) && !empty($dataInicial) && !empty($dataFinal) && !empty($dataFinal)  && !empty($turma) ){
+     if(!empty($nome) && !empty($descricao) && !empty($tipoopc) && !empty($dataInicial) && !empty($dataFinal) && !empty($dataFinal)  && !empty($turma) && !empty($StsQuestoes) ){
         if($status == 2){
-            $tipoStatus = "Postado";
+            $tipoStatus = "Pública";
         }else{
-            $tipoStatus = "Não Postado";
+            $tipoStatus = "Privada";
+        }
+
+        if($StsQuestoes == 2){
+            $Status= "Na Ordem";
+        }else{
+            $Status = "Aleatória";
         }
 
 
-         if($a->cadastrarAtividades($nome, $descricao, $tipoopc,  $dataInicial, $dataFinal, $tipoStatus, $turma)){
+
+
+         if($a->cadastrarAtividades($nome, $descricao, $tipoopc,  $dataInicial, $dataFinal, $tipoStatus, $turma , $Status)){
 
              $atividadeID = $a->buscarUltimaAtividadeCadastrada();
              if(empty($atividadeID)){
