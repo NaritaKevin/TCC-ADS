@@ -141,5 +141,32 @@ class Questao{
         return false;
         }
     }
+    public function buscarAlternativaCerta($questaoID){
+        $res = [];
+        $cmd = $this->pdo->prepare("SELECT queID,altLetra,altStsCorreta,altDescricao 
+        FROM questoes q JOIN alternativas a ON q.queID = a.altQuestaoID WHERE q.queID = :queID ORDER BY a.altLetra;");
+        $cmd->bindValue(":queID",$questaoID);
+        $cmd->execute();
+        $res = $cmd->fetchAll(PDO::FETCH_ASSOC);
+        return $res;
+    }
+    public function buscarResultados($questaoID){
+        $res = [];
+        $cmd = $this->pdo->prepare("SELECT * FROM resultados WHERE resQuestaoID = :queID;");
+        $cmd->bindValue(":queID",$questaoID);
+        $cmd->execute();
+        $res = $cmd->fetchAll(PDO::FETCH_ASSOC);
+        return $res;
+    }
+    public function atualizarResultados($id,$sts){
+    
+        $cmd = $this->pdo->prepare("UPDATE resultados SET resResposta = :sts  WHERE resID = :resID ");
+        $cmd->bindValue(":sts",$sts);
+        $cmd->bindValue(":resID",$id);
+        $cmd->execute();
+        return true;
+
+    }
+
 }
 ?>

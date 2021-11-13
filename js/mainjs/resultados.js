@@ -40,6 +40,23 @@ $(document).ready(function () {
 
                     }
                 },
+                {
+                    data: null, render: function (data, type, row) {
+                        let data_americana = data.atiDataInicio;
+                        let data_brasileira = data_americana.split('-').reverse().join('/');
+
+                        return data_brasileira;
+                    }
+                },
+                {
+                    data: null, render: function (data, type, row) {
+                        let data_americana = data.atiDataFim;
+                        let data_brasileira = data_americana.split('-').reverse().join('/');
+
+                        return data_brasileira;
+                    }
+                },
+                { data: 'tipDescricao' },
                 { data: 'claNome' },
                 {
                     data: null, render: function (data, type, row) {

@@ -53,7 +53,7 @@
          }
          public function BuscarAtividades()
          {
-            $sql = "SELECT * FROM atividades a, classes c WHERE a.atiClasseID = c.claCodigo AND a.atiUsuarioID = 2;";
+            $sql = "SELECT * FROM atividades a, classes c,tipos t WHERE a.atiClasseID = c.claCodigo AND t.tipID = a.atiTipoID AND a.atiUsuarioID = 2;";
             $pdo = $this->pdo->query($sql);
             $res = $pdo->fetchAll(PDO::FETCH_ASSOC);
             return $res;
@@ -76,15 +76,6 @@
             return $res;
         }
 
-        //  public function graficoQtdeAcertos($id){
-        //     $res = array();
-        //     $cmd = $this->pdo->prepare("SELECT resQuestaoID,COUNT(*) as acertos from resultados WHERE resAtividadeID = :atiID AND resResposta = 'Sim' AND resStsResposta = 'Respondido' GROUP BY resQuestaoID asc ;");
-        //     $cmd->bindValue(":atiID",$id);
-        //     $cmd->execute();
-        //     $res = $cmd->fetchAll(PDO::FETCH_ASSOC);
-    
-        //     return $res;
-        // }
      
         public function criarViewAcertos($id)
         {

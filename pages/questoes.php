@@ -155,7 +155,7 @@ $n = new Nivel("pedagogy", "localhost", "root", "");
                         <div class="col-lg-12 grid-margin stretch-card">
                             <div class="card">
                                 <div class="card-body">
-                                    <h4 class="card-title">Tabela de Questões</h4>
+                                    <h4 id="titleQuestoes" class="card-title">Tabela de Questões</h4>
                                     <p class="card-description">
                                         <button type="button" id="btn-nova-questao" class="btn btn-primary btn-icon-text">
                                             <i class="bi bi-plus-circle btn-icon-prepend"></i>Nova questão
@@ -164,8 +164,8 @@ $n = new Nivel("pedagogy", "localhost", "root", "");
                                     <div id="cadastrarQuestao" class=" stretch-card">
                                         <div class="card">
                                             <div class="card-body">
-                                                <h4 class="card-title">Questão</h4>
-                                                <p class="card-description">
+                                                <h4 id="cardTitle"class="card-title">Cadastrar Questão</h4>
+                                                <p id="cardDescri" class="card-description">
                                                     Cadastre a questão para a atividade.
                                                 </p>
                                                 <form id="formQuestoes">
@@ -255,7 +255,7 @@ $n = new Nivel("pedagogy", "localhost", "root", "");
                                                         </ul>
                                                     </div>
 
-                                                    <button id="submitQuestao" type="submit" class="btn btn-icon-text btn-primary mr-2"><i class="bi bi-check2-circle btn-icon-prepend"></i>Cadastrar</button>
+                                                    <button id="submitQuestao" type="submit" class="btn btn-icon-text btn-primary mr-2"><i class="bi bi-check2-circle btn-icon-prepend"></i><span>Cadastrar</span></button>
                                                     <button id="cancelarQuestao" type="button" class="btn btn-icon-text btn-secondary"><i class="bi bi-x-circle btn-icon-prepend"></i>Cancelar</button>
                                                 </form>
                                             </div>

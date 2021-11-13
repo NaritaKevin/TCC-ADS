@@ -277,8 +277,13 @@ $(document).ready(function () {
 
     //! Esconder/mostrar cadastrar questao
     $("#btn-nova-questao").click(function () {
+        $("#titleQuestoes").toggle("slow")
+        $("#cardTitle").text("Cadastrar Questão");
+        $("#cardDescri").text("Cadastre a questão para a atividade.");
+        $("#submitQuestao span").text("Cadastrar");
         toggleNovaQuestao();
         resetarFormulario();
+
 
     });
     $("#cancelarQuestao").click(function () {
@@ -336,11 +341,7 @@ $(document).ready(function () {
                 //preencher as alternativas
                 for (let i = 0; i < data[0].length; i++) {
                     $("#adicionarQuestao").click();
-                    // console.log(data[0][i].altID);
-                    // console.log(data[0][i].altLetra);
-                    // console.log(data[0][i].altDescricao);
-                    // console.log(data[0][i].altStsCorreta);
-                    // console.log(data[0][i].altQuestaoID);
+
 
                     if (data[0][i].altStsCorreta == "Correta") {
                         $('#alternativas li#' + i).find('.toggleAlternativa').click();
@@ -349,8 +350,10 @@ $(document).ready(function () {
 
 
                 }
-
-
+                $("#titleQuestoes").toggle("slow")
+                $("#cardTitle").text("Alterar Questão");
+                $("#cardDescri").text("Altere a questão escolhida.");
+                $("#submitQuestao span").text("Salvar");
 
                 toggleNovaQuestao()
             }, error: function (data) {

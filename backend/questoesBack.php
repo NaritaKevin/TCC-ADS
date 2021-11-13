@@ -133,7 +133,7 @@ if(isset($_POST['subgrupoopc']) && isset($_POST['nivelopc']) && isset($_POST['st
             if($q->atualizarDadosQuestao($id,$enunciado,$codigobncc,$palavrasChave,$statusopc,$nivelopc,$ano,$subgrupoopc)){
                 $output = json_encode(array('type' => 'sucesso', 'text' => 'Alterado com sucesso!'));
                 $q->excluirAlternativa($id);
-                //die($output); 
+
                 $cadastrar = false;
             }else{
                 $output = json_encode(array('type' => 'erro', 'text' => 'Erro ao atualizar!'));
@@ -230,6 +230,26 @@ if(isset($_POST['subgrupoopc']) && isset($_POST['nivelopc']) && isset($_POST['st
     $alternativaxstatus ="";
 
   }
+
+  
+  $questao = $q->buscarAlternativaCerta($id);
+  $resultado = $q->buscarResultados($id);
+   
+  // print_r($questao[0]['altLetra']);
+  // print_r(count($questao));
+  if(count($resultado) > 0 && count($questao) > 0){
+    for($x = 0; $x <  count($questao); $x++){
+
+        for($i = 0; $i <  count($resultado); $i++){
+            if($resultado[$i]['resAltEscolhida'] == $questao[$x]['altLetra'] && $questao[$x]['altStsCorreta'] == "Incorreta"){
+                $q->atualizarResultados($resultado[$i]['resID'],"Não");
+            }else if( $resultado[$i]['resAltEscolhida'] == $questao[$x]['altLetra'] && $questao[$x]['altStsCorreta'] == "Correta"){
+                $q->atualizarResultados($resultado[$i]['resID'],"Sim");
+            }
+        }
+    }
+  }
+  
 
   die($output); 
 
