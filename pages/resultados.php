@@ -143,7 +143,7 @@
                         <div id="tabelaResultados" class="col-lg-12 grid-margin stretch-card">
                             <div class="card">
                                 <div class="card-body">
-                                    <h4 class="card-title">Companhe os resultados das atividades</h4>
+                                    <h4 class="card-title">Acompanhe os resultados das atividades</h4>
                                     <p class="card-description">
 
                                     </p>
