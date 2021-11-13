@@ -154,7 +154,7 @@
                                                 <tr>
                                                     <th>ID</th>
                                                     <th>Atividade</th>
-                                                    <th>Data Início</th>
+                                                    <th>Data Inicial</th>
                                                     <th>Data Final</th>
                                                     <th>Tipo</th>
                                                     <th>Classe</th>
