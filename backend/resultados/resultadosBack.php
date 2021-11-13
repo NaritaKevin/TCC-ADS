@@ -17,7 +17,7 @@
        }      
     }
 }
-
+//carregar tabela dos alunos da atividade
 if(isset($_POST['buscaInicialAlunosResultados']) && isset($_POST['idAtividade'])){
    $buscaInicialAlunosResultados = addslashes($_POST['buscaInicialAlunosResultados']);
    $idAtividade = addslashes($_POST['idAtividade']);
@@ -30,7 +30,7 @@ if(isset($_POST['buscaInicialAlunosResultados']) && isset($_POST['idAtividade'])
 
    }
 }
-
+//carregar graficos
 if(isset($_POST['atividadeID'])){
    $atividadeID = addslashes($_POST['atividadeID']);
 
@@ -47,5 +47,26 @@ if(isset($_POST['atividadeID'])){
     
       // $merge = array_merge($dados, $dados1);
      
+   }
+}
+//carregar atividade com as questoes e alternativas
+if(isset($_POST['atiIDResultados']) && isset($_POST['idAluno'])){
+   $atividadeID = addslashes($_POST['atiIDResultados']);
+   $alunoID = addslashes($_POST['idAluno']);
+   if($atividadeID != 0){
+   
+      $dados = $r->questoesDaAtividade($atividadeID);
+      $r->criarViewQuestoesDaAtividade($atividadeID);
+      $dados1 = $r->resultadosAluno($alunoID);
+      if (!empty($dados)) {
+         print json_encode(array($dados,$dados1),JSON_UNESCAPED_UNICODE);
+      }else{
+         $output = json_encode(array('type' => 'buscaVazia', 'text' => 'Não foi encontrado a atividade!'));
+         die($output);
+      }
+
+   }else{
+      $output = json_encode(array('type' => 'erro', 'text' => 'Erro ao buscar a atividade!'));
+      die($output);
    }
 }

@@ -37,7 +37,7 @@ $n = new Nivel("pedagogy", "localhost", "root", "");
     <link rel="stylesheet" href="../css/vertical-layout-light/style.css">
     <!-- endinject -->
     <link rel="shortcut icon" href="../images/logo-mini.svg" />
-    <style>
+    <style type="text/css">
         .subgrupoSelected {
             cursor: default !important;
             color: black !important;

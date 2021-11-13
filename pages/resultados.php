@@ -22,6 +22,22 @@
     <link rel="stylesheet" href="../css/vertical-layout-light/style.css">
     <!-- endinject -->
     <link rel="shortcut icon" href="../images/logo-mini.svg" />
+
+    <style type="text/css">
+
+        .list-wrapper ul li {
+        font-size: 0.9375rem;
+        padding: 0.2rem 1.4rem;
+        border: none;
+        margin-bottom: 0.812rem;
+        border-radius: 7px;
+        }
+        .list-wrapper ul li .form-check, .list-wrapper ul li .form-check .form-check-label, .email-wrapper .mail-sidebar .menu-bar .profile-list-item a .user .u-name, .email-wrapper .mail-sidebar .menu-bar .profile-list-item a .user .u-designation, .email-wrapper .mail-list-container .mail-list .content .sender-name, .email-wrapper .message-body .attachments-sections ul li .details p.file-name, .settings-panel .chat-list .list .info p {
+      
+            white-space: normal;
+        }
+       
+    </style>
 </head>
 
 <body>
@@ -131,17 +147,7 @@
                                     <p class="card-description">
 
                                     </p>
-                                    <div id="cadastrarQuestao" class=" stretch-card">
-                                        <div class="card">
-                                            <div class="card-body">
-                                                <h4 class="card-title">Questão</h4>
-                                                <p class="card-description">
-                                                    Cadastre a questão para a atividade.
-                                                </p>
-
-                                            </div>
-                                        </div>
-                                    </div>
+                                 
                                     <div id="tableResultadosToggle" class="expandable-table table-responsive">
                                         <table class="table table-hover" id="tableResultados">
                                             <thead>
@@ -163,6 +169,34 @@
                         </div>
 
                     </div>
+                    <div id="verGraficos" class="row">
+                                        <div class="col-md-12 grid-margin stretch-card">
+                                            <div class="card">
+                                                <div class="card-body">
+                                                    
+                                                    <div id="titulo">
+                                                        
+                                                    </div>
+                                                    <button type="button" id="btn-voltar-graficos"
+                                                        class="btn btn-secondary btn-icon-text">
+                                                        <i class="bi bi-arrow-left-circle btn-icon-prepend"></i>
+                                                        Voltar
+                                                    </button>
+                                                    <p class="card-description"></p>
+
+                                                
+                                                    <div class="table-responsive">
+                                                        <canvas id="grafico1"  class="table"></canvas>
+                                                    </div>
+                                                    <div class="table-responsive">
+                                                        <canvas id="grafico2"  class="table"></canvas>
+                                                    </div>
+                                                    
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!--Tabela de atividades-->
+                                    </div>
                     <div id="verResultados" class="row">
                         <div class="col-lg-12 grid-margin stretch-card">
                             <div class="card">
@@ -177,7 +211,7 @@
 
                                     </p>
 
-                                    <div id="tableTiposToggle" class="table-responsive">
+                                    <div id="tableAlunosToggle" class="table-responsive">
                                         <table id="tableResultadosAluno" class="table display expandable-table table-striped table-hover" >
                                             <thead>
                                                 <tr>
@@ -195,37 +229,39 @@
                                             </tbody>
                                         </table>
                                     </div>
+
+
                                 </div>
                             </div>
                         </div>
                         <!--Tabela de atividades-->
                     </div>
+                    
 
-                    <div id="verGraficos" class="row">
-                        <div class="col-md-12 grid-margin stretch-card">
+                    <div id="verAtividadeAluno" class="row">
+                        <div class="col-lg-12 grid-margin stretch-card">
                             <div class="card">
                                 <div class="card-body">
-                                    <h4 id="titleDiv" class="card-title">Graficos da atividade 1</h4>
-                                    <button type="button" id="btn-voltar-resultados"
+                                    <h3 class="card-title">Atividade x</h3>
+                                    <button type="button" id="btn-voltar-verAtividadeAluno"
                                         class="btn btn-secondary btn-icon-text">
                                         <i class="bi bi-arrow-left-circle btn-icon-prepend"></i>
                                         Voltar
                                     </button>
                                     <p class="card-description">
 
-                                    </p>
-                                    <div class="table-responsive">
-                                        <canvas id="grafico1"  class="table"></canvas>
-                                    </div>
-                                    <div class="table-responsive">
-                                        <canvas id="grafico2"  class="table"></canvas>
-                                    </div>
+                                    </p>    
                                     
+                                    <div id="enunciadoQuestao">
+                                          
+                                         
+                                    </div>
                                 </div>
                             </div>
                         </div>
                         <!--Tabela de atividades-->
                     </div>
+                  
 
 
 
@@ -264,6 +300,7 @@
         <script src="../js/off-canvas.js"></script>
         <script src="../js/hoverable-collapse.js"></script>
         <script src="../js/template.js"></script>
+        <script src="../js/sweetAlert.js"></script>
         <script src="../js/settings.js"></script>
         <script src="../vendors/chart.js/Chart.min.js"></script>
 

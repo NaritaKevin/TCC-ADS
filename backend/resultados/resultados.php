@@ -60,7 +60,7 @@
          }
          public function buscarResultadosAluno($id){
             $res = array();
-            $cmd = $this->pdo->prepare("SELECT p.pesNome,ua.usuPontuacao,ua.usuDataRealizacao,
+            $cmd = $this->pdo->prepare("SELECT ua.usuID,p.pesNome,ua.usuPontuacao,ua.usuDataRealizacao,
             (SELECT COUNT(*) FROM resultados,atividade_questao 
             WHERE atiqAtividadeID = resAtividadeId AND atiqQuestaoID = resQuestaoID  AND resResposta = 'Sim' AND resStsResposta = 'Respondido' AND resUsuarioAtividadeID = ua.usuID) AS Acertos,
             (SELECT COUNT(atiqAtividadeID) FROM atividade_questao WHERE atiqAtividadeID = ua.usuAtividadeID) AS TotalQuestoes
@@ -118,7 +118,7 @@
                     return false;
             } else { //não foi encontrado o subgrupo
                 $cmd = $this->pdo->prepare("CREATE OR REPLACE VIEW resultados_erros AS
-                SELECT r.resQuestaoID,COUNT(r.resID) erros
+                SELECT r.resQuestaoID AS resQuestaoIDErro,COUNT(r.resID) erros
                 FROM resultados r
                 WHERE resAtividadeID = :atiID AND resResposta = 'Nao' AND resStsResposta = 'Respondido' GROUP BY resQuestaoID ASC;");
                 $cmd->bindValue(":atiID",$id);
@@ -149,17 +149,67 @@
 
         public function resultadoQuestao($id){
             $res = array();
-            $cmd = $this->pdo->prepare("SELECT atiqOrdemQuestao,r1.*,r2.erros,atiqPontuacao, r3.totalAlunos 
-            FROM atividade_questao aq left JOIN resultados_acertos r1 ON r1.resQuestaoID = aq.atiqQuestaoID 
-            LEFT JOIN resultados_erros r2 ON aq.atiqQuestaoID = r2.resQuestaoID 
+            $cmd = $this->pdo->prepare("SELECT atiqOrdemQuestao,r1.*,c.claNome,r2.resQuestaoIDErro,r2.erros,atiqPontuacao, r3.totalAlunos 
+            FROM atividade_questao aq LEFT JOIN resultados_acertos r1 ON r1.resQuestaoID = aq.atiqQuestaoID 
+            LEFT JOIN resultados_erros r2 ON aq.atiqQuestaoID = r2.resQuestaoIDErro 
             JOIN resultados_totalalunos r3 ON r3.resQuestaoID = aq.atiqQuestaoID
-            WHERE atiqAtividadeID = :atiID ORDER BY atiqOrdemQuestao;");
+            JOIN atividades a ON a.atiID = aq.atiqAtividadeID
+            JOIN classes c ON c.claCodigo = a.atiClasseID
+            WHERE atiqAtividadeID = :atiID  ORDER BY atiqOrdemQuestao;");
             $cmd->bindValue(":atiID",$id);
             $cmd->execute();
             $res = $cmd->fetchAll(PDO::FETCH_ASSOC);
     
             return $res;
         }
+
+        public function questoesDaAtividade($id){
+            $res = array();
+            $cmd = $this->pdo->prepare("SELECT alt.*,q.queDescricao,a.atiqOrdemQuestao 
+            FROM alternativas alt 
+            LEFT JOIN questoes q ON alt.altQuestaoID = q.queID 
+            RIGHT JOIN atividade_questao a ON a.atiqQuestaoID = q.queID WHERE a.atiqAtividadeID = :atiID GROUP BY alt.altID ORDER BY atiqOrdemQuestao;");
+            $cmd->bindValue(":atiID",$id);
+            $cmd->execute();
+            $res = $cmd->fetchAll(PDO::FETCH_ASSOC);
+    
+            return $res;
+        }
+        public function criarViewQuestoesDaAtividade($id)
+        {
+            // verificar se o subgrupo ja esta cadastrado
+            $cmd = $this->pdo->prepare("SELECT alt.*,q.queDescricao,a.atiqOrdemQuestao 
+            FROM alternativas alt 
+            LEFT JOIN questoes q ON alt.altQuestaoID = q.queID 
+            RIGHT JOIN atividade_questao a ON a.atiqQuestaoID = q.queID WHERE a.atiqAtividadeID = :atiID GROUP BY alt.altID ORDER BY atiqOrdemQuestao;");
+            $cmd->bindValue(":atiID",$id);
+            $cmd->execute();
+    
+            if ($cmd->rowCount() == 0) {// subgrupo ja existe no banco
+                    return false;
+            } else { //não foi encontrado o subgrupo
+                $cmd = $this->pdo->prepare("CREATE OR REPLACE VIEW questoes_e_alternativas AS
+                SELECT alt.*,q.queDescricao,a.atiqOrdemQuestao FROM alternativas alt 
+                LEFT JOIN questoes q ON alt.altQuestaoID = q.queID 
+                RIGHT JOIN atividade_questao a ON a.atiqQuestaoID = q.queID WHERE a.atiqAtividadeID = :atiID GROUP BY alt.altID ORDER BY atiqOrdemQuestao;");
+                $cmd->bindValue(":atiID",$id);
+                $cmd->execute();
+                return true;
+            }
+    
+        }
+        public function resultadosAluno($id){
+            $res = array();
+            $cmd = $this->pdo->prepare("SELECT r.*,qa.* 
+            FROM resultados r JOIN usuario_atividade ua ON ua.usuID = r.resUsuarioAtividadeID  
+            JOIN questoes_e_alternativas qa ON qa.altQuestaoID = r.resQuestaoID  WHERE r.resUsuarioAtividadeID = :usuID ORDER BY atiqOrdemQuestao");
+            $cmd->bindValue(":usuID",$id);
+            $cmd->execute();
+            $res = $cmd->fetchAll(PDO::FETCH_ASSOC);
+    
+            return $res;
+        }
+
     }
 
 
