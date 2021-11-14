@@ -211,6 +211,10 @@ $(document).ready(function () {
     //? Botao cadastrar disciplina
     $("#btn-nova-disciplina").click(function () {
         $("#titleDisciplina").toggle("slow")
+
+        $("#cardTitleDisc").text("Cadastrar Disciplina");
+        $("#cardDescDisc").text("Cadastre disciplinas para as temáticas.");
+        $("#btn-cadastrarDisciplina span").text("Cadastrar");
         toggleNovaDisciplina();//Mostra ou esconde tabela
         $('#opDisciplina,#disciplina,#disID').val("");//Limpa os campos
     })
@@ -218,6 +222,10 @@ $(document).ready(function () {
 
     //? Botao editar da tabela de disciplina
     $("#tbodyDisciplina").on("click", ".btn-edit-disciplina", function () {
+        $("#cardTitleDisc").text("Alterar Disciplina");
+        $("#cardDescDisc").text("Altera a disciplina selecionada.");
+        $("#btn-cadastrarDisciplina span").text("Salvar");
+
         toggleNovaDisciplina()//Mostra ou esconde tabela
         //children: 
         let dados = $(this).closest('tr').children("td").map(function () { // função .map é utilizado para pegar todos os dados contidos na linha onde o botão editar foi pressionado, como ID, DESCRICAO E ETC.
@@ -322,6 +330,10 @@ $(document).ready(function () {
     //? Botao cadastrar subgrupo
     $("#btn-novo-subgrupo").click(function () {
         $("#titleSubgrupo").toggle("slow")
+        $("#cardTitleSub").text("Cadastrar Subgrupo");
+        $("#cardDescSub").text("Cadastre temáticas para os subgrupos.");
+        $("#btn-cadastrarSubgrupo span").text("Cadastrar");
+
         toggleNovoSubgrupo();
         $("#opSubgrupo").val("");
         $("#subgrupo").val("");
@@ -361,6 +373,11 @@ $(document).ready(function () {
 
     //?Botao da tabela de editar subgrupo
     $("#tbodySubgrupo").on("click", ".btn-edit-subgrupo", function () {
+        $("#titleSubgrupo").toggle("slow")
+        $("#cardTitleSub").text("Alterar Subgrupo");
+        $("#cardDescSub").text("Altere o subgrupo selecionado.");
+        $("#btn-cadastrarSubgrupo span").text("Salvar");
+
         toggleNovoSubgrupo()
         let dados = $(this).closest('tr').children("td").map(function () {
             return $(this).text();
@@ -506,6 +523,9 @@ $(document).ready(function () {
     //?Botao para abrir/fechar formulario de cadastro do tematica
     $("#btn-novo-tematica").click(function () {
         $("#titleTematica").toggle("slow")
+        $("#cardTitleTem").text("Cadastrar Temática");
+        $("#cardDescTem").text("Cadastre temáticas para os subgrupos.");
+        $("#btn-cadastrarTematica span").text("Cadastrar");
         toggleNovaTematica();
         $('#opTematica,#tematica,#temID').val("");//Limpa os campos
 
@@ -544,7 +564,13 @@ $(document).ready(function () {
 
     //? Botao editar da tabela de tematica
     $("#tbodyTematica").on("click", ".btn-edit-tematica", function () {
-        toggleNovaTematica()//Mostra ou esconde tabela
+        $("#titleTematica").toggle("slow")
+
+        toggleNovaTematica()
+        $("#cardTitleTem").text("Alterar Temática");
+        $("#cardDescTem").text("Altere a temática selecionada");
+        $("#btn-cadastrarTematica span").text("Salvar");
+
 
 
         let dados = $(this).closest('tr').children("td").map(function () {

@@ -199,8 +199,8 @@ $s = new Subgrupo("pedagogy","localhost","root","");
                                                             <div id="cadastrarDisciplina" class=" stretch-card">
                                                                 <div class="card">
                                                                     <div class="card-body" style="padding-left: 0px; padding-right: 0px;">
-                                                                        <h4 class="card-title">Cadastrar Disciplina</h4>
-                                                                        <p class="card-description">
+                                                                        <h4 id="cardTitleDisc" class="card-title">Cadastrar Disciplina</h4>
+                                                                        <p id="cardDescDisc" class="card-description">
                                                                             Cadastre disciplinas para as temáticas.
                                                                         </p>
                                                                         <form id="formDisciplina" >
@@ -214,8 +214,7 @@ $s = new Subgrupo("pedagogy","localhost","root","");
                                                                             </div>
                                                                             <button id="btn-cadastrarDisciplina" type="submit"                                        
                                                                                 class="btn btn-icon-text btn-primary mr-2">
-                                                                                <i class="bi bi-check2-circle btn-icon-prepend"></i>
-                                                                                Cadastrar</button>
+                                                                                <i class="bi bi-check2-circle btn-icon-prepend"></i><span>Cadastrar</span></button>
                                                                                 
                                                                         <!--  <button id="btn-cancelarDisciplina" type="button"
                                                                                 class="btn btn-secondary">Cancelar</button> -->
@@ -260,8 +259,8 @@ $s = new Subgrupo("pedagogy","localhost","root","");
                                                             <div id="cadastrarTematica" class=" stretch-card">
                                                                 <div class="card">
                                                                     <div class="card-body" style="padding-left: 0px; padding-right: 0px;">
-                                                                        <h4 class="card-title">Cadastrar Temática</h4>
-                                                                        <p class="card-description">
+                                                                        <h4 id="cardTitleTem" class="card-title">Cadastrar Temática</h4>
+                                                                        <p id="cardDescTem" class="card-description">
                                                                             Cadastre temáticas para os subgrupos.
                                                                         </p>
                                                                         <form id="formTematica" >
@@ -279,10 +278,8 @@ $s = new Subgrupo("pedagogy","localhost","root","");
                                                                             </div>
                                                                             <button id="btn-cadastrarTematica" type="submit"
                                                                                 class="btn btn-icon-text btn-primary mr-2"> 
-                                                                                <i class="bi bi-check2-circle btn-icon-prepend"></i>
-                                                                                Cadastrar</button>
-                                                                        <!--  <button id="btn-cancelarTematica" type="button"
-                                                                                class="btn btn-secondary">Cancelar</button> -->
+                                                                                <i class="bi bi-check2-circle btn-icon-prepend"></i><span>Cadastrar</span></button>
+                                                                      
                                                                         </form>
                                                                     </div>
                                                                 </div>
@@ -323,8 +320,8 @@ $s = new Subgrupo("pedagogy","localhost","root","");
                                                             <div id="cadastrarSubgrupo" class=" stretch-card">
                                                                 <div class="card">
                                                                     <div class="card-body" style="padding-left: 0px; padding-right: 0px;">
-                                                                        <h4 class="card-title">Cadastrar subgrupo</h4>
-                                                                        <p class="card-description">
+                                                                        <h4 id="cardTitleSub" class="card-title">Cadastrar subgrupo</h4>
+                                                                        <p id="cardDescSub" class="card-description">
                                                                             Cadastre subgrupos para as questões.
                                                                         </p>
                                                                         <form id="formSubrgrupo" >
@@ -345,8 +342,7 @@ $s = new Subgrupo("pedagogy","localhost","root","");
                                                                             </div>
                                                                             <button id="btn-cadastrarSubgrupo" type="submit"
                                                                                 class="btn btn-icon-text btn-primary mr-2"> 
-                                                                                <i class="bi bi-check2-circle btn-icon-prepend"></i>
-                                                                                Cadastrar</button>
+                                                                                <i class="bi bi-check2-circle btn-icon-prepend"></i><span>Cadastrar</span></button>
                                                                             
                                                                         </form>
                                                                     </div>

@@ -60,6 +60,12 @@ $(document).ready(function () {
                 { data: 'queCodigoBncc' },
                 {
                     data: null, render: function (data, type, row) {
+
+                        return `<span>${data.anoDescricao} - ${data.anoEtapa}</span>`
+                    }
+                },
+                {
+                    data: null, render: function (data, type, row) {
                         if (data.nivDescricao == "Fácil") {
                             return `<label class="badge badge-success">${data.nivDescricao}</label>`;
                         } else if (data.nivDescricao == "Intermediário") {
@@ -69,7 +75,6 @@ $(document).ready(function () {
                         }
                     }
                 },
-                { data: 'queAnoID' },
                 {
                     data: null, render: function (data, type, row) {
                         if (data.queStsTipo == "Publica" || data.queStsTipo == "Pública") {
@@ -119,10 +124,12 @@ $(document).ready(function () {
         var enunciado = $("#enunciado").val();
         var palavrasChave = $("#palavrasChave").val();
         var statusopc = $("#statusopc option:selected").text();
+        var ano = $('#ano').val();
 
         var data = {
             subgrupoopc: subgrupoopc,
             nivelopc: nivelopc,
+            ano: ano,
             codigobncc: codigobncc,
             statusopc: statusopc,
             enunciado: enunciado,
@@ -151,7 +158,7 @@ $(document).ready(function () {
             data['questaoID'] = idQuestao;
         }
 
-        console.log(data)
+
 
         $.ajax({
             url: '../backend/questoesBack.php',
@@ -177,7 +184,8 @@ $(document).ready(function () {
                         timer: 2000
                     })
 
-                    $("#btn-nova-questao").click();//Simula um click manual no botao de cadastrar
+                    $("#btn-nova-questao").click();
+                    $("#cancelarQuestaoAtividade").click();
                 } else if (data.type == 'validacao') {
                     Swal.fire({
                         position: "center",
@@ -216,7 +224,7 @@ $(document).ready(function () {
             $("#btn-nova-questao").text('Cancelar').prepend(cancelarIcon).removeClass("btn-primary").addClass("btn-secondary");
             $("#tableQuestoesToggle").toggle("slow");
         } else {
-            $("#btn-nova-questao").text('Nova questão').prepend(adicionarIcon).removeClass("btn-secondary").addClass("btn-primary");
+            $("#btn-nova-questao").text('Nova Questão').prepend(adicionarIcon).removeClass("btn-secondary").addClass("btn-primary");
             $("#tableQuestoesToggle").toggle("slow");
         }
         $("#cadastrarQuestao").toggle("slow");
@@ -286,10 +294,18 @@ $(document).ready(function () {
 
 
     });
+    //** BOTAO USADO NA PAGINA DE ATIVIDADES
+    $("#cancelarQuestaoAtividade").click(function () {
+        $("#tableQuestoesSelecionadas").toggle("slow");
+        $("#cadastrarQuestao").toggle("slow");
+        $("#botoesAtividade").toggle();
+        resetarFormulario();
+    })
+
     $("#cancelarQuestao").click(function () {
+        $("#titleQuestoes").toggle("slow")
         toggleNovaQuestao();
         setTimeout(function () { resetarFormulario(); }, 1000);
-
         atualizarQuestaoo = false;
     });
     //!

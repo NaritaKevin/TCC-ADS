@@ -84,11 +84,15 @@ $(document).ready(function () {
     });
     //!  Botão Modal info atividade e cancelar
     $("#tbodyResultadosAluno").on("click", ".btn-info-aluno", function () {
-        let dadosAluno = $(this).closest('tr').children("td").map(function () {
+        dadosAluno = $(this).closest('tr').children("td").map(function () {
             return $(this).text();
         }).get();
         let idAluno = dadosAluno[0].match(/\d+/g);
         idAluno = idAluno.join("")
+        $("#verResultados").toggle("slow")
+        $("#verAtividadeAluno").fadeToggle("slow");
+
+
 
         $.ajax({
             url: '../backend/resultados/resultadosBack.php',
@@ -218,7 +222,12 @@ $(document).ready(function () {
 
             },
         }).done(function (data) {
+            let num = dadosAluno[0].replace(/[^0-9]/g, "").length
 
+            let nomeAluno = dadosAluno[0].substring(num);
+            console.log(dadosAluno)
+
+            $("#tituloResAluno").html(` <h4 style="text-transform: none;" class="card-title">Atividade do aluno(a): <span class="text-primary">${nomeAluno}</span><small class="text-primary" id="classe"><strong> - ${dadosAluno[4]} </strong></small></h4>`);
             for (let i = 0; i < data[1].length; i++) {
                 if (data[1][i].resResposta == "Sim" && data[1][i].altStsCorreta == "Correta" && data[1][i].resAltEscolhida == data[1][i].altLetra && data[1][i].resStsResposta == "Respondido") {
                     $(`#${data[1][i].atiqOrdemQuestao}${data[1][i].altLetra}`).prop('checked', true).parent().parent().addClass("form-check-success")
@@ -266,6 +275,7 @@ $(document).ready(function () {
         dados = $(this).closest('tr').children("td").map(function () {
             return $(this).text();
         }).get();
+
 
         tableResultadosAluno = $('#tableResultadosAluno').DataTable({
             columnDefs: [
@@ -364,12 +374,7 @@ $(document).ready(function () {
                                 </button>`;
                     }
                 },
-                {
-                    "className": 'details-control',
-                    "orderable": false,
-                    "data": null,
-                    "defaultContent": ''
-                }
+
             ]
 
         });
@@ -386,10 +391,8 @@ $(document).ready(function () {
         $("#verAtividadeAluno").toggle("slow")
         $("#verResultados").toggle("slow");
     })
-    $("#tbodyResultadosAluno").on("click", ".btn-info-aluno", function () {
-        $("#verResultados").toggle("slow")
-        $("#verAtividadeAluno").fadeToggle("slow");
-    })
+
+
     $("#btn-voltar-resultados").click(function () {
         $("#tabelaResultados").toggle("slow");
         $("#verResultados").fadeToggle("slow");
@@ -401,30 +404,6 @@ $(document).ready(function () {
     })
 
 
-    function format(d) {
-        // `d` is the original data object for the row
-        return '<table cellpadding="5" cellspacing="0" border="0" style="width:100%;">' +
-            '<tr class="expanded-row">' +
-            '<td colspan="8" class="row-bg"><div><div class="d-flex justify-content-between"><div class="cell-hilighted"><div class="d-flex mb-2"><div class="mr-2 min-width-cell"><p>Policy start date</p><h6>25/04/2020</h6></div><div class="min-width-cell"><p>Policy end date</p><h6>24/04/2021</h6></div></div><div class="d-flex"><div class="mr-2 min-width-cell"><p>Sum insured</p><h5>$26,000</h5></div><div class="min-width-cell"><p>Premium</p><h5>$1200</h5></div></div></div><div class="expanded-table-normal-cell"><div class="mr-2 mb-4"><p>Quote no.</p><h6>Incs234</h6></div><div class="mr-2"><p>Vehicle Reg. No.</p><h6>KL-65-A-7004</h6></div></div><div class="expanded-table-normal-cell"><div class="mr-2 mb-4"><p>Policy number</p><h6>Incsq123456</h6></div><div class="mr-2"><p>Policy number</p><h6>Incsq123456</h6></div></div><div class="expanded-table-normal-cell"><div class="mr-2 mb-3 d-flex"><div class="highlighted-alpha"> A</div><div><p>Agent / Broker</p><h6>Abcd Enterprices</h6></div></div><div class="mr-2 d-flex"> <img src="../../images/faces/face5.jpg" alt="profile"/><div><p>Policy holder Name & ID Number</p><h6>Phillip Harris / 1234567</h6></div></div></div><div class="expanded-table-normal-cell"><div class="mr-2 mb-4"><p>Branch</p><h6>Koramangala, Bangalore</h6></div></div><div class="expanded-table-normal-cell"><div class="mr-2 mb-4"><p>Channel</p><h6>Online</h6></div></div></div></div></td>'
-        '</tr>' +
-            '</table>';
-    }
-    $('#tableResultadosAluno tbody').on('click', 'td.details-control', function () {
-        var tr = $(this).closest('tr');
-        var row = tableResultadosAluno.row(tr);
-
-        if (row.child.isShown()) {
-            // This row is already open - close it
-            row.child.hide();
-
-            tr.removeClass('shown');
-        }
-        else {
-            // Open this row
-            row.child(format(row.data())).show();
-            tr.addClass('shown');
-        }
-    });
 
 
     $("#tbodyResultados").on("click", ".btn-info-grafico", function () {

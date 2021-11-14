@@ -111,6 +111,7 @@ if(isset($_POST['subgrupoopc']) && isset($_POST['nivelopc']) && isset($_POST['st
     $statusopc = addslashes($_POST['statusopc']);
     $enunciado = addslashes($_POST['enunciado']);
     $palavrasChave = addslashes($_POST['palavrasChave']);
+    $ano = addslashes($_POST['ano']);
 
     $id='';
     $update = '';
@@ -124,11 +125,11 @@ if(isset($_POST['subgrupoopc']) && isset($_POST['nivelopc']) && isset($_POST['st
     }
 
 
-    // MUDAR PRA QUANDO TIVER ANOOOOOOOOOOOOOOOOOOOOO
-    $ano = "1";
+    
+    
 
     if ( $update == "update" && !empty($queID)) {// Editar questão
-        if(!empty($enunciado) && !empty($subgrupoopc)){
+        if(!empty($enunciado) && !empty($subgrupoopc) && !empty($nivelopc) && !empty($statusopc) && !empty($ano)){
 
             if($q->atualizarDadosQuestao($id,$enunciado,$codigobncc,$palavrasChave,$statusopc,$nivelopc,$ano,$subgrupoopc)){
                 $output = json_encode(array('type' => 'sucesso', 'text' => 'Alterado com sucesso!'));
@@ -147,7 +148,7 @@ if(isset($_POST['subgrupoopc']) && isset($_POST['nivelopc']) && isset($_POST['st
     }
    
     if($cadastrar == true){
-        if(!empty($enunciado) && !empty($subgrupoopc)){ // Cadastrar questão
+        if(!empty($enunciado) && !empty($subgrupoopc)  && !empty($nivelopc) && !empty($statusopc) && !empty($ano)){ // Cadastrar questão
         
             if($q->cadastrarQuestao($enunciado,$codigobncc,$palavrasChave,$statusopc,$nivelopc,$ano,$subgrupoopc)){
             $output = json_encode(array('type' => 'sucesso', 'text' => 'Cadastrada com sucesso!'));

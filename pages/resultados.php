@@ -36,6 +36,9 @@
       
             white-space: normal;
         }
+        /* .card .card-title {
+            text-transform: none;
+        } */
        
     </style>
 </head>
@@ -245,7 +248,10 @@
                         <div class="col-lg-12 grid-margin stretch-card">
                             <div class="card">
                                 <div class="card-body">
-                                    <h3 class="card-title">Atividade x</h3>
+                                    <div id="tituloResAluno">
+
+                                    </div>
+                                   
                                     <button type="button" id="btn-voltar-verAtividadeAluno"
                                         class="btn btn-secondary btn-icon-text">
                                         <i class="bi bi-arrow-left-circle btn-icon-prepend"></i>

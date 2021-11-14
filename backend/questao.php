@@ -21,7 +21,7 @@ class Questao{
     
     public function buscarDadosQuestao(){
         $res = [];
-        $cmd = $this->pdo->query("SELECT * FROM questoes q LEFT JOIN subgrupos s ON q.queSubgrupoID = s.subID  LEFT JOIN niveis n ON n.nivID = q.queNivelID");
+        $cmd = $this->pdo->query("SELECT * FROM questoes q LEFT JOIN subgrupos s ON q.queSubgrupoID = s.subID  LEFT JOIN niveis n ON n.nivID = q.queNivelID join ano a ON a.anoCodigo = q.queAnoID");
         $res = $cmd->fetchAll(PDO::FETCH_ASSOC);
         return $res;
     }
@@ -60,7 +60,12 @@ class Questao{
         $res = $cmd->fetch();
         return $res;
     }
-    
+    public function buscarAno(){
+        $res = [];
+        $cmd = $this->pdo->query("SELECT * FROM ano;");
+        $res = $cmd->fetchAll(PDO::FETCH_ASSOC);
+        return $res;
+    }
     public function buscarQuestao($id){
         $res = [];
         $cmd = $this->pdo->prepare("SELECT * FROM questoes q 

@@ -1,12 +1,12 @@
 <?php
-require_once '../backend/disciplina.php';
-require_once '../backend/tematica.php';
+
 require_once '../backend/subgrupo.php';
 require_once '../backend/nivel.php';
-$p = new Disciplina("pedagogy", "localhost", "root", "");
-$t = new Tematica("pedagogy", "localhost", "root", "");
+require_once '../backend/questao.php';
+
 $s = new Subgrupo("pedagogy", "localhost", "root", "");
 $n = new Nivel("pedagogy", "localhost", "root", "");
+$q = new Questao("pedagogy", "localhost", "root", "");
 ?>
 
 <!DOCTYPE html>
@@ -158,7 +158,7 @@ $n = new Nivel("pedagogy", "localhost", "root", "");
                                     <h4 id="titleQuestoes" class="card-title">Tabela de Questões</h4>
                                     <p class="card-description">
                                         <button type="button" id="btn-nova-questao" class="btn btn-primary btn-icon-text">
-                                            <i class="bi bi-plus-circle btn-icon-prepend"></i>Nova questão
+                                            <i class="bi bi-plus-circle btn-icon-prepend"></i>Nova Questão
                                         </button>
                                     </p>
                                     <div id="cadastrarQuestao" class=" stretch-card">
@@ -171,35 +171,52 @@ $n = new Nivel("pedagogy", "localhost", "root", "");
                                                 <form id="formQuestoes">
 
                                                     <div class="form-group">
-                                                        <div class="row">
-                                                            <div class="col-md-4">
-                                                                <label class="labelCadastroAtuacao">Subgrupo</label>
-                                                                <select id="subgrupoopc" class="selectpicker show-tick" name="subgrupoopc" data-width="fit" data-live-search="true" data-show-subtext="true">
+                                                        <div class="row" >
+                                                            <div class="col-md-6">
+                                                                <div class="form-group">
+                                                                    <label style="display: block;">Subgrupo</label>
+                                                                    <select id="subgrupoopc" class="selectpicker show-tick" name="subgrupoopc" data-width="fit" data-live-search="true" data-show-subtext="true">
+                                                                        <option disabled selected value="0" >Escolha</option>
+                                                                        <?php $arr_subgrupo = $s->buscarDadosSub() ?>
+                                                                        <?php if (!empty($arr_subgrupo)) { ?>
+                                                                            <?php foreach ($arr_subgrupo as $subgrupoop) {
+                                                                            ?>
+                                                                                <option data-subtext="<?php echo " - ", $subgrupoop['temDescricao'], " - " ,$subgrupoop['disDescricao']; ?>" value="<?php echo $subgrupoop['subID']; ?>"><?php echo $subgrupoop['subDescricao']; ?></option>
+                                                                            <?php } ?>
+                                                                        <?php } ?>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                            <div class="form-group">
+                                                                <label class="labelCadastroAtuacao">Status</label>
+                                                                <select id="statusopc" class="selectpicker show-tick" name="statusopc" data-width="fit">
+                                                                    <option value="1">Pública</option>
+                                                                    <option value="2">Privada professor</option>
+                                                                    <option value="3">Privada grupo</option>
+                                                                    <option value="4">Privada escola</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                        </div>
+
+                                                        <div class="row" >
+                                                        <div class="col-md-6">
+                                                            <label class="labelCadastroAtuacao">Ano</label>
+                                                                <select id="ano" class="selectpicker show-tick" name="ano" data-width="fit" data-live-search="true" data-show-subtext="true">
                                                                     <option disabled selected value="0" >Escolha</option>
-                                                                    <?php $arr_subgrupo = $s->buscarDadosSub() ?>
-                                                                    <?php if (!empty($arr_subgrupo)) { ?>
-                                                                        <?php foreach ($arr_subgrupo as $subgrupoop) {
+                                                                    <?php $arr_ano = $q->buscarAno() ?>
+                                                                    <?php if (!empty($arr_ano)) { ?>
+                                                                        <?php foreach ($arr_ano as $ano) {
                                                                         ?>
-                                                                            <option data-subtext="<?php echo " - ", $subgrupoop['temDescricao'], " - " ,$subgrupoop['disDescricao']; ?>" value="<?php echo $subgrupoop['subID']; ?>"><?php echo $subgrupoop['subDescricao']; ?></option>
+                                                                            <option data-subtext="<?php echo " - ", $ano['anoEtapa']; ?>" value="<?php echo $ano['anoCodigo']; ?>"><?php echo $ano['anoDescricao']; ?></option>
                                                                         <?php } ?>
                                                                     <?php } ?>
                                                                 </select>
                                                             </div>
-
-                                                        
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-md-4">
-                                                            <div class="form-group">
-                                                                <label for="codigobncc">Código BNCC</label>
-                                                                <input type="hidden" name="opQuestao" id="opQuestao">
-                                                                <input type="hidden" name="queID" id="queID">
-                                                                <input type="text" style="width: auto" class="form-control" name="codigobncc" id="codigobncc" placeholder="Código BNCC">
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="col-md-4">
+                                                      
+                                                    
+                                                        <div class="col-md-6">
                                                             <div class="form-group">
                                                                 <label class="labelCadastroAtuacao">Nível</label>
                                                                 <select id="nivelopc" class="selectpicker show-tick" name="nivelopc" data-width="fit">
@@ -213,30 +230,35 @@ $n = new Nivel("pedagogy", "localhost", "root", "");
                                                                 </select>
                                                             </div>
                                                         </div>
-
-                                                        <div class="col-md-4">
+                                                           
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-2">
                                                             <div class="form-group">
-                                                                <label class="labelCadastroAtuacao">Status</label>
-                                                                <select id="statusopc" class="selectpicker show-tick" name="statusopc" data-width="fit">
-                                                                    <option value="1">Pública</option>
-                                                                    <option value="2">Privada professor</option>
-                                                                    <option value="3">Privada grupo</option>
-                                                                    <option value="4">Privada escola</option>
-                                                                </select>
+                                                                <label for="codigobncc">Código BNCC</label>
+                                                                <input type="hidden" name="opQuestao" id="opQuestao">
+                                                                <input type="hidden" name="queID" id="queID">
+                                                                <input type="text"  class="form-control" name="codigobncc" id="codigobncc" placeholder="EF08MA06">
                                                             </div>
                                                         </div>
+                                                        <div class="col-md-10">
+                                                            <div class="form-group">
+                                                                <label for="palavrasChave">Palavras-chave</label>
+                                                                <input type="text" class="form-control" name="palavrasChave" id="palavrasChave" placeholder="Expressão Valor Ordenação Operações">
+                                                            </div>
+                                                        </div>
+                                                      
+                                                       
                                                     </div>
                                                     <div class="form-group">
                                                         <label for="enunciado">Enunciado</label>
-                                                        <textarea class="form-control" name="enunciado" id="enunciado" rows="7"></textarea>
+                                                        <textarea class="form-control" name="enunciado" placeholder="O valor numérico de uma expressão algébrica depende muito da ordenação das operações..." id="enunciado" rows="7"></textarea>
                                                     </div>
-                                                    <div class="form-group">
-                                                        <label for="palavrasChave">Palavras chave</label>
-                                                        <input type="text" class="form-control" name="palavrasChave" id="palavrasChave" placeholder="Palavras chave">
-                                                    </div>
+                                                  
                                                     <div class="form-group">
                                                         <p class="card-title">
-                                                            Alternativas.
+                                                            Alternativas
                                                         </p>
                                                         <p class="card-description">
                                                             Cadastre as alternativas da questão.
@@ -267,12 +289,12 @@ $n = new Nivel("pedagogy", "localhost", "root", "");
                                                 <tr>
                                                     <th>ID</th>
                                                     <th>Enunciado</th>
-                                                    <th>Palavras Chave</th>
+                                                    <th>Palavras-Chave</th>
                                                     <th>Subgrupo</th>
                                                     <th>Código BNCC</th>
+                                                    <th>Ensino - Ano</th>
                                                     <th>Nível</th>
-                                                    <th>Ano</th>
-                                                    <th>Status Tipo</th>
+                                                    <th>Status</th>
                                                     <th>Revisada</th>
                                                     <th style="text-align: center">Ações</th>
                                                 </tr>

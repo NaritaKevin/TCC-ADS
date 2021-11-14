@@ -2,7 +2,7 @@ $(document).ready(function () {
     let buscaInicialQuestao = true;
     let buscaInicialAtividade = true;
     let buscaInicialQuestõesEditar = true;
-    let buscaInicialNada = true ;
+    let buscaInicialNada = true;
 
     var opAtividade
     var opId
@@ -17,6 +17,7 @@ $(document).ready(function () {
     var questoesID
     var atualizar
     var IDatividade
+
 
     init();
 
@@ -84,7 +85,7 @@ $(document).ready(function () {
                         }
                     }
                 },
-                { data: 'claNome'},
+                { data: 'claNome' },
                 {
                     data: null, render: function (data, type, row) { // renderizar a exibição dos botões 
 
@@ -102,6 +103,12 @@ $(document).ready(function () {
                     </button>`;
                     }
                 },
+                {
+                    "className": 'details-control',
+                    "orderable": false,
+                    "data": null,
+                    "defaultContent": ''
+                }
             ]
 
 
@@ -135,14 +142,11 @@ $(document).ready(function () {
             language: { // tradução em portgues da tabela
                 url: "../partials/dataTablept-br.json"
             },
-            lengthMenu: [[5, 15, 25, -1], [5, 15, 25, "Todos"]], // configuração de quantidade de registros a serem mostrados, 5....15 ou todos 
+            lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "Todos"]], // configuração de quantidade de registros a serem mostrados, 5....15 ou todos 
             columns: [
-                //aqui dentro sera configurado o conteudo de cada coluna utilizando as variaveis data
-                //importante - os valores contidos em data não a relação com os nomes dos cabeçalhos da tabela.
-
-                // as tabelas são lidas por indices: 0,1,2,3, de acordo com o tanto de colunas - Neste caso o indice 0 sera o queID.
-                { data: 'queID' }, // o valor contido na variavel data, é o que sera buscado no banco de dados, no caso o ID
-                { 
+                { data: 'queID' },
+                { data: 'queID' },
+                {
                     data: null, render: function (data, type, row) {
                         let descricao = data.queDescricao.slice(0, 200);
                         let tamanho = descricao.length;
@@ -150,8 +154,8 @@ $(document).ready(function () {
                             descricao = descricao + "..."
                         }
 
-                        return `<span style=" max-width: 1200px;
-                        min-width: 1200px;
+                        return `<span style=" max-width: 500px;
+                        min-width: 200px;
                         display: block;
                         overflow-wrap: break-word;
                         white-space: break-spaces;">${descricao}</span>`;
@@ -160,19 +164,7 @@ $(document).ready(function () {
                 },
                 { data: 'queCodigoBncc' },
                 { data: 'queStsTipo' },
-               // {
-               //     data: null, render: function (data, type, row) { // renderizar a exibição dos botões 
 
-               //         return `<button  type="button"
-               //             class="btn  btn-inverse-success btn-rounded btn-icon btn-edit-disciplina">
-               //             <i class="bi bi-pencil"></i>
-               //         </button>
-               //         <button type="button"
-               //             class="btn btn-inverse-danger btn-rounded btn-icon btn-del-disciplina">
-                //            <i class="bi bi-trash"></i>
-               //         </button>`;
-               //     }
-               // },
             ]
 
 
@@ -180,15 +172,31 @@ $(document).ready(function () {
 
     }
 
-    // $("#cancelarAtividade").click(function (e) {
-    //     if ($.fn.dataTable.isDataTable('#tableQuestoesAtividade')) {
-    //   let teste = tableEscolhidas.columns(0).data().eq(0).sort()
+    function format(d) {
+        // `d` is the original data object for the row
+        return '<table cellpadding="5" cellspacing="0" border="0" style="width:100%;">' +
+            '<tr class="expanded-row">' +
+            '<td colspan="8" class="row-bg"><div><div class="d-flex justify-content-between"><div class="cell-hilighted"><div class="d-flex mb-2"><div class="mr-2 min-width-cell"><p>Policy start date</p><h6>25/04/2020</h6></div><div class="min-width-cell"><p>Policy end date</p><h6>24/04/2021</h6></div></div><div class="d-flex"><div class="mr-2 min-width-cell"><p>Sum insured</p><h5>$26,000</h5></div><div class="min-width-cell"><p>Premium</p><h5>$1200</h5></div></div></div><div class="expanded-table-normal-cell"><div class="mr-2 mb-4"><p>Quote no.</p><h6>Incs234</h6></div><div class="mr-2"><p>Vehicle Reg. No.</p><h6>KL-65-A-7004</h6></div></div><div class="expanded-table-normal-cell"><div class="mr-2 mb-4"><p>Policy number</p><h6>Incsq123456</h6></div><div class="mr-2"><p>Policy number</p><h6>Incsq123456</h6></div></div><div class="expanded-table-normal-cell"><div class="mr-2 mb-3 d-flex"><div class="highlighted-alpha"> A</div><div><p>Agent / Broker</p><h6>Abcd Enterprices</h6></div></div><div class="mr-2 d-flex"> <img src="../../images/faces/face5.jpg" alt="profile"/><div><p>Policy holder Name & ID Number</p><h6>Phillip Harris / 1234567</h6></div></div></div><div class="expanded-table-normal-cell"><div class="mr-2 mb-4"><p>Branch</p><h6>Koramangala, Bangalore</h6></div></div><div class="expanded-table-normal-cell"><div class="mr-2 mb-4"><p>Channel</p><h6>Online</h6></div></div></div></div></td>'
+        '</tr>' +
+            '</table>';
+    }
+    $('#tbodyAtivdades').on('click', 'td.details-control', function () {
+        var tr = $(this).closest('tr');
+        var row = tableAtividade.row(tr);
 
-    //       console.log(teste)
-    //   }
+        if (row.child.isShown()) {
+            // This row is already open - close it
+            row.child.hide();
 
+            tr.removeClass('shown');
+        }
+        else {
+            // Open this row
+            row.child(format(row.data())).show();
+            tr.addClass('shown');
+        }
+    });
 
-    // })
     //? BOTAO DE CONFIMAR ESCOLHA QUESTÕES
 
     $('#btn-modalConfirmarQuestao').click(function (e) {
@@ -214,6 +222,9 @@ $(document).ready(function () {
             //? TABELA DE QUESÕES JA ESCOLHIDAS
             tableEscolhidas = $('#tableQuestoesAtividade').DataTable({
                 destroy: true,
+                rowReorder: {
+                    dataSrc: 'queID'
+                },
                 responsive: true,
 
                 ajax: {
@@ -225,12 +236,9 @@ $(document).ready(function () {
                 language: { // tradução em portgues da tabela
                     url: "../partials/dataTablept-br.json"
                 },
-                lengthMenu: [[5, 15, 25, -1], [5, 15, 25, "Todos"]], // configuração de quantidade de registros a serem mostrados, 5....15 ou todos 
+                lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "Todos"]], // configuração de quantidade de registros a serem mostrados, 5....15 ou todos 
                 columns: [
-                    //aqui dentro sera configurado o conteudo de cada coluna utilizando as variaveis data
-                    //importante - os valores contidos em data não a relação com os nomes dos cabeçalhos da tabela.
 
-                    // as tabelas são lidas por indices: 0,1,2,3, de acordo com o tanto de colunas - Neste caso o indice 0 sera o queID.
                     { data: 'queID' }, // o valor contido na variavel data, é o que sera buscado no banco de dados, no caso o ID
                     //{ data: 'queDescricao' },//enunciado da questão
                     {
@@ -240,15 +248,15 @@ $(document).ready(function () {
                             if (tamanho >= 200) {
                                 descricao = descricao + "..."
                             }
-    
+
                             return `<span style=" max-width: 500px;
                             min-width: 200px;
                             display: block;
                             overflow-wrap: break-word;
                             white-space: break-spaces;">${descricao}</span>`;
-    
+
                         }
-                     },
+                    },
                     { data: 'quePalavrasChave' },
                     { data: 'subDescricao' },
                     { data: 'queCodigoBncc' },
@@ -294,7 +302,7 @@ $(document).ready(function () {
         var opcao = atualizar;
         IDatividade = opId;
 
-       console.log(StsQuestoes);
+        console.log(StsQuestoes);
         function formatarData(data) {
             var dia = data.split("/")[0];
             var mes = data.split("/")[1];
@@ -304,7 +312,7 @@ $(document).ready(function () {
             return ano + '-' + ("0" + mes).slice(-2) + '-' + ("0" + dia).slice(-2);
             // Utilizo o .slice(-2) para garantir o formato com 2 digitos.
         }
-        
+
 
         if ($.fn.dataTable.isDataTable('#tableQuestoesAtividade')) {
             questoesID = tableEscolhidas.columns(0).data().eq(0).sort()
@@ -329,14 +337,14 @@ $(document).ready(function () {
             dataFormFinal = formatarData(dataFinal);
 
 
-          //  console.log(nome);
-          //  console.log(descricao);
-          //  console.log(tipoopc);
-          //  console.log(dataFormInicial);
-          //  console.log(dataFormFinal);
-           // console.log(status);
-          //  console.log("questoes")
-           // console.log(questoesID)
+            //  console.log(nome);
+            //  console.log(descricao);
+            //  console.log(tipoopc);
+            //  console.log(dataFormInicial);
+            //  console.log(dataFormFinal);
+            // console.log(status);
+            //  console.log("questoes")
+            // console.log(questoesID)
 
             let arrayID = [];
 
@@ -356,7 +364,7 @@ $(document).ready(function () {
                     dataFormFinal: dataFormFinal,
                     status: status,
                     questoesID: arrayID,
-                    opAtividade:opcao,
+                    opAtividade: opcao,
                     IDatividade: IDatividade,
                     turma: classe,
                     StsQuestoes: StsQuestoes
@@ -412,6 +420,10 @@ $(document).ready(function () {
 
     //?Botao da tabela de editar atividade
     $("#tbodyAtivdades").on("click", ".btn-editar-atividade", function () {
+        $("#cardTableTitle").toggle("slow");
+        $("#cardTitle").text("Alterar de atividade");
+        $("#cardDesc").text("Altere a atividade selecionada.");
+        $("#cadastrarAtividade span").text(" Salvar");
         toggleNovaAtividade()//Mostra ou esconde tabela
         //children: 
         let dados = $(this).closest('tr').children("td").map(function () { // função .map é utilizado para pegar todos os dados contidos na linha onde o botão editar foi pressionado, como ID, DESCRICAO E ETC.
@@ -424,27 +436,27 @@ $(document).ready(function () {
         $("#descricao").val(dados[2]);
         $("#data-inicial").val(dados[3]);
         $("#data-final").val(dados[4]);
-         $("#status").val(dados[6])
+        $("#status").val(dados[6])
 
 
         console.log(opId);
 
-        
-         //? TABELA DE QUESÕES JA ESCOLHIDAS
-         tableEscolhidas = $('#tableQuestoesAtividade').DataTable({
+
+        //? TABELA DE QUESÕES JA ESCOLHIDAS
+        tableEscolhidas = $('#tableQuestoesAtividade').DataTable({
             destroy: true,
             responsive: true,
-
+            rowReorder: true,
             ajax: {
                 "url": "../backend/BackAtividade/atividadeBack.php",
                 "method": 'POST', // metodo utilizado para passar os valores das variavesi data para o backend.
-                "data": {opID: opId, buscaInicialQuestõesEditar: buscaInicialQuestõesEditar}, // as variaves bucasInicial.... possuem o valor true  para que no arquivo atividadeBack.php sirva para buscar os dados da tabela
+                "data": { opID: opId, buscaInicialQuestõesEditar: buscaInicialQuestõesEditar }, // as variaves bucasInicial.... possuem o valor true  para que no arquivo atividadeBack.php sirva para buscar os dados da tabela
                 "dataSrc": ""
             },
             language: { // tradução em portgues da tabela
                 url: "../partials/dataTablept-br.json"
             },
-            lengthMenu: [[5, 15, 25, -1], [5, 15, 25, "Todos"]], // configuração de quantidade de registros a serem mostrados, 5....15 ou todos 
+            lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "Todos"]], // configuração de quantidade de registros a serem mostrados, 5....15 ou todos 
             columns: [
                 //aqui dentro sera configurado o conteudo de cada coluna utilizando as variaveis data
                 //importante - os valores contidos em data não a relação com os nomes dos cabeçalhos da tabela.
@@ -467,7 +479,7 @@ $(document).ready(function () {
                         white-space: break-spaces;">${descricao}</span>`;
 
                     }
-                 },
+                },
                 { data: 'quePalavrasChave' },
                 { data: 'queCodigoBncc' },
                 { data: 'queStsTipo' },
@@ -492,7 +504,7 @@ $(document).ready(function () {
             questoesID = tableEscolhidas.columns(0).data().eq(0).sort()
 
         }
-        
+
         let arrayID = [];
 
         for (var i = 0; i < questoesID.length; i++) {
@@ -505,7 +517,7 @@ $(document).ready(function () {
             data: {
                 opID: opId,
                 opAtividade: opAtividade,
-                
+
             },
             dataType: 'json',
             success: function (data) {
@@ -546,7 +558,7 @@ $(document).ready(function () {
             $("#btn-nova-atividade").text('Cancelar').prepend(cancelarIcon).removeClass("btn-primary").addClass("btn-secondary");
             $("#tableAtividadesToggle").toggle("slow");
         } else {
-            $("#btn-nova-atividade").text('Nova atividade').prepend(adicionarIcon).removeClass("btn-secondary").addClass("btn-primary");
+            $("#btn-nova-atividade").text('Nova Atividade').prepend(adicionarIcon).removeClass("btn-secondary").addClass("btn-primary");
             $("#tableAtividadesToggle").toggle("slow");
         }
         $("#cadastrarAtividade").toggle("slow");
@@ -554,13 +566,19 @@ $(document).ready(function () {
 
     //! Esconder/mostrar cadastrar atividade
     $("#btn-nova-atividade").click(function () {
+
+        $("#cardTableTitle").toggle("slow")
+        $("#cardTitle").text("Cadastrar Atividade");
+        $("#cardDesc").text("Informe os dados da atividade a ser cadastrada.");
+        $("#cadastrarAtividade span").text(" Cadastrar");
+
         toggleNovaAtividade()
         $('#nome, #data-final, #data-inicial, #descricao').val("");
 
         $("#tipoopc").val(1);
         $("#status").val(1);
         $("#classe").val(1);
-        
+
         if ($.fn.dataTable.isDataTable('#tableQuestoesAtividade')) {
 
             $('#tableQuestoesAtividade').DataTable().destroy();
@@ -568,17 +586,17 @@ $(document).ready(function () {
             tableEscolhidas = $('#tableQuestoesAtividade').DataTable({
                 destroy: true,
                 responsive: true,
-
+                rowReorder: true,
                 ajax: {
                     "url": "../backend/BackAtividade/atividadeBack.php",
                     "method": 'POST', // metodo utilizado para passar os valores das variavesi data para o backend.
-                    "data": {buscaInicialNada: buscaInicialNada }, // as variaves bucasInicial.... possuem o valor true  para que no arquivo atividadeBack.php sirva para buscar os dados da tabela
+                    "data": { buscaInicialNada: buscaInicialNada }, // as variaves bucasInicial.... possuem o valor true  para que no arquivo atividadeBack.php sirva para buscar os dados da tabela
                     "dataSrc": ""
                 },
                 language: { // tradução em portgues da tabela
                     url: "../partials/dataTablept-br.json"
                 },
-                lengthMenu: [[5, 15, 25, -1], [5, 15, 25, "Todos"]], // configuração de quantidade de registros a serem mostrados, 5....15 ou todos 
+                lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "Todos"]], // configuração de quantidade de registros a serem mostrados, 5....15 ou todos 
                 columns: [
                     //aqui dentro sera configurado o conteudo de cada coluna utilizando as variaveis data
                     //importante - os valores contidos em data não a relação com os nomes dos cabeçalhos da tabela.
@@ -593,15 +611,15 @@ $(document).ready(function () {
                             if (tamanho >= 200) {
                                 descricao = descricao + "..."
                             }
-    
+
                             return `<span style=" max-width: 500px;
                             min-width: 200px;
                             display: block;
                             overflow-wrap: break-word;
                             white-space: break-spaces;">${descricao}</span>`;
-    
+
                         }
-                     },
+                    },
                     { data: 'quePalavrasChave' },
                     { data: 'subDescricao' },
                     { data: 'queCodigoBncc' },
@@ -620,15 +638,21 @@ $(document).ready(function () {
 
 
             })
-            
+
         }
 
 
 
-        
+
     });
     $("#cancelarAtividade").click(function () {
+        $("#cardTableTitle").toggle("slow");
         toggleNovaAtividade()
+        $('#nome, #data-final, #data-inicial, #descricao').val("");
+
+        $("#tipoopc").val(1);
+        $("#status").val(1);
+        $("#classe").val(1);
     })
     //!
     //!  Modal esconder/mostrar
@@ -644,16 +668,10 @@ $(document).ready(function () {
     $("#adicionarQuestoes").click(function () {
         $("#tableQuestoesSelecionadas").toggle("slow");
         $("#cadastrarQuestao").toggle("slow");
-        $("#botoesAtividade").hide();
+        $("#botoesAtividade").toggle();
+
     })
 
-    //! BOTAO CANCELAR CADASTRO DE QUESTÃO EM ATIVIDADES
-
-    $("#cancelarQuestao").click(function () {
-        $("#tableQuestoesSelecionadas").toggle("slow");
-        $("#botoesAtividade").toggle("slow");
-        $("#tableQuestoesToggle").toggle();
-    })
 
     //! Modal Excluir Atividade
     $("#tbodyAtivdades").on("click", ".btn-excluir-atividade", function () {
@@ -665,17 +683,17 @@ $(document).ready(function () {
         }).get();
 
 
-       // if ($.fn.dataTable.isDataTable('#tableQuestoesAtividade')) {
-       //     queIDdelete = tableEscolhidas.columns(0).data().eq(0).sort()
+        // if ($.fn.dataTable.isDataTable('#tableQuestoesAtividade')) {
+        //     queIDdelete = tableEscolhidas.columns(0).data().eq(0).sort()
 
 
-      //  }
+        //  }
 
 
-       // for (var i = 0; i < queIDdelete.length; i++) {
-      //      arrayDelete.push(queIDdelete[i]);
-       // }
-      //  arrayDelete = arrayDelete.sort((a, b) => a - b);//* Ordenar numeros crescente
+        // for (var i = 0; i < queIDdelete.length; i++) {
+        //      arrayDelete.push(queIDdelete[i]);
+        // }
+        //  arrayDelete = arrayDelete.sort((a, b) => a - b);//* Ordenar numeros crescente
 
         opDelete = "delete"
         opidDelete = dadosAtividade[0];
@@ -740,6 +758,16 @@ $(document).ready(function () {
 
         })
     })
+    $('#tableQuestoesAtividade tbody').on('click', '.btn-del-questaoEscolhida', function () {
+        tableEscolhidas
+            .row($(this).parents('tr'))
+            .remove()
+            .draw();
+
+        // tableEscolhidas.ajax.reload(null, false);
+
+    });
+
 
     //! modal Cancelar Exclusão Atividade
     $("#modalCancelarAtividade").click(function () {
@@ -791,8 +819,34 @@ $(document).ready(function () {
             update: function () { }
         });
 
+
     }
 
+    // $('#tableQuestoesAtividade').on('row-reorder', function (e, diff, edit) {
+    //     var result = 'Reorder started on row: ' + edit.triggerRow.data()[1] + '<br>';
 
+    //     for (var i = 0, ien = diff.length; i < ien; i++) {
+    //         var rowData = tableEscolhidas.row(diff[i].node).data();
 
+    //         result += rowData[1] + ' updated to be in position ' +
+    //             diff[i].newData + ' (was ' + diff[i].oldData + ')<br>';
+    //     }
+    //     console.log(result)
+    // });
+    $('#tableQuestoesAtividade').on('row-reorder.dt', function (dragEvent, data, nodes) {
+        console.log('row #' +
+            data[0].node._DT_RowIndex +
+            ' moved from pos ' +
+            data[0].oldPosition +
+            ' to pos ' +
+            data[0].newPosition + "\n" +
+            'row #' +
+            data[1].node._DT_RowIndex +
+            ' changed position from ' +
+            data[1].oldPosition +
+            ' to ' +
+            data[1].newPosition
+        );
+
+    });
 });
