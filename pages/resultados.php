@@ -24,7 +24,6 @@
     <link rel="shortcut icon" href="../images/logo-mini.svg" />
 
     <style type="text/css">
-
         .list-wrapper ul li {
         font-size: 0.9375rem;
         padding: 0.2rem 1.4rem;
@@ -161,7 +160,7 @@
                                                     <th>Data Final</th>
                                                     <th>Tipo</th>
                                                     <th>Classe</th>
-                                                    <th>Resultados</th>
+                                                    <th style="text-align: center">Resultados</th>
                                                 </tr>
                                             </thead>
                                             <tbody id="tbodyResultados">
@@ -226,8 +225,8 @@
                                                     <th>Acertos</th>
                                                     <th>Pontuação</th>
                                                     <th>Data de conclusão</th>
-                                                    <th width="2%">Ver Atividade</th>
-                                                    <th></th>
+                                                    <th  style="text-align: center">Ver Atividade</th>
+                                                   
                                                 </tr>
                                             </thead>
                                             <tbody id="tbodyResultadosAluno">

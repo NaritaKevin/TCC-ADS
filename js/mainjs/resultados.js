@@ -11,6 +11,9 @@ $(document).ready(function () {
         $("#verGraficos").hide();
         $("#verAtividadeAluno").hide();
         tableResultados = $('#tableResultados').DataTable({
+            columnDefs: [
+                { "orderable": false, "targets": 6 }
+            ],
             ajax: {
                 "url": "../backend/resultados/resultadosBack.php",
                 "method": 'POST',
@@ -61,14 +64,14 @@ $(document).ready(function () {
                 {
                     data: null, render: function (data, type, row) {
 
-                        return ` <button type="button"
+                        return `<div class="text-center"><button type="button"
                         class="btn btn-inverse-primary btn-rounded btn-icon btn-info-atividade ">
                         <i class="bi bi-people-fill"></i>
                     </button>
                     <button type="button"
                         class="btn btn-inverse-primary btn-rounded btn-icon btn-info-grafico ">
                         <i class="bi bi-clipboard-data"></i>
-                    </button>`;
+                    </button> </div> `;
                     }
                 },
             ]
@@ -368,10 +371,10 @@ $(document).ready(function () {
                 {
                     data: null, render: function (data, type, row) {
 
-                        return `  <button type="button"
+                        return `  <div class="text-center"><button type="button"
                                     class="btn btn-inverse-primary btn-rounded btn-icon btn-info-aluno ">
                                     <i class="bi bi-file-earmark-text"></i>
-                                </button>`;
+                                </button> </div>`;
                     }
                 },
 
