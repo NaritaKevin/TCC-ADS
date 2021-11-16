@@ -3,7 +3,7 @@
                     <li class="nav-item">
                         <a class="nav-link" href="../index.php">
                             <i class="icon-grid menu-icon"></i>
-                            <span class="menu-title">Dashboard</span>
+                            <span class="menu-title">Menu</span>
                         </a>
                     </li>
                     <li class="nav-item">
@@ -32,7 +32,7 @@
 
                     <li class="nav-item">
                         <a class="nav-link" href="../pages/resultados.php">
-                            <i class="bi bi-file-earmark-bar-graph menu-icon"></i>
+                            <i class="bi bi-bar-chart-line menu-icon"></i>
                             <span class="menu-title">Resultados</span>
                         </a>
                     </li>
