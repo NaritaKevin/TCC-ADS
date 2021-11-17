@@ -176,11 +176,14 @@ if(isset($_POST['buscaInicialAtividade'])){
 }
 
 
+
+
 if(isset($_POST['buscaInicialQuestoesSelecionadas'])){
     $buscaInicialQuestoes = addslashes($_POST['buscaInicialQuestoesSelecionadas']);
-    $dadosQuestoes = addslashes($_POST['queSel']);
+    $dadosQuestoes = addslashes($_POST['Selecionadas']);
     $semNada =[];
     if($buscaInicialQuestoes == true){
+        
        $dadosQuestao = $a->buscarDadosQuestaoSelecionadas($dadosQuestoes);
 
        if (empty($dadosQuestao)) {
@@ -192,6 +195,25 @@ if(isset($_POST['buscaInicialQuestoesSelecionadas'])){
        }      
     }
 }
+
+
+if(isset($_POST['buscaInicialEscolher'])){
+    $buscaInicialQuestoes = addslashes($_POST['buscaInicialEscolher']);
+    $questoes = addslashes($_POST['arr_questoes']);
+    $semNada =[];
+    if($buscaInicialQuestoes == true){
+       $questao = $a->buscarDadosQuestaoEscolher($questoes);
+
+       if (empty($questao)) {
+           
+        print json_encode(array('semNada'=> ''),JSON_UNESCAPED_UNICODE);
+       }  
+       if (!empty($questao)) {
+        print json_encode($questao,JSON_UNESCAPED_UNICODE);
+       }      
+    }
+}
+
 
 
 if(isset($_POST['buscaInicialQuestõesEditar'])){

@@ -151,6 +151,15 @@ class Atividade
         return $res;
     }
 
+    public function buscarDadosQuestaoEscolher($id){
+        $res = array();
+        $cmd = $this->pdo->query("SELECT * FROM questoes q LEFT JOIN subgrupos s ON q.queSubgrupoID = s.subID  LEFT JOIN niveis n ON n.nivID = q.queNivelID where queID not in ($id)");
+
+        $res = $cmd->fetchAll();(PDO::FETCH_ASSOC);
+
+        return $res;
+    }
+
     public function buscarNada(){
         $res = array();
         $cmd = $this->pdo->query("SELECT * FROM questoes q LEFT JOIN subgrupos s ON q.queSubgrupoID = s.subID  LEFT JOIN niveis n ON n.nivID = q.queNivelID where 1 = 2");

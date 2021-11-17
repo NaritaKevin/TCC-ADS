@@ -3,6 +3,7 @@ $(document).ready(function () {
     let buscaInicialAtividade = true;
     let buscaInicialQuestõesEditar = true;
     let buscaInicialNada = true;
+    let buscaInicialEscolher = true;
 
     var opAtividade
     var opId
@@ -17,6 +18,9 @@ $(document).ready(function () {
     var questoesID
     var atualizar
     var IDatividade
+    var arr_questoes
+    var Selecionadas
+    var teste
 
 
     init();
@@ -114,61 +118,8 @@ $(document).ready(function () {
 
         })
 
-        //? Tabela de escolher questões DO MODAL
-        tableEscolher = $('#tableEscolherQuestoes').DataTable({
-
-            "select": {
-                "style": 'multi'
-            },
-            "columnDefs": [
-                {
-                    //"orderable": true,
-                    //"targets": [9]
-                },
-                {
-                    'targets': 0,
-                    'checkboxes': {
-                        'selectRow': true
-                    }
-                }
-            ],
-            responsive: true,
-            ajax: {
-                "url": "../backend/BackAtividade/atividadeBack.php",
-                "method": 'POST', // metodo utilizado para passar os valores das variavesi data para o backend.
-                "data": { buscaInicialQuestao: buscaInicialQuestao }, // as variaves bucasInicial.... possuem o valor true  para que no arquivo atividadeBack.php sirva para buscar os dados da tabela
-                "dataSrc": ""
-            },
-            language: { // tradução em portgues da tabela
-                url: "../partials/dataTablept-br.json"
-            },
-            lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "Todos"]], // configuração de quantidade de registros a serem mostrados, 5....15 ou todos 
-            columns: [
-                { data: 'queID' },
-                { data: 'queID' },
-                {
-                    data: null, render: function (data, type, row) {
-                        let descricao = data.queDescricao.slice(0, 200);
-                        let tamanho = descricao.length;
-                        if (tamanho >= 200) {
-                            descricao = descricao + "..."
-                        }
-
-                        return `<span style=" max-width: 500px;
-                        min-width: 200px;
-                        display: block;
-                        overflow-wrap: break-word;
-                        white-space: break-spaces;">${descricao}</span>`;
-
-                    }
-                },
-                { data: 'queCodigoBncc' },
-                { data: 'queStsTipo' },
-
-            ]
-
-
-        })
+        
+       
 
     }
 
@@ -204,8 +155,16 @@ $(document).ready(function () {
         var rowsel = tableEscolher.column(0).checkboxes.selected();
 
         if (rowsel.length > 0) {
+
             queSel = rowsel.join(",");
 
+            Selecionadas = arr_questoes.concat(",");
+
+            Selecionadas = Selecionadas.concat(queSel);
+
+           //teste = Selecionadas.join(",");
+
+            console.log(Selecionadas);
 
             $("#visualizar-ids").text(rowsel.join(","))
 
@@ -230,7 +189,7 @@ $(document).ready(function () {
                 ajax: {
                     "url": "../backend/BackAtividade/atividadeBack.php",
                     "method": 'POST', // metodo utilizado para passar os valores das variavesi data para o backend.
-                    "data": { queSel: queSel, buscaInicialQuestoesSelecionadas: buscaInicialQuestoesSelecionadas }, // as variaves bucasInicial.... possuem o valor true  para que no arquivo atividadeBack.php sirva para buscar os dados da tabela
+                    "data": {Selecionadas: Selecionadas, buscaInicialQuestoesSelecionadas: buscaInicialQuestoesSelecionadas }, // as variaves bucasInicial.... possuem o valor true  para que no arquivo atividadeBack.php sirva para buscar os dados da tabela
                     "dataSrc": ""
                 },
                 language: { // tradução em portgues da tabela
@@ -238,7 +197,7 @@ $(document).ready(function () {
                 },
                 lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "Todos"]], // configuração de quantidade de registros a serem mostrados, 5....15 ou todos 
                 columns: [
-
+                    { data: 'atiqOrdemQuestao' },
                     { data: 'queID' }, // o valor contido na variavel data, é o que sera buscado no banco de dados, no caso o ID
                     //{ data: 'queDescricao' },//enunciado da questão
                     {
@@ -276,7 +235,7 @@ $(document).ready(function () {
 
             })
         } else {
-            tableEscolhidas.clear().draw();
+            //tableEscolhidas.clear().draw();
         }
         $('#modalQuestao').modal('hide');
         e.preventDefault();
@@ -315,7 +274,7 @@ $(document).ready(function () {
 
 
         if ($.fn.dataTable.isDataTable('#tableQuestoesAtividade')) {
-            questoesID = tableEscolhidas.columns(0).data().eq(0).sort()
+            questoesID = tableEscolhidas.columns(1).data().eq(0).sort()
 
 
         }
@@ -462,6 +421,7 @@ $(document).ready(function () {
                 //importante - os valores contidos em data não a relação com os nomes dos cabeçalhos da tabela.
 
                 // as tabelas são lidas por indices: 0,1,2,3, de acordo com o tanto de colunas - Neste caso o indice 0 sera o queID.
+                { data: 'atiqOrdemQuestao'},
                 { data: 'queID' }, // o valor contido na variavel data, é o que sera buscado no banco de dados, no caso o ID
                 //{ data: 'queDescricao' },//enunciado da questão
                 {
@@ -501,7 +461,7 @@ $(document).ready(function () {
 
 
         if ($.fn.dataTable.isDataTable('#tableQuestoesAtividade')) {
-            questoesID = tableEscolhidas.columns(0).data().eq(0).sort()
+            questoesID = tableEscolhidas.columns(1).data().eq(0).sort()
 
         }
 
@@ -535,12 +495,21 @@ $(document).ready(function () {
 
                     $("#nome").val(data.atiDescricao);
                     $("#tipoopc").val(data.atiTipoID);
+                    console.log(data.atiStsQuestoes);
                     if (data.atiStatus == "Pública") {
                         $("#status").val(2);
                         $("#status").closest(".dropdown").find(".btn").children().children(".filter-option-inner").children(".filter-option-inner-inner").text("Pública");
                     } else {
                         $("#status").val(1);
                         $("#status").closest(".dropdown").find(".btn").children().children(".filter-option-inner").children(".filter-option-inner-inner").text("Privada");
+                    }
+
+                    if (data.atiStsQuestoes == "Na ordem") {
+                        $("#StsQuestoes").val(2);
+                        $("#StsQuestoes").closest(".dropdown").find(".btn").children().children(".filter-option-inner").children(".filter-option-inner-inner").text("Na ordem");
+                    } else {
+                        $("#StsQuestoes").val(1);
+                        $("#StsQuestoes").closest(".dropdown").find(".btn").children().children(".filter-option-inner").children(".filter-option-inner-inner").text("Aleatoria");
                     }
                     $("#tipoopc").closest(".dropdown").find(".btn").children().children(".filter-option-inner").children(".filter-option-inner-inner").text(dados[5]);
                     $("#classe").closest(".dropdown").find(".btn").children().children(".filter-option-inner").children(".filter-option-inner-inner").text(dados[7]);
@@ -654,11 +623,168 @@ $(document).ready(function () {
         $("#status").val(1);
         $("#classe").val(1);
     })
-    //!
-    //!  Modal esconder/mostrar
+    
+    //!  BOTÃO DE ESCOLHER AS QUESTÕES
     $("#btn-modal-escolher").on("click", function () {
+
         $('#modalQuestao').modal('show');
-        buscaInicialQuestoesSelecionadas = false;
+
+        
+
+        if ($.fn.dataTable.isDataTable('#tableQuestoesAtividade')) {
+            questoesID = tableEscolhidas.columns(1).data().eq(0).sort()
+
+          //  arr_questoes =  questoesID.join(',');
+          
+          
+            if(questoesID.length > 0){
+
+
+                if ($.fn.dataTable.isDataTable('#tableEscolherQuestoes')) {
+                    $('#tableEscolherQuestoes').DataTable().destroy();
+                    console.log("destruiu");
+                    }
+
+                console.log("entrou");
+                
+
+                arr_questoes =  questoesID.join(',');
+
+                console.log(arr_questoes);
+                /*
+                for (var i = 0; i < questoesID.length; i++) {
+                arr_questoes.push(questoesID[i]);
+                }
+                */
+
+                
+                
+                // buscaInicialQuestoesSelecionadas = false;
+    
+                //? Tabela de escolher questões DO MODAL
+            
+                tableEscolher = $('#tableEscolherQuestoes').DataTable({
+                    
+
+                    destroy: true,
+                    "select": {
+                        "style": 'multi'
+                    },
+                    "columnDefs": [
+                        {
+                            //"orderable": true,
+                            //"targets": [9]
+                        },
+                        {
+                            'targets': 0,
+                            'checkboxes': {
+                                'selectRow': true
+                            }
+                        }
+                    ],
+                    responsive: true,
+                    ajax: {
+                        "url": "../backend/BackAtividade/atividadeBack.php",
+                        "method": 'POST', // metodo utilizado para passar os valores das variavesi data para o backend.
+                        "data": {arr_questoes:arr_questoes,buscaInicialEscolher: buscaInicialEscolher }, // as variaves bucasInicial.... possuem o valor true  para que no arquivo atividadeBack.php sirva para buscar os dados da tabela
+                        "dataSrc": ""
+                    },
+                    language: { // tradução em portgues da tabela
+                        url: "../partials/dataTablept-br.json"
+                    },
+                    lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "Todos"]], // configuração de quantidade de registros a serem mostrados, 5....15 ou todos 
+                    columns: [
+                        { data: 'queID' },
+                        { data: 'queID' },
+                        {
+                            data: null, render: function (data, type, row) {
+                                let descricao = data.queDescricao.slice(0, 200);
+                                let tamanho = descricao.length;
+                                if (tamanho >= 200) {
+                                    descricao = descricao + "..."
+                                }
+        
+                                return `<span style=" max-width: 500px;
+                                min-width: 200px;
+                                display: block;
+                                overflow-wrap: break-word;
+                                white-space: break-spaces;">${descricao}</span>`;
+        
+                            }
+                        },
+                        { data: 'queCodigoBncc' },
+                        { data: 'queStsTipo' },
+        
+                    ]
+        
+        
+                })
+               // console.log(questoesID);
+            }
+        }
+        
+        else {
+
+
+           // tableEscolher.clear().draw();
+            tableEscolher = $('#tableEscolherQuestoes').DataTable({
+                destroy: true,
+
+                "select": {
+                    "style": 'multi'
+                },
+                "columnDefs": [
+                    {
+                        //"orderable": true,
+                        //"targets": [9]
+                    },
+                    {
+                        'targets': 0,
+                        'checkboxes': {
+                            'selectRow': true
+                        }
+                    }
+                ],
+                responsive: true,
+                ajax: {
+                    "url": "../backend/BackAtividade/atividadeBack.php",
+                    "method": 'POST', // metodo utilizado para passar os valores das variavesi data para o backend.
+                    "data": {buscaInicialQuestao: buscaInicialQuestao }, // as variaves bucasInicial.... possuem o valor true  para que no arquivo atividadeBack.php sirva para buscar os dados da tabela
+                    "dataSrc": ""
+                },
+                language: { // tradução em portgues da tabela
+                    url: "../partials/dataTablept-br.json"
+                },
+                lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "Todos"]], // configuração de quantidade de registros a serem mostrados, 5....15 ou todos 
+                columns: [
+                    { data: 'queID' },
+                    { data: 'queID' },
+                    {
+                        data: null, render: function (data, type, row) {
+                            let descricao = data.queDescricao.slice(0, 200);
+                            let tamanho = descricao.length;
+                            if (tamanho >= 200) {
+                                descricao = descricao + "..."
+                            }
+    
+                            return `<span style=" max-width: 500px;
+                            min-width: 200px;
+                            display: block;
+                            overflow-wrap: break-word;
+                            white-space: break-spaces;">${descricao}</span>`;
+    
+                        }
+                    },
+                    { data: 'queCodigoBncc' },
+                    { data: 'queStsTipo' },
+    
+                ]
+    
+    
+            })
+        }
+
+        
         //tableEscolher.ajax.reload(null, false);
     });
 
