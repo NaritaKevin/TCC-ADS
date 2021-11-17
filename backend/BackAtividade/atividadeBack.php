@@ -2,10 +2,11 @@
 
    require_once '../BackAtividade/atividades.php';
    require_once '../questao.php';
+   require_once '../resultados/resultados.php';
 
     $a = new Atividade("pedagogy","localhost","root","");
     $q = new Questao("pedagogy","localhost","root","");
-
+    $r = new Resultados("pedagogy","localhost","root","");
 
 if(isset($_POST["opID"]) && isset($_POST["opAtividade"])){
    $opID =  addslashes($_POST['opID']);
@@ -245,5 +246,27 @@ if(isset($_POST['buscaInicialNada'])){
         print json_encode( $dadosQuestao,JSON_UNESCAPED_UNICODE);
        }  
 }
+
+
+//carregar atividade com as questoes e alternativas
+if(isset($_POST['atiIDResultados'])){
+    $atividadeID = addslashes($_POST['atiIDResultados']);
+
+    if($atividadeID != 0){
+    
+       $atividadeMontada = $r->questoesDaAtividade($atividadeID);
+      
+       if (!empty($atividadeMontada)) {
+          print json_encode($atividadeMontada,JSON_UNESCAPED_UNICODE);
+       }else{
+          $output = json_encode(array('type' => 'buscaVazia', 'text' => 'Não foi encontrado a atividade!'));
+          die($output);
+       }
+ 
+    }else{
+       $output = json_encode(array('type' => 'erro', 'text' => 'Erro ao buscar a atividade!'));
+       die($output);
+    }
+ }
 
 ?>

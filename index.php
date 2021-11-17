@@ -226,7 +226,6 @@ $resul = $m->buscarResultado($idProf);
                             <h2 class="mb-0 font-weight-normal"><i class="bi bi-people-fill mr-2"></i><?php echo $c['quantAluno'];?><sup><?php echo $c['claNome']; ?> - <?php echo $c['periodo']; ?></sup></h2>
                               <?php } ?>
                       <?php } ?>
-
                       <!-- <div class="ml-2">
                         <h4 class="location font-weight-normal">Bangalore</h4>
                         <h6 class="font-weight-normal">India</h6>

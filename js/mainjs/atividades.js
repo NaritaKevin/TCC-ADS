@@ -31,12 +31,11 @@ $(document).ready(function () {
         $("#cadastroQuestoes").hide();
         $("#escolherQuestoes").hide();
         $("#cadastrarQuestao").hide();
+        $("#verAtividade").hide();
+
         $("#data-inicial,#data-final").datetimepicker({
             timepicker: false, mask: true, format: 'd/m/Y',
         })
-
-
-
 
         tableAtividade = $('#tableAtividade').DataTable({
 
@@ -94,7 +93,7 @@ $(document).ready(function () {
                     data: null, render: function (data, type, row) { // renderizar a exibição dos botões 
 
                         return `<button id="btn" type="button"
-                        class="btn btn-inverse-primary btn-rounded btn-icon btn-info-questao ">
+                        class="btn btn-inverse-primary btn-rounded btn-icon btn-ver-atividade ">
                         <i class="bi bi-info-lg"></i>
                     </button>
                     <button type="button"
@@ -118,35 +117,9 @@ $(document).ready(function () {
 
         })
 
-
-
-
     }
 
-    function format(d) {
-        // `d` is the original data object for the row
-        return '<table cellpadding="5" cellspacing="0" border="0" style="width:100%;">' +
-            '<tr class="expanded-row">' +
-            '<td colspan="8" class="row-bg"><div><div class="d-flex justify-content-between"><div class="cell-hilighted"><div class="d-flex mb-2"><div class="mr-2 min-width-cell"><p>Policy start date</p><h6>25/04/2020</h6></div><div class="min-width-cell"><p>Policy end date</p><h6>24/04/2021</h6></div></div><div class="d-flex"><div class="mr-2 min-width-cell"><p>Sum insured</p><h5>$26,000</h5></div><div class="min-width-cell"><p>Premium</p><h5>$1200</h5></div></div></div><div class="expanded-table-normal-cell"><div class="mr-2 mb-4"><p>Quote no.</p><h6>Incs234</h6></div><div class="mr-2"><p>Vehicle Reg. No.</p><h6>KL-65-A-7004</h6></div></div><div class="expanded-table-normal-cell"><div class="mr-2 mb-4"><p>Policy number</p><h6>Incsq123456</h6></div><div class="mr-2"><p>Policy number</p><h6>Incsq123456</h6></div></div><div class="expanded-table-normal-cell"><div class="mr-2 mb-3 d-flex"><div class="highlighted-alpha"> A</div><div><p>Agent / Broker</p><h6>Abcd Enterprices</h6></div></div><div class="mr-2 d-flex"> <img src="../../images/faces/face5.jpg" alt="profile"/><div><p>Policy holder Name & ID Number</p><h6>Phillip Harris / 1234567</h6></div></div></div><div class="expanded-table-normal-cell"><div class="mr-2 mb-4"><p>Branch</p><h6>Koramangala, Bangalore</h6></div></div><div class="expanded-table-normal-cell"><div class="mr-2 mb-4"><p>Channel</p><h6>Online</h6></div></div></div></div></td>'
-        '</tr>' +
-            '</table>';
-    }
-    $('#tbodyAtivdades').on('click', 'td.details-control', function () {
-        var tr = $(this).closest('tr');
-        var row = tableAtividade.row(tr);
 
-        if (row.child.isShown()) {
-            // This row is already open - close it
-            row.child.hide();
-
-            tr.removeClass('shown');
-        }
-        else {
-            // Open this row
-            row.child(format(row.data())).show();
-            tr.addClass('shown');
-        }
-    });
 
     //? BOTAO DE CONFIMAR ESCOLHA QUESTÕES
 
@@ -383,8 +356,8 @@ $(document).ready(function () {
         $("#cardTitle").text("Alterar de atividade");
         $("#cardDesc").text("Altere a atividade selecionada.");
         $("#cadastrarAtividade span").text(" Salvar");
-        toggleNovaAtividade()//Mostra ou esconde tabela
-        //children: 
+        toggleNovaAtividade()
+
         let dados = $(this).closest('tr').children("td").map(function () { // função .map é utilizado para pegar todos os dados contidos na linha onde o botão editar foi pressionado, como ID, DESCRICAO E ETC.
             return $(this).text();
         }).get();
@@ -521,18 +494,7 @@ $(document).ready(function () {
     });
 
 
-    function toggleNovaAtividade() {
-        let adicionarIcon = `<i class="bi bi-plus-circle btn-icon-prepend"></i>`;
-        let cancelarIcon = `<i class="bi bi-x-circle btn-icon-prepend"></i>`;
-        if ($('#cadastrarAtividade').css('display') == 'none') {
-            $("#btn-nova-atividade").text('Cancelar').prepend(cancelarIcon).removeClass("btn-primary").addClass("btn-secondary");
-            $("#tableAtividadesToggle").toggle("slow");
-        } else {
-            $("#btn-nova-atividade").text('Nova Atividade').prepend(adicionarIcon).removeClass("btn-secondary").addClass("btn-primary");
-            $("#tableAtividadesToggle").toggle("slow");
-        }
-        $("#cadastrarAtividade").toggle("slow");
-    }
+
 
     //! Esconder/mostrar cadastrar atividade
     $("#btn-nova-atividade").click(function () {
@@ -887,15 +849,7 @@ $(document).ready(function () {
 
         })
     })
-    $('#tableQuestoesAtividade tbody').on('click', '.btn-del-questaoEscolhida', function () {
-        tableEscolhidas
-            .row($(this).parents('tr'))
-            .remove()
-            .draw();
 
-        // tableEscolhidas.ajax.reload(null, false);
-
-    });
 
 
     //! modal Cancelar Exclusão Atividade
@@ -913,9 +867,218 @@ $(document).ready(function () {
     $("#modalCancelar").click(function () {
         $('#modalDelete').modal('hide')
     })
-
-
     //!
+
+    $('#tableQuestoesAtividade tbody').on('click', '.btn-del-questaoEscolhida', function () {
+        tableEscolhidas
+            .row($(this).parents('tr'))
+            .remove()
+            .draw();
+
+        // tableEscolhidas.ajax.reload(null, false);
+
+    });
+
+
+
+
+    //! ************************************************************************************************************************************************************
+
+    $('#enunciadoQuestao').on('click', '.form-check-label input:checkbox', function () {
+        $('.form-check-label input:checkbox').not(this).prop('checked', false);
+
+    });
+    $("#btn-voltar-verAtividade").click(function () {
+        $("#verAtividade").toggle("slow")
+        $("#crudAtividade").toggle("slow");
+    })
+
+
+    $("#tbodyAtivdades").on("click", ".btn-ver-atividade", function () {
+        let idAtividade = $(this).closest('tr').children("td").map(function () { // função .map é utilizado para pegar todos os dados contidos na linha onde o botão editar foi pressionado, como ID, DESCRICAO E ETC.
+            return $(this).text();
+        }).get();
+
+        $("#crudAtividade").toggle("slow")
+        $("#verAtividade").fadeToggle("slow");
+
+        console.log(idAtividade[0])
+        $.ajax({
+            url: '../backend/backAtividade/atividadeBack.php',
+            method: 'POST',
+            data: { atiIDResultados: idAtividade[0] },
+            dataType: 'json',
+            success: function (data) {
+
+                if (data.type == 'erro') {
+                    Swal.fire({
+                        position: "center",
+                        icon: "error",
+                        title: data.text,
+                        showConfirmButton: false,
+                        timer: 2000
+                    })
+                } else if (data.type == 'buscaVazia') {
+                    Swal.fire({
+                        position: "center",
+                        icon: "warning",
+                        title: data.text,
+                        showConfirmButton: false,
+                        timer: 2000
+                    })
+                } else {
+                    $("#enunciadoQuestao").html("")
+                    let flag = 1;
+                    let questao
+                    let questaoFinal = ` 
+                                         </ul>
+                                        </div>`;
+                    let hr = " <hr/>"
+                    let respostaCorreta = [];
+
+                    for (let i = 0; i < data.length; i++) {
+
+                        let stsCorreta = "";
+
+
+                        if (flag != data[i].atiqOrdemQuestao) {
+
+                            questao = questao.concat(questaoFinal);
+                            if (respostaCorreta != "") {
+                                questao = questao.concat(`<h5 class="font-weight-bold text-success">Resposta correta: ${respostaCorreta}</h5>`);
+                                questao = questao.concat(hr);
+                            } else {
+                                questao = questao.concat(hr);
+                            }
+
+                            $("#enunciadoQuestao").append(questao);
+                            questao = ``;
+                            respostaCorreta = [];
+
+
+                        }
+
+
+                        if (data[i].altStsCorreta == "Correta") {
+
+                            if (0 in respostaCorreta) {
+                                respostaCorreta.push(` ${data[i].altLetra})`);
+                            } else {
+                                respostaCorreta.push(`${data[i].altLetra})`);
+                            }
+                        }
+
+                        if (data[i].altLetra == "A") {
+                            questao = `  <h4 class="text-primary font-weight-bold">Questão ${data[i].atiqOrdemQuestao}</h4>
+                                            <p class="display-5 pt-2">${data[i].queDescricao}</p>
+                                            <div class="list-wrapper pt-1" id="questao${data[i].atiqOrdemQuestao}" style="overflow: auto;">
+                                                <ul>
+                                                `;
+                            let alternativa = ` <li>
+                                                    <div class="form-check form-check-flat">
+                                                        <label class="form-check-label  font-weight-bold ">
+                                                            <input class="checkbox" id="${data[i].atiqOrdemQuestao}${data[i].altLetra}" ${stsCorreta}  type="checkbox">
+                                                        ${data[i].altLetra}) ${data[i].altDescricao}
+                                                        <i class="input-helper"></i></label>
+                                                    </div>
+                                                </li>`;
+                            questao = questao.concat(alternativa);
+                        } else if (data[i].altLetra != "A") {
+
+                            let alternativa = ` <li>
+                                                    <div class="form-check form-check-flat">
+                                                        <label class="form-check-label  font-weight-bold ">
+                                                            <input class="checkbox" id="${data[i].atiqOrdemQuestao}${data[i].altLetra}" ${stsCorreta}  type="checkbox">
+                                                        ${data[i].altLetra}) ${data[i].altDescricao}
+                                                        <i class="input-helper"></i></label>
+                                                    </div>
+                                                </li>`;
+                            questao = questao.concat(alternativa);
+                        }
+
+                        flag = data[i].atiqOrdemQuestao
+
+                        if (data[i + 1] == undefined) {
+                            questao = questao.concat(questaoFinal);
+                            if (respostaCorreta != "") {
+                                questao = questao.concat(`<h5 class="font-weight-bold text-success">Resposta correta: ${respostaCorreta}</h5>`);
+                                questao = questao.concat(hr);
+                            } else {
+                                questao = questao.concat(hr);
+                            }
+
+                            $("#enunciadoQuestao").append(questao);
+                            questao = ``;
+                            respostaCorreta = [];
+                        }
+                    }
+
+
+
+                }
+
+
+            },
+            error: function (data) {
+
+                Swal.fire({
+                    position: "center",
+                    icon: "error",
+                    title: "Ocorreu um erro ao montar a atividade para mostrar!",
+                    showConfirmButton: false,
+                    timer: 3000
+                })
+
+            },
+        }).done(function (data) {
+
+
+            // $("#tituloResAluno").html(` <h4 style="text-transform: none;" class="card-title">Atividade do aluno(a): <span class="text-primary">${nomeAluno}</span><small class="text-primary" id="classe"><strong> - ${dadosAluno[4]} </strong></small></h4>`);
+
+        });
+
+    });
+
+
+
+    //! ************************************************************************************************************************************************************
+    function toggleNovaAtividade() {
+        let adicionarIcon = `<i class="bi bi-plus-circle btn-icon-prepend"></i>`;
+        let cancelarIcon = `<i class="bi bi-x-circle btn-icon-prepend"></i>`;
+        if ($('#cadastrarAtividade').css('display') == 'none') {
+            $("#btn-nova-atividade").text('Cancelar').prepend(cancelarIcon).removeClass("btn-primary").addClass("btn-secondary");
+            $("#tableAtividadesToggle").toggle("slow");
+        } else {
+            $("#btn-nova-atividade").text('Nova Atividade').prepend(adicionarIcon).removeClass("btn-secondary").addClass("btn-primary");
+            $("#tableAtividadesToggle").toggle("slow");
+        }
+        $("#cadastrarAtividade").toggle("slow");
+    }
+    function format(d) {
+        // `d` is the original data object for the row
+        return '<table cellpadding="5" cellspacing="0" border="0" style="width:100%;">' +
+            '<tr class="expanded-row">' +
+            '<td colspan="8" class="row-bg"><div><div class="d-flex justify-content-between"><div class="cell-hilighted"><div class="d-flex mb-2"><div class="mr-2 min-width-cell"><p>Policy start date</p><h6>25/04/2020</h6></div><div class="min-width-cell"><p>Policy end date</p><h6>24/04/2021</h6></div></div><div class="d-flex"><div class="mr-2 min-width-cell"><p>Sum insured</p><h5>$26,000</h5></div><div class="min-width-cell"><p>Premium</p><h5>$1200</h5></div></div></div><div class="expanded-table-normal-cell"><div class="mr-2 mb-4"><p>Quote no.</p><h6>Incs234</h6></div><div class="mr-2"><p>Vehicle Reg. No.</p><h6>KL-65-A-7004</h6></div></div><div class="expanded-table-normal-cell"><div class="mr-2 mb-4"><p>Policy number</p><h6>Incsq123456</h6></div><div class="mr-2"><p>Policy number</p><h6>Incsq123456</h6></div></div><div class="expanded-table-normal-cell"><div class="mr-2 mb-3 d-flex"><div class="highlighted-alpha"> A</div><div><p>Agent / Broker</p><h6>Abcd Enterprices</h6></div></div><div class="mr-2 d-flex"> <img src="../../images/faces/face5.jpg" alt="profile"/><div><p>Policy holder Name & ID Number</p><h6>Phillip Harris / 1234567</h6></div></div></div><div class="expanded-table-normal-cell"><div class="mr-2 mb-4"><p>Branch</p><h6>Koramangala, Bangalore</h6></div></div><div class="expanded-table-normal-cell"><div class="mr-2 mb-4"><p>Channel</p><h6>Online</h6></div></div></div></div></td>'
+        '</tr>' +
+            '</table>';
+    }
+    $('#tbodyAtivdades').on('click', 'td.details-control', function () {
+        var tr = $(this).closest('tr');
+        var row = tableAtividade.row(tr);
+
+        if (row.child.isShown()) {
+            // This row is already open - close it
+            row.child.hide();
+
+            tr.removeClass('shown');
+        }
+        else {
+            // Open this row
+            row.child(format(row.data())).show();
+            tr.addClass('shown');
+        }
+    });
+
     function jqueryuiinit() {
 
         var fixHelperModified = function (e, tr) {
@@ -978,4 +1141,5 @@ $(document).ready(function () {
         );
 
     });
+
 });
