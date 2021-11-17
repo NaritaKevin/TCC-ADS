@@ -15,10 +15,9 @@
                         </a>
                         <div class="collapse" id="gerencQuestoes">
                             <ul class="nav flex-column sub-menu">
-                            <li class="nav-item"> <a class="nav-link" href="../pages/atuacao.php">Area de
-                                        atuação</a></li>
+                            <li class="nav-item"> <a class="nav-link" href="../pages/atuacao.php">Disciplinas</a></li>
                                 <li class="nav-item"> <a class="nav-link" href="../pages/questoes.php">Gerenciar
-                                        questões</a></li>
+                                        Questões</a></li>
                                
                             </ul>
                         </div>

@@ -118,8 +118,8 @@ $(document).ready(function () {
 
         })
 
-        
-       
+
+
 
     }
 
@@ -162,7 +162,7 @@ $(document).ready(function () {
 
             Selecionadas = Selecionadas.concat(queSel);
 
-           //teste = Selecionadas.join(",");
+            //teste = Selecionadas.join(",");
 
             console.log(Selecionadas);
 
@@ -181,15 +181,13 @@ $(document).ready(function () {
             //? TABELA DE QUESÕES JA ESCOLHIDAS
             tableEscolhidas = $('#tableQuestoesAtividade').DataTable({
                 destroy: true,
-                rowReorder: {
-                    dataSrc: 'queID'
-                },
+
                 responsive: true,
 
                 ajax: {
                     "url": "../backend/BackAtividade/atividadeBack.php",
                     "method": 'POST', // metodo utilizado para passar os valores das variavesi data para o backend.
-                    "data": {Selecionadas: Selecionadas, buscaInicialQuestoesSelecionadas: buscaInicialQuestoesSelecionadas }, // as variaves bucasInicial.... possuem o valor true  para que no arquivo atividadeBack.php sirva para buscar os dados da tabela
+                    "data": { Selecionadas: Selecionadas, buscaInicialQuestoesSelecionadas: buscaInicialQuestoesSelecionadas }, // as variaves bucasInicial.... possuem o valor true  para que no arquivo atividadeBack.php sirva para buscar os dados da tabela
                     "dataSrc": ""
                 },
                 language: { // tradução em portgues da tabela
@@ -230,7 +228,9 @@ $(document).ready(function () {
                         </button>`;
                         }
                     },
-                ]
+                ], rowReorder: {
+                    dataSrc: 'atiqOrdemQuestao'
+                },
 
 
             })
@@ -405,7 +405,6 @@ $(document).ready(function () {
         tableEscolhidas = $('#tableQuestoesAtividade').DataTable({
             destroy: true,
             responsive: true,
-            rowReorder: true,
             ajax: {
                 "url": "../backend/BackAtividade/atividadeBack.php",
                 "method": 'POST', // metodo utilizado para passar os valores das variavesi data para o backend.
@@ -421,7 +420,7 @@ $(document).ready(function () {
                 //importante - os valores contidos em data não a relação com os nomes dos cabeçalhos da tabela.
 
                 // as tabelas são lidas por indices: 0,1,2,3, de acordo com o tanto de colunas - Neste caso o indice 0 sera o queID.
-                { data: 'atiqOrdemQuestao'},
+                { data: 'atiqOrdemQuestao' },
                 { data: 'queID' }, // o valor contido na variavel data, é o que sera buscado no banco de dados, no caso o ID
                 //{ data: 'queDescricao' },//enunciado da questão
                 {
@@ -454,7 +453,9 @@ $(document).ready(function () {
                     </button>`;
                     }
                 },
-            ]
+            ], rowReorder: {
+                dataSrc: 'atiqOrdemQuestao'
+            },
 
 
         })
@@ -555,7 +556,7 @@ $(document).ready(function () {
             tableEscolhidas = $('#tableQuestoesAtividade').DataTable({
                 destroy: true,
                 responsive: true,
-                rowReorder: true,
+
                 ajax: {
                     "url": "../backend/BackAtividade/atividadeBack.php",
                     "method": 'POST', // metodo utilizado para passar os valores das variavesi data para o backend.
@@ -603,7 +604,9 @@ $(document).ready(function () {
                         </button>`;
                         }
                     },
-                ]
+                ], rowReorder: {
+                    dataSrc: 'atiqOrdemQuestao'
+                },
 
 
             })
@@ -623,32 +626,32 @@ $(document).ready(function () {
         $("#status").val(1);
         $("#classe").val(1);
     })
-    
+
     //!  BOTÃO DE ESCOLHER AS QUESTÕES
     $("#btn-modal-escolher").on("click", function () {
 
         $('#modalQuestao').modal('show');
 
-        
+
 
         if ($.fn.dataTable.isDataTable('#tableQuestoesAtividade')) {
             questoesID = tableEscolhidas.columns(1).data().eq(0).sort()
 
-          //  arr_questoes =  questoesID.join(',');
-          
-          
-            if(questoesID.length > 0){
+            //  arr_questoes =  questoesID.join(',');
+
+
+            if (questoesID.length > 0) {
 
 
                 if ($.fn.dataTable.isDataTable('#tableEscolherQuestoes')) {
                     $('#tableEscolherQuestoes').DataTable().destroy();
                     console.log("destruiu");
-                    }
+                }
 
                 console.log("entrou");
-                
 
-                arr_questoes =  questoesID.join(',');
+
+                arr_questoes = questoesID.join(',');
 
                 console.log(arr_questoes);
                 /*
@@ -657,14 +660,14 @@ $(document).ready(function () {
                 }
                 */
 
-                
-                
+
+
                 // buscaInicialQuestoesSelecionadas = false;
-    
+
                 //? Tabela de escolher questões DO MODAL
-            
+
                 tableEscolher = $('#tableEscolherQuestoes').DataTable({
-                    
+
 
                     destroy: true,
                     "select": {
@@ -686,7 +689,7 @@ $(document).ready(function () {
                     ajax: {
                         "url": "../backend/BackAtividade/atividadeBack.php",
                         "method": 'POST', // metodo utilizado para passar os valores das variavesi data para o backend.
-                        "data": {arr_questoes:arr_questoes,buscaInicialEscolher: buscaInicialEscolher }, // as variaves bucasInicial.... possuem o valor true  para que no arquivo atividadeBack.php sirva para buscar os dados da tabela
+                        "data": { arr_questoes: arr_questoes, buscaInicialEscolher: buscaInicialEscolher }, // as variaves bucasInicial.... possuem o valor true  para que no arquivo atividadeBack.php sirva para buscar os dados da tabela
                         "dataSrc": ""
                     },
                     language: { // tradução em portgues da tabela
@@ -703,30 +706,30 @@ $(document).ready(function () {
                                 if (tamanho >= 200) {
                                     descricao = descricao + "..."
                                 }
-        
+
                                 return `<span style=" max-width: 500px;
                                 min-width: 200px;
                                 display: block;
                                 overflow-wrap: break-word;
                                 white-space: break-spaces;">${descricao}</span>`;
-        
+
                             }
                         },
                         { data: 'queCodigoBncc' },
                         { data: 'queStsTipo' },
-        
+
                     ]
-        
-        
+
+
                 })
-               // console.log(questoesID);
+                // console.log(questoesID);
             }
         }
-        
+
         else {
 
 
-           // tableEscolher.clear().draw();
+            // tableEscolher.clear().draw();
             tableEscolher = $('#tableEscolherQuestoes').DataTable({
                 destroy: true,
 
@@ -749,7 +752,7 @@ $(document).ready(function () {
                 ajax: {
                     "url": "../backend/BackAtividade/atividadeBack.php",
                     "method": 'POST', // metodo utilizado para passar os valores das variavesi data para o backend.
-                    "data": {buscaInicialQuestao: buscaInicialQuestao }, // as variaves bucasInicial.... possuem o valor true  para que no arquivo atividadeBack.php sirva para buscar os dados da tabela
+                    "data": { buscaInicialQuestao: buscaInicialQuestao }, // as variaves bucasInicial.... possuem o valor true  para que no arquivo atividadeBack.php sirva para buscar os dados da tabela
                     "dataSrc": ""
                 },
                 language: { // tradução em portgues da tabela
@@ -766,25 +769,25 @@ $(document).ready(function () {
                             if (tamanho >= 200) {
                                 descricao = descricao + "..."
                             }
-    
+
                             return `<span style=" max-width: 500px;
                             min-width: 200px;
                             display: block;
                             overflow-wrap: break-word;
                             white-space: break-spaces;">${descricao}</span>`;
-    
+
                         }
                     },
                     { data: 'queCodigoBncc' },
                     { data: 'queStsTipo' },
-    
+
                 ]
-    
-    
+
+
             })
         }
 
-        
+
         //tableEscolher.ajax.reload(null, false);
     });
 

@@ -1,3 +1,40 @@
+<?php
+require_once 'backend/menu.php';
+
+$m = new Menu("pedagogy", "localhost", "root", "");
+
+$idProf = 2;
+$classe = [];
+$classeAlunos = [];
+$flagprof = false;
+
+$nomeUsuario = $m->buscarNomeUsuario($idProf);
+
+$idClasse = $m->buscarClasseProfessor($idProf);
+
+$ativ = $m->buscarAtividade($idProf);
+$ques = $m->bucsarQuestao();
+$disc = $m->buscarDisciplina();
+$resul = $m->buscarResultado($idProf);
+
+ if (!empty($idClasse)) { 
+   foreach ($idClasse as $idClasse) {
+    $classe = $m->buscarClasse($idClasse['uscClaCodigo'],$idProf);
+
+        if(!empty($idClasse)){
+          $classeAlunos = array_merge($classeAlunos,$classe);
+        }
+    };
+}else{
+  $flagprof = true;
+}
+//   print_r($ativ['quantAtividade']);
+// die();
+
+?>
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -169,9 +206,9 @@
             <div class="col-md-12 grid-margin">
               <div class="row">
                 <div class="col-12 col-xl-8 mb-4 mb-xl-0">
-                  <h3 class="font-weight-bold">Welcome Aamir</h3>
-                  <h6 class="font-weight-normal mb-0">All systems are running smoothly! You have <span
-                      class="text-primary">3 unread alerts!</span></h6>
+                  <h3 class="font-weight-bold">Bem-vindo(a) <?php echo $nomeUsuario['pesNome']; ?></h3>
+                  <!-- <h6 class="font-weight-normal mb-0">All systems are running smoothly! You have <span
+                      class="text-primary">3 unread alerts!</span></h6> -->
                 </div>
                
               </div>
@@ -184,12 +221,12 @@
                   <img src="images/teacher.svg" alt="people">
                   <div class="weather-info">
                     <div id="classes">
-                      <div>
-                        <h2 class="mb-0 font-weight-normal"><i class="bi bi-people-fill mr-2"></i>31<sup>4ºB</sup></h2>
-                      </div>
-                      <div>
-                        <h2 class="mb-0 font-weight-normal"><i class="bi bi-people-fill mr-2"></i>31<sup>C</sup></h2>
-                      </div>
+                      <?php if($flagprof == false){?>
+                              <?php foreach ($classeAlunos as $c) {?>
+                            <h2 class="mb-0 font-weight-normal"><i class="bi bi-people-fill mr-2"></i><?php echo $c['quantAluno'];?><sup><?php echo $c['claNome']; ?> - <?php echo $c['periodo']; ?></sup></h2>
+                              <?php } ?>
+                      <?php } ?>
+
                       <!-- <div class="ml-2">
                         <h4 class="location font-weight-normal">Bangalore</h4>
                         <h6 class="font-weight-normal">India</h6>
@@ -207,7 +244,13 @@
                       <div class="row">
                         <div class="col-md-10" style="padding-right:0px">
                           <h5 class="mb-4">Cadastrar Atividade</h5>
-                          <p class="fs-30 mb-2">4006</p>
+                          <?php if(!empty($ativ)){?>            
+                                <p class="fs-30 mb-2"><?php echo $ativ['quantAtividade'];?></p>
+                                
+                      <?php  }else{ ?>
+                        <p class="fs-30 mb-2">0</p>
+                        <?php } ?>
+                          
                           <p>Atividades Cadastradas</p>
                         </div>
                         <div class="col-md-2 d-flex justify-content-center" >
@@ -223,7 +266,12 @@
                       <div class="row">
                           <div class="col-md-10" style="padding-right:0px">
                             <h5 class="mb-4">Cadastrar Questão</h5>
-                            <p class="fs-30 mb-2">61344</p>
+                            <?php if(!empty($ques)){?>            
+                                <p class="fs-30 mb-2"><?php echo $ques['quantQuestoes'];?></p>
+                                
+                      <?php  }else{ ?>
+                        <p class="fs-30 mb-2">0</p>
+                        <?php } ?>
                             <p>Questões Cadastradas</p>
                           </div>
                           <div class="col-md-2 d-flex justify-content-center" >
@@ -241,7 +289,12 @@
                       <div class="row">
                         <div class="col-md-10" style="padding-right:0px">
                           <h5 class="mb-4">Cadastrar Disciplina e Suas Áreas</h5>
-                          <p class="fs-30 mb-2">34040</p>
+                          <?php if(!empty($disc)){?>            
+                                <p class="fs-30 mb-2"><?php echo $disc['totalDisciplina'];?></p>
+                                
+                      <?php  }else{ ?>
+                        <p class="fs-30 mb-2">0</p>
+                        <?php } ?>
                           <p>Disciplina e Áreas Cadastradas</p>
                         </div>
                         <div class="col-md-2 d-flex justify-content-center" >
@@ -257,7 +310,12 @@
                       <div class="row">
                         <div class="col-md-10" style="padding-right:0px">
                           <h5 class="mb-4">Visualizar Resultado das Atividades</h5>
-                          <p class="fs-30 mb-2">47033</p>
+                          <?php if(!empty($resul)){?>            
+                                <p class="fs-30 mb-2"><?php echo $resul['quatResultados'];?></p>
+                                
+                      <?php  }else{ ?>
+                        <p class="fs-30 mb-2">0</p>
+                        <?php } ?>
                           <p>Resultados Disponíveis</p>
                         </div>
                         <div class="col-md-2 d-flex justify-content-center" >

@@ -21,39 +21,11 @@
                 exit();
             }
          }
-         public function cadastrarTematica($descricao,$disciplina)
-         {
-             // verificar se o subgrupo ja esta cadastrado
-             $cmd = $this->pdo->prepare("SELECT temID FROM tematicas where temDescricao = :temDescricao");
-     
-             $cmd->bindValue(':temDescricao',$descricao);
-             $cmd->execute();
-     
-             if ($cmd->rowCount() > 0) {// subgrupo ja existe no banco
-                     return false;
-             } else { //não foi encontrado o subgrupo
-                 $cmd = $this->pdo->prepare("INSERT INTO tematicas (temDescricao,temDisciplinaID) VALUES (:temDescricao,:temDisciplinaID)");
-                 $cmd->bindValue(":temDescricao",$descricao);
-                 $cmd->bindValue(":temDisciplinaID",$disciplina);
-                 $cmd->execute();
-                 return true;
-             }
-     
-         }
-
-
-
-
-         public function BuscarResultados()
-         {
-            $sql = "SELECT temID,temDescricao,disDescricao FROM tematicas t JOIN disciplinas d ON t.temDisciplinaID = d.disID ";
-            $pdo = $this->pdo->query($sql);
-            $res = $pdo->fetchAll(PDO::FETCH_ASSOC);
-            return $res;
-         }
+    
+       
          public function BuscarAtividades()
          {
-            $sql = "SELECT * FROM atividades a, classes c,tipos t WHERE a.atiClasseID = c.claCodigo AND t.tipID = a.atiTipoID AND a.atiUsuarioID = 2;";
+            $sql = "SELECT  * FROM atividades a, classes c,tipos t,atividade_questao aq WHERE a.atiClasseID = c.claCodigo AND t.tipID = a.atiTipoID AND a.atiID = aq.atiqAtividadeID AND a.atiUsuarioID = 2 GROUP BY a.atiID";
             $pdo = $this->pdo->query($sql);
             $res = $pdo->fetchAll(PDO::FETCH_ASSOC);
             return $res;
