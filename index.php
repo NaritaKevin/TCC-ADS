@@ -242,7 +242,7 @@ $resul = $m->buscarResultado($idProf);
                     <div class="card-body">
                       <div class="row">
                         <div class="col-md-10" style="padding-right:0px">
-                          <h5 class="mb-4">Cadastrar Atividade</h5>
+                          <h5 class="mb-4">Gerenciar Atividades</h5>
                           <?php if(!empty($ativ)){?>            
                                 <p class="fs-30 mb-2"><?php echo $ativ['quantAtividade'];?></p>
                                 
@@ -264,7 +264,7 @@ $resul = $m->buscarResultado($idProf);
                     <div class="card-body">
                       <div class="row">
                           <div class="col-md-10" style="padding-right:0px">
-                            <h5 class="mb-4">Cadastrar Questão</h5>
+                            <h5 class="mb-4">Gerenciar Questões</h5>
                             <?php if(!empty($ques)){?>            
                                 <p class="fs-30 mb-2"><?php echo $ques['quantQuestoes'];?></p>
                                 
@@ -287,7 +287,7 @@ $resul = $m->buscarResultado($idProf);
                     <div class="card-body">
                       <div class="row">
                         <div class="col-md-10" style="padding-right:0px">
-                          <h5 class="mb-4">Cadastrar Disciplina e Suas Áreas</h5>
+                          <h5 class="mb-4">Gerenciar  Disciplina e Suas Áreas</h5>
                           <?php if(!empty($disc)){?>            
                                 <p class="fs-30 mb-2"><?php echo $disc['totalDisciplina'];?></p>
                                 

@@ -127,7 +127,11 @@ $(document).ready(function () {
         buscaInicialQuestoesSelecionadas = true;
         var rowsel = tableEscolher.column(0).checkboxes.selected();
 
-        if (rowsel.length > 0) {
+        Selecionadas = rowsel.join(",");
+
+        arr_questoes = [];
+
+        if (rowsel.length > 0 && arr_questoes.length > 0 ) {
 
             queSel = rowsel.join(",");
 
@@ -208,6 +212,61 @@ $(document).ready(function () {
 
             })
         } else {
+            tableEscolhidas = $('#tableQuestoesAtividade').DataTable({
+                destroy: true,
+
+                responsive: true,
+
+                ajax: {
+                    "url": "../backend/BackAtividade/atividadeBack.php",
+                    "method": 'POST', // metodo utilizado para passar os valores das variavesi data para o backend.
+                    "data": { Selecionadas: Selecionadas, buscaInicialQuestoesSelecionadas: buscaInicialQuestoesSelecionadas }, // as variaves bucasInicial.... possuem o valor true  para que no arquivo atividadeBack.php sirva para buscar os dados da tabela
+                    "dataSrc": ""
+                },
+                language: { // tradução em portgues da tabela
+                    url: "../partials/dataTablept-br.json"
+                },
+                lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "Todos"]], // configuração de quantidade de registros a serem mostrados, 5....15 ou todos 
+                columns: [
+                    { data: 'atiqOrdemQuestao' },
+                    { data: 'queID' }, // o valor contido na variavel data, é o que sera buscado no banco de dados, no caso o ID
+                    //{ data: 'queDescricao' },//enunciado da questão
+                    {
+                        data: null, render: function (data, type, row) {
+                            let descricao = data.queDescricao.slice(0, 200);
+                            let tamanho = descricao.length;
+                            if (tamanho >= 200) {
+                                descricao = descricao + "..."
+                            }
+
+                            return `<span style=" max-width: 500px;
+                            min-width: 200px;
+                            display: block;
+                            overflow-wrap: break-word;
+                            white-space: break-spaces;">${descricao}</span>`;
+
+                        }
+                    },
+                    { data: 'quePalavrasChave' },
+                    { data: 'subDescricao' },
+                    { data: 'queCodigoBncc' },
+                    { data: 'nivDescricao' },
+                    {
+                        data: null, render: function (data, type, row) { // renderizar a exibição dos botões 
+
+                            return `
+                        <button type="button"
+                            class="btn btn-inverse-danger btn-rounded btn-icon btn-del-questaoEscolhida">
+                            <i class="bi bi-trash"></i>
+                        </button>`;
+                        }
+                    },
+                ], rowReorder: {
+                    dataSrc: 'atiqOrdemQuestao'
+                },
+
+
+            })
             //tableEscolhidas.clear().draw();
         }
         $('#modalQuestao').modal('hide');
