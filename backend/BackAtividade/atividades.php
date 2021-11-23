@@ -60,12 +60,14 @@ class Atividade
 
     }
 
-    public function CadastrarAtividadeQuestao($dataInicial, $atividadeID, $questaoID){
+    public function CadastrarAtividadeQuestao($dataInicial,$pontuacao,$ordem, $atividadeID, $questaoID){
 
         $cmd = $this->pdo->prepare("INSERT INTO atividade_questao 
-        (atiqData, atiqAtividadeID, atiqQuestaoID) 
-        VALUES (:dataInicial, :AtividadeID, :questaoID)");
+        (atiqData,atiqPontuacao,atiqOrdemQuestao, atiqAtividadeID, atiqQuestaoID) 
+        VALUES (:dataInicial,:pontuacao,:ordem, :AtividadeID, :questaoID)");
         $cmd->bindValue(":dataInicial",$dataInicial);
+        $cmd->bindValue(":pontuacao",$pontuacao);
+        $cmd->bindValue(":ordem",$ordem);
         $cmd->bindValue(":AtividadeID", $atividadeID);
         $cmd->bindValue(":questaoID",$questaoID);
         $cmd->execute();
@@ -93,9 +95,9 @@ class Atividade
     }
 
 
-    public function buscarDadosAtividadeEditar($id){
+    public function buscarQuestoesSelecionadas($id){
         $res = array();
-        $cmd = $this->pdo->prepare("SELECT * FROM questoes q inner join atividade_questao a on  a.atiqQuestaoID = q.queID  inner join niveis n on n.nivID = q.queNivelID where a.atiqAtividadeID = :atiqAtividadeID ");
+        $cmd = $this->pdo->prepare("SELECT * FROM atividade_questao a INNER JOIN  questoes q ON a.atiqQuestaoID = q.queID  INNER JOIN niveis n ON n.nivID = q.queNivelID JOIN subgrupos s ON s.subID = q.queSubgrupoID WHERE a.atiqAtividadeID = :atiqAtividadeID ORDER BY atiqOrdemQuestao");
         $cmd->bindValue(":atiqAtividadeID",$id);
         $cmd->execute();
         $res = $cmd->fetchAll(PDO::FETCH_ASSOC);
@@ -143,8 +145,8 @@ class Atividade
     }
 
     public function buscarDadosQuestaoSelecionadas($id){
-        $res = array();
-        $cmd = $this->pdo->query("SELECT * FROM questoes q LEFT JOIN subgrupos s ON q.queSubgrupoID = s.subID  LEFT JOIN niveis n ON n.nivID = q.queNivelID where queID in ($id)");
+        $res = [];
+        $cmd = $this->pdo->query("SELECT q.queID,q.queDescricao,q.queCodigoBncc,q.quePalavrasChave,q.queStsTipo,q.queStsRevisao,s.subDescricao,n.nivDescricao  FROM questoes q LEFT JOIN subgrupos s ON q.queSubgrupoID = s.subID  LEFT JOIN niveis n ON n.nivID = q.queNivelID where queID in ($id)");
 
         $res = $cmd->fetchAll();(PDO::FETCH_ASSOC);
 

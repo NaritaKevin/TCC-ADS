@@ -32,6 +32,7 @@ $n = new Nivel("pedagogy", "localhost", "root", "");
     <link rel="stylesheet" type="text/css" href="../js/select.dataTables.min.css">
     <link rel="stylesheet" href="../js/jquery.datetimepicker.min.css">
     <link rel="stylesheet" href="../js/dataTables.checkboxes.css">
+    <link href="https://nightly.datatables.net/rowreorder/css/rowReorder.dataTables.css?_=6e799325be6f763b41c5c21989f76ec9.css" rel="stylesheet" type="text/css" />
 
     <!-- End plugin css for this page -->
     <!-- inject:css -->
@@ -177,19 +178,33 @@ $n = new Nivel("pedagogy", "localhost", "root", "");
                                     <div id="cadastrarAtividade">
                                         <div class="stretch-card">
                                             <div class="card">
-                                                <div class="card-body">
+                                                <div class="card-body" style="padding-bottom: 0px">
                                                     <h4 id="cardTitle" class="card-title">Cadastro de atividades</h4>
                                                     <p id="cardDesc" class="card-description">Informe os dados da atividade a ser
                                                         cadastrada.</p>
                                                     <form id="formAtividades">
 
                                                         <div class="form-group">
-                                                            <label for="nome">Nome</label>
-                                                            <input type="text" class="form-control" id="nome" placeholder="Nome">
-                                                        </div>
+                                                        <div class="row">                                                             
+                                                            <div class="col-md-8">
+                                                                <label for="nome">Nome</label>
+                                                                <input type="text" class="form-control" id="nome" placeholder="Nome">
+                                                            </div>
 
+                                                            <div class="col-md-2">
+                                                               
+                                                                    <label for="data-inicial" >Data Inicial</label>                                                                 
+                                                                    <input type="text" id="data-inicial" class="form-control" />                                                                 
+                                                               
+                                                            </div>
+                                                                <div class="col-md-2">                                                                 
+                                                                        <label for="data-final" >Data Final</label>                                                                  
+                                                                        <input type="text" id="data-final" class="form-control" />                                                                                                                                      
+                                                                </div>
+                                                        </div>
+                                                        </div>
                                                         <div class="form-group">
-                                                            <label for="exampleInputEmail1">Descricao</label>
+                                                            <label for="descricao">Descricao</label>
                                                             <textarea class="form-control" name="descricao" id="descricao" rows="7"></textarea>
                                                         </div>
 
@@ -210,7 +225,7 @@ $n = new Nivel("pedagogy", "localhost", "root", "");
                                                                 </div>
 
                                                                 <div class="col-md-2">
-                                                                    <label class="labelCadastroAtividade">Turma</label>
+                                                                    <label class="labelCadastroAtividade">Classe</label>
                                                                     <select id="classe" class="selectpicker show-tick" name="classe" data-width="fit">
                                                                         <?php $arr_classe = $c->buscarClasse() ?>
                                                                         <?php if (!empty($arr_classe)) { ?>
@@ -223,7 +238,7 @@ $n = new Nivel("pedagogy", "localhost", "root", "");
                                                                 </div>
 
                                                                 <div class="col-md-2">
-                                                                    <label class="labelCadastroAtividade">Visibilidade</label>
+                                                                    <label class="labelCadastroAtividade">Visibilidade da Atividade</label>
                                                                     <select id="status" class="selectpicker show-tick" name="status" data-width="fit">
                                                                         <option value="1">Privada</option>
                                                                         <option value="2">Pública</option>
@@ -231,38 +246,44 @@ $n = new Nivel("pedagogy", "localhost", "root", "");
                                                                 </div>
 
                                                                 <div class="col-md-2">
-                                                                    <label class="labelCadastroAtividade">Exibição das Questoes</label>
+                                                                    <label class="labelCadastroAtividade">Exibição das Questões</label>
                                                                     <select id="StsQuestoes" class="selectpicker show-tick" name="StsQuestoes" data-width="fit">
-                                                                        <option value="1">Aleatorias</option>
-                                                                        <option value="2">Na ordem</option>
+                                                                        <option value="1">Randômica</option>
+                                                                        <option value="2">Ordenada</option>
+                                                                    </select>
+                                                                </div>
+                                                                <div class="col-md-2">
+                                                                    <label class="labelCadastroAtividade">Exibição das Alternativas</label>
+                                                                    <select id="StsQuestoes" class="selectpicker show-tick" name="StsQuestoes" data-width="fit">
+                                                                        <option value="1">Randômica</option>
+                                                                        <option value="2">Ordenada</option>
+                                                                    </select>
+                                                                </div>
+                                                                <div class="col-md-2">
+                                                                    <label class="labelCadastroAtividade">Exibição das Respostas</label>
+                                                                    <select id="StsQuestoes" class="selectpicker show-tick" name="StsQuestoes" data-width="fit">
+                                                                        <option value="1">Após Responder</option>
+                                                                        <option value="2">Final da Atividade</option>
+                                                                    </select>
+                                                                </div>
+                                                                <div class="col-md-2">
+                                                                    <label class="labelCadastroAtividade">Navegar Entre Questões</label>
+                                                                    <select id="StsQuestoes" class="selectpicker show-tick" name="StsQuestoes" data-width="fit">
+                                                                        <option value="1">Sim</option>
+                                                                        <option value="2">Não</option>
+                                                                    </select>
+                                                                </div>
+                                                                <div class="col-md-2">
+                                                                    <label class="labelCadastroAtividade">Continuar Onde Parou</label>
+                                                                    <select id="StsQuestoes" class="selectpicker show-tick" name="StsQuestoes" data-width="fit">
+                                                                        <option value="1">Sim</option>
+                                                                        <option value="2">Não</option>
                                                                     </select>
                                                                 </div>
                                                             </div>
                                                         </div>
 
 
-                                                        <div class="form-group">
-                                                            <div class="row">
-                                                                <div class="col-md-6">
-                                                                    <div class="form-group row">
-                                                                        <label class="col-md-6 col-form-label">Data
-                                                                            Inicial</label>
-                                                                        <div class="col-sm-9">
-                                                                            <input type="text" id="data-inicial" class="form-control" />
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-md-6">
-                                                                    <div class="form-group row">
-                                                                        <label class="col-md-6 col-form-label">Data
-                                                                            Final</label>
-                                                                        <div class="col-sm-9">
-                                                                            <input type="text" id="data-final" class="form-control" />
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
                                                         <div class="form-group" id="tableQuestoesSelecionadas">
                                                             <div class="row">
                                                                 <div class="col-lg-12 grid-margin stretch-card">
@@ -281,20 +302,18 @@ $n = new Nivel("pedagogy", "localhost", "root", "");
                                                                                 </button>
                                                                             </p>
                                                                             <div id="tableQuestoesToggle" class="table-responsive">
-                                                                                <table class=" table table-hover" id="tableQuestoesAtividade">
+                                                                                <table class=" table table-hover"  id="tableQuestoesAtividade">
                                                                                     <thead>
                                                                                         <tr>
                                                                                             <th width="1%">Ordem</th>
-                                                                                            <th>ID</th>
-                                                                                            <th width="22%">Enunciado
-                                                                                            </th>
-                                                                                            <th width="5%">Palavras
-                                                                                                Chave</th>
+                                                                                            <th >ID</th>
+                                                                                            <th width="22%">Enunciado</th>  
+                                                                                            <th width="1%">Pontuação</th>                                                               
                                                                                             <th width="5%">Subgrupo</th>
-                                                                                            <th width="3%">Código BNCC
-                                                                                            </th>
+                                                                                            <th width="3%">Código BNCC</th>
+                                                                                            <th width="2%">Status</th>
                                                                                             <th width="2%">Nível</th>
-                                                                                            <th width="2%">Ações</th>
+                                                                                            <th width="1%">Ações</th>
 
                                                                                         </tr>
                                                                                     </thead>
@@ -481,7 +500,7 @@ $n = new Nivel("pedagogy", "localhost", "root", "");
                         <div class="col-lg-12 grid-margin stretch-card">
                             <div class="card">
                                 <div class="card-body">
-                                    <div id="tituloResAluno">
+                                    <div id="tituloAtividade">
 
                                     </div>
 
@@ -503,44 +522,7 @@ $n = new Nivel("pedagogy", "localhost", "root", "");
 
                     </div>
                 </div>
-                <!--Modal Mais informação-->
-                <div class="modal fade" id="modalInfoAtividade" tabindex="-1" aria-labelledby="modalInfoQuestao" aria-hidden="true">
-                    <div class="modal-dialog ">
-                        <div class="modal-content">
-                            <div class="modal-body">
-                                <div class="stretch-card">
-                                    <div class="card">
-                                        <div class="card-body">
-                                            <p class="card-title">Informações Adicionais</p>
-                                            <div class="table-responsive">
-                                                <table class="table ">
-                                                    <thead>
-                                                        <tr>
-                                                            <th>algo a mais</th>
-                                                            <th>algo a mais</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <tr>
-                                                            <td>algo a mais</td>
-                                                            <td>algo a mais</td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="modal-footer">
-                                <button id="modalCancelar" type="button" class="btn btn-secondary">Cancelar</button>
-                                <button id="modalConfirmar" type="button" class="btn btn-primary">Confirmar</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-
+             
                 <!-- Modal Excluir Atividade-->
                 <div class="modal fade" id="modalDelete" tabindex="-1" aria-labelledby="modalDelete" aria-hidden="true">
                     <div class="modal-dialog ">
@@ -577,17 +559,17 @@ $n = new Nivel("pedagogy", "localhost", "root", "");
                                 <div id="escolherQuestoess" class="expandable-table table-responsive">
 
 
-                                    <table class="table table-hover display" id="tableEscolherQuestoes">
+                                    <table class="table table-hover display" id="tableEscolherQuestoes" style="width: 100%;">
                                         <thead>
                                             <tr>
                                                 <th></th>
                                                 <th>ID</th>
                                                 <th>Enunciado</th>
-                                                <th>Código BNCC</th>
-                                                <th>Tipo</th>
-
-
-
+                                                <th >Subgrupo</th>
+                                                <th >Código BNCC</th>
+                                                <th >Nível</th>
+                                                <th >Status</th>
+                                              
                                             </tr>
                                         </thead>
                                         <tbody id="tbodyModalAtividade">

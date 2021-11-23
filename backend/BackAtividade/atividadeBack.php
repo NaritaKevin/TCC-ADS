@@ -50,7 +50,22 @@ if(isset($_POST["opID"]) && isset($_POST["opAtividade"])){
      $turma = addslashes($_POST['turma']);
      $StsQuestoes = addslashes($_POST['StsQuestoes']);
 
-    $questoesID  = array_map( 'addslashes', $_POST['questoesID'] );
+    // $questaoSel  = array_map( 'addslashes', $_POST['questaoSel'] );
+
+    function addslashes_array($input_arr)
+{
+    if (is_array($input_arr)) {
+        $tmp = array();
+        foreach ($input_arr as $key1 => $val) {
+            $tmp[$key1] = addslashes_array($val);
+        }
+        return $tmp;
+    } else {
+        return addslashes($input_arr);
+    }
+}
+
+$questaoSel  = addslashes_array($_POST['questaoSel']);
 
      $opID = "";
      $opAtividade = "";
@@ -75,15 +90,14 @@ if(isset($_POST["opID"]) && isset($_POST["opAtividade"])){
                  $tipoStatus = "Privada";
              }
 
-             //if (!empty($disDescricao) && !empty($opAtividade)){  // se os campos nao estiverem vazios entra no if
-
+          
              $a->atualizarDadosAtividade($opID,$nome,$descricao, $tipoopc, $dataInicial, $dataFinal, $tipoStatus, $turma );
 
             $a->excluirAtividadeQuestao($opID);
 
-
-            for ($i = 0; $i < count($questoesID); $i++) {
-                if($a->CadastrarAtividadeQuestao($dataInicial,$opID, $questoesID[$i])){
+            
+            for ($i = 0; $i < count($questaoSel); $i++) {
+                if($a->CadastrarAtividadeQuestao($dataInicial,$questaoSel[$i]['atiqPontuacao'],$questaoSel[$i]['atiqOrdemQuestao'],$opID, $questaoSel[$i]['queIDSelecionado'])){
                     $output = json_encode(array('type' => 'sucesso', 'text' => 'Alterado com sucesso!'));
                 }else{
                     $output = json_encode(array('type' => 'erro', 'text' => 'Erro ao cadastrar questões!'));
@@ -123,9 +137,9 @@ if(isset($_POST["opID"]) && isset($_POST["opAtividade"])){
                  die($output);
              }
 
-
-             for ($i = 0; $i < count($questoesID); $i++) {
-                if($a->CadastrarAtividadeQuestao($dataInicial,$atividadeID['atiID'], $questoesID[$i])){
+             
+             for ($i = 0; $i < count($questaoSel); $i++) {
+                if($a->CadastrarAtividadeQuestao($dataInicial,$questaoSel[$i]['atiqPontuacao'],$questaoSel[$i]['atiqOrdemQuestao'],$atividadeID['atiID'], $questaoSel[$i]['queIDSelecionado'])){
                     $output = json_encode(array('type' => 'sucesso', 'text' => 'Atividade cadastrada com sucesso!'));
                 }else{
                     $output = json_encode(array('type' => 'erro', 'text' => 'Erro ao cadastrar questões!'));
@@ -176,7 +190,22 @@ if(isset($_POST['buscaInicialAtividade'])){
     }
 }
 
-
+if(isset($_POST['buscarSelecionadas']) && isset($_POST['selecionadas']) ){
+    $buscarSelecionadas = addslashes($_POST['buscarSelecionadas']);
+    $ids = addslashes($_POST['selecionadas']);
+    
+    if($buscarSelecionadas == true){
+        $questoesSelecionadas = $a->buscarDadosQuestaoSelecionadas($ids);
+       if (empty($questoesSelecionadas)) {
+        print json_encode(array('semNada'=> ''),JSON_UNESCAPED_UNICODE);
+       }  
+       if (!empty($questoesSelecionadas)) {
+        print json_encode($questoesSelecionadas,JSON_UNESCAPED_UNICODE);
+       }      
+    }
+       
+    
+}
 
 
 if(isset($_POST['buscaInicialQuestoesSelecionadas'])){
@@ -223,7 +252,7 @@ if(isset($_POST['buscaInicialQuestõesEditar'])){
    $semNada =[];
    // $questoesAtividade = array();
     if($buscaInicialQuestoes == true){
-        $questoesAtividade =  $a->buscarDadosAtividadeEditar($atividadeID);
+        $questoesAtividade =  $a->buscarQuestoesSelecionadas($atividadeID);
         if (empty($questoesAtividade)) {
            
            print json_encode(array('semNada'=> ''),JSON_UNESCAPED_UNICODE);
@@ -259,7 +288,7 @@ if(isset($_POST['atiIDResultados'])){
        if (!empty($atividadeMontada)) {
           print json_encode($atividadeMontada,JSON_UNESCAPED_UNICODE);
        }else{
-          $output = json_encode(array('type' => 'buscaVazia', 'text' => 'Não foi encontrado a atividade!'));
+          $output = json_encode(array('type' => 'buscaVazia', 'text' => 'Nenhuma questão cadastrada!'));
           die($output);
        }
  

@@ -128,7 +128,7 @@
 
         public function questoesDaAtividade($id){
             $res = array();
-            $cmd = $this->pdo->prepare("SELECT alt.*,q.queDescricao,a.atiqOrdemQuestao 
+            $cmd = $this->pdo->prepare("SELECT alt.*,q.queDescricao,a.atiqOrdemQuestao,a.atiqPontuacao  
             FROM alternativas alt 
             LEFT JOIN questoes q ON alt.altQuestaoID = q.queID 
             RIGHT JOIN atividade_questao a ON a.atiqQuestaoID = q.queID WHERE a.atiqAtividadeID = :atiID GROUP BY alt.altID ORDER BY atiqOrdemQuestao;");

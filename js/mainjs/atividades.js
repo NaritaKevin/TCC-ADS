@@ -4,6 +4,7 @@ $(document).ready(function () {
     let buscaInicialQuestõesEditar = true;
     let buscaInicialNada = true;
     let buscaInicialEscolher = true;
+    let buscarSelecionadas = true;
 
     var opAtividade
     var opId
@@ -11,16 +12,16 @@ $(document).ready(function () {
     var opDelete
     var opidDelete
     var queSel = [];
-    var dadosQuestao = [];
+
     let buscaInicialQuestoesSelecionadas = true;
     var queIDdelete
     var arrayDelete = []
     var questoesID
     var atualizar
     var IDatividade
-    var arr_questoes
-    var Selecionadas
-    var teste
+    var arr_questoes = "";
+    var Selecionadas = "";
+    var novaAtividade = false;
 
 
     init();
@@ -94,7 +95,7 @@ $(document).ready(function () {
 
                         return `<button id="btn" type="button"
                         class="btn btn-inverse-primary btn-rounded btn-icon btn-ver-atividade ">
-                        <i class="bi bi-info-lg"></i>
+                        <i class="bi bi-file-earmark-text"></i>
                     </button>
                     <button type="button"
                         class="btn btn-inverse-success btn-rounded btn-icon btn-editar-atividade">
@@ -127,148 +128,125 @@ $(document).ready(function () {
         buscaInicialQuestoesSelecionadas = true;
         var rowsel = tableEscolher.column(0).checkboxes.selected();
 
-        Selecionadas = rowsel.join(",");
 
-        arr_questoes = [];
 
-        if (rowsel.length > 0 && arr_questoes.length > 0 ) {
-
+        if (rowsel.length > 0) {
             queSel = rowsel.join(",");
 
-            Selecionadas = arr_questoes.concat(",");
+            if (arr_questoes != "") {
+                Selecionadas = arr_questoes.concat(",");
+            }
 
             Selecionadas = Selecionadas.concat(queSel);
 
-            //teste = Selecionadas.join(",");
 
-            console.log(Selecionadas);
-
-            $("#visualizar-ids").text(rowsel.join(","))
-
-            $('#modalQuestao').modal('hide');
-            e.preventDefault();
-
-
-            if ($.fn.dataTable.isDataTable('#tableQuestoesAtividade')) {
-                $('#tableQuestoesAtividade').DataTable().destroy();
-                console.log("entrou")
-            }
-
-
-            //? TABELA DE QUESÕES JA ESCOLHIDAS
-            tableEscolhidas = $('#tableQuestoesAtividade').DataTable({
-                destroy: true,
-
-                responsive: true,
-
-                ajax: {
-                    "url": "../backend/BackAtividade/atividadeBack.php",
-                    "method": 'POST', // metodo utilizado para passar os valores das variavesi data para o backend.
-                    "data": { Selecionadas: Selecionadas, buscaInicialQuestoesSelecionadas: buscaInicialQuestoesSelecionadas }, // as variaves bucasInicial.... possuem o valor true  para que no arquivo atividadeBack.php sirva para buscar os dados da tabela
-                    "dataSrc": ""
+            let queSelecionadas;
+            $.ajax({
+                url: '../backend/BackAtividade/atividadeBack.php',
+                method: 'POST',
+                data: {
+                    selecionadas: Selecionadas,
+                    buscarSelecionadas: buscarSelecionadas,
                 },
-                language: { // tradução em portgues da tabela
-                    url: "../partials/dataTablept-br.json"
-                },
-                lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "Todos"]], // configuração de quantidade de registros a serem mostrados, 5....15 ou todos 
-                columns: [
-                    { data: 'atiqOrdemQuestao' },
-                    { data: 'queID' }, // o valor contido na variavel data, é o que sera buscado no banco de dados, no caso o ID
-                    //{ data: 'queDescricao' },//enunciado da questão
-                    {
-                        data: null, render: function (data, type, row) {
-                            let descricao = data.queDescricao.slice(0, 200);
-                            let tamanho = descricao.length;
-                            if (tamanho >= 200) {
-                                descricao = descricao + "..."
+                dataType: 'json',
+                success: function (data) {
+
+                    let count = 0;
+                    queSelecionadas = data.map(function () {
+                        return Object.assign(data[count++], { atiqOrdemQuestao: `${count}`, atiqPontuacao: `${0}` });
+
+                    })
+
+                }, error: function (data) {
+                    alert("erro")
+                }
+            }).done(function (data) {
+
+                if ($.fn.dataTable.isDataTable('#tableQuestoesAtividade')) {
+                    $('#tableQuestoesAtividade').DataTable().destroy();
+                }
+                //? TABELA DE QUESÕES JA ESCOLHIDAS
+                tableEscolhidas = $('#tableQuestoesAtividade').DataTable({
+                    destroy: true,
+                    responsive: true,
+                    responsive: true,
+                    "columnDefs": [
+                        {
+                            "targets": [1],
+                            "visible": false,
+                            "searchable": false
+                        },
+                        {
+                            orderable: false,
+                            targets: [3]
+                        }
+
+                    ],
+                    data: queSelecionadas,
+                    language: {
+                        url: "../partials/dataTablept-br.json"
+                    },
+                    lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "Todos"]],
+                    columns: [
+
+                        { data: 'atiqOrdemQuestao' },
+                        { data: 'queID' },
+                        {
+                            data: null, render: function (data, type, row) {
+                                let descricao = data.queDescricao.slice(0, 200);
+                                let tamanho = descricao.length;
+                                if (tamanho >= 200) {
+                                    descricao = descricao + "..."
+                                }
+
+                                return `<span style=" max-width: 600px;
+                                min-width: 300px;
+                                display: block;
+                                overflow-wrap: break-word;
+                                white-space: break-spaces;">${descricao}</span>`;
+
                             }
-
-                            return `<span style=" max-width: 500px;
-                            min-width: 200px;
-                            display: block;
-                            overflow-wrap: break-word;
-                            white-space: break-spaces;">${descricao}</span>`;
-
-                        }
-                    },
-                    { data: 'quePalavrasChave' },
-                    { data: 'subDescricao' },
-                    { data: 'queCodigoBncc' },
-                    { data: 'nivDescricao' },
-                    {
-                        data: null, render: function (data, type, row) { // renderizar a exibição dos botões 
-
-                            return `
-                        <button type="button"
-                            class="btn btn-inverse-danger btn-rounded btn-icon btn-del-questaoEscolhida">
-                            <i class="bi bi-trash"></i>
-                        </button>`;
-                        }
-                    },
-                ], rowReorder: {
-                    dataSrc: 'atiqOrdemQuestao'
-                },
+                        },
+                        {
+                            data: null, render: function (data, type, row) {
 
 
-            })
-        } else {
-            tableEscolhidas = $('#tableQuestoesAtividade').DataTable({
-                destroy: true,
+                                return ` <input type="number" min="0" style="padding: 0.4rem 0.4rem;" class="form-control" value="${data.atiqPontuacao}" />`;
+                                // return `<div>${data.atiqPontuacao}</div>`;
 
-                responsive: true,
-
-                ajax: {
-                    "url": "../backend/BackAtividade/atividadeBack.php",
-                    "method": 'POST', // metodo utilizado para passar os valores das variavesi data para o backend.
-                    "data": { Selecionadas: Selecionadas, buscaInicialQuestoesSelecionadas: buscaInicialQuestoesSelecionadas }, // as variaves bucasInicial.... possuem o valor true  para que no arquivo atividadeBack.php sirva para buscar os dados da tabela
-                    "dataSrc": ""
-                },
-                language: { // tradução em portgues da tabela
-                    url: "../partials/dataTablept-br.json"
-                },
-                lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "Todos"]], // configuração de quantidade de registros a serem mostrados, 5....15 ou todos 
-                columns: [
-                    { data: 'atiqOrdemQuestao' },
-                    { data: 'queID' }, // o valor contido na variavel data, é o que sera buscado no banco de dados, no caso o ID
-                    //{ data: 'queDescricao' },//enunciado da questão
-                    {
-                        data: null, render: function (data, type, row) {
-                            let descricao = data.queDescricao.slice(0, 200);
-                            let tamanho = descricao.length;
-                            if (tamanho >= 200) {
-                                descricao = descricao + "..."
                             }
+                        },
+                        { data: 'subDescricao' },
+                        { data: 'queCodigoBncc' },
+                        { data: 'queStsTipo' },
+                        { data: 'nivDescricao' },
+                        {
+                            data: null, render: function (data, type, row) { // renderizar a exibição dos botões 
 
-                            return `<span style=" max-width: 500px;
-                            min-width: 200px;
-                            display: block;
-                            overflow-wrap: break-word;
-                            white-space: break-spaces;">${descricao}</span>`;
-
-                        }
+                                return `
+                            <button type="button"
+                                class="btn btn-inverse-danger btn-rounded btn-icon btn-del-questaoEscolhida">
+                                <i class="bi bi-trash"></i>
+                            </button>`;
+                            }
+                        },
+                    ], rowReorder: {
+                        dataSrc: 'atiqOrdemQuestao'
                     },
-                    { data: 'quePalavrasChave' },
-                    { data: 'subDescricao' },
-                    { data: 'queCodigoBncc' },
-                    { data: 'nivDescricao' },
-                    {
-                        data: null, render: function (data, type, row) { // renderizar a exibição dos botões 
 
-                            return `
-                        <button type="button"
-                            class="btn btn-inverse-danger btn-rounded btn-icon btn-del-questaoEscolhida">
-                            <i class="bi bi-trash"></i>
-                        </button>`;
-                        }
-                    },
-                ], rowReorder: {
-                    dataSrc: 'atiqOrdemQuestao'
-                },
+                })
+
+            });
 
 
-            })
-            //tableEscolhidas.clear().draw();
+
+
         }
+
+
+
+
+
         $('#modalQuestao').modal('hide');
         e.preventDefault();
 
@@ -287,28 +265,32 @@ $(document).ready(function () {
         var status = $("#status option:selected").val();
         var classe = $("#classe").val();
         var StsQuestoes = $("#StsQuestoes option:selected").val();
-        var dataFormInicial
-        var dataFormFinal
-        var questoesID = []
+        var dataFormInicial;
+        var dataFormFinal;
+        var questoesID = [];
+        var ordem = [];
+        var questaoSel = [];
         var opcao = atualizar;
         IDatividade = opId;
 
-        console.log(StsQuestoes);
+
         function formatarData(data) {
             var dia = data.split("/")[0];
             var mes = data.split("/")[1];
             var ano = data.split("/")[2];
-
-
             return ano + '-' + ("0" + mes).slice(-2) + '-' + ("0" + dia).slice(-2);
             // Utilizo o .slice(-2) para garantir o formato com 2 digitos.
         }
 
-
         if ($.fn.dataTable.isDataTable('#tableQuestoesAtividade')) {
-            questoesID = tableEscolhidas.columns(1).data().eq(0).sort()
-
-
+            // questoesID = tableEscolhidas.columns(1).data().eq(0).sort()
+            // ordem = tableEscolhidas.columns(0).data().eq(0).sort()
+            questoesID = tableEscolhidas.column(1, { order: 'current' }).data();
+            ordem = tableEscolhidas.column(0, { order: 'current' }).data();
+            for (let i = 0; i < questoesID.length; i++) {
+                let pont = tableEscolhidas.cell(i, 3).nodes().to$().find('input').val();
+                questaoSel.push({ queIDSelecionado: `${questoesID[i]}`, atiqOrdemQuestao: `${ordem[i]}`, atiqPontuacao: `${pont}` })
+            }
         }
 
 
@@ -323,27 +305,9 @@ $(document).ready(function () {
 
         } else {
 
-
             dataFormInicial = formatarData(dataInicial);
             dataFormFinal = formatarData(dataFinal);
 
-
-            //  console.log(nome);
-            //  console.log(descricao);
-            //  console.log(tipoopc);
-            //  console.log(dataFormInicial);
-            //  console.log(dataFormFinal);
-            // console.log(status);
-            //  console.log("questoes")
-            // console.log(questoesID)
-
-            let arrayID = [];
-
-            for (var i = 0; i < questoesID.length; i++) {
-                arrayID.push(questoesID[i]);
-            }
-            arrayID = arrayID.sort((a, b) => a - b);//* Ordenar numeros crescente
-            // console.log("Lista de ID:", arrayID)
             $.ajax({
                 url: '../backend/BackAtividade/atividadeBack.php',
                 method: 'POST',
@@ -354,7 +318,7 @@ $(document).ready(function () {
                     dataFormInicial: dataFormInicial,
                     dataFormFinal: dataFormFinal,
                     status: status,
-                    questoesID: arrayID,
+                    questaoSel: questaoSel,
                     opAtividade: opcao,
                     IDatividade: IDatividade,
                     turma: classe,
@@ -409,7 +373,7 @@ $(document).ready(function () {
 
 
 
-    //?Botao da tabela de editar atividade
+    //? ******************* EDITAR ATIVIDAE ********************
     $("#tbodyAtivdades").on("click", ".btn-editar-atividade", function () {
         $("#cardTableTitle").toggle("slow");
         $("#cardTitle").text("Alterar de atividade");
@@ -417,11 +381,11 @@ $(document).ready(function () {
         $("#cadastrarAtividade span").text(" Salvar");
         toggleNovaAtividade()
 
-        let dados = $(this).closest('tr').children("td").map(function () { // função .map é utilizado para pegar todos os dados contidos na linha onde o botão editar foi pressionado, como ID, DESCRICAO E ETC.
+        let dados = $(this).closest('tr').children("td").map(function () {
             return $(this).text();
         }).get();
         opId = dados[0];
-        //? $("#disID").val(dados[0]);//Insere ID no formulario para alterar
+        novaAtividade = false;
         opAtividade = "update";
         atualizar = "update2";
         $("#descricao").val(dados[2]);
@@ -430,31 +394,38 @@ $(document).ready(function () {
         $("#status").val(dados[6])
 
 
-        console.log(opId);
-
 
         //? TABELA DE QUESÕES JA ESCOLHIDAS
         tableEscolhidas = $('#tableQuestoesAtividade').DataTable({
             destroy: true,
             responsive: true,
+            responsive: true,
+            "columnDefs": [
+                {
+                    "targets": [1],
+                    "visible": false,
+                    "searchable": false
+                },
+                {
+                    orderable: false,
+                    targets: [3]
+                }
+
+            ],
             ajax: {
                 "url": "../backend/BackAtividade/atividadeBack.php",
-                "method": 'POST', // metodo utilizado para passar os valores das variavesi data para o backend.
-                "data": { opID: opId, buscaInicialQuestõesEditar: buscaInicialQuestõesEditar }, // as variaves bucasInicial.... possuem o valor true  para que no arquivo atividadeBack.php sirva para buscar os dados da tabela
+                "method": 'POST',
+                "data": { opID: opId, buscaInicialQuestõesEditar: buscaInicialQuestõesEditar },
                 "dataSrc": ""
             },
-            language: { // tradução em portgues da tabela
+            language: {
                 url: "../partials/dataTablept-br.json"
             },
-            lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "Todos"]], // configuração de quantidade de registros a serem mostrados, 5....15 ou todos 
+            lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "Todos"]],
             columns: [
-                //aqui dentro sera configurado o conteudo de cada coluna utilizando as variaveis data
-                //importante - os valores contidos em data não a relação com os nomes dos cabeçalhos da tabela.
 
-                // as tabelas são lidas por indices: 0,1,2,3, de acordo com o tanto de colunas - Neste caso o indice 0 sera o queID.
                 { data: 'atiqOrdemQuestao' },
-                { data: 'queID' }, // o valor contido na variavel data, é o que sera buscado no banco de dados, no caso o ID
-                //{ data: 'queDescricao' },//enunciado da questão
+                { data: 'queID' },
                 {
                     data: null, render: function (data, type, row) {
                         let descricao = data.queDescricao.slice(0, 200);
@@ -471,10 +442,17 @@ $(document).ready(function () {
 
                     }
                 },
-                { data: 'quePalavrasChave' },
+                {
+                    data: null, render: function (data, type, row) {
+
+
+                        return ` <input type="number" min="0" style="padding: 0.4rem 0.4rem;" class="form-control" value="${data.atiqPontuacao}" />`;
+                    }
+                },
+                { data: 'subDescricao' },
                 { data: 'queCodigoBncc' },
                 { data: 'queStsTipo' },
-                { data: 'queNivelID' },
+                { data: 'nivDescricao' },
                 {
                     data: null, render: function (data, type, row) { // renderizar a exibição dos botões 
 
@@ -546,7 +524,7 @@ $(document).ready(function () {
                     }
                     $("#tipoopc").closest(".dropdown").find(".btn").children().children(".filter-option-inner").children(".filter-option-inner-inner").text(dados[5]);
                     $("#classe").closest(".dropdown").find(".btn").children().children(".filter-option-inner").children(".filter-option-inner-inner").text(dados[7]);
-                    //? $("#btn-nova-atividade").click();//Simula um click manual no botao de cadastrar
+
                 }
             }
         })
@@ -565,19 +543,26 @@ $(document).ready(function () {
 
         toggleNovaAtividade()
         $('#nome, #data-final, #data-inicial, #descricao').val("");
-
         $("#tipoopc").val(1);
         $("#status").val(1);
         $("#classe").val(1);
 
         if ($.fn.dataTable.isDataTable('#tableQuestoesAtividade')) {
-
             $('#tableQuestoesAtividade').DataTable().destroy();
-            console.log("entrou");
             tableEscolhidas = $('#tableQuestoesAtividade').DataTable({
                 destroy: true,
                 responsive: true,
-
+                "columnDefs": [
+                    {
+                        "targets": [1],
+                        "visible": false,
+                        "searchable": false
+                    },
+                    {
+                        orderable: false,
+                        targets: [3]
+                    }
+                ],
                 ajax: {
                     "url": "../backend/BackAtividade/atividadeBack.php",
                     "method": 'POST', // metodo utilizado para passar os valores das variavesi data para o backend.
@@ -589,12 +574,9 @@ $(document).ready(function () {
                 },
                 lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "Todos"]], // configuração de quantidade de registros a serem mostrados, 5....15 ou todos 
                 columns: [
-                    //aqui dentro sera configurado o conteudo de cada coluna utilizando as variaveis data
-                    //importante - os valores contidos em data não a relação com os nomes dos cabeçalhos da tabela.
 
-                    // as tabelas são lidas por indices: 0,1,2,3, de acordo com o tanto de colunas - Neste caso o indice 0 sera o queID.
-                    { data: 'queID' }, // o valor contido na variavel data, é o que sera buscado no banco de dados, no caso o ID
-                    //{ data: 'queDescricao' },//enunciado da questão
+                    { data: 'atiqOrdemQuestao' },
+                    { data: 'queID' },
                     {
                         data: null, render: function (data, type, row) {
                             let descricao = data.queDescricao.slice(0, 200);
@@ -611,9 +593,17 @@ $(document).ready(function () {
 
                         }
                     },
-                    { data: 'quePalavrasChave' },
+                    {
+                        data: null, render: function (data, type, row) {
+
+
+                            return ` <input type="number" min="0" style="padding: 0.4rem 0.4rem;" class="form-control" value="${data.atiqPontuacao}" />`;
+
+                        }
+                    },
                     { data: 'subDescricao' },
                     { data: 'queCodigoBncc' },
+                    { data: 'queStsTipo' },
                     { data: 'nivDescricao' },
                     {
                         data: null, render: function (data, type, row) { // renderizar a exibição dos botões 
@@ -631,12 +621,9 @@ $(document).ready(function () {
 
 
             })
-
         }
 
-
-
-
+        novaAtividade = true;
     });
     $("#cancelarAtividade").click(function () {
         $("#cardTableTitle").toggle("slow");
@@ -646,6 +633,8 @@ $(document).ready(function () {
         $("#tipoopc").val(1);
         $("#status").val(1);
         $("#classe").val(1);
+
+        novaAtividade = false;
     })
 
     //!  BOTÃO DE ESCOLHER AS QUESTÕES
@@ -653,60 +642,37 @@ $(document).ready(function () {
 
         $('#modalQuestao').modal('show');
 
-
+        arr_questoes = "";
+        Selecionadas = "";
 
         if ($.fn.dataTable.isDataTable('#tableQuestoesAtividade')) {
             questoesID = tableEscolhidas.columns(1).data().eq(0).sort()
 
-            //  arr_questoes =  questoesID.join(',');
-
-
             if (questoesID.length > 0) {
-
 
                 if ($.fn.dataTable.isDataTable('#tableEscolherQuestoes')) {
                     $('#tableEscolherQuestoes').DataTable().destroy();
-                    console.log("destruiu");
                 }
-
-                console.log("entrou");
-
 
                 arr_questoes = questoesID.join(',');
-
                 console.log(arr_questoes);
-                /*
-                for (var i = 0; i < questoesID.length; i++) {
-                arr_questoes.push(questoesID[i]);
-                }
-                */
-
-
-
-                // buscaInicialQuestoesSelecionadas = false;
 
                 //? Tabela de escolher questões DO MODAL
-
                 tableEscolher = $('#tableEscolherQuestoes').DataTable({
-
-
+                    responsive: true,
                     destroy: true,
                     "select": {
                         "style": 'multi'
                     },
                     "columnDefs": [
                         {
-                            //"orderable": true,
-                            //"targets": [9]
-                        },
-                        {
                             'targets': 0,
                             'checkboxes': {
                                 'selectRow': true
-                            }
+                            },
+                            "orderable": false,
                         }
                     ],
-                    responsive: true,
                     ajax: {
                         "url": "../backend/BackAtividade/atividadeBack.php",
                         "method": 'POST', // metodo utilizado para passar os valores das variavesi data para o backend.
@@ -736,80 +702,22 @@ $(document).ready(function () {
 
                             }
                         },
+                        { data: 'subDescricao' },
                         { data: 'queCodigoBncc' },
+                        { data: 'nivDescricao' },
                         { data: 'queStsTipo' },
 
                     ]
 
 
                 })
-                // console.log(questoesID);
+
+            } else if (cadastrarAtividade = true) {
+                criarNovaTabelaQuestoes();
             }
+        } else {
+            criarNovaTabelaQuestoes();
         }
-
-        else {
-
-
-            // tableEscolher.clear().draw();
-            tableEscolher = $('#tableEscolherQuestoes').DataTable({
-                destroy: true,
-
-                "select": {
-                    "style": 'multi'
-                },
-                "columnDefs": [
-                    {
-                        //"orderable": true,
-                        //"targets": [9]
-                    },
-                    {
-                        'targets': 0,
-                        'checkboxes': {
-                            'selectRow': true
-                        }
-                    }
-                ],
-                responsive: true,
-                ajax: {
-                    "url": "../backend/BackAtividade/atividadeBack.php",
-                    "method": 'POST', // metodo utilizado para passar os valores das variavesi data para o backend.
-                    "data": { buscaInicialQuestao: buscaInicialQuestao }, // as variaves bucasInicial.... possuem o valor true  para que no arquivo atividadeBack.php sirva para buscar os dados da tabela
-                    "dataSrc": ""
-                },
-                language: { // tradução em portgues da tabela
-                    url: "../partials/dataTablept-br.json"
-                },
-                lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "Todos"]], // configuração de quantidade de registros a serem mostrados, 5....15 ou todos 
-                columns: [
-                    { data: 'queID' },
-                    { data: 'queID' },
-                    {
-                        data: null, render: function (data, type, row) {
-                            let descricao = data.queDescricao.slice(0, 200);
-                            let tamanho = descricao.length;
-                            if (tamanho >= 200) {
-                                descricao = descricao + "..."
-                            }
-
-                            return `<span style=" max-width: 500px;
-                            min-width: 200px;
-                            display: block;
-                            overflow-wrap: break-word;
-                            white-space: break-spaces;">${descricao}</span>`;
-
-                        }
-                    },
-                    { data: 'queCodigoBncc' },
-                    { data: 'queStsTipo' },
-
-                ]
-
-
-            })
-        }
-
-
-        //tableEscolher.ajax.reload(null, false);
     });
 
 
@@ -825,32 +733,13 @@ $(document).ready(function () {
 
     //! Modal Excluir Atividade
     $("#tbodyAtivdades").on("click", ".btn-excluir-atividade", function () {
-        // console.log("apertou");
         $('#modalDelete').modal('show');
-
         let dadosAtividade = $(this).closest('tr').children("td").map(function () { // função .map é utilizado para pegar todos os dados contidos na linha onde o botão editar foi pressionado, como ID, DESCRICAO E ETC.
             return $(this).text();
         }).get();
 
-
-        // if ($.fn.dataTable.isDataTable('#tableQuestoesAtividade')) {
-        //     queIDdelete = tableEscolhidas.columns(0).data().eq(0).sort()
-
-
-        //  }
-
-
-        // for (var i = 0; i < queIDdelete.length; i++) {
-        //      arrayDelete.push(queIDdelete[i]);
-        // }
-        //  arrayDelete = arrayDelete.sort((a, b) => a - b);//* Ordenar numeros crescente
-
         opDelete = "delete"
         opidDelete = dadosAtividade[0];
-        //console.log(opAtividade);
-        // console.log(opId);
-
-
     });
 
 
@@ -887,8 +776,6 @@ $(document).ready(function () {
                         showConfirmButton: false,
                         timer: 2000
                     })
-
-                    //  $("#btn-nova-atividade").click();//Simula um click manual no botao de cadastrar
                 } else if (data.type == 'validacao') {
                     Swal.fire({
                         position: "center",
@@ -902,10 +789,8 @@ $(document).ready(function () {
                 alert("erro")
             }
         }).done(function (data) {
-
             $("#modalDelete").modal('hide');
             tableAtividade.ajax.reload(null, false);
-
         })
     })
 
@@ -934,11 +819,76 @@ $(document).ready(function () {
             .remove()
             .draw();
 
-        // tableEscolhidas.ajax.reload(null, false);
+        tableEscolhidas.on('order.dt search.dt', function () {
+            tableEscolhidas.column(0, { search: 'applied', order: 'applied' }).nodes().each(function (cell, i) {
+                cell.innerHTML = i + 1;
+            });
+        }).draw();
 
     });
 
 
+
+
+    function criarNovaTabelaQuestoes() {
+        if ($.fn.dataTable.isDataTable('#tableEscolherQuestoes')) {
+            $('#tableEscolherQuestoes').DataTable().destroy();
+        }
+        tableEscolher = $('#tableEscolherQuestoes').DataTable({
+            responsive: true,
+            destroy: true,
+            "select": {
+                "style": 'multi'
+            },
+            "columnDefs": [
+
+                {
+                    'targets': 0,
+                    'checkboxes': {
+                        'selectRow': true
+                    },
+                    "orderable": false,
+                }
+            ],
+            ajax: {
+                "url": "../backend/BackAtividade/atividadeBack.php",
+                "method": 'POST',
+                "data": { buscaInicialQuestao: buscaInicialQuestao },
+                "dataSrc": ""
+            },
+            language: { // tradução em portgues da tabela
+                url: "../partials/dataTablept-br.json"
+            },
+            lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "Todos"]],
+            columns: [
+                { data: 'queID' },
+                { data: 'queID' },
+                {
+                    data: null, render: function (data, type, row) {
+                        let descricao = data.queDescricao.slice(0, 200);
+                        let tamanho = descricao.length;
+                        if (tamanho >= 200) {
+                            descricao = descricao + "..."
+                        }
+
+                        return `<span style=" max-width: 500px;
+                        min-width: 200px;
+                        display: block;
+                        overflow-wrap: break-word;
+                        white-space: break-spaces;">${descricao}</span>`;
+
+                    }
+                },
+                { data: 'subDescricao' },
+                { data: 'queCodigoBncc' },
+                { data: 'nivDescricao' },
+                { data: 'queStsTipo' },
+
+            ]
+
+
+        })
+    }
 
 
     //! ************************************************************************************************************************************************************
@@ -1092,13 +1042,11 @@ $(document).ready(function () {
         }).done(function (data) {
 
 
-            // $("#tituloResAluno").html(` <h4 style="text-transform: none;" class="card-title">Atividade do aluno(a): <span class="text-primary">${nomeAluno}</span><small class="text-primary" id="classe"><strong> - ${dadosAluno[4]} </strong></small></h4>`);
+            $("#tituloAtividade").html(` <h4 style="text-transform: none;" class="card-title">Atividade: <span class="text-primary">${nomeAluno}</span><small class="text-primary" id="classe"><strong> - ${dadosAluno[4]} </strong></small></h4>`);
 
         });
 
     });
-
-
 
     //! ************************************************************************************************************************************************************
     function toggleNovaAtividade() {
