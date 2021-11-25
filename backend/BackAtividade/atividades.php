@@ -27,6 +27,14 @@ class Atividade
         $res = $cmd->fetchAll(PDO::FETCH_ASSOC);
         return $res;
     }
+    public function buscarDadosPorID($id){
+        $res = array();
+        $cmd = $this->pdo->prepare("SELECT * FROM atividades a INNER JOIN tipos t on a.atiTipoID = t.tipID inner join classes c on a.atiClasseID = c.claCodigo where atiID = :atiID");
+        $cmd->bindValue(":atiID",$id);
+        $cmd->execute();
+        $res = $cmd->fetchAll(PDO::FETCH_ASSOC);
+        return $res;
+    }
     // função para cadastrar atividades no banco de dados
     public function cadastrarAtividades($nome, $descricao, $tipo, $dataInicial, $dataFinal, $Status, $turma, $StatusQuestoes )
     {
@@ -127,6 +135,18 @@ class Atividade
         $cmd->bindValue(":atiClasseID", $turma);
 
         $cmd->execute();
+        
+    }
+    public function publicarAtividade($id,$atiPostado){
+       
+        $cmd = $this->pdo->prepare(
+            "UPDATE atividades SET  atiPostado = :atiPostado
+            WHERE atiID = :atiID ");
+        $cmd->bindValue(":atiID",$id);
+        $cmd->bindValue(":atiPostado",$atiPostado);
+      
+        $cmd->execute();
+        return true;
     }
 
     public function excluirAtividade($id)

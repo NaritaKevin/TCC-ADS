@@ -23,7 +23,7 @@ $n = new Nivel("pedagogy", "localhost", "root", "");
     <link rel="stylesheet" href="../vendors/feather/feather.css">
     <link rel="stylesheet" href="../vendors/ti-icons/css/themify-icons.css">
     <link rel="stylesheet" href="../vendors/css/vendor.bundle.base.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="../vendors/bootstrapicons/bootstrap-icons.css">
     <link rel="stylesheet" href="../vendors/bootstrapselect/bootstrap-select.min.css">
     <!-- endinject -->
     <!-- Plugin css for this page -->
@@ -32,7 +32,8 @@ $n = new Nivel("pedagogy", "localhost", "root", "");
     <link rel="stylesheet" type="text/css" href="../js/select.dataTables.min.css">
     <link rel="stylesheet" href="../js/jquery.datetimepicker.min.css">
     <link rel="stylesheet" href="../js/dataTables.checkboxes.css">
-    <link href="https://nightly.datatables.net/rowreorder/css/rowReorder.dataTables.css?_=6e799325be6f763b41c5c21989f76ec9.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="../vendors/datatableRowReorder/rowReorder.css">
+
 
     <!-- End plugin css for this page -->
     <!-- inject:css -->
@@ -56,16 +57,36 @@ $n = new Nivel("pedagogy", "localhost", "root", "");
         .dropdown-item:active {
             background-color: #6664bd;
         }
+
         .list-wrapper ul li {
-        font-size: 0.9375rem;
-        padding: 0.2rem 1.4rem;
-        border: none;
-        margin-bottom: 0.812rem;
-        border-radius: 7px;
+            font-size: 0.9375rem;
+            padding: 0.2rem 1.4rem;
+            border: none;
+            margin-bottom: 0.812rem;
+            border-radius: 7px;
         }
-        .list-wrapper ul li .form-check, .list-wrapper ul li .form-check .form-check-label, .email-wrapper .mail-sidebar .menu-bar .profile-list-item a .user .u-name, .email-wrapper .mail-sidebar .menu-bar .profile-list-item a .user .u-designation, .email-wrapper .mail-list-container .mail-list .content .sender-name, .email-wrapper .message-body .attachments-sections ul li .details p.file-name, .settings-panel .chat-list .list .info p {
-      
+
+        .list-wrapper ul li .form-check,
+        .list-wrapper ul li .form-check .form-check-label,
+        .email-wrapper .mail-sidebar .menu-bar .profile-list-item a .user .u-name,
+        .email-wrapper .mail-sidebar .menu-bar .profile-list-item a .user .u-designation,
+        .email-wrapper .mail-list-container .mail-list .content .sender-name,
+        .email-wrapper .message-body .attachments-sections ul li .details p.file-name,
+        .settings-panel .chat-list .list .info p {
+
             white-space: normal;
+        }
+
+        .swal2-container.swal2-center>.swal2-popup {
+
+            padding: 0px;
+        }
+
+        .swal2-title {
+
+            padding: 0px !important;
+
+
         }
     </style>
 </head>
@@ -185,23 +206,23 @@ $n = new Nivel("pedagogy", "localhost", "root", "");
                                                     <form id="formAtividades">
 
                                                         <div class="form-group">
-                                                        <div class="row">                                                             
-                                                            <div class="col-md-8">
-                                                                <label for="nome">Nome</label>
-                                                                <input type="text" class="form-control" id="nome" placeholder="Nome">
-                                                            </div>
-
-                                                            <div class="col-md-2">
-                                                               
-                                                                    <label for="data-inicial" >Data Inicial</label>                                                                 
-                                                                    <input type="text" id="data-inicial" class="form-control" />                                                                 
-                                                               
-                                                            </div>
-                                                                <div class="col-md-2">                                                                 
-                                                                        <label for="data-final" >Data Final</label>                                                                  
-                                                                        <input type="text" id="data-final" class="form-control" />                                                                                                                                      
+                                                            <div class="row">
+                                                                <div class="col-md-8">
+                                                                    <label for="nome">Nome</label>
+                                                                    <input type="text" class="form-control" id="nome" placeholder="Nome">
                                                                 </div>
-                                                        </div>
+
+                                                                <div class="col-md-2">
+
+                                                                    <label for="data-inicial">Data Inicial</label>
+                                                                    <input type="text" id="data-inicial" class="form-control" />
+
+                                                                </div>
+                                                                <div class="col-md-2">
+                                                                    <label for="data-final">Data Final</label>
+                                                                    <input type="text" id="data-final" class="form-control" />
+                                                                </div>
+                                                            </div>
                                                         </div>
                                                         <div class="form-group">
                                                             <label for="descricao">Descricao</label>
@@ -210,7 +231,7 @@ $n = new Nivel("pedagogy", "localhost", "root", "");
 
                                                         <div class="form-group">
                                                             <div class="row">
-                                                                <div class="col-md-2">
+                                                                <div class="col-md-3">
                                                                     <label label class="labelCadastroAtividade">Tipo</label>
                                                                     <select id="tipoopc" class="selectpicker show-tick" name="tipoopc" data-width="fit">
 
@@ -224,7 +245,7 @@ $n = new Nivel("pedagogy", "localhost", "root", "");
                                                                     </select>
                                                                 </div>
 
-                                                                <div class="col-md-2">
+                                                                <div class="col-md-3">
                                                                     <label class="labelCadastroAtividade">Classe</label>
                                                                     <select id="classe" class="selectpicker show-tick" name="classe" data-width="fit">
                                                                         <?php $arr_classe = $c->buscarClasse() ?>
@@ -237,7 +258,7 @@ $n = new Nivel("pedagogy", "localhost", "root", "");
                                                                     </select>
                                                                 </div>
 
-                                                                <div class="col-md-2">
+                                                                <div class="col-md-3">
                                                                     <label class="labelCadastroAtividade">Visibilidade da Atividade</label>
                                                                     <select id="status" class="selectpicker show-tick" name="status" data-width="fit">
                                                                         <option value="1">Privada</option>
@@ -245,44 +266,50 @@ $n = new Nivel("pedagogy", "localhost", "root", "");
                                                                     </select>
                                                                 </div>
 
-                                                                <div class="col-md-2">
+                                                                <div class="col-md-3">
                                                                     <label class="labelCadastroAtividade">Exibição das Questões</label>
-                                                                    <select id="StsQuestoes" class="selectpicker show-tick" name="StsQuestoes" data-width="fit">
+                                                                    <select id="stsQuestoes" class="selectpicker show-tick" name="stsQuestoes" data-width="fit">
                                                                         <option value="1">Randômica</option>
                                                                         <option value="2">Ordenada</option>
                                                                     </select>
                                                                 </div>
-                                                                <div class="col-md-2">
+
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <div class="row">
+                                                                <div class="col-md-3">
                                                                     <label class="labelCadastroAtividade">Exibição das Alternativas</label>
-                                                                    <select id="StsQuestoes" class="selectpicker show-tick" name="StsQuestoes" data-width="fit">
+                                                                    <select id="stsAlternativas" class="selectpicker show-tick" name="stsAlternativas" data-width="fit">
                                                                         <option value="1">Randômica</option>
                                                                         <option value="2">Ordenada</option>
                                                                     </select>
                                                                 </div>
-                                                                <div class="col-md-2">
+                                                                <div class="col-md-3">
                                                                     <label class="labelCadastroAtividade">Exibição das Respostas</label>
-                                                                    <select id="StsQuestoes" class="selectpicker show-tick" name="StsQuestoes" data-width="fit">
+                                                                    <select id="stsRespostas" class="selectpicker show-tick" name="stsRespostas" data-width="fit">
                                                                         <option value="1">Após Responder</option>
                                                                         <option value="2">Final da Atividade</option>
                                                                     </select>
                                                                 </div>
-                                                                <div class="col-md-2">
+                                                                <div class="col-md-3">
                                                                     <label class="labelCadastroAtividade">Navegar Entre Questões</label>
-                                                                    <select id="StsQuestoes" class="selectpicker show-tick" name="StsQuestoes" data-width="fit">
+                                                                    <select id="stsNavegacao" class="selectpicker show-tick" name="stsNavegacao" data-width="fit">
                                                                         <option value="1">Sim</option>
                                                                         <option value="2">Não</option>
                                                                     </select>
                                                                 </div>
-                                                                <div class="col-md-2">
+                                                                <div class="col-md-3">
                                                                     <label class="labelCadastroAtividade">Continuar Onde Parou</label>
-                                                                    <select id="StsQuestoes" class="selectpicker show-tick" name="StsQuestoes" data-width="fit">
+                                                                    <select id="stsReinicio" class="selectpicker show-tick" name="stsReinicio" data-width="fit">
                                                                         <option value="1">Sim</option>
                                                                         <option value="2">Não</option>
                                                                     </select>
                                                                 </div>
+
                                                             </div>
                                                         </div>
-
 
                                                         <div class="form-group" id="tableQuestoesSelecionadas">
                                                             <div class="row">
@@ -302,13 +329,13 @@ $n = new Nivel("pedagogy", "localhost", "root", "");
                                                                                 </button>
                                                                             </p>
                                                                             <div id="tableQuestoesToggle" class="table-responsive">
-                                                                                <table class=" table table-hover"  id="tableQuestoesAtividade">
+                                                                                <table class=" table table-hover" id="tableQuestoesAtividade">
                                                                                     <thead>
                                                                                         <tr>
                                                                                             <th width="1%">Ordem</th>
-                                                                                            <th >ID</th>
-                                                                                            <th width="22%">Enunciado</th>  
-                                                                                            <th width="1%">Pontuação</th>                                                               
+                                                                                            <th>ID</th>
+                                                                                            <th width="22%">Enunciado</th>
+                                                                                            <th width="1%">Pontuação</th>
                                                                                             <th width="5%">Subgrupo</th>
                                                                                             <th width="3%">Código BNCC</th>
                                                                                             <th width="2%">Status</th>
@@ -472,16 +499,17 @@ $n = new Nivel("pedagogy", "localhost", "root", "");
                                         <table id="tableAtividade" class="table table-striped table-hover ">
                                             <thead>
                                                 <tr>
-                                                    <th>ID</th>
+                                                    <th width="2%">ID</th>
                                                     <th>Nome</th>
                                                     <th>Observação</th>
-                                                    <th>Data Início</th>
-                                                    <th>Data Final</th>
-                                                    <th>Tipo</th>
-                                                    <th>Status</th>
-                                                    <th>Turma</th>
-                                                    <th>Ação</th>
+                                                    <th width="10%">Data Início</th>
+                                                    <th width="10%">Data Final</th>
+                                                    <th width="7%">Tipo</th>
+                                                    <th width="2%">Status</th>
+                                                    <th width="2%">Turma</th>
+                                                    <th width="15%" style="text-align: center">Ações</th>
                                                     <th></th>
+
                                                 </tr>
                                             </thead>
                                             <tbody id="tbodyAtivdades">
@@ -495,7 +523,7 @@ $n = new Nivel("pedagogy", "localhost", "root", "");
                             </div>
                         </div>
                     </div>
-
+                  
                     <div id="verAtividade" class="row">
                         <div class="col-lg-12 grid-margin stretch-card">
                             <div class="card">
@@ -522,7 +550,7 @@ $n = new Nivel("pedagogy", "localhost", "root", "");
 
                     </div>
                 </div>
-             
+
                 <!-- Modal Excluir Atividade-->
                 <div class="modal fade" id="modalDelete" tabindex="-1" aria-labelledby="modalDelete" aria-hidden="true">
                     <div class="modal-dialog ">
@@ -565,11 +593,11 @@ $n = new Nivel("pedagogy", "localhost", "root", "");
                                                 <th></th>
                                                 <th>ID</th>
                                                 <th>Enunciado</th>
-                                                <th >Subgrupo</th>
-                                                <th >Código BNCC</th>
-                                                <th >Nível</th>
-                                                <th >Status</th>
-                                              
+                                                <th>Subgrupo</th>
+                                                <th>Código BNCC</th>
+                                                <th>Nível</th>
+                                                <th>Status</th>
+
                                             </tr>
                                         </thead>
                                         <tbody id="tbodyModalAtividade">

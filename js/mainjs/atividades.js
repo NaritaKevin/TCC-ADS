@@ -35,7 +35,7 @@ $(document).ready(function () {
         $("#verAtividade").hide();
 
         $("#data-inicial,#data-final").datetimepicker({
-            timepicker: false, mask: true, format: 'd/m/Y',
+            timepicker: true, mask: true, format: 'd/m/Y H:i'
         })
 
         tableAtividade = $('#tableAtividade').DataTable({
@@ -51,6 +51,15 @@ $(document).ready(function () {
                 url: "../partials/dataTablept-br.json"
             },
             lengthMenu: [[5, 15, 25, -1], [5, 15, 25, "Todos"]], // configuração de quantidade de registros a serem mostrados, 5....15 ou todos 
+            "columnDefs": [
+
+                {
+                    searchable: false,
+                    orderable: false,
+                    targets: [8]
+                },
+
+            ],
             columns: [
                 //aqui dentro sera configurado o conteudo de cada coluna utilizando as variaveis data
                 //importante - os valores contidos em data não a relação com os nomes dos cabeçalhos da tabela.
@@ -64,7 +73,6 @@ $(document).ready(function () {
 
                         let data_americana = data.atiDataInicio;
                         let data_brasileira = data_americana.split('-').reverse().join('/');
-
                         return data_brasileira;
                     }
                 },
@@ -93,18 +101,38 @@ $(document).ready(function () {
                 {
                     data: null, render: function (data, type, row) { // renderizar a exibição dos botões 
 
-                        return `<button id="btn" type="button"
-                        class="btn btn-inverse-primary btn-rounded btn-icon btn-ver-atividade ">
-                        <i class="bi bi-file-earmark-text"></i>
-                    </button>
-                    <button type="button"
-                        class="btn btn-inverse-success btn-rounded btn-icon btn-editar-atividade">
-                        <i class="bi bi-pencil"></i>
-                    </button>
-                    <button type="button"
-                        class="btn btn-inverse-danger btn-rounded btn-icon  btn-excluir-atividade">
-                        <i class="bi bi-trash"></i>
-                    </button>`;
+                        if (data.atiPostado == "Sim") {
+                            return `<button id="btn" type="button"
+                            class="btn btn-inverse-primary btn-rounded btn-icon btn-ver-atividade ">
+                            <i class="bi bi-file-earmark-text"></i>
+                        </button>                      
+                        <button type="button"
+                            class="btn btn-inverse-danger btn-rounded btn-icon  btn-excluir-atividade">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                       
+                        `;
+                        } else {
+                            return `<div class="text-center"><button id="btn" type="button"
+                            class="btn btn-inverse-primary btn-rounded btn-icon btn-ver-atividade ">
+                            <i class="bi bi-file-earmark-text"></i>
+                        </button>
+                        <button type="button"
+                            class="btn btn-inverse-success btn-rounded btn-icon btn-editar-atividade">
+                            <i class="bi bi-pencil"></i>
+                        </button>
+                        <button type="button"
+                            class="btn btn-inverse-danger btn-rounded btn-icon  btn-excluir-atividade">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                        <button type="button"
+                        class="btn btn-inverse-primary btn-rounded btn-icon  btn-postar-atividade">
+                        <i class="bi bi-send"></i>
+                    </button></div>
+                        `;
+                        }
+
+
                     }
                 },
                 {
@@ -113,13 +141,68 @@ $(document).ready(function () {
                     "data": null,
                     "defaultContent": ''
                 }
-            ]
+            ], createdRow: function (row, data, dataIndex) {
+                if (data.atiPostado == "Sim")
+                    $(row).addClass('table-primary');
+            }
 
 
         })
 
     }
-
+    $("#tbodyAtivdades").on("click", ".btn-postar-atividade", function () {
+        let dados = $(this).closest('tr').children("td").map(function () {
+            return $(this).text();
+        }).get();
+        Swal.fire({
+            title: 'Deseja postar a atividade?',
+            text: "Você não poderá reverter esta ação!",
+            icon: 'question',
+            reverseButtons: true,
+            showCancelButton: true,
+            cancelButtonColor: '#d33',
+            confirmButtonColor: '#4B49AC',
+            cancelButtonText: 'Não',
+            confirmButtonText: 'Postar!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: '../backend/BackAtividade/atividadeBack.php',
+                    method: 'POST',
+                    data: {
+                        idAtividade: dados[0],
+                        atiPostadoo: 'Sim',
+                    },
+                    dataType: 'json',
+                    success: function (data) {
+                        if (data.type == 'sucesso') {
+                            tableAtividade.ajax.reload(null, false);
+                            Swal.fire({
+                                title: 'Postada!',
+                                text: data.text,
+                                icon: 'success',
+                                confirmButtonColor: '#4B49AC',
+                            })
+                        } else if (data.type == 'erro') {
+                            Swal.fire({
+                                title: 'Algo deu errado!',
+                                text: data.text,
+                                icon: 'error',
+                                confirmButtonColor: '#4B49AC',
+                            })
+                        }
+                    }, error: function (data) {
+                        Swal.fire({
+                            title: 'Algo deu errado!',
+                            text: data.text,
+                            icon: 'error',
+                            confirmButtonColor: '#4B49AC',
+                        })
+                    }
+                })
+            }
+        })
+    })
 
 
     //? BOTAO DE CONFIMAR ESCOLHA QUESTÕES
@@ -264,7 +347,14 @@ $(document).ready(function () {
         var dataFinal = $("#data-final").val();
         var status = $("#status option:selected").val();
         var classe = $("#classe").val();
-        var StsQuestoes = $("#StsQuestoes option:selected").val();
+        var stsQuestoes = $("#stsQuestoes option:selected").val();
+        var stsAlternativas = $("#stsAlternativas option:selected").val();
+        var stsRespostas = $("#stsRespostas option:selected").val();
+        var stsNavegacao = $("#stsNavegacao option:selected").val();
+        var stsReinicio = $("#stsReinicio option:selected").val();
+
+
+
         var dataFormInicial;
         var dataFormFinal;
         var questoesID = [];
@@ -322,7 +412,7 @@ $(document).ready(function () {
                     opAtividade: opcao,
                     IDatividade: IDatividade,
                     turma: classe,
-                    StsQuestoes: StsQuestoes
+                    StsQuestoes: stsQuestoes
 
                 },
                 dataType: 'json',
@@ -1061,7 +1151,7 @@ $(document).ready(function () {
         }
         $("#cadastrarAtividade").toggle("slow");
     }
-    function format(d) {
+    function format2(d) {
         // `d` is the original data object for the row
         return '<table cellpadding="5" cellspacing="0" border="0" style="width:100%;">' +
             '<tr class="expanded-row">' +
@@ -1069,20 +1159,124 @@ $(document).ready(function () {
         '</tr>' +
             '</table>';
     }
+    function format3(d) {
+        let exibQuestao = "";
+        let exibAlt = "";
+        let exibResp = "";
+        let navegQuestao = "";
+        let continuar = "";
+
+        d.atiStsQuestoes == "Randômica" ? exibQuestao = "bi bi-shuffle" : exibQuestao = "bi bi-sort-alpha-down";
+        d.atiStsAlternativas == "Randômica" ? exibAlt = "bi bi-shuffle" : exibAlt = "bi bi-sort-alpha-down";
+        d.atiStsRespostas == "Final da Atividade" ? exibResp = "bi bi-box-arrow-right" : exibResp = "bi bi-box-arrow-left";
+        d.atiStsNavegacao == "Sim" ? navegQuestao = "bi bi-hand-thumbs-up" : navegQuestao = "bi bi-hand-thumbs-down";
+        d.atiStsReinicio == "Sim" ? continuar = "bi bi-hand-thumbs-up" : continuar = "bi bi-hand-thumbs-down";
+
+        return `<table cellpadding="5" cellspacing="0" border="0" style="width:100%;">
+            <tr class="expanded-row">
+                <td colspan="8" class="row-bg">
+                    <div>
+                        <div class="d-flex justify-content-between">
+
+                            <div class="expanded-table-normal-cell">
+                                <div class="mr-2">
+                                    <h6>Exibição das questões</h6>
+                                    <div class="media">
+                                        <i class="${exibQuestao} icon-sm text-info d-flex align-self-center mr-3"></i>
+                                        <div class="media-body">
+                                            <p class="card-text" style="font-size: 0.875rem;">Final da ativiade</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="expanded-table-normal-cell">
+                                <div class="mr-2">
+                                <h6>Exibição das alternativas</h6>
+                                <div class="media">
+                                    <i class="${exibAlt} icon-sm text-info d-flex align-self-center mr-3"></i>
+                                    <div class="media-body">
+                                        <p class="card-text" style="font-size: 0.875rem;">Final da ativiade</p>
+                                    </div>
+                                </div>
+                                </div>
+
+                            </div>
+
+                            <div class="expanded-table-normal-cell">
+                                <div class="mr-2">
+                                <h6>Exibição das respostas</h6>
+                                <div class="media">
+                                    <i class="${exibResp} icon-sm text-info d-flex align-self-center mr-3"></i>
+                                    <div class="media-body">
+                                        <p class="card-text" style="font-size: 0.875rem;">Final da ativiade</p>
+                                    </div>
+                                </div>
+                                </div>
+                            </div>
+                            <div class="expanded-table-normal-cell">
+                                <div class="mr-2">
+                                <h6>Navegar entre questões</h6>
+                                <div class="media">
+                                    <i class="${navegQuestao} icon-sm text-info d-flex align-self-center mr-3"></i>
+                                    <div class="media-body">
+                                        <p class="card-text" style="font-size: 0.875rem;">Final da ativiade</p>
+                                    </div>
+                                </div>
+                                </div>
+                            </div>
+                            <div class="expanded-table-normal-cell">
+                                <div class="mr-2">
+                                <h6>Continuar atividade de onde parou</h6>
+                                <div class="media">
+                                    <i class="${continuar} icon-sm text-info d-flex align-self-center mr-3"></i>
+                                    <div class="media-body">
+                                        <p class="card-text" style="font-size: 0.875rem;">Final da ativiade</p>
+                                    </div>
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </table>`
+    }
+
     $('#tbodyAtivdades').on('click', 'td.details-control', function () {
         var tr = $(this).closest('tr');
         var row = tableAtividade.row(tr);
+
 
         if (row.child.isShown()) {
             // This row is already open - close it
             row.child.hide();
 
             tr.removeClass('shown');
-        }
-        else {
-            // Open this row
-            row.child(format(row.data())).show();
-            tr.addClass('shown');
+        } else {
+
+            $.ajax({
+                url: '../backend/BackAtividade/atividadeBack.php',
+                method: 'POST',
+                data: {
+                    detailControlID: row.data().atiID,
+                },
+                dataType: 'json',
+                success: function (data) {
+
+                    // Open this row
+                    // row.child(format3(data)).show();
+
+                    tr.addClass('shown');
+
+                }, error: function (data) {
+                    alert("erro")
+                }
+            }).done(function (data) {
+
+            });
+
+
         }
     });
 
