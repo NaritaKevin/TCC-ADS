@@ -71,9 +71,14 @@ if (isset($_POST["nome"])) { // clicou no botao cadastrar ou editar DISCIPLINA
     $tipoopc = addslashes($_POST['tipoopc']);
     $dataInicial = addslashes($_POST['dataFormInicial']);
     $dataFinal = addslashes($_POST['dataFormFinal']);
-    $status = addslashes($_POST['status']);
     $turma = addslashes($_POST['turma']);
+
+    $status = addslashes($_POST['status']);
     $StsQuestoes = addslashes($_POST['StsQuestoes']);
+    $stsAlternativas = addslashes($_POST['stsAlternativas']);
+    $stsRespostas = addslashes($_POST['stsRespostas']);
+    $stsNavegacao = addslashes($_POST['stsNavegacao']);
+    $stsReinicio = addslashes($_POST['stsReinicio']);
 
     // $questaoSel  = array_map( 'addslashes', $_POST['questaoSel'] );
 
@@ -89,11 +94,17 @@ if (isset($_POST["nome"])) { // clicou no botao cadastrar ou editar DISCIPLINA
             return addslashes($input_arr);
         }
     }
-
     $questaoSel  = addslashes_array($_POST['questaoSel']);
 
     $opID = "";
     $opAtividade = "";
+
+    $stsAtiv = "";
+    $stsQues = "";
+    $stsAlt = "";
+    $stsResp = "";
+    $stsNaveg = "";
+    $stsReini = "";
 
     if (isset($_POST["opID"])) {
         $opID =  addslashes($_POST['opID']);
@@ -104,18 +115,20 @@ if (isset($_POST["nome"])) { // clicou no botao cadastrar ou editar DISCIPLINA
         $opAtividade =  addslashes($_POST['opAtividade']);
     }
 
+    $status == 2 ? $stsAtiv = "Pública" : $stsAtiv = "Privada";
+    $StsQuestoes == 2 ? $stsQues = "Ordenada" : $stsQues = "Randômica";
+    $stsAlternativas == 2 ? $stsAlt = "Ordenada" : $stsAlt = "Randômica";
+    $stsRespostas == 2 ? $stsResp = "Final da Atividade" : $stsResp = "Após Responder";
+    $stsNavegacao == 2 ? $stsNaveg = "Não" : $stsNaveg = "Sim";
+    $stsReinicio == 2 ? $stsReini = "Não" : $stsReini = "Sim";
+
+
 
     if ($opAtividade == "update2" && !empty($opID)) {
-        if (!empty($nome) && !empty($descricao) && !empty($tipoopc) && !empty($dataInicial) && !empty($dataFinal) && !empty($dataFinal)) { // editar
+        if (!empty($nome) && !empty($descricao) && !empty($tipoopc) && !empty($dataInicial) && !empty($dataFinal) && !empty($turma)) { // editar
 
-            if ($status == 2) {
-                $tipoStatus = "Pública";
-            } else {
-                $tipoStatus = "Privada";
-            }
-
-
-            $a->atualizarDadosAtividade($opID, $nome, $descricao, $tipoopc, $dataInicial, $dataFinal, $tipoStatus, $turma);
+        
+            $a->atualizarDadosAtividade($opID, $nome, $descricao, $tipoopc, $dataInicial, $dataFinal, $stsAtiv, $turma,$stsQues,$stsAlt,$stsResp,$stsNaveg,$stsReini);
 
             $a->excluirAtividadeQuestao($opID);
 
@@ -137,23 +150,10 @@ if (isset($_POST["nome"])) { // clicou no botao cadastrar ou editar DISCIPLINA
         }
     }
 
-    if (!empty($nome) && !empty($descricao) && !empty($tipoopc) && !empty($dataInicial) && !empty($dataFinal) && !empty($dataFinal)  && !empty($turma) && !empty($StsQuestoes)) {
-        if ($status == 2) {
-            $tipoStatus = "Pública";
-        } else {
-            $tipoStatus = "Privada";
-        }
+    if (!empty($nome) && !empty($descricao) && !empty($tipoopc) && !empty($dataInicial) && !empty($dataFinal)  && !empty($turma) && !empty($StsQuestoes)) {
+   
 
-        if ($StsQuestoes == 2) {
-            $Status = "Na Ordem";
-        } else {
-            $Status = "Aleatória";
-        }
-
-
-
-
-        if ($a->cadastrarAtividades($nome, $descricao, $tipoopc,  $dataInicial, $dataFinal, $tipoStatus, $turma, $Status)) {
+        if ($a->cadastrarAtividades($nome, $descricao, $tipoopc,  $dataInicial, $dataFinal, $stsAtiv, $turma,$stsQues,$stsAlt,$stsResp,$stsNaveg,$stsReini)) {
 
             $atividadeID = $a->buscarUltimaAtividadeCadastrada();
             if (empty($atividadeID)) {

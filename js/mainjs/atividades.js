@@ -5,17 +5,11 @@ $(document).ready(function () {
     let buscaInicialNada = true;
     let buscaInicialEscolher = true;
     let buscarSelecionadas = true;
-
     var opAtividade
     var opId
-
     var opDelete
     var opidDelete
     var queSel = [];
-
-    let buscaInicialQuestoesSelecionadas = true;
-    var queIDdelete
-    var arrayDelete = []
     var questoesID
     var atualizar
     var IDatividade
@@ -50,7 +44,7 @@ $(document).ready(function () {
             language: { // tradução em portgues da tabela
                 url: "../partials/dataTablept-br.json"
             },
-            lengthMenu: [[5, 15, 25, -1], [5, 15, 25, "Todos"]], // configuração de quantidade de registros a serem mostrados, 5....15 ou todos 
+            lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "Todos"]], // configuração de quantidade de registros a serem mostrados, 5....15 ou todos 
             "columnDefs": [
 
                 {
@@ -58,7 +52,6 @@ $(document).ready(function () {
                     orderable: false,
                     targets: [8]
                 },
-
             ],
             columns: [
                 //aqui dentro sera configurado o conteudo de cada coluna utilizando as variaveis data
@@ -69,31 +62,41 @@ $(document).ready(function () {
                 { data: 'atiDescricao' },
                 { data: 'atiObservacao' },
                 {
-                    data: null, render: function (data, type, row) { // renderizar a exibição dos botões 
-
-                        let data_americana = data.atiDataInicio;
-                        let data_brasileira = data_americana.split('-').reverse().join('/');
-                        return data_brasileira;
+                    data: null, render: function (data, type, row) {
+                        let dataini = data.atiDataInicio.slice(0, 10);
+                        let horaini = data.atiDataInicio.slice(11, 19);
+                        dataini = dataini.split('-').reverse().join('/');
+                        return `<span style="padding-bottom:5px">${dataini}</span><br><br><span>${horaini}</span>`;
                     }
                 },
                 {
-                    data: null, render: function (data, type, row) { // renderizar a exibição dos botões 
-
-                        let data_americana = data.atiDataFim;
-                        let data_brasileira = data_americana.split('-').reverse().join('/');
-
-                        return data_brasileira;
+                    data: null, render: function (data, type, row) {
+                        let datafim = data.atiDataFim.slice(0, 10);
+                        let horafim = data.atiDataFim.slice(11, 19);
+                        datafim = datafim.split('-').reverse().join('/');
+                        return `<span style="padding-bottom:5px">${datafim}</span><br><br><span>${horafim}</span>`;
                     }
                 },
-                { data: 'tipDescricao' },
+                {
+                    data: null, render: function (data, type, row) {
+                        if (data.tipDescricao == "Trabalho") {
+                            return `<label class="badge badge-primary" >${data.tipDescricao}</label>`;
+                        } else if (data.tipDescricao == "Fórum") {
+                            return `<label class="badge badge-warning">${data.tipDescricao}</label>`;
+                        } else if (data.tipDescricao == "Redação") {
+                            return `<label class="badge badge-info">${data.tipDescricao}</label>`;
+                        } else {
+                            return `<label class="badge badge-info" style="background-color: #98BDFF">${data.tipDescricao}</label>`;
+                        }
+                    }
+                },
 
                 {
                     data: null, render: function (data, type, row) {
                         if (data.atiStatus == "Pública") {
-                            return `<label class="badge badge-success">${data.atiStatus}</label>`;
-
+                            return `<label class="badge badge-info">${data.atiStatus}</label>`;
                         } else {
-                            return `<label class="badge badge-danger">${data.atiStatus}</label>`;
+                            return `<label class="badge badge-warning">${data.atiStatus}</label>`;
                         }
                     }
                 },
@@ -109,8 +112,7 @@ $(document).ready(function () {
                         <button type="button"
                             class="btn btn-inverse-danger btn-rounded btn-icon  btn-excluir-atividade">
                             <i class="bi bi-trash"></i>
-                        </button>
-                       
+                        </button>                    
                         `;
                         } else {
                             return `<div class="text-center"><button id="btn" type="button"
@@ -131,8 +133,6 @@ $(document).ready(function () {
                     </button></div>
                         `;
                         }
-
-
                     }
                 },
                 {
@@ -145,10 +145,7 @@ $(document).ready(function () {
                 if (data.atiPostado == "Sim")
                     $(row).addClass('table-primary');
             }
-
-
         })
-
     }
     $("#tbodyAtivdades").on("click", ".btn-postar-atividade", function () {
         let dados = $(this).closest('tr').children("td").map(function () {
@@ -208,10 +205,7 @@ $(document).ready(function () {
     //? BOTAO DE CONFIMAR ESCOLHA QUESTÕES
 
     $('#btn-modalConfirmarQuestao').click(function (e) {
-        buscaInicialQuestoesSelecionadas = true;
         var rowsel = tableEscolher.column(0).checkboxes.selected();
-
-
 
         if (rowsel.length > 0) {
             queSel = rowsel.join(",");
@@ -219,9 +213,7 @@ $(document).ready(function () {
             if (arr_questoes != "") {
                 Selecionadas = arr_questoes.concat(",");
             }
-
             Selecionadas = Selecionadas.concat(queSel);
-
 
             let queSelecionadas;
             $.ajax({
@@ -263,7 +255,6 @@ $(document).ready(function () {
                             orderable: false,
                             targets: [3]
                         }
-
                     ],
                     data: queSelecionadas,
                     language: {
@@ -287,16 +278,11 @@ $(document).ready(function () {
                                 display: block;
                                 overflow-wrap: break-word;
                                 white-space: break-spaces;">${descricao}</span>`;
-
                             }
                         },
                         {
                             data: null, render: function (data, type, row) {
-
-
-                                return ` <input type="number" min="0" style="padding: 0.4rem 0.4rem;" class="form-control" value="${data.atiqPontuacao}" />`;
-                                // return `<div>${data.atiqPontuacao}</div>`;
-
+                                return ` <input type="text"  style="padding: 0.4rem 0.4rem;" class="form-control inputnota" value="${data.atiqPontuacao}" />`;
                             }
                         },
                         { data: 'subDescricao' },
@@ -305,7 +291,6 @@ $(document).ready(function () {
                         { data: 'nivDescricao' },
                         {
                             data: null, render: function (data, type, row) { // renderizar a exibição dos botões 
-
                                 return `
                             <button type="button"
                                 class="btn btn-inverse-danger btn-rounded btn-icon btn-del-questaoEscolhida">
@@ -318,24 +303,21 @@ $(document).ready(function () {
                     },
 
                 })
-
             });
-
-
-
-
         }
-
-
-
-
-
         $('#modalQuestao').modal('hide');
         e.preventDefault();
-
-
     })
 
+    $(document).on('keyup', '.inputnota', function (e) {
+        let lastValid = $(".inputnota").val();
+        var validNumber = new RegExp(/^\d*\.?\d*$/);
+        var newValue = $(this).val();
+        if (validNumber.test(newValue)) {
+            lastValid = newValue;
+        } else { $(this).val(lastValid); }
+
+    });
 
     //? Formulario de Cadastro de Atividade
     $('#formAtividades').submit(function (e) {
@@ -355,8 +337,8 @@ $(document).ready(function () {
 
 
 
-        var dataFormInicial;
-        var dataFormFinal;
+        var dataFormInicial = "";
+        var dataFormFinal = "";
         var questoesID = [];
         var ordem = [];
         var questaoSel = [];
@@ -379,9 +361,20 @@ $(document).ready(function () {
             ordem = tableEscolhidas.column(0, { order: 'current' }).data();
             for (let i = 0; i < questoesID.length; i++) {
                 let pont = tableEscolhidas.cell(i, 3).nodes().to$().find('input').val();
+
                 questaoSel.push({ queIDSelecionado: `${questoesID[i]}`, atiqOrdemQuestao: `${ordem[i]}`, atiqPontuacao: `${pont}` })
             }
         }
+
+        let dataini = dataInicial.slice(0, 10);
+        let horaini = dataInicial.slice(11, 19);
+        let datafim = dataFinal.slice(0, 10);
+        let horafim = dataFinal.slice(11, 19)
+
+        dataini = formatarData(dataini) + " ";
+        datafim = formatarData(datafim) + " ";
+        dataFormInicial = dataFormInicial.concat(dataini, horaini)
+        dataFormFinal = dataFormFinal.concat(datafim, horafim)
 
 
         if (questoesID.length == 0) {
@@ -394,9 +387,6 @@ $(document).ready(function () {
             })
 
         } else {
-
-            dataFormInicial = formatarData(dataInicial);
-            dataFormFinal = formatarData(dataFinal);
 
             $.ajax({
                 url: '../backend/BackAtividade/atividadeBack.php',
@@ -412,8 +402,11 @@ $(document).ready(function () {
                     opAtividade: opcao,
                     IDatividade: IDatividade,
                     turma: classe,
-                    StsQuestoes: stsQuestoes
-
+                    StsQuestoes: stsQuestoes,
+                    stsReinicio: stsReinicio,
+                    stsNavegacao: stsNavegacao,
+                    stsRespostas: stsRespostas,
+                    stsAlternativas: stsAlternativas,
                 },
                 dataType: 'json',
                 success: function (data) {
@@ -468,7 +461,7 @@ $(document).ready(function () {
         $("#cardTableTitle").toggle("slow");
         $("#cardTitle").text("Alterar de atividade");
         $("#cardDesc").text("Altere a atividade selecionada.");
-        $("#cadastrarAtividade span").text(" Salvar");
+        $("#btn-cadastrarAtividade span").text(" Salvar");
         toggleNovaAtividade()
 
         let dados = $(this).closest('tr').children("td").map(function () {
@@ -478,11 +471,6 @@ $(document).ready(function () {
         novaAtividade = false;
         opAtividade = "update";
         atualizar = "update2";
-        $("#descricao").val(dados[2]);
-        $("#data-inicial").val(dados[3]);
-        $("#data-final").val(dados[4]);
-        $("#status").val(dados[6])
-
 
 
         //? TABELA DE QUESÕES JA ESCOLHIDAS
@@ -500,7 +488,6 @@ $(document).ready(function () {
                     orderable: false,
                     targets: [3]
                 }
-
             ],
             ajax: {
                 "url": "../backend/BackAtividade/atividadeBack.php",
@@ -513,7 +500,6 @@ $(document).ready(function () {
             },
             lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "Todos"]],
             columns: [
-
                 { data: 'atiqOrdemQuestao' },
                 { data: 'queID' },
                 {
@@ -523,7 +509,6 @@ $(document).ready(function () {
                         if (tamanho >= 200) {
                             descricao = descricao + "..."
                         }
-
                         return `<span style=" max-width: 500px;
                         min-width: 200px;
                         display: block;
@@ -534,9 +519,7 @@ $(document).ready(function () {
                 },
                 {
                     data: null, render: function (data, type, row) {
-
-
-                        return ` <input type="number" min="0" style="padding: 0.4rem 0.4rem;" class="form-control" value="${data.atiqPontuacao}" />`;
+                        return ` <input type="text"  style="padding: 0.4rem 0.4rem;" class="form-control inputnota" value="${data.atiqPontuacao}" />`;
                     }
                 },
                 { data: 'subDescricao' },
@@ -545,7 +528,6 @@ $(document).ready(function () {
                 { data: 'nivDescricao' },
                 {
                     data: null, render: function (data, type, row) { // renderizar a exibição dos botões 
-
                         return `
                     <button type="button"
                         class="btn btn-inverse-danger btn-rounded btn-icon btn-del-questaoEscolhida">
@@ -593,27 +575,61 @@ $(document).ready(function () {
                     })
 
                 } else {
+                    let stsAti;
+                    let stsQue;
+                    let stsAlt;
+                    let stsResp;
+                    let stsNave;
+                    let stsReini;
+
+                    data.atiStatus == "Pública" ? stsAti = 2 : stsAti = 1;
+                    data.atiStsQuestoes == "Ordenada" ? stsQue = 2 : stsQue = 1;
+                    data.atiStsAlternativas == "Ordenada" ? stsAlt = 2 : stsAlt = 1;
+                    data.atiStsRespostas == "Final da Atividade" ? stsResp = 2 : stsResp = 1;
+                    data.atiStsNavegacao == "Não" ? stsNave = 2 : stsNave = 1;
+                    data.atiStsReinicio == "Não" ? stsReini = 2 : stsReini = 1;
+
+                    let dataini = data.atiDataInicio.slice(0, 10);
+                    let horaini = data.atiDataInicio.slice(11, 16);
+                    let datafim = data.atiDataFim.slice(0, 10);
+                    let horafim = data.atiDataFim.slice(11, 16);
+                    let dataInicial = "";
+                    let dataFinal = "";
+                    dataini = dataini.split('-').reverse().join('/') + " ";
+                    datafim = datafim.split('-').reverse().join('/') + " ";
+
+                    dataInicial = dataInicial.concat(dataini, horaini)
+                    dataFinal = dataFinal.concat(datafim, horafim)
 
                     $("#nome").val(data.atiDescricao);
-                    $("#tipoopc").val(data.atiTipoID);
-                    console.log(data.atiStsQuestoes);
-                    if (data.atiStatus == "Pública") {
-                        $("#status").val(2);
-                        $("#status").closest(".dropdown").find(".btn").children().children(".filter-option-inner").children(".filter-option-inner-inner").text("Pública");
-                    } else {
-                        $("#status").val(1);
-                        $("#status").closest(".dropdown").find(".btn").children().children(".filter-option-inner").children(".filter-option-inner-inner").text("Privada");
-                    }
+                    $("#descricao").val(data.atiObservacao);
+                    $("#data-inicial").val(dataInicial);
+                    $("#data-final").val(dataFinal);
 
-                    if (data.atiStsQuestoes == "Na ordem") {
-                        $("#StsQuestoes").val(2);
-                        $("#StsQuestoes").closest(".dropdown").find(".btn").children().children(".filter-option-inner").children(".filter-option-inner-inner").text("Na ordem");
-                    } else {
-                        $("#StsQuestoes").val(1);
-                        $("#StsQuestoes").closest(".dropdown").find(".btn").children().children(".filter-option-inner").children(".filter-option-inner-inner").text("Aleatoria");
-                    }
-                    $("#tipoopc").closest(".dropdown").find(".btn").children().children(".filter-option-inner").children(".filter-option-inner-inner").text(dados[5]);
-                    $("#classe").closest(".dropdown").find(".btn").children().children(".filter-option-inner").children(".filter-option-inner-inner").text(dados[7]);
+                    $("#tipoopc").val(data.atiTipoID);
+                    $("#tipoopc").closest(".dropdown").find(".btn").children().children(".filter-option-inner").children(".filter-option-inner-inner").text(data.tipDescricao);
+
+                    $("#classe").val(data.claCodigo);
+                    $("#classe").closest(".dropdown").find(".btn").children().children(".filter-option-inner").children(".filter-option-inner-inner").text(data.claNome);
+
+                    $('#status').val(stsAti);
+                    $("#status").closest(".dropdown").find(".btn").children().children(".filter-option-inner").children(".filter-option-inner-inner").text(data.atiStatus);
+
+                    $("#stsQuestoes").val(stsQue);
+                    $("#stsQuestoes").closest(".dropdown").find(".btn").children().children(".filter-option-inner").children(".filter-option-inner-inner").text(data.atiStsQuestoes);
+
+                    $("#stsAlternativas").val(stsAlt);
+                    $("#stsAlternativas").closest(".dropdown").find(".btn").children().children(".filter-option-inner").children(".filter-option-inner-inner").text(data.atiStsAlternativas);
+
+                    $("#stsRespostas").val(stsResp);
+                    $("#stsRespostas").closest(".dropdown").find(".btn").children().children(".filter-option-inner").children(".filter-option-inner-inner").text(data.atiStsRespostas);
+
+
+                    $("#stsNavegacao").val(stsNave);
+                    $("#stsNavegacao").closest(".dropdown").find(".btn").children().children(".filter-option-inner").children(".filter-option-inner-inner").text(data.atiStsNavegacao);
+
+                    $("#stsReinicio").val(stsReini);
+                    $("#stsReinicio").closest(".dropdown").find(".btn").children().children(".filter-option-inner").children(".filter-option-inner-inner").text(data.atiStsReinicio);
 
                 }
             }
@@ -629,13 +645,20 @@ $(document).ready(function () {
         $("#cardTableTitle").toggle("slow")
         $("#cardTitle").text("Cadastrar Atividade");
         $("#cardDesc").text("Informe os dados da atividade a ser cadastrada.");
-        $("#cadastrarAtividade span").text(" Cadastrar");
+        $("#btn-cadastrarAtividade span").text(" Cadastrar");
 
         toggleNovaAtividade()
-        $('#nome, #data-final, #data-inicial, #descricao').val("");
-        $("#tipoopc").val(1);
-        $("#status").val(1);
-        $("#classe").val(1);
+
+        $('#formAtividades')[0].reset();
+
+        $("#tipoopc").val(1).selectpicker("refresh");
+        $("#classe").val(1).selectpicker("refresh");
+        $('#status').val(1).selectpicker("refresh");
+        $("#stsQuestoes").val(1).selectpicker("refresh");
+        $("#stsAlternativas").val(1).selectpicker("refresh");
+        $("#stsRespostas").val(1).selectpicker("refresh");
+        $("#stsNavegacao").val(1).selectpicker("refresh");
+        $("#stsReinicio").val(1).selectpicker("refresh");
 
         if ($.fn.dataTable.isDataTable('#tableQuestoesAtividade')) {
             $('#tableQuestoesAtividade').DataTable().destroy();
@@ -664,7 +687,6 @@ $(document).ready(function () {
                 },
                 lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "Todos"]], // configuração de quantidade de registros a serem mostrados, 5....15 ou todos 
                 columns: [
-
                     { data: 'atiqOrdemQuestao' },
                     { data: 'queID' },
                     {
@@ -680,15 +702,11 @@ $(document).ready(function () {
                             display: block;
                             overflow-wrap: break-word;
                             white-space: break-spaces;">${descricao}</span>`;
-
                         }
                     },
                     {
                         data: null, render: function (data, type, row) {
-
-
-                            return ` <input type="number" min="0" style="padding: 0.4rem 0.4rem;" class="form-control" value="${data.atiqPontuacao}" />`;
-
+                            return ` <input type="text" style="padding: 0.4rem 0.4rem;" class="form-control inputnota" value="${data.atiqPontuacao}" />`;
                         }
                     },
                     { data: 'subDescricao' },
@@ -697,7 +715,6 @@ $(document).ready(function () {
                     { data: 'nivDescricao' },
                     {
                         data: null, render: function (data, type, row) { // renderizar a exibição dos botões 
-
                             return `
                         <button type="button"
                             class="btn btn-inverse-danger btn-rounded btn-icon btn-del-questaoEscolhida">
@@ -718,12 +735,6 @@ $(document).ready(function () {
     $("#cancelarAtividade").click(function () {
         $("#cardTableTitle").toggle("slow");
         toggleNovaAtividade()
-        $('#nome, #data-final, #data-inicial, #descricao').val("");
-
-        $("#tipoopc").val(1);
-        $("#status").val(1);
-        $("#classe").val(1);
-
         novaAtividade = false;
     })
 
@@ -811,7 +822,6 @@ $(document).ready(function () {
     });
 
 
-
     //! BOTAO DE ADICIONAR QUESTAO DIRETO EM ATIVIDADES
     $("#adicionarQuestoes").click(function () {
         $("#tableQuestoesSelecionadas").toggle("slow");
@@ -819,7 +829,6 @@ $(document).ready(function () {
         $("#botoesAtividade").toggle();
 
     })
-
 
     //! Modal Excluir Atividade
     $("#tbodyAtivdades").on("click", ".btn-excluir-atividade", function () {
@@ -832,7 +841,6 @@ $(document).ready(function () {
         opidDelete = dadosAtividade[0];
     });
 
-
     $('#formDelete').submit(function (e) {
         e.preventDefault();
         console.log(opDelete);
@@ -843,7 +851,6 @@ $(document).ready(function () {
             data: {
                 opID: opidDelete,
                 opAtividade: opDelete,
-                //queIDdelete: arrayDelete
             },
             dataType: 'json',
             success: function (data) {
@@ -884,8 +891,6 @@ $(document).ready(function () {
         })
     })
 
-
-
     //! modal Cancelar Exclusão Atividade
     $("#modalCancelarAtividade").click(function () {
         $('#modalDelete').modal('hide')
@@ -916,9 +921,6 @@ $(document).ready(function () {
         }).draw();
 
     });
-
-
-
 
     function criarNovaTabelaQuestoes() {
         if ($.fn.dataTable.isDataTable('#tableEscolherQuestoes')) {
@@ -980,7 +982,6 @@ $(document).ready(function () {
         })
     }
 
-
     //! ************************************************************************************************************************************************************
 
     $('#enunciadoQuestao').on('click', '.form-check-label input:checkbox', function () {
@@ -991,7 +992,6 @@ $(document).ready(function () {
         $("#verAtividade").toggle("slow")
         $("#crudAtividade").toggle("slow");
     })
-
 
     $("#tbodyAtivdades").on("click", ".btn-ver-atividade", function () {
         let idAtividade = $(this).closest('tr').children("td").map(function () { // função .map é utilizado para pegar todos os dados contidos na linha onde o botão editar foi pressionado, como ID, DESCRICAO E ETC.
@@ -1151,14 +1151,7 @@ $(document).ready(function () {
         }
         $("#cadastrarAtividade").toggle("slow");
     }
-    function format2(d) {
-        // `d` is the original data object for the row
-        return '<table cellpadding="5" cellspacing="0" border="0" style="width:100%;">' +
-            '<tr class="expanded-row">' +
-            '<td colspan="8" class="row-bg"><div><div class="d-flex justify-content-between"><div class="cell-hilighted"><div class="d-flex mb-2"><div class="mr-2 min-width-cell"><p>Policy start date</p><h6>25/04/2020</h6></div><div class="min-width-cell"><p>Policy end date</p><h6>24/04/2021</h6></div></div><div class="d-flex"><div class="mr-2 min-width-cell"><p>Sum insured</p><h5>$26,000</h5></div><div class="min-width-cell"><p>Premium</p><h5>$1200</h5></div></div></div><div class="expanded-table-normal-cell"><div class="mr-2 mb-4"><p>Quote no.</p><h6>Incs234</h6></div><div class="mr-2"><p>Vehicle Reg. No.</p><h6>KL-65-A-7004</h6></div></div><div class="expanded-table-normal-cell"><div class="mr-2 mb-4"><p>Policy number</p><h6>Incsq123456</h6></div><div class="mr-2"><p>Policy number</p><h6>Incsq123456</h6></div></div><div class="expanded-table-normal-cell"><div class="mr-2 mb-3 d-flex"><div class="highlighted-alpha"> A</div><div><p>Agent / Broker</p><h6>Abcd Enterprices</h6></div></div><div class="mr-2 d-flex"> <img src="../../images/faces/face5.jpg" alt="profile"/><div><p>Policy holder Name & ID Number</p><h6>Phillip Harris / 1234567</h6></div></div></div><div class="expanded-table-normal-cell"><div class="mr-2 mb-4"><p>Branch</p><h6>Koramangala, Bangalore</h6></div></div><div class="expanded-table-normal-cell"><div class="mr-2 mb-4"><p>Channel</p><h6>Online</h6></div></div></div></div></td>'
-        '</tr>' +
-            '</table>';
-    }
+
     function format3(d) {
         let exibQuestao = "";
         let exibAlt = "";
@@ -1184,7 +1177,7 @@ $(document).ready(function () {
                                     <div class="media">
                                         <i class="${exibQuestao} icon-sm text-info d-flex align-self-center mr-3"></i>
                                         <div class="media-body">
-                                            <p class="card-text" style="font-size: 0.875rem;">Final da ativiade</p>
+                                            <p class="card-text" style="font-size: 0.875rem;">${d.atiStsQuestoes}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -1196,7 +1189,7 @@ $(document).ready(function () {
                                 <div class="media">
                                     <i class="${exibAlt} icon-sm text-info d-flex align-self-center mr-3"></i>
                                     <div class="media-body">
-                                        <p class="card-text" style="font-size: 0.875rem;">Final da ativiade</p>
+                                        <p class="card-text" style="font-size: 0.875rem;">${d.atiStsAlternativas}</p>
                                     </div>
                                 </div>
                                 </div>
@@ -1209,7 +1202,7 @@ $(document).ready(function () {
                                 <div class="media">
                                     <i class="${exibResp} icon-sm text-info d-flex align-self-center mr-3"></i>
                                     <div class="media-body">
-                                        <p class="card-text" style="font-size: 0.875rem;">Final da ativiade</p>
+                                        <p class="card-text" style="font-size: 0.875rem;">${d.atiStsRespostas}</p>
                                     </div>
                                 </div>
                                 </div>
@@ -1220,7 +1213,7 @@ $(document).ready(function () {
                                 <div class="media">
                                     <i class="${navegQuestao} icon-sm text-info d-flex align-self-center mr-3"></i>
                                     <div class="media-body">
-                                        <p class="card-text" style="font-size: 0.875rem;">Final da ativiade</p>
+                                        <p class="card-text" style="font-size: 0.875rem;">${d.atiStsNavegacao}</p>
                                     </div>
                                 </div>
                                 </div>
@@ -1231,7 +1224,7 @@ $(document).ready(function () {
                                 <div class="media">
                                     <i class="${continuar} icon-sm text-info d-flex align-self-center mr-3"></i>
                                     <div class="media-body">
-                                        <p class="card-text" style="font-size: 0.875rem;">Final da ativiade</p>
+                                        <p class="card-text" style="font-size: 0.875rem;">${d.atiStsReinicio}</p>
                                     </div>
                                 </div>
                                 </div>
@@ -1247,14 +1240,11 @@ $(document).ready(function () {
         var tr = $(this).closest('tr');
         var row = tableAtividade.row(tr);
 
-
         if (row.child.isShown()) {
             // This row is already open - close it
             row.child.hide();
-
             tr.removeClass('shown');
         } else {
-
             $.ajax({
                 url: '../backend/BackAtividade/atividadeBack.php',
                 method: 'POST',
@@ -1263,20 +1253,15 @@ $(document).ready(function () {
                 },
                 dataType: 'json',
                 success: function (data) {
-
                     // Open this row
-                    // row.child(format3(data)).show();
-
+                    row.child(format3(data)).show();
                     tr.addClass('shown');
 
                 }, error: function (data) {
                     alert("erro")
                 }
             }).done(function (data) {
-
             });
-
-
         }
     });
 
@@ -1326,21 +1311,21 @@ $(document).ready(function () {
     //     }
     //     console.log(result)
     // });
-    $('#tableQuestoesAtividade').on('row-reorder.dt', function (dragEvent, data, nodes) {
-        console.log('row #' +
-            data[0].node._DT_RowIndex +
-            ' moved from pos ' +
-            data[0].oldPosition +
-            ' to pos ' +
-            data[0].newPosition + "\n" +
-            'row #' +
-            data[1].node._DT_RowIndex +
-            ' changed position from ' +
-            data[1].oldPosition +
-            ' to ' +
-            data[1].newPosition
-        );
+    // $('#tableQuestoesAtividade').on('row-reorder.dt', function (dragEvent, data, nodes) {
+    //     console.log('row #' +
+    //         data[0].node._DT_RowIndex +
+    //         ' moved from pos ' +
+    //         data[0].oldPosition +
+    //         ' to pos ' +
+    //         data[0].newPosition + "\n" +
+    //         'row #' +
+    //         data[1].node._DT_RowIndex +
+    //         ' changed position from ' +
+    //         data[1].oldPosition +
+    //         ' to ' +
+    //         data[1].newPosition
+    //     );
 
-    });
+    // });
 
 });

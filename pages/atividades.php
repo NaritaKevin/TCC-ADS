@@ -215,12 +215,12 @@ $n = new Nivel("pedagogy", "localhost", "root", "");
                                                                 <div class="col-md-2">
 
                                                                     <label for="data-inicial">Data Inicial</label>
-                                                                    <input type="text" id="data-inicial" class="form-control" />
+                                                                    <input type="text" id="data-inicial" class="form-control" autocomplete="off" />
 
                                                                 </div>
                                                                 <div class="col-md-2">
                                                                     <label for="data-final">Data Final</label>
-                                                                    <input type="text" id="data-final" class="form-control" />
+                                                                    <input type="text" id="data-final" class="form-control" autocomplete="off" />
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -265,14 +265,14 @@ $n = new Nivel("pedagogy", "localhost", "root", "");
                                                                         <option value="2">Pública</option>
                                                                     </select>
                                                                 </div>
-
                                                                 <div class="col-md-3">
-                                                                    <label class="labelCadastroAtividade">Exibição das Questões</label>
-                                                                    <select id="stsQuestoes" class="selectpicker show-tick" name="stsQuestoes" data-width="fit">
-                                                                        <option value="1">Randômica</option>
-                                                                        <option value="2">Ordenada</option>
+                                                                    <label class="labelCadastroAtividade">Continuar Onde Parou</label>
+                                                                    <select id="stsReinicio" class="selectpicker show-tick" name="stsReinicio" data-width="fit">
+                                                                        <option value="1">Sim</option>
+                                                                        <option value="2">Não</option>
                                                                     </select>
                                                                 </div>
+                                                               
 
                                                             </div>
                                                         </div>
@@ -282,6 +282,13 @@ $n = new Nivel("pedagogy", "localhost", "root", "");
                                                                 <div class="col-md-3">
                                                                     <label class="labelCadastroAtividade">Exibição das Alternativas</label>
                                                                     <select id="stsAlternativas" class="selectpicker show-tick" name="stsAlternativas" data-width="fit">
+                                                                        <option value="1">Randômica</option>
+                                                                        <option value="2">Ordenada</option>
+                                                                    </select>
+                                                                </div>
+                                                                <div class="col-md-3">
+                                                                    <label class="labelCadastroAtividade">Exibição das Questões</label>
+                                                                    <select id="stsQuestoes" class="selectpicker show-tick" name="stsQuestoes" data-width="fit">
                                                                         <option value="1">Randômica</option>
                                                                         <option value="2">Ordenada</option>
                                                                     </select>
@@ -300,13 +307,7 @@ $n = new Nivel("pedagogy", "localhost", "root", "");
                                                                         <option value="2">Não</option>
                                                                     </select>
                                                                 </div>
-                                                                <div class="col-md-3">
-                                                                    <label class="labelCadastroAtividade">Continuar Onde Parou</label>
-                                                                    <select id="stsReinicio" class="selectpicker show-tick" name="stsReinicio" data-width="fit">
-                                                                        <option value="1">Sim</option>
-                                                                        <option value="2">Não</option>
-                                                                    </select>
-                                                                </div>
+                                                               
 
                                                             </div>
                                                         </div>
@@ -361,7 +362,7 @@ $n = new Nivel("pedagogy", "localhost", "root", "");
                                                         </div>
                                                         <div class="form-group">
                                                             <div class="row" id="botoesAtividade">
-                                                                <button id="cadastrarAtividade" type="submit" class="btn btn-primary mr-2"><i class="bi bi-check2-circle btn-icon-prepend"></i><span> Cadastrar</span></button>
+                                                                <button id="btn-cadastrarAtividade" type="submit" class="btn btn-primary mr-2"><i class="bi bi-check2-circle btn-icon-prepend"></i><span> Cadastrar</span></button>
                                                                 <button id="cancelarAtividade" type="button" class="btn btn-secondary"><i class="bi bi-x-circle btn-icon-prepend"></i> Cancelar</button>
                                                             </div>
                                                         </div>
@@ -502,13 +503,13 @@ $n = new Nivel("pedagogy", "localhost", "root", "");
                                                     <th width="2%">ID</th>
                                                     <th>Nome</th>
                                                     <th>Observação</th>
-                                                    <th width="10%">Data Início</th>
-                                                    <th width="10%">Data Final</th>
+                                                    <th width="10%">Data/Hora Início</th>
+                                                    <th width="10%">Data/Hora Final</th>
                                                     <th width="7%">Tipo</th>
                                                     <th width="2%">Status</th>
                                                     <th width="2%">Turma</th>
-                                                    <th width="15%" style="text-align: center">Ações</th>
-                                                    <th></th>
+                                                    <th width="10%" style="text-align: center">Ações</th>
+                                                    <th width="1%"></th>
 
                                                 </tr>
                                             </thead>

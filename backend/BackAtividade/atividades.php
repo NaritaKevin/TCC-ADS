@@ -32,11 +32,11 @@ class Atividade
         $cmd = $this->pdo->prepare("SELECT * FROM atividades a INNER JOIN tipos t on a.atiTipoID = t.tipID inner join classes c on a.atiClasseID = c.claCodigo where atiID = :atiID");
         $cmd->bindValue(":atiID",$id);
         $cmd->execute();
-        $res = $cmd->fetchAll(PDO::FETCH_ASSOC);
+        $res = $cmd->fetch(PDO::FETCH_ASSOC);
         return $res;
     }
     // função para cadastrar atividades no banco de dados
-    public function cadastrarAtividades($nome, $descricao, $tipo, $dataInicial, $dataFinal, $Status, $turma, $StatusQuestoes )
+    public function cadastrarAtividades($nome, $descricao, $tipo, $dataInicial, $dataFinal, $stsAtiv, $turma,$stsQues,$stsAlt,$stsResp,$stsNaveg,$stsReini )
     {
         // verificar se o email ja esta cadastrado
         $cmd = $this->pdo->prepare("SELECT atiID FROM atividades where atiDescricao = :atiDescricao and atiTipoID = :tipo and atiObservacao = :observacao");
@@ -50,15 +50,19 @@ class Atividade
                 return false;
         } else { //não foi encontrado o email
             $cmd = $this->pdo->prepare(
-            "INSERT INTO atividades (atiDescricao, atiDataInicio, atiDataFim, atiObservacao, atiStatus, atiStsQuestoes, atiTipoID, atiUsuarioID, atiClasseID) 
-            VALUES (:nome, :dataInicio, :dataFim, :observacao,:tipoStatus, :StatusQuestoes , :tipo, :atiUsuarioID, :atiClasseID)");
+            "INSERT INTO atividades (atiDescricao, atiDataInicio, atiDataFim, atiObservacao, atiStatus, atiStsQuestoes,atiStsAlternativas,atiStsRespostas,atiStsNavegacao,atiStsReinicio, atiTipoID, atiUsuarioID, atiClasseID) 
+            VALUES (:nome, :dataInicio, :dataFim, :observacao,:tipoStatus, :atiStsQuestoes , :stsAlt, :stsResp,:stsNaveg, :stsReini, :tipo, :atiUsuarioID, :atiClasseID)");
             $cmd->bindValue(":nome",$nome);
             $cmd->bindValue(":dataInicio",$dataInicial);
             $cmd->bindValue(":dataFim",$dataFinal);
             $cmd->bindValue(":observacao",$descricao);
             $cmd->bindValue(":tipo",$tipo);
-            $cmd->bindValue(":tipoStatus",$Status);
-            $cmd->bindValue(":StatusQuestoes",$StatusQuestoes);
+            $cmd->bindValue(":tipoStatus",$stsAtiv);
+            $cmd->bindValue(":atiStsQuestoes",$stsQues);
+            $cmd->bindValue(":stsAlt",$stsAlt);
+            $cmd->bindValue(":stsResp",$stsResp);
+            $cmd->bindValue(":stsNaveg",$stsNaveg);
+            $cmd->bindValue(":stsReini",$stsReini);
             $cmd->bindValue(":atiUsuarioID",2);
             $cmd->bindValue(":atiClasseID",$turma);
             
@@ -84,7 +88,7 @@ class Atividade
 
     public function buscarDadosAtividade($id){
         $res = array();
-        $cmd = $this->pdo->prepare("SELECT * FROM atividades where atiID = :atiID");
+        $cmd = $this->pdo->prepare("SELECT * FROM atividades a INNER JOIN tipos t on a.atiTipoID = t.tipID inner join classes c on a.atiClasseID = c.claCodigo where atiID = :atiID");
         $cmd->bindValue(":atiID",$id);
         $cmd->execute();
         $res = $cmd->fetch(PDO::FETCH_ASSOC);
@@ -120,18 +124,25 @@ class Atividade
         return $res;
     }
 
-    public function atualizarDadosAtividade($id,$nome,$descricao,$tipo, $dataInicial,$dataFinal, $Status, $turma){
+    public function atualizarDadosAtividade($id,$nome,$descricao,$tipo, $dataInicial,$dataFinal, $stsAtiv, $turma, $stsQues,$stsAlt,$stsResp,$stsNaveg,$stsReini){
        
         $cmd = $this->pdo->prepare(
-            "UPDATE atividades SET atiDescricao = :atiDescricao, atiDatainicio = :atiDatainicio, atidataFim = :atidataFim, atiObservacao = :atiObservacao, atiStatus = :atiStatus, atiTipoID = :atiTipoID , atiClasseID = :atiClasseID
+            "UPDATE atividades SET atiDescricao = :atiDescricao, atiDatainicio = :atiDatainicio, atidataFim = :atidataFim, atiObservacao = :atiObservacao, 
+            atiStatus = :stsAtiv, atiStsQuestoes = :stsQues, atiStsAlternativas = :stsAlt, atiStsRespostas = :stsResp, atiStsNavegacao = :stsNaveg, atiStsReinicio = :stsReini,
+             atiTipoID = :atiTipoID , atiClasseID = :atiClasseID
             WHERE atiID = :atiID ");
         $cmd->bindValue(":atiID",$id);
         $cmd->bindValue(":atiDescricao",$nome);
         $cmd->bindValue(":atiDatainicio",$dataInicial);
         $cmd->bindValue(":atidataFim", $dataFinal);
         $cmd->bindValue(":atiObservacao", $descricao);
-        $cmd->bindValue(":atiStatus", $Status);
         $cmd->bindValue(":atiTipoID", $tipo);
+        $cmd->bindValue(":stsAtiv",$stsAtiv);
+        $cmd->bindValue(":stsQues",$stsQues);
+        $cmd->bindValue(":stsAlt",$stsAlt);
+        $cmd->bindValue(":stsResp",$stsResp);
+        $cmd->bindValue(":stsNaveg",$stsNaveg);
+        $cmd->bindValue(":stsReini",$stsReini);
         $cmd->bindValue(":atiClasseID", $turma);
 
         $cmd->execute();
