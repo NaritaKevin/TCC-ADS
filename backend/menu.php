@@ -54,7 +54,7 @@ class Menu {
     }
     public function buscarResultado($id){
         $res = [];
-        $cmd = $this->pdo->prepare("SELECT COUNT(DISTINCT aq.atiqAtividadeID) AS quatResultados FROM atividade_questao aq JOIN atividades a ON a.atiID = aq.atiqAtividadeID WHERE a.atiUsuarioID = :id limit 1;");
+        $cmd = $this->pdo->prepare("SELECT COUNT(DISTINCT aq.atiqAtividadeID) AS quatResultados FROM atividade_questao aq JOIN atividades a ON a.atiID = aq.atiqAtividadeID WHERE a.atiUsuarioID = :id and a.atiPostado = 'Sim' AND a.atiDataInicio <= CURRENT_TIMESTAMP() limit 1;");
         $cmd->bindValue(":id",$id);
         $cmd->execute();
         $res = $cmd->fetch(PDO::FETCH_ASSOC);

@@ -72,7 +72,8 @@ class Questao{
         LEFT JOIN subgrupos s ON q.queSubgrupoID = s.subID  
         LEFT JOIN tematicas t ON t.temID =  subTematicaID
         LEFT JOIN disciplinas d ON d.disID = temDisciplinaID
-        LEFT JOIN niveis n ON n.nivID = q.queNivelID  WHERE q.queID = :id");
+        LEFT JOIN niveis n ON n.nivID = q.queNivelID 
+        LEFT JOIN ano a ON a.anoCodigo = queAnoID  WHERE q.queID = :id");
         $cmd->bindValue(":id",$id);
         $cmd->execute();
         $res = $cmd->fetchAll(PDO::FETCH_ASSOC);
@@ -127,7 +128,7 @@ class Questao{
         $cmd = $this->pdo->prepare(" DELETE FROM questoes WHERE queID = :queID ");
         $cmd->bindValue(":queID",$id);
         $cmd->execute();
-        
+        return true;
     }
 
     public function excluirAlternativa($id)

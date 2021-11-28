@@ -14,7 +14,10 @@
        $dados = $r->BuscarAtividades();
        if (!empty($dados)) {
         print json_encode($dados,JSON_UNESCAPED_UNICODE);
-       }      
+       }else{
+          $nada = [];
+         print json_encode($nada,JSON_UNESCAPED_UNICODE);
+       }   
     }
 }
 //carregar tabela dos alunos da atividade
@@ -26,6 +29,9 @@ if(isset($_POST['buscaInicialAlunosResultados']) && isset($_POST['idAtividade'])
       $dados = $r->buscarResultadosAluno($idAtividade);
       if (!empty($dados)) {
        print json_encode($dados,JSON_UNESCAPED_UNICODE);
+      }else{
+         $nada = [];
+         print json_encode($nada,JSON_UNESCAPED_UNICODE);
       }
 
    }
@@ -39,7 +45,10 @@ if(isset($_POST['atividadeID'])){
          $dados = $r->resultadoQuestao($atividadeID);
          if (!empty($dados)) {
             print json_encode($dados,JSON_UNESCAPED_UNICODE);
-         }
+         }else{
+            $nada = [];
+           print json_encode($nada,JSON_UNESCAPED_UNICODE);
+         }   
       }else{
          $output = json_encode(array('type' => 'buscaVazia', 'text' => 'Os alunos não responderam as questões!'));
          die($output);

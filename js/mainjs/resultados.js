@@ -45,21 +45,33 @@ $(document).ready(function () {
                 },
                 {
                     data: null, render: function (data, type, row) {
-                        let data_americana = data.atiDataInicio;
-                        let data_brasileira = data_americana.split('-').reverse().join('/');
-
-                        return data_brasileira;
+                        let dataini = data.atiDataInicio.slice(0, 10);
+                        let horaini = data.atiDataInicio.slice(11, 19);
+                        dataini = dataini.split('-').reverse().join('/');
+                        return `<span style="padding-bottom:5px">${dataini}</span><br><br><span>${horaini}</span>`;
                     }
                 },
                 {
                     data: null, render: function (data, type, row) {
-                        let data_americana = data.atiDataFim;
-                        let data_brasileira = data_americana.split('-').reverse().join('/');
-
-                        return data_brasileira;
+                        let datafim = data.atiDataFim.slice(0, 10);
+                        let horafim = data.atiDataFim.slice(11, 19);
+                        datafim = datafim.split('-').reverse().join('/');
+                        return `<span style="padding-bottom:5px">${datafim}</span><br><br><span>${horafim}</span>`;
                     }
                 },
-                { data: 'tipDescricao' },
+                {
+                    data: null, render: function (data, type, row) {
+                        if (data.tipDescricao == "Trabalho") {
+                            return `<label class="badge badge-primary" >${data.tipDescricao}</label>`;
+                        } else if (data.tipDescricao == "Fórum") {
+                            return `<label class="badge badge-warning" style="background-color: #435ee3">${data.tipDescricao}</label>`;
+                        } else if (data.tipDescricao == "Redação") {
+                            return `<label class="badge badge-info">${data.tipDescricao}</label>`;
+                        } else {
+                            return `<label class="badge badge-info" style="background-color: #98BDFF">${data.tipDescricao}</label>`;
+                        }
+                    }
+                },
                 { data: 'claNome' },
                 {
                     data: null, render: function (data, type, row) {
@@ -94,8 +106,6 @@ $(document).ready(function () {
         idAluno = idAluno.join("")
         $("#verResultados").toggle("slow")
         $("#verAtividadeAluno").fadeToggle("slow");
-
-
 
         $.ajax({
             url: '../backend/resultados/resultadosBack.php',
@@ -296,7 +306,6 @@ $(document).ready(function () {
                 },
                 "dataSrc": ""
             },
-
             language: {
                 url: "../partials/dataTablept-br.json"
             },
@@ -413,11 +422,11 @@ $(document).ready(function () {
         let dadosAtividade = $(this).closest('tr').children("td").map(function () {
             return $(this).text();
         }).get();
+        $('#cover-spin').show();
         $("#verGraficos").toggle("slow")
-        $("#tabelaResultados").toggle("slow").promise().done(function () {
-            ajaxGrafico()
-        });
-        // setTimeout(function () { ajaxGrafico() }, 1000);
+        $("#tabelaResultados").toggle("slow")
+
+        setTimeout(function () { ajaxGrafico() }, 1000);
 
         function ajaxGrafico() {
             $.ajax({
@@ -426,6 +435,7 @@ $(document).ready(function () {
                 data: { atividadeID: dadosAtividade[0] },
                 dataType: 'json',
                 success: function (data) {
+                    console.log(data)
                     if (data.type == 'buscaVazia') {
                         Swal.fire({
                             position: "center",
@@ -481,7 +491,9 @@ $(document).ready(function () {
                             window.porcAcertoQuestoes.destroy();
                         }
 
-
+                        console.log(questao);
+                        console.log('--------------')
+                        console.log(acertos);
                         if ($("#grafico1").length) {
                             var qtdeQuestoesCanvas = $("#grafico1").get(0).getContext("2d");
                             qtdeAcertoQuestoes = new Chart(qtdeQuestoesCanvas, {
@@ -650,6 +662,8 @@ $(document).ready(function () {
 
                             });
                         }
+
+                        setTimeout(function () { $('#cover-spin').fadeToggle("slow"); }, 500);
                     }
 
 

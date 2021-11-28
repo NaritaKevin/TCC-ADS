@@ -140,6 +140,7 @@
             <!-- Corpo da página-->
             <div class="main-panel">
                 <div class="content-wrapper">
+                <div id="cover-spin"></div>
                     <div class="row">
 
                         <div id="tabelaResultados" class="col-lg-12 grid-margin stretch-card">
@@ -189,7 +190,8 @@
                                                     </button>
                                                     <p class="card-description"></p>
 
-                                                
+                                                  
+
                                                     <div class="table-responsive">
                                                         <canvas id="grafico1"  class="table"></canvas>
                                                     </div>

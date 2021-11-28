@@ -26,7 +26,7 @@ $(document).ready(function () {
             language: {
                 url: "../partials/dataTablept-br.json"
             },
-            lengthMenu: [[5, 15, 25, -1], [5, 15, 25, "Todos"]],
+            lengthMenu: [[15, 35, 60, -1], [15, 35, 60, "Todos"]],
             columns: [
                 { data: 'queID' },
                 {
@@ -56,12 +56,30 @@ $(document).ready(function () {
 
                     }
                 },
-                { data: 'subDescricao' },
+                {
+                    data: null, render: function (data, type, row) {
+                        //let descricao = data.quePalavrasChave.slice(0, 50);
+                        return `<span style=" max-width: 200px;
+                        min-width: 100px;
+                        display: block;
+                        overflow-wrap: break-word;
+                        white-space: break-spaces;">${data.subDescricao}</span>`;
+
+                    }
+                },
                 { data: 'queCodigoBncc' },
                 {
                     data: null, render: function (data, type, row) {
+                        let descricao;
+                        if (data.anoDescricao == "Ensino Fundamental") {
+                            descricao = data.anoDescricao.slice(0, 11);
+                            descricao = descricao + ".";
+                        } else if (data.anoDescricao == "Ensino Médio") {
+                            descricao = data.anoDescricao.slice(0, 10);
+                            descricao = descricao + ".";
+                        }
 
-                        return `<span>${data.anoDescricao} - ${data.anoEtapa}</span>`
+                        return `<span>${descricao} - ${data.anoEtapa}</span>`
                     }
                 },
                 {
@@ -79,8 +97,12 @@ $(document).ready(function () {
                     data: null, render: function (data, type, row) {
                         if (data.queStsTipo == "Publica" || data.queStsTipo == "Pública") {
                             return `<label class="badge badge-info">${data.queStsTipo}</label>`;
+                        } else if (data.queStsTipo == "Privada professor") {
+                            return `<label class="badge badge-primary">${data.queStsTipo}</label>`;
+                        } else if (data.queStsTipo == "Privada escola") {
+                            return `<label class="badge badge-info" style="background-color: #435ee3">${data.queStsTipo}</label>`;
                         } else {
-                            return `<label class="badge badge-warning">${data.queStsTipo}</label>`;
+                            return `<label class="badge badge-info" style="background-color: #98BDFF">${data.queStsTipo}</label>`;
                         }
                     }
                 },
@@ -125,6 +147,7 @@ $(document).ready(function () {
         var palavrasChave = $("#palavrasChave").val();
         var statusopc = $("#statusopc option:selected").text();
         var ano = $('#ano').val();
+
 
         var data = {
             subgrupoopc: subgrupoopc,
@@ -323,17 +346,78 @@ $(document).ready(function () {
         let dadosQuestao = $(this).closest('tr').children("td").map(function () {
             return $(this).text();
         }).get();
+        var idDeleteSelecionado = dadosQuestao[0];
+        var tabelaSelecionada = "questoes";
+        Swal.fire({
+            title: 'Deseja excluir a questão?',
+            text: "Você não poderá reverter esta ação!",
+            icon: 'question',
+            reverseButtons: true,
+            showCancelButton: true,
+            cancelButtonColor: '#d33',
+            confirmButtonColor: '#4B49AC',
+            cancelButtonText: 'Não',
+            confirmButtonText: 'Excluir!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: '../backend/questoesBack.php',
+                    method: 'POST',
+                    data: {
+                        idDeleteSelecionado: idDeleteSelecionado,
+                        tabelaSelecionada: tabelaSelecionada
+                    },
+                    dataType: 'json',
+                    success: function (data) {
+                        if (data.type == 'excluido') {
+                            Swal.fire({
+                                position: "center",
+                                icon: "success",
+                                title: data.text,
+                                showConfirmButton: false,
+                                timer: 2000
+                            })
 
-        $("#idDeleteSelecionado").val(dadosQuestao[0])
-        $("#tabelaSelecionada").val("questoes");
-        $('#modalDelete').modal('show')
+                            $('#tableDisciplinas tr').each(function () { // 
+                                tableTematica.row(".selected").remove()
+                            });
+                            $('#tableTematica tr').each(function () {
+                                tableTematica.row(".selected").remove()
+                            });
+                            $('#tableSubgrupo tr').each(function () {
+                                tableTematica.row(".selected").remove()
+                            });
+
+                        } else if (data.type == 'erro') {
+                            Swal.fire({
+                                position: "center",
+                                icon: "error",
+                                title: data.text,
+                                showConfirmButton: false,
+                                timer: 2000
+                            })
+                        }
+                    }, error: function (data) {
+                        Swal.fire({
+                            position: "center",
+                            icon: "error",
+                            title: "Existem registros vinculados!",
+                            showConfirmButton: false,
+                            timer: 2000
+                        })
+                    }
+                }).done(function (data) {
+                    atualizarTabelas();
+                });
+            }
+        })
 
         $(this).closest('tr').addClass("selecionado");
     });
 
     //? Botao editar da tabela de questão
     $("#tbodyQuestao").on("click", ".btn-edit-questao", function () {
-
+        $('#cover-spin').show();
 
         let dados = $(this).closest('tr').children("td").map(function () { // função .map é utilizado para pegar todos os dados contidos na linha onde o botão editar foi pressionado, como ID, DESCRICAO E ETC.
             return $(this).text();
@@ -353,7 +437,8 @@ $(document).ready(function () {
             dataType: 'json',
             success: function (data) {
                 resetarFormulario()
-                carregarFormulario(data.queID, data.queDescricao, data.queCodigoBncc, data.quePalavrasChave, data.queStsTipo, data.StsRevisao, data.subID, data.nivID, data.subDescricao, data.temDescricao, data.disDescricao, data.nivDescricao,)
+
+                carregarFormulario(data.queID, data.queDescricao, data.queCodigoBncc, data.quePalavrasChave, data.queStsTipo, data.StsRevisao, data.subID, data.nivID, data.subDescricao, data.temDescricao, data.disDescricao, data.nivDescricao, data.queAnoID, data.anoDescricao, data.anoEtapa)
                 //preencher as alternativas
                 for (let i = 0; i < data[0].length; i++) {
                     $("#adicionarQuestao").click();
@@ -384,7 +469,9 @@ $(document).ready(function () {
 
                 }
             },
-        });
+        }).done(function () {
+            setTimeout(function () { $('#cover-spin').fadeToggle("slow"); }, 500);
+        })
     })
 
     //! Botão de adicionar alternativas
@@ -499,11 +586,12 @@ $(document).ready(function () {
 
 
     function resetarFormulario() {
-        $('#subgrupoopc').val(0);
+        $('#subgrupoopc,#ano').val(0);
         $("#nivelopc,#statusopc").val(1);
         $("#nivelopc").closest(".dropdown").find(".btn").children().children(".filter-option-inner").children(".filter-option-inner-inner").text("Fácil");
         $("#statusopc").closest(".dropdown").find(".btn").children().children(".filter-option-inner").children(".filter-option-inner-inner").text("Pública");
         $("#subgrupoopc").closest(".dropdown").find(".btn").children().children(".filter-option-inner").children(".filter-option-inner-inner").text("Escolha");
+        $("#ano").closest(".dropdown").find(".btn").children().children(".filter-option-inner").children(".filter-option-inner-inner").text("Escolha");
 
 
         $("#codigobncc,#enunciado,#palavrasChave").val("");
@@ -515,7 +603,7 @@ $(document).ready(function () {
         }
         i = 0;
     }
-    function carregarFormulario(queID, enunciado, codigoBncc, palavrasChave, stsTipo, StsRevisao, subID, nivID, subgrupo, tematica, disciplina, nivel) {
+    function carregarFormulario(queID, enunciado, codigoBncc, palavrasChave, stsTipo, StsRevisao, subID, nivID, subgrupo, tematica, disciplina, nivel, anoID, anodescricao, anoetapa) {
 
         let opcTipo = "";
         if (stsTipo == "Pública" || stsTipo == "Publica") {
@@ -535,10 +623,12 @@ $(document).ready(function () {
         $('#subgrupoopc').val(subID);
         $("#nivelopc").val(nivID);
         $("#statusopc").val(opcTipo);
+        $("#ano").val(anoID);
         $("#nivelopc").closest(".dropdown").find(".btn").children().children(".filter-option-inner").children(".filter-option-inner-inner").text(nivel);
         $("#statusopc").closest(".dropdown").find(".btn").children().children(".filter-option-inner").children(".filter-option-inner-inner").text(stsTipo);
-        $("#subgrupoopc").closest(".dropdown").find(".btn").children().children(".filter-option-inner").children(".filter-option-inner-inner").text(subgrupo);
+        $("#subgrupoopc").closest(".dropdown").find(".btn").children().children(".filter-option-inner").children(".filter-option-inner-inner").text(subgrupo).append(`<small class="text-muted"> - ${tematica} - ${disciplina}</small>`);
 
+        $("#ano").closest(".dropdown").find(".btn").children().children(".filter-option-inner").children(".filter-option-inner-inner").text(anodescricao).append(`<small class="text-muted"> - ${anoetapa}</small>`);
 
 
         $("#codigobncc").val(codigoBncc);

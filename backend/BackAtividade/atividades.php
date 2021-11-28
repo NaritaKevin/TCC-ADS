@@ -186,7 +186,7 @@ class Atividade
 
     public function buscarDadosQuestaoEscolher($id){
         $res = array();
-        $cmd = $this->pdo->query("SELECT * FROM questoes q LEFT JOIN subgrupos s ON q.queSubgrupoID = s.subID  LEFT JOIN niveis n ON n.nivID = q.queNivelID where queID not in ($id)");
+        $cmd = $this->pdo->query("SELECT * FROM questoes q LEFT JOIN subgrupos s ON q.queSubgrupoID = s.subID  LEFT JOIN niveis n ON n.nivID = q.queNivelID  LEFT JOIN ano a ON a.anoCodigo = queAnoID where queID not in ($id)");
 
         $res = $cmd->fetchAll();(PDO::FETCH_ASSOC);
 

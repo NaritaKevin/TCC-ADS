@@ -27,13 +27,17 @@ $(document).ready(function () {
         $("#escolherQuestoes").hide();
         $("#cadastrarQuestao").hide();
         $("#verAtividade").hide();
+        var dateToday = new Date();
 
         $("#data-inicial,#data-final").datetimepicker({
-            timepicker: true, mask: true, format: 'd/m/Y H:i'
+            mask: true,
+            step: 30,
+            format: 'd/m/Y H:i',
+            minDate: dateToday,
         })
 
+        $.datetimepicker.setLocale('pt-BR');
         tableAtividade = $('#tableAtividade').DataTable({
-
             responsive: true,
             ajax: {
                 "url": "../backend/BackAtividade/atividadeBack.php",
@@ -82,7 +86,7 @@ $(document).ready(function () {
                         if (data.tipDescricao == "Trabalho") {
                             return `<label class="badge badge-primary" >${data.tipDescricao}</label>`;
                         } else if (data.tipDescricao == "Fórum") {
-                            return `<label class="badge badge-warning">${data.tipDescricao}</label>`;
+                            return `<label class="badge badge-info" style="background-color: #435ee3">${data.tipDescricao}</label>`;
                         } else if (data.tipDescricao == "Redação") {
                             return `<label class="badge badge-info">${data.tipDescricao}</label>`;
                         } else {
@@ -108,12 +112,7 @@ $(document).ready(function () {
                             return `<button id="btn" type="button"
                             class="btn btn-inverse-primary btn-rounded btn-icon btn-ver-atividade ">
                             <i class="bi bi-file-earmark-text"></i>
-                        </button>                      
-                        <button type="button"
-                            class="btn btn-inverse-danger btn-rounded btn-icon  btn-excluir-atividade">
-                            <i class="bi bi-trash"></i>
-                        </button>                    
-                        `;
+                        </button> `;
                         } else {
                             return `<div class="text-center"><button id="btn" type="button"
                             class="btn btn-inverse-primary btn-rounded btn-icon btn-ver-atividade ">
@@ -146,6 +145,7 @@ $(document).ready(function () {
                     $(row).addClass('table-primary');
             }
         })
+
     }
     $("#tbodyAtivdades").on("click", ".btn-postar-atividade", function () {
         let dados = $(this).closest('tr').children("td").map(function () {
@@ -205,6 +205,8 @@ $(document).ready(function () {
     //? BOTAO DE CONFIMAR ESCOLHA QUESTÕES
 
     $('#btn-modalConfirmarQuestao').click(function (e) {
+
+        $('#cover-spin').show();
         var rowsel = tableEscolher.column(0).checkboxes.selected();
 
         if (rowsel.length > 0) {
@@ -303,10 +305,11 @@ $(document).ready(function () {
                     },
 
                 })
+                setTimeout(function () { $('#cover-spin').fadeToggle("slow"); }, 500);
             });
         }
         $('#modalQuestao').modal('hide');
-        e.preventDefault();
+
     })
 
     $(document).on('keyup', '.inputnota', function (e) {
@@ -321,6 +324,7 @@ $(document).ready(function () {
 
     //? Formulario de Cadastro de Atividade
     $('#formAtividades').submit(function (e) {
+        $('#cover-spin').show();
         e.preventDefault();//evita de dar reload na pagina
         var nome = $('#nome').val();
         var descricao = $('#descricao').val();
@@ -410,7 +414,7 @@ $(document).ready(function () {
                 },
                 dataType: 'json',
                 success: function (data) {
-
+                    setTimeout(function () { $('#cover-spin').fadeToggle("slow"); }, 200);
 
                     if (data.type == 'erro') {
                         Swal.fire({
@@ -441,11 +445,13 @@ $(document).ready(function () {
                         })
                     }
                 }, error: function (data) {
+                    setTimeout(function () { $('#cover-spin').fadeToggle("slow"); }, 500);
                     alert("erro")
                 }
             }).done(function (data) {
                 tableAtividade.ajax.reload(null, false);
                 atualizar = "";
+
             });
 
         }
@@ -458,6 +464,8 @@ $(document).ready(function () {
 
     //? ******************* EDITAR ATIVIDAE ********************
     $("#tbodyAtivdades").on("click", ".btn-editar-atividade", function () {
+        $('#cover-spin').show();
+
         $("#cardTableTitle").toggle("slow");
         $("#cardTitle").text("Alterar de atividade");
         $("#cardDesc").text("Altere a atividade selecionada.");
@@ -633,6 +641,8 @@ $(document).ready(function () {
 
                 }
             }
+        }).done(function (e) {
+            setTimeout(function () { $('#cover-spin').fadeToggle("slow"); }, 500);
         })
     });
 
@@ -641,6 +651,7 @@ $(document).ready(function () {
 
     //! Esconder/mostrar cadastrar atividade
     $("#btn-nova-atividade").click(function () {
+
 
         $("#cardTableTitle").toggle("slow")
         $("#cardTitle").text("Cadastrar Atividade");
@@ -733,93 +744,291 @@ $(document).ready(function () {
         novaAtividade = true;
     });
     $("#cancelarAtividade").click(function () {
+
         $("#cardTableTitle").toggle("slow");
         toggleNovaAtividade()
         novaAtividade = false;
+
     })
-
+    $("#modalQuestao").on('show.bs.modal', function () {
+        $('#cover-spin').show();
+    });
     //!  BOTÃO DE ESCOLHER AS QUESTÕES
-    $("#btn-modal-escolher").on("click", function () {
+    $('#modalQuestao').on('shown.bs.modal', function () {
 
-        $('#modalQuestao').modal('show');
+        function tableModal() {
+            arr_questoes = "";
+            Selecionadas = "";
 
-        arr_questoes = "";
-        Selecionadas = "";
+            if ($.fn.dataTable.isDataTable('#tableQuestoesAtividade')) {
+                questoesID = tableEscolhidas.columns(1).data().eq(0).sort()
+                if (questoesID.length > 0) {
+                    // showSpinner();
+                    if ($.fn.dataTable.isDataTable('#tableEscolherQuestoes')) {
+                        $('#tableEscolherQuestoes').DataTable().destroy();
+                    }
+                    arr_questoes = questoesID.join(',');
+                    console.log(arr_questoes);
 
-        if ($.fn.dataTable.isDataTable('#tableQuestoesAtividade')) {
-            questoesID = tableEscolhidas.columns(1).data().eq(0).sort()
-
-            if (questoesID.length > 0) {
-
-                if ($.fn.dataTable.isDataTable('#tableEscolherQuestoes')) {
-                    $('#tableEscolherQuestoes').DataTable().destroy();
-                }
-
-                arr_questoes = questoesID.join(',');
-                console.log(arr_questoes);
-
-                //? Tabela de escolher questões DO MODAL
-                tableEscolher = $('#tableEscolherQuestoes').DataTable({
-                    responsive: true,
-                    destroy: true,
-                    "select": {
-                        "style": 'multi'
-                    },
-                    "columnDefs": [
-                        {
-                            'targets': 0,
-                            'checkboxes': {
-                                'selectRow': true
-                            },
-                            "orderable": false,
-                        }
-                    ],
-                    ajax: {
-                        "url": "../backend/BackAtividade/atividadeBack.php",
-                        "method": 'POST', // metodo utilizado para passar os valores das variavesi data para o backend.
-                        "data": { arr_questoes: arr_questoes, buscaInicialEscolher: buscaInicialEscolher }, // as variaves bucasInicial.... possuem o valor true  para que no arquivo atividadeBack.php sirva para buscar os dados da tabela
-                        "dataSrc": ""
-                    },
-                    language: { // tradução em portgues da tabela
-                        url: "../partials/dataTablept-br.json"
-                    },
-                    lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "Todos"]], // configuração de quantidade de registros a serem mostrados, 5....15 ou todos 
-                    columns: [
-                        { data: 'queID' },
-                        { data: 'queID' },
-                        {
-                            data: null, render: function (data, type, row) {
-                                let descricao = data.queDescricao.slice(0, 200);
-                                let tamanho = descricao.length;
-                                if (tamanho >= 200) {
-                                    descricao = descricao + "..."
-                                }
-
-                                return `<span style=" max-width: 500px;
-                                min-width: 200px;
-                                display: block;
-                                overflow-wrap: break-word;
-                                white-space: break-spaces;">${descricao}</span>`;
-
-                            }
+                    //? Tabela de escolher questões DO MODAL
+                    tableEscolher = $('#tableEscolherQuestoes').DataTable({
+                        responsive: true,
+                        destroy: true,
+                        "select": {
+                            "style": 'multi'
                         },
-                        { data: 'subDescricao' },
-                        { data: 'queCodigoBncc' },
-                        { data: 'nivDescricao' },
-                        { data: 'queStsTipo' },
+                        "columnDefs": [
+                            {
+                                'targets': 0,
+                                'checkboxes': {
+                                    'selectRow': true
+                                },
+                                "orderable": false,
+                            }
+                        ],
+                        ajax: {
+                            "url": "../backend/BackAtividade/atividadeBack.php",
+                            "method": 'POST', // metodo utilizado para passar os valores das variavesi data para o backend.
+                            "data": { arr_questoes: arr_questoes, buscaInicialEscolher: buscaInicialEscolher }, // as variaves bucasInicial.... possuem o valor true  para que no arquivo atividadeBack.php sirva para buscar os dados da tabela
+                            "dataSrc": ""
+                        },
+                        language: { // tradução em portgues da tabela
+                            url: "../partials/dataTablept-br.json"
+                        },
+                        lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "Todos"]], // configuração de quantidade de registros a serem mostrados, 5....15 ou todos 
+                        columns: [
+                            { data: 'queID' },
+                            { data: 'queID' },
+                            {
+                                data: null, render: function (data, type, row) {
+                                    let descricao = data.queDescricao.slice(0, 200);
+                                    let tamanho = descricao.length;
+                                    if (tamanho >= 200) {
+                                        descricao = descricao + "..."
+                                    }
 
-                    ]
+                                    return `<span style=" max-width: 600px;
+                                    min-width: 500px;
+                                    display: block;
+                                    overflow-wrap: break-word;
+                                    white-space: break-spaces;">${descricao}</span>`;
 
+                                }
+                            },
+                            {
+                                data: null, render: function (data, type, row) {
+                                    //let descricao = data.quePalavrasChave.slice(0, 50);
+                                    return `<span style=" max-width: 200px;
+                                    min-width: 100px;
+                                    display: block;
+                                    overflow-wrap: break-word;
+                                    white-space: break-spaces;">${data.subDescricao}</span>`;
 
-                })
+                                }
+                            },
+                            { data: 'queCodigoBncc' },
+                            {
+                                data: null, render: function (data, type, row) {
+                                    let descricao;
+                                    if (data.anoDescricao == "Ensino Fundamental") {
+                                        descricao = data.anoDescricao.slice(0, 11);
+                                        descricao = descricao + ".";
+                                    } else if (data.anoDescricao == "Ensino Médio") {
+                                        descricao = data.anoDescricao.slice(0, 10);
+                                        descricao = descricao + ".";
+                                    }
 
-            } else if (cadastrarAtividade = true) {
+                                    return `<span>${descricao} - ${data.anoEtapa}</span>`
+                                }
+                            },
+                            {
+                                data: null, render: function (data, type, row) {
+                                    if (data.nivDescricao == "Fácil") {
+                                        return `<label class="badge badge-success">${data.nivDescricao}</label>`;
+                                    } else if (data.nivDescricao == "Intermediário") {
+                                        return `<label class="badge badge-warning">${data.nivDescricao}</label>`;
+                                    } else {
+                                        return `<label class="badge badge-danger">${data.nivDescricao}</label>`;
+                                    }
+                                }
+                            },
+                            {
+                                data: null, render: function (data, type, row) {
+                                    if (data.queStsTipo == "Publica" || data.queStsTipo == "Pública") {
+                                        return `<label class="badge badge-info">${data.queStsTipo}</label>`;
+                                    } else if (data.queStsTipo == "Privada professor") {
+                                        return `<label class="badge badge-primary">${data.queStsTipo}</label>`;
+                                    } else if (data.queStsTipo == "Privada escola") {
+                                        return `<label class="badge badge-info" style="background-color: #435ee3">${data.queStsTipo}</label>`;
+                                    } else {
+                                        return `<label class="badge badge-info" style="background-color: #98BDFF">${data.queStsTipo}</label>`;
+                                    }
+                                }
+                            },
+
+                        ], initComplete: function () {
+                            this.api().columns.adjust();
+
+                        }
+                    })
+                } else if (cadastrarAtividade = true) {
+
+                    criarNovaTabelaQuestoes();
+                }
+            } else {
+
                 criarNovaTabelaQuestoes();
             }
-        } else {
-            criarNovaTabelaQuestoes();
         }
-    });
+
+        $.when(tableModal()).then(function () {
+            // hideSpinner()
+            setTimeout(function () { $('#cover-spin').fadeToggle("slow"); }, 500);
+
+        })
+    })
+    function hideSpinner() {
+        document.getElementById('spinner')
+            .style.display = 'none';
+    }
+    function showSpinner() {
+        document.getElementById('spinner')
+            .style.display = 'initial';
+    }
+    // $("#btn-modal-escolher").on("click", function () {
+
+    //     $('#modalQuestao').modal('show')
+
+    //     setTimeout(function () {
+
+
+    //     }, 1000);
+
+    //     arr_questoes = "";
+    //     Selecionadas = "";
+
+    //     if ($.fn.dataTable.isDataTable('#tableQuestoesAtividade')) {
+    //         questoesID = tableEscolhidas.columns(1).data().eq(0).sort()
+
+    //         if (questoesID.length > 0) {
+
+    //             if ($.fn.dataTable.isDataTable('#tableEscolherQuestoes')) {
+    //                 $('#tableEscolherQuestoes').DataTable().destroy();
+    //             }
+
+    //             arr_questoes = questoesID.join(',');
+    //             console.log(arr_questoes);
+
+    //             //? Tabela de escolher questões DO MODAL
+    //             tableEscolher = $('#tableEscolherQuestoes').DataTable({
+    //                 responsive: true,
+    //                 destroy: true,
+    //                 "select": {
+    //                     "style": 'multi'
+    //                 },
+    //                 "columnDefs": [
+    //                     {
+    //                         'targets': 0,
+    //                         'checkboxes': {
+    //                             'selectRow': true
+    //                         },
+    //                         "orderable": false,
+    //                     }
+    //                 ],
+    //                 ajax: {
+    //                     "url": "../backend/BackAtividade/atividadeBack.php",
+    //                     "method": 'POST', // metodo utilizado para passar os valores das variavesi data para o backend.
+    //                     "data": { arr_questoes: arr_questoes, buscaInicialEscolher: buscaInicialEscolher }, // as variaves bucasInicial.... possuem o valor true  para que no arquivo atividadeBack.php sirva para buscar os dados da tabela
+    //                     "dataSrc": ""
+    //                 },
+    //                 language: { // tradução em portgues da tabela
+    //                     url: "../partials/dataTablept-br.json"
+    //                 },
+    //                 lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "Todos"]], // configuração de quantidade de registros a serem mostrados, 5....15 ou todos 
+    //                 columns: [
+    //                     { data: 'queID' },
+    //                     { data: 'queID' },
+    //                     {
+    //                         data: null, render: function (data, type, row) {
+    //                             let descricao = data.queDescricao.slice(0, 200);
+    //                             let tamanho = descricao.length;
+    //                             if (tamanho >= 200) {
+    //                                 descricao = descricao + "..."
+    //                             }
+
+    //                             return `<span style=" max-width: 600px;
+    //                             min-width: 500px;
+    //                             display: block;
+    //                             overflow-wrap: break-word;
+    //                             white-space: break-spaces;">${descricao}</span>`;
+
+    //                         }
+    //                     },
+    //                     {
+    //                         data: null, render: function (data, type, row) {
+    //                             //let descricao = data.quePalavrasChave.slice(0, 50);
+    //                             return `<span style=" max-width: 200px;
+    //                             min-width: 100px;
+    //                             display: block;
+    //                             overflow-wrap: break-word;
+    //                             white-space: break-spaces;">${data.subDescricao}</span>`;
+
+    //                         }
+    //                     },
+    //                     { data: 'queCodigoBncc' },
+    //                     {
+    //                         data: null, render: function (data, type, row) {
+    //                             let descricao;
+    //                             if (data.anoDescricao == "Ensino Fundamental") {
+    //                                 descricao = data.anoDescricao.slice(0, 11);
+    //                                 descricao = descricao + ".";
+    //                             } else if (data.anoDescricao == "Ensino Médio") {
+    //                                 descricao = data.anoDescricao.slice(0, 10);
+    //                                 descricao = descricao + ".";
+    //                             }
+
+    //                             return `<span>${descricao} - ${data.anoEtapa}</span>`
+    //                         }
+    //                     },
+    //                     {
+    //                         data: null, render: function (data, type, row) {
+    //                             if (data.nivDescricao == "Fácil") {
+    //                                 return `<label class="badge badge-success">${data.nivDescricao}</label>`;
+    //                             } else if (data.nivDescricao == "Intermediário") {
+    //                                 return `<label class="badge badge-warning">${data.nivDescricao}</label>`;
+    //                             } else {
+    //                                 return `<label class="badge badge-danger">${data.nivDescricao}</label>`;
+    //                             }
+    //                         }
+    //                     },
+    //                     {
+    //                         data: null, render: function (data, type, row) {
+    //                             if (data.queStsTipo == "Publica" || data.queStsTipo == "Pública") {
+    //                                 return `<label class="badge badge-info">${data.queStsTipo}</label>`;
+    //                             } else if (data.queStsTipo == "Privada professor") {
+    //                                 return `<label class="badge badge-primary">${data.queStsTipo}</label>`;
+    //                             } else if (data.queStsTipo == "Privada escola") {
+    //                                 return `<label class="badge badge-info" style="background-color: #435ee3">${data.queStsTipo}</label>`;
+    //                             } else {
+    //                                 return `<label class="badge badge-info" style="background-color: #98BDFF">${data.queStsTipo}</label>`;
+    //                             }
+    //                         }
+    //                     },
+
+    //                 ], initComplete: function () {
+    //                     this.api().columns.adjust()
+    //                 }
+
+
+    //             })
+
+    //         } else if (cadastrarAtividade = true) {
+    //             criarNovaTabelaQuestoes();
+    //         }
+    //     } else {
+    //         criarNovaTabelaQuestoes();
+    //     }
+
 
 
     //! BOTAO DE ADICIONAR QUESTAO DIRETO EM ATIVIDADES
@@ -832,73 +1041,82 @@ $(document).ready(function () {
 
     //! Modal Excluir Atividade
     $("#tbodyAtivdades").on("click", ".btn-excluir-atividade", function () {
-        $('#modalDelete').modal('show');
+
         let dadosAtividade = $(this).closest('tr').children("td").map(function () { // função .map é utilizado para pegar todos os dados contidos na linha onde o botão editar foi pressionado, como ID, DESCRICAO E ETC.
             return $(this).text();
         }).get();
-
         opDelete = "delete"
         opidDelete = dadosAtividade[0];
+
+        Swal.fire({
+            title: 'Deseja excluir a atividade?',
+            text: "Você não poderá reverter esta ação!",
+            icon: 'question',
+            reverseButtons: true,
+            showCancelButton: true,
+            cancelButtonColor: '#d33',
+            confirmButtonColor: '#4B49AC',
+            cancelButtonText: 'Não',
+            confirmButtonText: 'Excluir!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: '../backend/BackAtividade/atividadeBack.php',
+                    method: 'POST',
+                    data: {
+                        opID: opidDelete,
+                        opAtividade: opDelete,
+                    },
+                    dataType: 'json',
+                    success: function (data) {
+
+
+                        if (data.type == 'erro') {
+                            Swal.fire({
+                                position: "center",
+                                icon: "error",
+                                title: data.text,
+                                showConfirmButton: false,
+                                timer: 2000
+                            })
+
+                        } else if (data.type == 'sucesso') {
+                            Swal.fire({
+                                position: "center",
+                                icon: "success",
+                                title: data.text,
+                                showConfirmButton: false,
+                                timer: 2000
+                            })
+                        } else if (data.type == 'validacao') {
+                            Swal.fire({
+                                position: "center",
+                                icon: "warning",
+                                title: data.text,
+                                showConfirmButton: false,
+                                timer: 2000
+                            })
+                        }
+                    }, error: function (data) {
+                        alert("erro")
+                    }
+                }).done(function (data) {
+                    tableAtividade.ajax.reload(null, false);
+                })
+            }
+        })
     });
 
-    $('#formDelete').submit(function (e) {
-        e.preventDefault();
-        console.log(opDelete);
-        console.log(opidDelete);
-        $.ajax({
-            url: '../backend/BackAtividade/atividadeBack.php',
-            method: 'POST',
-            data: {
-                opID: opidDelete,
-                opAtividade: opDelete,
-            },
-            dataType: 'json',
-            success: function (data) {
 
-
-                if (data.type == 'erro') {
-                    Swal.fire({
-                        position: "center",
-                        icon: "error",
-                        title: data.text,
-                        showConfirmButton: false,
-                        timer: 2000
-                    })
-
-                } else if (data.type == 'sucesso') {
-                    Swal.fire({
-                        position: "center",
-                        icon: "success",
-                        title: data.text,
-                        showConfirmButton: false,
-                        timer: 2000
-                    })
-                } else if (data.type == 'validacao') {
-                    Swal.fire({
-                        position: "center",
-                        icon: "warning",
-                        title: data.text,
-                        showConfirmButton: false,
-                        timer: 2000
-                    })
-                }
-            }, error: function (data) {
-                alert("erro")
-            }
-        }).done(function (data) {
-            $("#modalDelete").modal('hide');
-            tableAtividade.ajax.reload(null, false);
-        })
-    })
 
     //! modal Cancelar Exclusão Atividade
     $("#modalCancelarAtividade").click(function () {
         $('#modalDelete').modal('hide')
     })
 
-    $("#btn-modalCancelarQuestao").click(function () {
-        $('#modalQuestao').modal('hide')
-    });
+    // $("#btn-modalCancelarQuestao").click(function () {
+    //     $('#modalQuestao').modal('hide')
+    // });
     //! Modal informação
     $(".btn-info-questao").on("click", function () {
         $('#modalInfoAtividade').modal('show')
@@ -971,12 +1189,61 @@ $(document).ready(function () {
 
                     }
                 },
-                { data: 'subDescricao' },
-                { data: 'queCodigoBncc' },
-                { data: 'nivDescricao' },
-                { data: 'queStsTipo' },
+                {
+                    data: null, render: function (data, type, row) {
+                        //let descricao = data.quePalavrasChave.slice(0, 50);
+                        return `<span style=" max-width: 200px;
+                        min-width: 100px;
+                        display: block;
+                        overflow-wrap: break-word;
+                        white-space: break-spaces;">${data.subDescricao}</span>`;
 
-            ]
+                    }
+                },
+                { data: 'queCodigoBncc' },
+                {
+                    data: null, render: function (data, type, row) {
+                        let descricao;
+                        if (data.anoDescricao == "Ensino Fundamental") {
+                            descricao = data.anoDescricao.slice(0, 11);
+                            descricao = descricao + ".";
+                        } else if (data.anoDescricao == "Ensino Médio") {
+                            descricao = data.anoDescricao.slice(0, 10);
+                            descricao = descricao + ".";
+                        }
+
+                        return `<span>${descricao} - ${data.anoEtapa}</span>`
+                    }
+                },
+                {
+                    data: null, render: function (data, type, row) {
+                        if (data.nivDescricao == "Fácil") {
+                            return `<label class="badge badge-success">${data.nivDescricao}</label>`;
+                        } else if (data.nivDescricao == "Intermediário") {
+                            return `<label class="badge badge-warning">${data.nivDescricao}</label>`;
+                        } else {
+                            return `<label class="badge badge-danger">${data.nivDescricao}</label>`;
+                        }
+                    }
+                },
+                {
+                    data: null, render: function (data, type, row) {
+                        if (data.queStsTipo == "Publica" || data.queStsTipo == "Pública") {
+                            return `<label class="badge badge-info">${data.queStsTipo}</label>`;
+                        } else if (data.queStsTipo == "Privada professor") {
+                            return `<label class="badge badge-primary">${data.queStsTipo}</label>`;
+                        } else if (data.queStsTipo == "Privada escola") {
+                            return `<label class="badge badge-info" style="background-color: #435ee3">${data.queStsTipo}</label>`;
+                        } else {
+                            return `<label class="badge badge-info" style="background-color: #98BDFF">${data.queStsTipo}</label>`;
+                        }
+                    }
+                },
+
+            ], initComplete: function () {
+                this.api().columns.adjust();
+
+            }
 
 
         })

@@ -77,17 +77,7 @@ $n = new Nivel("pedagogy", "localhost", "root", "");
             white-space: normal;
         }
 
-        .swal2-container.swal2-center>.swal2-popup {
-
-            padding: 0px;
-        }
-
-        .swal2-title {
-
-            padding: 0px !important;
-
-
-        }
+    
     </style>
 </head>
 
@@ -320,7 +310,7 @@ $n = new Nivel("pedagogy", "localhost", "root", "");
                                                                             <h4 class="card-title">Escolha as questões para a atividade.</h4>
                                                                             <p class="card-description">
 
-                                                                                <button id="btn-modal-escolher" type="button" class="btn btn-inverse-primary btn-fw btn-icon-text">
+                                                                                <button id="btn-modal-escolher" type="button" data-toggle="modal" data-target="#modalQuestao" class="btn btn-inverse-primary btn-fw btn-icon-text">
                                                                                     <i class="bi bi-list-check "></i>
                                                                                     Escolher
                                                                                 </button>
@@ -498,11 +488,12 @@ $n = new Nivel("pedagogy", "localhost", "root", "");
 
                                     <div id="tableAtividadesToggle" class="expandable-table table-responsive">
                                         <table id="tableAtividade" class="table table-striped table-hover ">
+                                        <caption style="caption-side: top;padding: 0.5rem 0.5rem"><i class="bi bi-square-fill" style="padding-right: 0.5rem;color:#BCBAE0" ></i>Atividade postada</caption>
                                             <thead>
                                                 <tr>
                                                     <th width="2%">ID</th>
                                                     <th>Nome</th>
-                                                    <th>Observação</th>
+                                                    <th>Descrição</th>
                                                     <th width="10%">Data/Hora Início</th>
                                                     <th width="10%">Data/Hora Final</th>
                                                     <th width="7%">Tipo</th>
@@ -551,7 +542,7 @@ $n = new Nivel("pedagogy", "localhost", "root", "");
 
                     </div>
                 </div>
-
+                <div id="cover-spin"></div>
                 <!-- Modal Excluir Atividade-->
                 <div class="modal fade" id="modalDelete" tabindex="-1" aria-labelledby="modalDelete" aria-hidden="true">
                     <div class="modal-dialog ">
@@ -579,16 +570,18 @@ $n = new Nivel("pedagogy", "localhost", "root", "");
 
                 <!-- Modal Questão-->
                 <div class="modal fade" id="modalQuestao" tabindex="-1" aria-labelledby="modalQuestao" aria-hidden="true">
-                    <div class="modal-dialog modal-lg">
-
+                    <div class="modal-dialog modal-lg" role="document">
                         <div class="modal-content">
-
                             <div class="modal-body">
-
+                                <!-- <div class="row justify-content-center">
+                                <div class="spinner-border text-primary" 
+                                id="spinner" role="status">
+                                <span class="sr-only">Carregando...</span>
+                            </div>
+                                </div> -->
+                          
                                 <div id="escolherQuestoess" class="expandable-table table-responsive">
-
-
-                                    <table class="table table-hover display" id="tableEscolherQuestoes" style="width: 100%;">
+                                    <table class="table table-hover display" id="tableEscolherQuestoes" style="width:100%">
                                         <thead>
                                             <tr>
                                                 <th></th>
@@ -596,8 +589,9 @@ $n = new Nivel("pedagogy", "localhost", "root", "");
                                                 <th>Enunciado</th>
                                                 <th>Subgrupo</th>
                                                 <th>Código BNCC</th>
+                                                <th>Ensino - Ano</th>
                                                 <th>Nível</th>
-                                                <th>Status</th>
+                                                <th width="20px">Status</th>
 
                                             </tr>
                                         </thead>
@@ -605,11 +599,10 @@ $n = new Nivel("pedagogy", "localhost", "root", "");
 
                                         </tbody>
                                     </table>
-
                                 </div>
                             </div>
                             <div class="modal-footer">
-                                <button id="btn-modalCancelarQuestao" type="button" class="btn btn-secondary">Cancelar</button>
+                                <button id="btn-modalCancelarQuestao" type="button" data-dismiss="modal" class="btn btn-secondary">Cancelar</button>
                                 <button id="btn-modalConfirmarQuestao" type="button" class="btn btn-primary">Confirmar</button>
                             </div>
 
@@ -645,6 +638,8 @@ $n = new Nivel("pedagogy", "localhost", "root", "");
     <script src="../js/template.js"></script>
     <script src="../vendors/jquery-ui/jquery-ui.min.js"></script>
     <script src="../js/jquery.datetimepicker.full.min.js"></script>
+   
+    
     <script src="../js/sweetAlert.js"></script>
     <script src="../js/dataTables.checkboxes.min.js"></script>
     <script src="../vendors/bootstrapselect/bootstrap-select.min.js"></script>

@@ -27,10 +27,15 @@ if(isset($_POST['idDeleteSelecionado'])){
     $tabelaSelecionada = addslashes($_POST['tabelaSelecionada']);
 
     if($tabelaSelecionada == "questoes" && !empty($idDeleteSelecionado)){
-        $q->excluirAlternativa($idDeleteSelecionado);
-        $q->excluirQuestao($idDeleteSelecionado);
-        $output = json_encode(array('type' => 'excluido', 'text' => 'Excluído com sucesso!'));
-        die($output);
+     
+        if($q->excluirAlternativa($idDeleteSelecionado) &&  $q->excluirQuestao($idDeleteSelecionado) ){
+            $output = json_encode(array('type' => 'excluido', 'text' => 'Excluído com sucesso!'));
+            die($output);
+        }else{
+            $output = json_encode(array('type' => 'erro', 'text' => 'Ocorreu um erro ao excluir a questão!'));
+            die($output);
+        }
+       
      }
 }
 
@@ -85,9 +90,12 @@ if(isset($_POST['idEditQuestao']) && isset($_POST['opQuestao'])){
             'subID' => $questao[0]['subID'],
             'temID' => $questao[0]['temID'],
             'disID' => $questao[0]['disID'], 
+            'queAnoID' => $questao[0]['queAnoID'], 
             'subDescricao' => $questao[0]['subDescricao'],
             'temDescricao' => $questao[0]['temDescricao'],
             'disDescricao' => $questao[0]['disDescricao'],
+            'anoDescricao' => $questao[0]['anoDescricao'],
+            'anoEtapa' => $questao[0]['anoEtapa'],  
             'nivDescricao' => $questao[0]['nivDescricao'],$alternativas);
 
             $output2 = json_encode($output);

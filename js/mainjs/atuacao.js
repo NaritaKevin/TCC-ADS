@@ -73,8 +73,8 @@ $(document).ready(function () {
             lengthMenu: [[5, 15, 25, -1], [5, 15, 25, "Todos"]],
             columns: [
                 { data: 'temID' },
-                { data: 'temDescricao' },
                 { data: 'disDescricao' },
+                { data: 'temDescricao' },
                 {
                     data: null, render: function (data, type, row) {
 
@@ -110,9 +110,9 @@ $(document).ready(function () {
             lengthMenu: [[5, 15, 25, -1], [5, 15, 25, "Todos"]],
             columns: [
                 { data: 'subID' },
-                { data: 'subDescricao' },
-                { data: 'temDescricao' },
                 { data: 'disDescricao' },
+                { data: 'temDescricao' },
+                { data: 'subDescricao' },
                 {
                     data: null, render: function (data, type, row) {
 
@@ -135,7 +135,6 @@ $(document).ready(function () {
 
 
     //! Area de js para DISCIPLINA
-
     //? Botao do formulario de cadastrar/alterar DISCIPLINA
     $('#formDisciplina').submit(function (e) {
         e.preventDefault();//evita de dar reload na pagina
@@ -222,6 +221,7 @@ $(document).ready(function () {
 
     //? Botao editar da tabela de disciplina
     $("#tbodyDisciplina").on("click", ".btn-edit-disciplina", function () {
+        $('#cover-spin').show();
         $("#cardTitleDisc").text("Alterar Disciplina");
         $("#cardDescDisc").text("Altera a disciplina selecionada.");
         $("#btn-cadastrarDisciplina span").text("Salvar");
@@ -234,6 +234,7 @@ $(document).ready(function () {
         $("#disID").val(dados[0]);//Insere ID no formulario para alterar
         $("#disciplina").val(dados[1]);//Insere disciplina selecionada
         $("#opDisciplina").val("update");//Informa update para atualizar no backend
+        setTimeout(function () { $('#cover-spin').fadeToggle("slow"); }, 340);
     })
 
     //? Botao excluir da tabela de disciplina
@@ -241,10 +242,8 @@ $(document).ready(function () {
         let dadosDisciplina = $(this).closest('tr').children("td").map(function () {
             return $(this).text();
         }).get();
+        swalExcluir("disciplina", dadosDisciplina[0], "a disciplina");
 
-        $("#idDeleteSelecionado").val(dadosDisciplina[0]);//Insere o ID no modal de excluir
-        $("#tabelaSelecionada").val("disciplina");//Insere a tabela no modal de excluir
-        $('#modalDelete').modal('show')//Mostra modal
 
         $(this).closest('tr').addClass("selecionado"); // nesta linha esta adicionando a classe "selecionado" na tag <tr></tr> mais proxima do botão clicado.
 
@@ -373,6 +372,7 @@ $(document).ready(function () {
 
     //?Botao da tabela de editar subgrupo
     $("#tbodySubgrupo").on("click", ".btn-edit-subgrupo", function () {
+        $('#cover-spin').show();
         $("#titleSubgrupo").toggle("slow")
         $("#cardTitleSub").text("Alterar Subgrupo");
         $("#cardDescSub").text("Altere o subgrupo selecionado.");
@@ -384,7 +384,7 @@ $(document).ready(function () {
         }).get();
 
         $("#subID").val(dados[0]);
-        $("#subgrupo").val(dados[1]);
+        $("#subgrupo").val(dados[3]);
         $("#opSubgrupo").val("update");
 
 
@@ -415,15 +415,11 @@ $(document).ready(function () {
                 }
             }
         }).done(function (data) {
-
             $('#tematicaopc').selectpicker('refresh');
-            $("#tematicaopc option:contains(" + dados[2] + ")").attr("selected", true);//Pré seleciona opção no dropdown
-            $(".filter-option-inner-inner").text(dados[2]);//Escreve a disciplina selecionada no botão do dropdown
+            $("#tematicaopc option:contains(" + dados[2] + ")").attr("selected", true);
+            $(".filter-option-inner-inner").text(dados[2]).append(`<small class="text-muted"> - ${dados[1]}</small>`);
+            setTimeout(function () { $('#cover-spin').fadeToggle("slow"); }, 340);
         });
-
-
-
-
     });
 
     //?Botao da tabela que deleta subgrupo
@@ -432,18 +428,11 @@ $(document).ready(function () {
         let dadosSubgrupo = $(this).closest('tr').children("td").map(function () {
             return $(this).text();
         }).get();
-
-        $("#idDeleteSelecionado").val(dadosSubgrupo[0])
-        $("#tabelaSelecionada").val("subgrupo");
-        $('#modalDelete').modal('show')
+        swalExcluir("subgrupo", dadosSubgrupo[0], "o subgrupo");
 
         $(this).closest('tr').addClass("selecionado");
 
     });
-
-
-
-
     //! FIM SUBGRUPO
 
 
@@ -564,8 +553,8 @@ $(document).ready(function () {
 
     //? Botao editar da tabela de tematica
     $("#tbodyTematica").on("click", ".btn-edit-tematica", function () {
+        $('#cover-spin').show();
         $("#titleTematica").toggle("slow")
-
         toggleNovaTematica()
         $("#cardTitleTem").text("Alterar Temática");
         $("#cardDescTem").text("Altere a temática selecionada");
@@ -578,7 +567,7 @@ $(document).ready(function () {
         }).get();
 
         $("#temID").val(dados[0]);//Insere ID no formulario para alterar
-        $("#tematica").val(dados[1]);//Insere disciplina selecionada
+        $("#tematica").val(dados[2]);//Insere disciplina selecionada
         $("#opTematica").val("update");//Informa update para atualizar no backend
 
 
@@ -611,8 +600,10 @@ $(document).ready(function () {
         }).done(function (data) {
 
             $('#disciplinaopc').selectpicker('refresh');
-            $("#disciplinaopc option:contains(" + dados[2] + ")").attr("selected", true);//Pré seleciona opção no dropdown
-            $(".filter-option-inner-inner").text(dados[2]);//Escreve a disciplina selecionada no botão do dropdown
+            $("#disciplinaopc option:contains(" + dados[1] + ")").attr("selected", true);
+            $(".filter-option-inner-inner").text(dados[1])
+
+            setTimeout(function () { $('#cover-spin').fadeToggle("slow"); }, 340);
 
         });
 
@@ -625,15 +616,10 @@ $(document).ready(function () {
         let dadosTematica = $(this).closest('tr').children("td").map(function () {
             return $(this).text();
         }).get();
-
-        $("#idDeleteSelecionado").val(dadosTematica[0]);//Insere o ID no modal de excluir
-        $("#tabelaSelecionada").val("tematica");//Insere a tabela no modal de excluir
-        $('#modalDelete').modal('show')//Mostra modal
+        swalExcluir("tematica", dadosTematica[0], "a tematica");
 
         $(this).closest('tr').addClass("selecionado");
 
-
-        // tableTematica.row($(this).parents('tr')).remove().draw();
     });
 
     // window.history.pushState(null, null, window.location.pathname);
@@ -650,49 +636,63 @@ $(document).ready(function () {
     });
 
 
-    //? Modal excluir
-    $('#formDelete').submit(function (e) {
-        e.preventDefault();//evita de dar reload na pagina
+    function swalExcluir(tabela, id, texto) {
+        Swal.fire({
+            title: `Deseja excluir ${texto}?`,
+            text: "Você não poderá reverter esta ação!",
+            icon: 'question',
+            reverseButtons: true,
+            showCancelButton: true,
+            cancelButtonColor: '#d33',
+            confirmButtonColor: '#4B49AC',
+            cancelButtonText: 'Não',
+            confirmButtonText: 'Excluir!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: '../backend/atuacaoBack.php',
+                    method: 'POST',
+                    data: {
+                        idDeleteSelecionado: id,
+                        tabelaSelecionada: tabela
+                    },
+                    dataType: 'json',
+                    success: function (data) {
+                        if (data.type == 'excluido') {
+                            Swal.fire({
+                                position: "center",
+                                icon: "success",
+                                title: data.text,
+                                showConfirmButton: false,
+                                timer: 2000
+                            })
 
-        var idDeleteSelecionado = $('#idDeleteSelecionado').val();
-        var tabelaSelecionada = $('#tabelaSelecionada').val();
+                            $('#tableDisciplinas tr').each(function () { // 
+                                tableTematica.row(".selected").remove()
+                            });
+                            $('#tableTematica tr').each(function () {
+                                tableTematica.row(".selected").remove()
+                            });
+                            $('#tableSubgrupo tr').each(function () {
+                                tableTematica.row(".selected").remove()
+                            });
 
-        $.ajax({
-            url: '../backend/atuacaoBack.php',
-            method: 'POST',
-            data: {
-                idDeleteSelecionado: idDeleteSelecionado,
-                tabelaSelecionada: tabelaSelecionada
-            },
-            dataType: 'json',
-            success: function (data) {
-                if (data.type == 'excluido') {
-                    Swal.fire({
-                        position: "center",
-                        icon: "success",
-                        title: data.text,
-                        showConfirmButton: false,
-                        timer: 2000
-                    })
-                    $("#modalCancelar").click();//Simula um click manual no botao de cadastrar
-                    $('#tableDisciplinas tr').each(function () { // 
-                        tableTematica.row(".selected").remove()
-                    });
-                    $('#tableTematica tr').each(function () {
-                        tableTematica.row(".selected").remove()
-                    });
-                    $('#tableSubgrupo tr').each(function () {
-                        tableTematica.row(".selected").remove()
-                    });
-
-                }
+                        }
+                    }, error: function (data) {
+                        Swal.fire({
+                            position: "center",
+                            icon: "error",
+                            title: "Existem registros vinculados!",
+                            showConfirmButton: false,
+                            timer: 2000
+                        })
+                    }
+                }).done(function (data) {
+                    atualizarTabelas();
+                });
             }
-        }).done(function (data) {
-            atualizarTabelas();
-        });
-        return false;
-    });
-
+        })
+    }
 
     function limparSelecionado() {
         $('#tableDisciplinas tr').each(function () {

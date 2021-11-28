@@ -189,7 +189,7 @@ $q = new Questao("pedagogy", "localhost", "root", "");
                                                             </div>
                                                             <div class="col-md-6">
                                                             <div class="form-group">
-                                                                <label class="labelCadastroAtuacao">Status</label>
+                                                                <label class="labelCadastroAtuacao">Visibilidade</label>
                                                                 <select id="statusopc" class="selectpicker show-tick" name="statusopc" data-width="fit">
                                                                     <option value="1">Pública</option>
                                                                     <option value="2">Privada professor</option>
@@ -307,7 +307,7 @@ $q = new Questao("pedagogy", "localhost", "root", "");
                                 </div>
                             </div>
                         </div>
-
+                        <div id="cover-spin"></div>
                     </div>
                 </div>
 
@@ -328,8 +328,8 @@ $q = new Questao("pedagogy", "localhost", "root", "");
                                     </div>
                                 </div>
                             </div>
-                            <div class="modal-footer">
-                                <button id="modalCancelarAlt" type="button" class="btn btn-secondary">Voltar</button>
+                            <div class="modal-footer justify-content-center">
+                                <button id="modalCancelarAlt" type="button" class="btn btn-secondary btn-block">Voltar</button>
                             </div>
                         </div>
                     </div>

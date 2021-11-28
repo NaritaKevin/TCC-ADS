@@ -165,10 +165,9 @@ $s = new Subgrupo("pedagogy","localhost","root","");
             <?php require_once '../partials/menu.php';?>
             <!-- Corpo da página-->
             <div class="main-panel">
-                <div class="content-wrapper">                   
+                <div class="content-wrapper">     
+                <div id="cover-spin"></div>              
                     <div class="row">
-
-
                     <div class="col-lg-12 grid-margin stretch-card">
                             <div class="card">
                                 <div class="card-body">
@@ -289,8 +288,8 @@ $s = new Subgrupo("pedagogy","localhost","root","");
                                                                     <thead>
                                                                         <tr>
                                                                             <th width="5%">ID</th>
-                                                                            <th>Temática</th>
                                                                             <th>Disciplina</th>
+                                                                            <th>Temática</th>                                                                     
                                                                             <th width="10%" style="text-align: center">Opções</th>
                                                                         </tr>
                                                                     </thead>
@@ -354,9 +353,9 @@ $s = new Subgrupo("pedagogy","localhost","root","");
                                                                     <thead>
                                                                         <tr>
                                                                             <th width="5%">ID</th>
-                                                                            <th>Subgrupo</th>
+                                                                            <th>Disciplina</th>                                                                    
                                                                             <th>Temática</th>
-                                                                            <th>Disciplina</th>
+                                                                            <th>Subgrupo</th>
                                                                             <th width="10%" style="text-align: center">Opções</th>
 
                                                                         </tr>

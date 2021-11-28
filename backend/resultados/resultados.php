@@ -25,7 +25,7 @@
        
          public function BuscarAtividades()
          {
-            $sql = "SELECT  * FROM atividades a, classes c,tipos t,atividade_questao aq WHERE a.atiClasseID = c.claCodigo AND t.tipID = a.atiTipoID AND a.atiID = aq.atiqAtividadeID AND a.atiUsuarioID = 2 GROUP BY a.atiID";
+            $sql = "SELECT  * FROM atividades a, classes c,tipos t,atividade_questao aq WHERE a.atiClasseID = c.claCodigo AND t.tipID = a.atiTipoID AND a.atiID = aq.atiqAtividadeID AND a.atiUsuarioID = 2 AND a.atiPostado = 'Sim' AND a.atiDataInicio <= CURRENT_TIMESTAMP() GROUP BY a.atiID;";
             $pdo = $this->pdo->query($sql);
             $res = $pdo->fetchAll(PDO::FETCH_ASSOC);
             return $res;
