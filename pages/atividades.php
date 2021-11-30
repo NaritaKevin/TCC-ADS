@@ -320,7 +320,7 @@ $n = new Nivel("pedagogy", "localhost", "root", "");
                                                                                 </button>
                                                                             </p>
                                                                             <div id="tableQuestoesToggle" class="table-responsive">
-                                                                                <table class=" table table-hover" id="tableQuestoesAtividade">
+                                                                                <table class=" table table-hover" style="width: 100%;" id="tableQuestoesAtividade">
                                                                                     <thead>
                                                                                         <tr>
                                                                                             <th width="1%">Ordem</th>
@@ -543,31 +543,7 @@ $n = new Nivel("pedagogy", "localhost", "root", "");
                     </div>
                 </div>
                 <div id="cover-spin"></div>
-                <!-- Modal Excluir Atividade-->
-                <div class="modal fade" id="modalDelete" tabindex="-1" aria-labelledby="modalDelete" aria-hidden="true">
-                    <div class="modal-dialog ">
-                        <div class="modal-content">
-                            <form id="formDelete">
-                                <div class="modal-header">
-                                    <h4 class="modal-title ml-auto">Deseja excluir o item selecionada?</h4>
-                                    <button type="button" id="buttonXmodal" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                    <input type="hidden" name="idDeleteSelecionado" id="idDeleteSelecionado">
-                                    <input type="hidden" name="tabelaSelecionada" id="tabelaSelecionada">
-                                </div>
-
-                                <div class="modal-footer">
-                                    <button id="modalCancelarAtividade" type="button" class="btn btn-secondary  mr-auto">Cancelar</button>
-                                    <button id="modalConfirmar" type="submit" class="btn btn-primary">
-                                        <i class="bi bi-x-circle btn-icon-prepend "></i>
-                                        Excluir</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-
+             
                 <!-- Modal Questão-->
                 <div class="modal fade" id="modalQuestao" tabindex="-1" aria-labelledby="modalQuestao" aria-hidden="true">
                     <div class="modal-dialog modal-lg" role="document">

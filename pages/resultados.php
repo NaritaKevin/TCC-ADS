@@ -157,6 +157,7 @@
                                                 <tr>
                                                     <th>ID</th>
                                                     <th>Atividade</th>
+                                                    <th>Descrição</th>
                                                     <th>Data Inicial</th>
                                                     <th>Data Final</th>
                                                     <th>Tipo</th>

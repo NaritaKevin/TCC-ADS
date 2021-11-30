@@ -49010,7 +49010,7 @@ div.tagsinput span.tag a {
     display: none;
   }
 }
-#tableQuestoesAtividade td:hover {
+#tableQuestoesAtividade tr:not(:hover) td:first-child:hover {
   cursor: move;
 }
 .hiddenRow {

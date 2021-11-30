@@ -68,7 +68,7 @@ $(document).ready(function () {
                 {
                     data: null, render: function (data, type, row) {
                         let dataini = data.atiDataInicio.slice(0, 10);
-                        let horaini = data.atiDataInicio.slice(11, 19);
+                        let horaini = data.atiDataInicio.slice(11, 16);
                         dataini = dataini.split('-').reverse().join('/');
                         return `<span style="padding-bottom:5px">${dataini}</span><br><br><span>${horaini}</span>`;
                     }
@@ -76,7 +76,7 @@ $(document).ready(function () {
                 {
                     data: null, render: function (data, type, row) {
                         let datafim = data.atiDataFim.slice(0, 10);
-                        let horafim = data.atiDataFim.slice(11, 19);
+                        let horafim = data.atiDataFim.slice(11, 16);
                         datafim = datafim.split('-').reverse().join('/');
                         return `<span style="padding-bottom:5px">${datafim}</span><br><br><span>${horafim}</span>`;
                     }
@@ -287,10 +287,42 @@ $(document).ready(function () {
                                 return ` <input type="text"  style="padding: 0.4rem 0.4rem;" class="form-control inputnota" value="${data.atiqPontuacao}" />`;
                             }
                         },
-                        { data: 'subDescricao' },
+                        {
+                            data: null, render: function (data, type, row) {
+                                //let descricao = data.quePalavrasChave.slice(0, 50);
+                                return `<span style=" max-width: 200px;
+                                min-width: 100px;
+                                display: block;
+                                overflow-wrap: break-word;
+                                white-space: break-spaces;">${data.subDescricao}</span>`;
+
+                            }
+                        },
                         { data: 'queCodigoBncc' },
-                        { data: 'queStsTipo' },
-                        { data: 'nivDescricao' },
+                        {
+                            data: null, render: function (data, type, row) {
+                                if (data.queStsTipo == "Publica" || data.queStsTipo == "Pública") {
+                                    return `<label class="badge badge-info">${data.queStsTipo}</label>`;
+                                } else if (data.queStsTipo == "Privada professor") {
+                                    return `<label class="badge badge-primary">${data.queStsTipo}</label>`;
+                                } else if (data.queStsTipo == "Privada escola") {
+                                    return `<label class="badge badge-info" style="background-color: #435ee3">${data.queStsTipo}</label>`;
+                                } else {
+                                    return `<label class="badge badge-info" style="background-color: #98BDFF">${data.queStsTipo}</label>`;
+                                }
+                            }
+                        },
+                        {
+                            data: null, render: function (data, type, row) {
+                                if (data.nivDescricao == "Fácil") {
+                                    return `<label class="badge badge-success">${data.nivDescricao}</label>`;
+                                } else if (data.nivDescricao == "Intermediário") {
+                                    return `<label class="badge badge-warning">${data.nivDescricao}</label>`;
+                                } else {
+                                    return `<label class="badge badge-danger">${data.nivDescricao}</label>`;
+                                }
+                            }
+                        },
                         {
                             data: null, render: function (data, type, row) { // renderizar a exibição dos botões 
                                 return `
@@ -508,6 +540,7 @@ $(document).ready(function () {
             },
             lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "Todos"]],
             columns: [
+
                 { data: 'atiqOrdemQuestao' },
                 { data: 'queID' },
                 {
@@ -517,12 +550,12 @@ $(document).ready(function () {
                         if (tamanho >= 200) {
                             descricao = descricao + "..."
                         }
-                        return `<span style=" max-width: 500px;
-                        min-width: 200px;
+
+                        return `<span style=" max-width: 600px;
+                        min-width: 300px;
                         display: block;
                         overflow-wrap: break-word;
                         white-space: break-spaces;">${descricao}</span>`;
-
                     }
                 },
                 {
@@ -530,10 +563,42 @@ $(document).ready(function () {
                         return ` <input type="text"  style="padding: 0.4rem 0.4rem;" class="form-control inputnota" value="${data.atiqPontuacao}" />`;
                     }
                 },
-                { data: 'subDescricao' },
+                {
+                    data: null, render: function (data, type, row) {
+                        //let descricao = data.quePalavrasChave.slice(0, 50);
+                        return `<span style=" max-width: 200px;
+                        min-width: 100px;
+                        display: block;
+                        overflow-wrap: break-word;
+                        white-space: break-spaces;">${data.subDescricao}</span>`;
+
+                    }
+                },
                 { data: 'queCodigoBncc' },
-                { data: 'queStsTipo' },
-                { data: 'nivDescricao' },
+                {
+                    data: null, render: function (data, type, row) {
+                        if (data.queStsTipo == "Publica" || data.queStsTipo == "Pública") {
+                            return `<label class="badge badge-info">${data.queStsTipo}</label>`;
+                        } else if (data.queStsTipo == "Privada professor") {
+                            return `<label class="badge badge-primary">${data.queStsTipo}</label>`;
+                        } else if (data.queStsTipo == "Privada escola") {
+                            return `<label class="badge badge-info" style="background-color: #435ee3">${data.queStsTipo}</label>`;
+                        } else {
+                            return `<label class="badge badge-info" style="background-color: #98BDFF">${data.queStsTipo}</label>`;
+                        }
+                    }
+                },
+                {
+                    data: null, render: function (data, type, row) {
+                        if (data.nivDescricao == "Fácil") {
+                            return `<label class="badge badge-success">${data.nivDescricao}</label>`;
+                        } else if (data.nivDescricao == "Intermediário") {
+                            return `<label class="badge badge-warning">${data.nivDescricao}</label>`;
+                        } else {
+                            return `<label class="badge badge-danger">${data.nivDescricao}</label>`;
+                        }
+                    }
+                },
                 {
                     data: null, render: function (data, type, row) { // renderizar a exibição dos botões 
                         return `
@@ -698,6 +763,7 @@ $(document).ready(function () {
                 },
                 lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "Todos"]], // configuração de quantidade de registros a serem mostrados, 5....15 ou todos 
                 columns: [
+
                     { data: 'atiqOrdemQuestao' },
                     { data: 'queID' },
                     {
@@ -708,8 +774,8 @@ $(document).ready(function () {
                                 descricao = descricao + "..."
                             }
 
-                            return `<span style=" max-width: 500px;
-                            min-width: 200px;
+                            return `<span style=" max-width: 600px;
+                            min-width: 300px;
                             display: block;
                             overflow-wrap: break-word;
                             white-space: break-spaces;">${descricao}</span>`;
@@ -717,13 +783,45 @@ $(document).ready(function () {
                     },
                     {
                         data: null, render: function (data, type, row) {
-                            return ` <input type="text" style="padding: 0.4rem 0.4rem;" class="form-control inputnota" value="${data.atiqPontuacao}" />`;
+                            return ` <input type="text"  style="padding: 0.4rem 0.4rem;" class="form-control inputnota" value="${data.atiqPontuacao}" />`;
                         }
                     },
-                    { data: 'subDescricao' },
+                    {
+                        data: null, render: function (data, type, row) {
+                            //let descricao = data.quePalavrasChave.slice(0, 50);
+                            return `<span style=" max-width: 200px;
+                            min-width: 100px;
+                            display: block;
+                            overflow-wrap: break-word;
+                            white-space: break-spaces;">${data.subDescricao}</span>`;
+
+                        }
+                    },
                     { data: 'queCodigoBncc' },
-                    { data: 'queStsTipo' },
-                    { data: 'nivDescricao' },
+                    {
+                        data: null, render: function (data, type, row) {
+                            if (data.queStsTipo == "Publica" || data.queStsTipo == "Pública") {
+                                return `<label class="badge badge-info">${data.queStsTipo}</label>`;
+                            } else if (data.queStsTipo == "Privada professor") {
+                                return `<label class="badge badge-primary">${data.queStsTipo}</label>`;
+                            } else if (data.queStsTipo == "Privada escola") {
+                                return `<label class="badge badge-info" style="background-color: #435ee3">${data.queStsTipo}</label>`;
+                            } else {
+                                return `<label class="badge badge-info" style="background-color: #98BDFF">${data.queStsTipo}</label>`;
+                            }
+                        }
+                    },
+                    {
+                        data: null, render: function (data, type, row) {
+                            if (data.nivDescricao == "Fácil") {
+                                return `<label class="badge badge-success">${data.nivDescricao}</label>`;
+                            } else if (data.nivDescricao == "Intermediário") {
+                                return `<label class="badge badge-warning">${data.nivDescricao}</label>`;
+                            } else {
+                                return `<label class="badge badge-danger">${data.nivDescricao}</label>`;
+                            }
+                        }
+                    },
                     {
                         data: null, render: function (data, type, row) { // renderizar a exibição dos botões 
                             return `
@@ -1114,17 +1212,7 @@ $(document).ready(function () {
         $('#modalDelete').modal('hide')
     })
 
-    // $("#btn-modalCancelarQuestao").click(function () {
-    //     $('#modalQuestao').modal('hide')
-    // });
-    //! Modal informação
-    $(".btn-info-questao").on("click", function () {
-        $('#modalInfoAtividade').modal('show')
-    });
-    $("#modalCancelar").click(function () {
-        $('#modalDelete').modal('hide')
-    })
-    //!
+
 
     $('#tableQuestoesAtividade tbody').on('click', '.btn-del-questaoEscolhida', function () {
         tableEscolhidas
@@ -1251,10 +1339,10 @@ $(document).ready(function () {
 
     //! ************************************************************************************************************************************************************
 
-    $('#enunciadoQuestao').on('click', '.form-check-label input:checkbox', function () {
-        $('.form-check-label input:checkbox').not(this).prop('checked', false);
+    // $('#enunciadoQuestao').on('click', '.form-check-label input:checkbox', function () {
+    //     $('.form-check-label input:checkbox').not(this).prop('checked', false);
 
-    });
+    // });
     $("#btn-voltar-verAtividade").click(function () {
         $("#verAtividade").toggle("slow")
         $("#crudAtividade").toggle("slow");
@@ -1335,7 +1423,9 @@ $(document).ready(function () {
                         }
 
                         if (data[i].altLetra == "A") {
-                            questao = `  <h4 class="text-primary font-weight-bold">Questão ${data[i].atiqOrdemQuestao}</h4>
+                            let pontos = "";
+                            data[i].atiqPontuacao == 1 ? pontos = `${data[i].atiqPontuacao} Ponto` : pontos = `${data[i].atiqPontuacao} Pontos`;
+                            questao = `  <h4 class="text-primary font-weight-bold">Questão ${data[i].atiqOrdemQuestao}<small class="text-primary" id="classe"><strong> - ${pontos}.</strong></small></h4>
                                             <p class="display-5 pt-2">${data[i].queDescricao}</p>
                                             <div class="list-wrapper pt-1" id="questao${data[i].atiqOrdemQuestao}" style="overflow: auto;">
                                                 <ul>
@@ -1397,9 +1487,12 @@ $(document).ready(function () {
 
             },
         }).done(function (data) {
+            let dataini = idAtividade[3].slice(0, 10);
+            let horaini = idAtividade[3].slice(10, 15);
+            let datafim = idAtividade[4].slice(0, 10);
+            let horafim = idAtividade[4].slice(10, 15);
 
-
-            $("#tituloAtividade").html(` <h4 style="text-transform: none;" class="card-title">Atividade: <span class="text-primary">${nomeAluno}</span><small class="text-primary" id="classe"><strong> - ${dadosAluno[4]} </strong></small></h4>`);
+            $("#tituloAtividade").html(` <h4 style="text-transform: none;" class="card-title">Atividade: <span class="text-primary">${idAtividade[1]}</span><small class="text-primary" id="classe"><strong> - <i class="bi bi-calendar-check"></i> ${dataini} <i class="bi bi-clock" style="padding-left: 0.3rem;padding-right: 0.3rem;"></i> ${horaini} • <i class="bi bi-calendar-x-fill" style="padding-left: 0.3rem"></i> ${datafim} <i class="bi bi-clock-fill" style="padding-left: 0.3rem"></i> ${horafim}</strong></small></h4>`);
 
         });
 

@@ -45,8 +45,25 @@ $(document).ready(function () {
                 },
                 {
                     data: null, render: function (data, type, row) {
+
+                        let descricao = data.atiObservacao.slice(0, 200);
+                        let tamanho = descricao.length;
+                        if (tamanho >= 200) {
+                            descricao = descricao + "..."
+                        }
+
+                        return `<span style=" max-width: 500px;
+                        min-width: 200px;
+                        display: block;
+                        overflow-wrap: break-word;
+                        white-space: break-spaces;">${descricao}</span>`;
+
+                    }
+                },
+                {
+                    data: null, render: function (data, type, row) {
                         let dataini = data.atiDataInicio.slice(0, 10);
-                        let horaini = data.atiDataInicio.slice(11, 19);
+                        let horaini = data.atiDataInicio.slice(11, 16);
                         dataini = dataini.split('-').reverse().join('/');
                         return `<span style="padding-bottom:5px">${dataini}</span><br><br><span>${horaini}</span>`;
                     }
@@ -54,7 +71,7 @@ $(document).ready(function () {
                 {
                     data: null, render: function (data, type, row) {
                         let datafim = data.atiDataFim.slice(0, 10);
-                        let horafim = data.atiDataFim.slice(11, 19);
+                        let horafim = data.atiDataFim.slice(11, 16);
                         datafim = datafim.split('-').reverse().join('/');
                         return `<span style="padding-bottom:5px">${datafim}</span><br><br><span>${horafim}</span>`;
                     }
@@ -173,7 +190,9 @@ $(document).ready(function () {
                         }
 
                         if (data[0][i].altLetra == "A") {
-                            questao = `  <h4 class="text-primary font-weight-bold">Questão ${data[0][i].atiqOrdemQuestao}</h4>
+                            let pontos = "";
+                            data[0][i].atiqPontuacao == 1 ? pontos = `${data[0][i].atiqPontuacao} Ponto` : pontos = `${data[0][i].atiqPontuacao} Pontos`;
+                            questao = `  <h4 class="text-primary font-weight-bold">Questão ${data[0][i].atiqOrdemQuestao}<small class="text-primary" id="classe"><strong> - ${pontos}.</strong></small></h4>
                                             <p class="display-5 pt-2">${data[0][i].queDescricao}</p>
                                             <div class="list-wrapper pt-1" id="questao${data[0][i].atiqOrdemQuestao}" style="overflow: auto;">
                                                 <ul>
@@ -236,11 +255,11 @@ $(document).ready(function () {
             },
         }).done(function (data) {
             let num = dadosAluno[0].replace(/[^0-9]/g, "").length
-
             let nomeAluno = dadosAluno[0].substring(num);
-            console.log(dadosAluno)
+            let datafim = dadosAluno[4].slice(0, 10);
+            let horafim = dadosAluno[4].slice(10, 15);
 
-            $("#tituloResAluno").html(` <h4 style="text-transform: none;" class="card-title">Atividade do aluno(a): <span class="text-primary">${nomeAluno}</span><small class="text-primary" id="classe"><strong> - ${dadosAluno[4]} </strong></small></h4>`);
+            $("#tituloResAluno").html(` <h4 style="text-transform: none;" class="card-title">Atividade do aluno(a): <span class="text-primary" style="padding-right: 0.3rem">${nomeAluno}</span><small class="text-primary" id="classe"><strong> • <i class="bi bi-calendar-x-fill" style="padding-left: 0.3rem"></i> ${datafim} <i class="bi bi-clock-fill" style="padding-left: 0.3rem"></i> ${horafim}</strong></small></h4>`);
             for (let i = 0; i < data[1].length; i++) {
                 if (data[1][i].resResposta == "Sim" && data[1][i].altStsCorreta == "Correta" && data[1][i].resAltEscolhida == data[1][i].altLetra && data[1][i].resStsResposta == "Respondido") {
                     $(`#${data[1][i].atiqOrdemQuestao}${data[1][i].altLetra}`).prop('checked', true).parent().parent().addClass("form-check-success")
@@ -368,12 +387,10 @@ $(document).ready(function () {
                 },
                 {
                     data: null, render: function (data, type, row) {
-
-                        let data_americana = data.usuDataRealizacao;
-                        let data_brasileira = data_americana.split('-').reverse().join('/');
-
-                        return data_brasileira;
-
+                        let dataa = data.usuDataRealizacao.slice(0, 10);
+                        let hora = data.usuDataRealizacao.slice(11, 16);
+                        dataa = dataa.split('-').reverse().join('/');
+                        return `<span style="padding-bottom:5px">${dataa}</span><br><br><span>${hora}</span>`;
                     }
                 },
 
