@@ -110,10 +110,26 @@ $(document).ready(function () {
                     data: null, render: function (data, type, row) { // renderizar a exibição dos botões 
 
                         if (data.atiPostado == "Sim") {
-                            return `<button id="btn" type="button"
-                            class="btn btn-inverse-primary btn-rounded btn-icon btn-ver-atividade ">
-                            <i class="bi bi-file-earmark-text"></i>
-                        </button> `;
+                            let deleteButton = "";
+                            let dateTime;
+                            dateTime = getDateTime();
+
+                            if (data.atiDataFim < dateTime) {
+                                return `<button id="btn" type="button"
+                                class="btn btn-inverse-primary btn-rounded btn-icon btn-ver-atividade ">
+                                <i class="bi bi-file-earmark-text"></i>
+                            </button> 
+                            <button type="button"
+                            class="btn btn-inverse-danger btn-rounded btn-icon  btn-excluir-atividade">
+                            <i class="bi bi-trash"></i>
+                        </button>`;
+                            } else {
+                                return `<button id="btn" type="button"
+                                class="btn btn-inverse-primary btn-rounded btn-icon btn-ver-atividade ">
+                                <i class="bi bi-file-earmark-text"></i>
+                            </button> `;
+                            }
+
                         } else {
                             return `<div class="text-center"><button id="btn" type="button"
                             class="btn btn-inverse-primary btn-rounded btn-icon btn-ver-atividade ">
@@ -1691,6 +1707,32 @@ $(document).ready(function () {
 
     }
 
+    function getDateTime() {
+        var now = new Date();
+        var year = now.getFullYear();
+        var month = now.getMonth() + 1;
+        var day = now.getDate();
+        var hour = now.getHours();
+        var minute = now.getMinutes();
+        var second = now.getSeconds();
+        if (month.toString().length == 1) {
+            month = '0' + month;
+        }
+        if (day.toString().length == 1) {
+            day = '0' + day;
+        }
+        if (hour.toString().length == 1) {
+            hour = '0' + hour;
+        }
+        if (minute.toString().length == 1) {
+            minute = '0' + minute;
+        }
+        if (second.toString().length == 1) {
+            second = '0' + second;
+        }
+        var dateTime = year + '/' + month + '/' + day + ' ' + hour + ':' + minute + ':' + second;
+        return dateTime;
+    }
     // $('#tableQuestoesAtividade').on('row-reorder', function (e, diff, edit) {
     //     var result = 'Reorder started on row: ' + edit.triggerRow.data()[1] + '<br>';
 
