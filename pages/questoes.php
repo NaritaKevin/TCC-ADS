@@ -29,7 +29,7 @@ $q = new Questao("pedagogy", "localhost", "root", "");
     <link rel="stylesheet" href="../vendors/datatables.net-bs4/dataTables.bootstrap4.css">
     <link rel="stylesheet" href="../vendors/ti-icons/css/themify-icons.css">
     <link rel="stylesheet" type="text/css" href="../js/select.dataTables.min.css">
-
+    <link rel="stylesheet" type="text/css" href="../js/responsive.bootstrap4.min.css">
     <link rel="stylesheet" href="../js/jquery.datetimepicker.min.css">
 
     <!-- End plugin css for this page -->
@@ -64,8 +64,8 @@ $q = new Questao("pedagogy", "localhost", "root", "");
         <!-- partial:../../partials/_navbar.html -->
         <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
             <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
-                <a id="" class="navbar-brand brand-logo mr-5" href="../index.html"><img src="../images/logo-full.svg" class="mr-4 filter-purple" alt="logo" /></a>
-                <a class="navbar-brand brand-logo-mini" href="../index.html"><img src="../images/logo-mini.svg" alt="logo" /></a>
+                <a id="" class="navbar-brand brand-logo mr-5" href="../index.php"><img src="../images/logo-full.svg" class="mr-4 filter-purple" alt="logo" /></a>
+                <a class="navbar-brand brand-logo-mini" href="../index.php"><img src="../images/logo-mini.svg" alt="logo" /></a>
             </div>
             <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
                 <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
@@ -378,6 +378,8 @@ $q = new Questao("pedagogy", "localhost", "root", "");
         <script src="../js/settings.js"></script>
         <script src="../js/sweetAlert.js"></script>
         <script src="../js/template.js"></script>
+        <!-- <script src="../js/dataTables.responsive.min.js"></script>
+        <script src="../js/responsive.bootstrap4.min.js"></script> -->
         <script src="../vendors/bootstrapselect/bootstrap-select.min.js"></script>
 
         <!-- <script src="https://cdn.datatables.net/rowreorder/1.2.8/js/dataTables.rowReorder.min.js"></script>

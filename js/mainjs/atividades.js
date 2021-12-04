@@ -38,6 +38,7 @@ $(document).ready(function () {
 
         $.datetimepicker.setLocale('pt-BR');
         tableAtividade = $('#tableAtividade').DataTable({
+
             responsive: true,
             ajax: {
                 "url": "../backend/BackAtividade/atividadeBack.php",
@@ -871,6 +872,17 @@ $(document).ready(function () {
                     //? Tabela de escolher questões DO MODAL
                     tableEscolher = $('#tableEscolherQuestoes').DataTable({
                         responsive: true,
+                        searchPanes: {
+                            viewTotal: true,
+                            initCollapsed: true
+                        },
+                        dom: 'Plfrtip',
+                        language: {
+                            searchPanes: {
+                                count: '{total} found',
+                                countFiltered: '{shown} / {total}',
+                            }
+                        },
                         destroy: true,
                         "select": {
                             "style": 'multi'
@@ -893,7 +905,8 @@ $(document).ready(function () {
                         language: { // tradução em portgues da tabela
                             url: "../partials/dataTablept-br.json"
                         },
-                        lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "Todos"]], // configuração de quantidade de registros a serem mostrados, 5....15 ou todos 
+                        "lengthChange": false,
+                        // lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "Todos"]], // configuração de quantidade de registros a serem mostrados, 5....15 ou todos 
                         columns: [
                             { data: 'queID' },
                             { data: 'queID' },
@@ -1234,6 +1247,23 @@ $(document).ready(function () {
         }
         tableEscolher = $('#tableEscolherQuestoes').DataTable({
             responsive: true,
+            searchPanes: {
+                viewTotal: true,
+                initCollapsed: true,
+                dtOpts: {
+                    select: {
+                        style: 'multi'
+                    }
+                }
+            },
+            dom: 'Plfrtip',
+            language: {
+                searchPanes: {
+                    count: '{total} found',
+                    countFiltered: '{shown} / {total}',
+
+                }
+            },
             destroy: true,
             "select": {
                 "style": 'multi'
@@ -1257,7 +1287,8 @@ $(document).ready(function () {
             language: { // tradução em portgues da tabela
                 url: "../partials/dataTablept-br.json"
             },
-            lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "Todos"]],
+            "lengthChange": false,
+            // lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "Todos"]],
             columns: [
                 { data: 'queID' },
                 { data: 'queID' },

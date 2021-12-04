@@ -440,8 +440,7 @@ $(document).ready(function () {
             return $(this).text();
         }).get();
         $('#cover-spin').show();
-        $("#verGraficos").toggle("slow")
-        $("#tabelaResultados").toggle("slow")
+
 
         setTimeout(function () { ajaxGrafico() }, 1000);
 
@@ -461,6 +460,7 @@ $(document).ready(function () {
                             showConfirmButton: false,
                             timer: 3000
                         })
+                        $('#cover-spin').fadeToggle("slow")
                     } else {
                         let questao = [];
                         let acertos = [];
@@ -681,6 +681,8 @@ $(document).ready(function () {
                         }
 
                         setTimeout(function () { $('#cover-spin').fadeToggle("slow"); }, 500);
+                        $("#verGraficos").toggle("slow")
+                        $("#tabelaResultados").toggle("slow")
                     }
 
 
@@ -696,10 +698,11 @@ $(document).ready(function () {
                             timer: 2000
                         })
 
+                        setTimeout(function () { $('#cover-spin').fadeToggle("slow"); }, 500);
                     }
                 },
             }).done(function (data) {
-
+                // setTimeout(function () { $('#cover-spin').fadeToggle("slow"); }, 500);
 
             });
         }

@@ -255,16 +255,16 @@ $(document).ready(function () {
 
     //?  Modal info e cancelar
     $(".main-panel").on("click", ".btn-info-questao", function () {
-        let dadosQuestao = $(this).closest('tr').children("td").map(function () {
-            return $(this).text();
-        }).get();
-
+        // let dadosQuestao = $(this).closest('tr').children("td").map(function () {
+        //     return $(this).text();
+        // }).get();
+        let dadosQuestao = tabelaQuestoes.row($(this).closest('tr')).data()
 
         $.ajax({
             url: '../backend/questoesBack.php',
             method: 'POST',
             data: {
-                idQuestaoSelecionada: dadosQuestao[0]
+                idQuestaoSelecionada: dadosQuestao.queID,
             },
             dataType: 'json',
             success: function (data) {
