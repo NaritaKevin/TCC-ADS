@@ -440,11 +440,13 @@ $(document).ready(function () {
             return $(this).text();
         }).get();
         $('#cover-spin').show();
-
+        $("#verGraficos").toggle("slow")
+        $("#tabelaResultados").toggle("slow")
 
         setTimeout(function () { ajaxGrafico() }, 1000);
 
         function ajaxGrafico() {
+
             $.ajax({
                 url: '../backend/resultados/resultadosBack.php',
                 method: 'POST',
@@ -681,8 +683,7 @@ $(document).ready(function () {
                         }
 
                         setTimeout(function () { $('#cover-spin').fadeToggle("slow"); }, 500);
-                        $("#verGraficos").toggle("slow")
-                        $("#tabelaResultados").toggle("slow")
+
                     }
 
 
