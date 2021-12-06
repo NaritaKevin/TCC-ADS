@@ -109,25 +109,29 @@ $(document).ready(function () {
                 {
                     data: null, render: function (data, type, row) { // renderizar a exibição dos botões 
 
-                        if (data.atiPostado == "Sim") {
-                            let deleteButton = "";
-                            let dateTime;
-                            dateTime = getDateTime();
+                        let datafim = data.atiDataFim.slice(0, 10);
+                        let horafim = data.atiDataFim.slice(11, 16);
+                        let dateTime = getDateTime();
 
-                            if (data.atiDataFim < dateTime) {
+                        let dataToday = dateTime.slice(0, 10);
+                        let horaToday = dateTime.slice(11, 16);
+
+                        if (data.atiPostado == "Sim") {
+                            if (Date.parse(data.atiDataFim) - Date.parse(new Date()) < 0) {
+
                                 return `<button id="btn" type="button"
-                                class="btn btn-inverse-primary btn-rounded btn-icon btn-ver-atividade ">
-                                <i class="bi bi-file-earmark-text"></i>
-                            </button> 
-                            <button type="button"
-                            class="btn btn-inverse-danger btn-rounded btn-icon  btn-excluir-atividade">
-                            <i class="bi bi-trash"></i>
-                        </button>`;
+                                                class="btn btn-inverse-primary btn-rounded btn-icon btn-ver-atividade ">
+                                                <i class="bi bi-file-earmark-text"></i>
+                                        </button> 
+                                        <button type="button"
+                                            class="btn btn-inverse-danger btn-rounded btn-icon  btn-excluir-atividade">
+                                            <i class="bi bi-trash"></i>
+                                        </button>`;
                             } else {
                                 return `<button id="btn" type="button"
-                                class="btn btn-inverse-primary btn-rounded btn-icon btn-ver-atividade ">
-                                <i class="bi bi-file-earmark-text"></i>
-                            </button> `;
+                                            class="btn btn-inverse-primary btn-rounded btn-icon btn-ver-atividade ">
+                                            <i class="bi bi-file-earmark-text"></i>
+                                        </button> `;
                             }
 
                         } else {
@@ -1730,7 +1734,7 @@ $(document).ready(function () {
         if (second.toString().length == 1) {
             second = '0' + second;
         }
-        var dateTime = year + '/' + month + '/' + day + ' ' + hour + ':' + minute + ':' + second;
+        var dateTime = year + '-' + month + '-' + day + ' ' + hour + ':' + minute + ':' + second;
         return dateTime;
     }
     // $('#tableQuestoesAtividade').on('row-reorder', function (e, diff, edit) {

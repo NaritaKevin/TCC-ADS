@@ -22,7 +22,7 @@ class Classe {
     public function buscarClasse(){
         $res = [];
 
-        $cmd = $this->pdo->query("SELECT * from classes");
+        $cmd = $this->pdo->query("SELECT * FROM classes c JOIN usuario_classe uc ON c.claCodigo = uc.uscClaCodigo WHERE uc.uscUsuCodigo = 2;");
 
         $res = $cmd->fetchAll(PDO::FETCH_ASSOC);
 
