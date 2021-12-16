@@ -1,4 +1,3 @@
 # TCC Fatec Lins - ADS
 
-testando push github
-12345
+TCC desenvolvido por Kevin Narita e Victor Hugo
