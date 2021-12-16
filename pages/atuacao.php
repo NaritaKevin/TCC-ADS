@@ -20,7 +20,7 @@ $s = new Subgrupo("pedagogy","localhost","root","");
     <link rel="stylesheet" href="../vendors/feather/feather.css">
     <link rel="stylesheet" href="../vendors/ti-icons/css/themify-icons.css">
     <link rel="stylesheet" href="../vendors/css/vendor.bundle.base.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="../vendors/bootstrapicons/bootstrap-icons.css">
     
     <link rel="stylesheet" href="../vendors/bootstrapselect/bootstrap-select.min.css">
     <!-- endinject -->

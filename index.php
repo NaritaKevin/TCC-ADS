@@ -28,8 +28,7 @@ $resul = $m->buscarResultado($idProf);
 }else{
   $flagprof = true;
 }
-//   print_r($ativ['quantAtividade']);
-// die();
+
 
 ?>
 
@@ -47,7 +46,7 @@ $resul = $m->buscarResultado($idProf);
   <link rel="stylesheet" href="vendors/feather/feather.css">
   <link rel="stylesheet" href="vendors/ti-icons/css/themify-icons.css">
   <link rel="stylesheet" href="vendors/css/vendor.bundle.base.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+  <link rel="stylesheet" href="vendors/bootstrapicons/bootstrap-icons.css">
   <!-- endinject -->
   <!-- Plugin css for this page -->
   <link rel="stylesheet" href="vendors/datatables.net-bs4/dataTables.bootstrap4.css">
